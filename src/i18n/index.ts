@@ -5,17 +5,26 @@ import { getLocales } from 'expo-localization';
 import es from './locales/es.json';
 import en from './locales/en.json';
 
-const deviceLang = getLocales()[0]?.languageCode ?? 'es';
+let deviceLang = 'es';
+try {
+  const code = getLocales()?.[0]?.languageCode;
+  if (code && code.startsWith('en')) deviceLang = 'en';
+} catch {
+  // fallback
+}
 
 i18n.use(initReactI18next).init({
   resources: {
     es: { translation: es },
     en: { translation: en },
   },
-  lng: deviceLang === 'en' ? 'en' : 'es',
+  lng: deviceLang,
   fallbackLng: 'es',
   interpolation: {
     escapeValue: false,
+  },
+  react: {
+    useSuspense: false,
   },
 });
 

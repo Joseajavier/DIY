@@ -1,84 +1,511 @@
-MAPA MAESTRO DE FASES — APP MVP CARPINTERÍA / DIY
+MAPA MAESTRO DE FASES — APP MVP CARPINTERIA / DIY
+Ultima actualizacion: 2026-04-14
+Estado global: TODAS LAS FASES COMPLETADAS (9/9)
 
-FASE 1 — Base del proyecto y navegación
-Objetivo:
-- crear estructura base
-- navegación
-- pantallas vacías
-- proyecto compilando
+================================================================================
+FASE 1 — BASE DEL PROYECTO Y NAVEGACION
+================================================================================
+Objetivo: Crear la estructura base del proyecto React Native con TypeScript,
+navegacion completa y pantallas funcionales.
 
-FASE 2A — Validación de arquitectura (opcional)
-Objetivo:
-- confirmar que no hace falta migrar a bare React Native
-- decidir Expo + prebuild + dev build
+Stack:
+- React Native + TypeScript
+- Expo SDK 54
+- React Navigation (native-stack)
+- Yarn como package manager
 
-FASE 2 v2 — BBDD local y persistencia en Expo
-Objetivo:
-- expo-sqlite para datos estructurados
-- react-native-mmkv para preferencias
-- repositorios
-- storage y persistencia local
+Entregables:
+- Estructura src/ con 6 carpetas (screens, components, services, models, utils, navigation)
+- 9 pantallas: Home, ModeSelection, DIYInput, DIYSteps, DIYMaterials,
+  ProInput, ProOptimization, ProResults, Shop
+- 5 servicios: diyGenerator, materialsGenerator, cuttingOptimizer,
+  storeRecommender, priceComparator
+- Modelos tipados: Project, Piece, Material, StoreOption, DIYResult, OptimizationResult
+- Navegacion completa con tipos seguros (RootStackParamList)
+- 2 flujos funcionales: DIY (idea → pasos → materiales → tiendas)
+  y PRO (piezas → optimizacion → resultados → tiendas)
 
-FASE 3 — Motor de lógica del producto
-Objetivo:
-- diyGenerator
-- materialsGenerator
-- cuttingOptimizer
-- storeRecommender
-- priceComparator
+Archivos clave:
+- App.tsx
+- src/navigation/AppNavigator.tsx
+- src/models/index.ts
+- src/screens/*.tsx (9 pantallas)
+- src/services/*.ts (5 servicios)
 
-FASE 4A — Integración de IA real
-Objetivo:
-- backend propio
-- OpenAI Responses API
-- DIY con IA estructurada
-- PRO con IA + tools + motor determinista
+Dependencias: Ninguna (fase inicial)
+Estado: HECHA
 
-FASE 5 — Integración end-to-end en la app
-Objetivo:
-- conectar UI + backend + storage + fallback
-- flujos reales DIY y PRO
-- loading, error, retry, guardado
+================================================================================
+FASE 2A — VALIDACION DE ARQUITECTURA (EXPO VS BARE)
+================================================================================
+Objetivo: Evaluar si migrar a bare React Native o mantener Expo con prebuild.
 
-FASE 6 — Cierre de MVP y pulido real
-Objetivo:
-- historial de proyectos
-- reapertura
-- edición
-- duplicado y borrado
-- UX más sólida
-- sensación de producto real
+Decision tomada: MANTENER EXPO con Expo prebuild / development builds.
+Razon: Expo SDK 54 soporta expo-sqlite y react-native-mmkv via prebuild
+sin necesidad de eject. El eject no existe como concepto en Expo moderno.
 
-FASE 7 — Beta, publicación y operación real
-Objetivo:
-- entornos
-- builds beta
-- crash reporting
-- analytics
-- feedback
-- checklist de release
+Entregables:
+- Analisis documentado de 3 opciones (A: Expo Go, B: Expo prebuild, C: bare RN)
+- Decision firme: Opcion B
+- Documento Fase_2_BBDD_local_y_persistencia_v2_EXPO.txt adaptado
 
-FASE 8 — Roadmap post-beta, priorización y escalado
-Objetivo:
-- métricas que importan
-- backlog priorizado
-- V2
-- monetización o packaging
-- evolución técnica razonable
+Dependencias: Fase 1
+Estado: HECHA (integrada en Fase 2 v2)
 
-FASE 9 — Documentación maestra y sistema de ejecución
-Objetivo:
-- documento maestro
-- criterios de aceptación
-- checklist de ejecución
-- estado por fases
-- backlog vivo separado
-- orden real de ejecución
+================================================================================
+FASE 2 v2 — BBDD LOCAL Y PERSISTENCIA EN EXPO
+================================================================================
+Objetivo: Implementar capa completa de persistencia local con SQLite para datos
+estructurados y MMKV para preferencias ligeras.
 
-FIN DEL MAPA BASE
-Después de la Fase 9 no faltan más fases estructurales.
-Lo que queda es:
-- ejecutar
-- probar
-- validar
-- decidir la dirección del producto.
+Stack:
+- expo-sqlite (datos)
+- react-native-mmkv v4 (preferencias)
+- react-native-nitro-modules (peer dependency de MMKV v4)
+
+Entregables:
+- Carpeta src/storage/ con 9 archivos
+- SQLite: 5 tablas (projects, pieces, materials, optimizations, shop_options)
+- Migraciones versionadas con PRAGMA user_version
+- Indices por project_id en todas las tablas hijas
+- Foreign keys con ON DELETE CASCADE
+- 5 repositorios CRUD:
+  - projectRepository: create, getAll, getById, update, delete
+  - pieceRepository: create, createMany, getByProject, update, delete, deleteByProject
+  - materialRepository: create, createMany, getByProject, update, delete, deleteByProject
+  - optimizationRepository: save (reemplaza anterior), getByProject
+  - shopRepository: save (reemplaza anteriores), getByProject
+- MMKV settingsStorage:
+  - selectedMode (diy/pro)
+  - lastProjectId
+  - userUnits (cm/mm/in)
+  - hasSeenOnboarding
+- Expo prebuild ejecutado (genera ios/ y android/)
+- Build iOS exitoso en simulador
+
+Archivos clave:
+- src/storage/database.ts (singleton SQLite con WAL + FK)
+- src/storage/migrations.ts (esquema v1)
+- src/storage/settingsStorage.ts (MMKV v4 con createMMKV)
+- src/storage/projectRepository.ts
+- src/storage/pieceRepository.ts
+- src/storage/materialRepository.ts
+- src/storage/optimizationRepository.ts
+- src/storage/shopRepository.ts
+- src/storage/utils.ts (generateId, nowISO)
+- src/storage/index.ts (re-exports)
+
+Dependencias: Fase 1
+Estado: HECHA
+
+================================================================================
+FASE 3 — MOTOR DE LOGICA DEL PRODUCTO
+================================================================================
+Objetivo: Construir la inteligencia funcional local: generar proyectos DIY,
+estimar materiales, optimizar cortes, recomendar tiendas y comparar precios.
+
+Entregables:
+- diyGenerator.ts mejorado:
+  - 9 templates (estanteria, mesa, caja, banco, perchero, marco,
+    soporte_plantas, zapatero + default)
+  - Cada template con: pasos, materiales, herramientas, dificultad,
+    tiempo estimado, summary
+  - Keyword matching inteligente (KEYWORD_MAP)
+  - Tipo ProjectDifficulty: 'easy' | 'medium' | 'hard'
+- materialsGenerator.ts:
+  - Estima tableros, tornillos (~8 por union), cola, tapones, cinta de canto
+  - Escuadras si >4 piezas
+- cuttingOptimizer.ts:
+  - Algoritmo FFD (First Fit Decreasing)
+  - Ordena piezas por area descendente
+  - Prueba ambas orientaciones
+  - Calcula: totalBoards, efficiency, totalWaste, detalle por tablero
+- storeRecommender.ts:
+  - 5 tiendas mock: Amazon, AliExpress, Leroy Merlin, Bricomart, ManoMano
+  - Precios estimados por tipo de material
+  - Multiplicadores por tienda
+- priceComparator.ts:
+  - Ranking compuesto: precio (40%) + rapidez (30%) + score base (30%)
+  - Devuelve best, cheapest, fastest + recommendation textual
+  - Tipo ComparisonResult exportado
+- projectEngine.ts (orquestador):
+  - runDIYProject(): idea → steps + materials + tools + stores + comparison
+  - runProProject(): pieces → optimization + materials + stores + comparison
+- Tipos nuevos en models/index.ts:
+  - ProjectDifficulty, ComparisonResult, FullDIYResult, FullProResult
+  - DIYResult ampliado con summary, difficulty, estimatedTime
+
+Archivos clave:
+- src/services/diyGenerator.ts
+- src/services/materialsGenerator.ts
+- src/services/cuttingOptimizer.ts
+- src/services/storeRecommender.ts
+- src/services/priceComparator.ts
+- src/services/projectEngine.ts
+- src/models/index.ts (ampliado)
+
+Dependencias: Fase 1
+Estado: HECHA
+
+================================================================================
+FASE 3b — UX RUSTICA Y MULTIIDIOMA
+================================================================================
+Objetivo: Rediseñar la app con estetica de taller de carpinteria e implementar
+soporte multiidioma ES/EN.
+
+Entregables:
+- Tema rustico en src/utils/theme.ts:
+  - Fondos madera oscura (#2c1e1e, #3b2f2f)
+  - Cards madera (#4a3728)
+  - Accent cobre/herrumbre (#c97b3d)
+  - PRO verde bosque (#4a7c59)
+  - Texto crema/sepia (#faf0e6, #c4a882, #8b7355)
+- i18n completo:
+  - i18next + react-i18next + expo-localization
+  - Deteccion automatica del idioma del dispositivo
+  - ~100 strings traducidas a ES y EN
+  - Categorias: app, home, modes, diy, pro, materials, shop, projects,
+    nav, errors, settings
+- Selector de idioma en HomeScreen (bandera toggle)
+- Todas las 9+ pantallas traducidas con useTranslation()
+- Navegacion con titulos traducidos
+- Componentes reutilizables:
+  - Card (con highlight accent/pro)
+  - Button (4 variantes: accent, pro, outline, muted)
+  - SectionTitle
+
+Archivos clave:
+- src/utils/theme.ts
+- src/i18n/index.ts
+- src/i18n/locales/es.json
+- src/i18n/locales/en.json
+- src/components/Card.tsx
+- src/components/Button.tsx
+- src/components/SectionTitle.tsx
+- src/components/index.ts
+- Todas las pantallas actualizadas
+
+Dependencias: Fase 1, Fase 3
+Estado: HECHA
+
+================================================================================
+FASE 4A — INTEGRACION DE IA REAL
+================================================================================
+Objetivo: Crear backend Node.js con OpenAI para generacion IA de proyectos DIY
+(structured outputs) y analisis PRO con tool calling.
+
+Stack backend:
+- Node.js + Express 5 + TypeScript
+- OpenAI SDK v6
+- dotenv, cors, express-rate-limit
+
+Entregables:
+- Backend completo en backend/ con estructura:
+  - src/app.ts (Express app con CORS, rate limiting, error handler)
+  - src/server.ts (arranque con validacion de env)
+  - src/routes/ai.ts (POST /ai/diy-generate, POST /ai/pro-plan)
+  - src/routes/feedback.ts (POST /feedback)
+  - src/routes/analytics.ts (POST /analytics/events)
+  - src/services/openaiClient.ts (singleton OpenAI)
+  - src/services/diyAiService.ts (structured output con json_schema)
+  - src/services/proAiService.ts (tool calling loop, max 5 iteraciones)
+  - src/schemas/diySchema.ts (JSON schema + system prompt DIY)
+  - src/schemas/proSchema.ts (system prompt PRO + TOOL_DEFINITIONS)
+  - src/tools/optimizeCuts.ts (replica logica local)
+  - src/tools/estimateMaterials.ts (replica logica local)
+  - src/tools/compareStoreOptions.ts (replica logica local)
+  - src/tools/toolRegistry.ts (executeTool dispatcher)
+  - src/utils/env.ts (OPENAI_API_KEY, PORT)
+  - src/utils/errors.ts (AppError + errorHandler middleware)
+- Endpoint DIY: gpt-4o-mini con response_format json_schema strict
+- Endpoint PRO: gpt-4o-mini con tools, loop de ejecucion, respuesta consolidada
+- Rate limiting: 30 req/min para /ai, 100 req/min general
+- Health check: GET /health
+- Cliente API en Expo:
+  - src/services/apiClient.ts
+  - Lee API URL de app.config.ts via expo-constants
+  - Funciones: generateDIYWithAI, generateProPlanWithAI, checkBackendHealth
+- Toggle "Usar IA" en DIYInputScreen y ProInputScreen
+- Fallback automatico a logica local si backend falla
+
+Archivos clave:
+- backend/ (todo el directorio)
+- src/services/apiClient.ts
+- src/screens/DIYInputScreen.tsx (toggle IA)
+- src/screens/ProInputScreen.tsx (toggle IA)
+
+Dependencias: Fase 3 (logica replicada en tools), Fase 2 (persistencia)
+Estado: HECHA
+
+================================================================================
+FASE 5 — INTEGRACION END-TO-END EN LA APP
+================================================================================
+Objetivo: Conectar UI + backend + storage + fallback en flujos reales
+con gestion de estado robusta.
+
+Entregables:
+- Hook useAsyncAction:
+  - Estados: idle, loading, success, error
+  - Proteccion contra doble pulsacion (lockRef)
+  - Reset
+- Hook useDIYWorkflow:
+  - Orquesta: IA (con fallback local) → persistencia SQLite → resultado
+  - Devuelve source ('ai' | 'local') para indicador visual
+- Hook useProWorkflow:
+  - Orquesta: IA con tools (con fallback local) → persistencia completa
+  - Guarda proyecto, piezas, materiales, optimizacion en SQLite
+- Componentes de estado:
+  - LoadingState: spinner + mensaje
+  - ErrorState: icono + mensaje + boton retry
+  - SourceBadge: indica si resultado es IA o local
+- Pantallas actualizadas:
+  - DIYInputScreen: usa useDIYWorkflow, ActivityIndicator, fallback con Alert
+  - ProInputScreen: usa useProWorkflow, persiste todo al optimizar
+  - ProOptimizationScreen: persiste optimizacion y materiales en SQLite
+  - ShopScreen: persiste tiendas en SQLite via useEffect
+
+Archivos clave:
+- src/hooks/useAsyncAction.ts
+- src/hooks/useDIYWorkflow.ts
+- src/hooks/useProWorkflow.ts
+- src/components/LoadingState.tsx
+- src/components/ErrorState.tsx
+- src/components/SourceBadge.tsx
+
+Dependencias: Fase 4A (backend), Fase 2 (storage), Fase 3 (logica local)
+Estado: HECHA
+
+================================================================================
+FASE 6 — CIERRE DE MVP Y PULIDO REAL
+================================================================================
+Objetivo: Hacer la app presentable como producto real con gestion de proyectos,
+edicion, reapertura, onboarding y settings.
+
+Entregables:
+- ProjectsScreen:
+  - Lista de proyectos con busqueda en tiempo real
+  - Tag modo (DIY/PRO), fecha, descripcion
+  - Borrar con confirmacion
+  - Navega a ProjectDetail
+- ProjectDetailScreen:
+  - Vista completa: piezas, optimizacion, materiales, tiendas
+  - Renombrar inline (tap en titulo → TextInput)
+  - Duplicar proyecto (copia piezas y materiales)
+  - Compartir como texto formateado (Share API nativa)
+  - Borrar con confirmacion
+  - Boton regenerar/recalcular
+  - EfficiencyGauge en optimizacion
+- OnboardingScreen:
+  - 4 slides (DIY, PRO, IA, bienvenida)
+  - Dots de progreso
+  - Skip + Siguiente + Empezar
+  - Persistido en MMKV (no se repite)
+- SettingsScreen:
+  - Idioma (ES/EN)
+  - Unidades (cm/mm/in)
+  - Modo por defecto (DIY/PRO)
+  - Seccion about
+- HomeScreen mejorada:
+  - Boton settings (⚙️)
+  - Selector idioma rapido
+  - Boton "Continuar ultimo proyecto" (si hay)
+  - Seccion proyectos recientes (top 3)
+  - Cards de modo con tags
+- Hook useProjects:
+  - refresh, rename, duplicate, remove
+  - Duplicar copia piezas + materiales
+- ProResultsScreen:
+  - EfficiencyGauge visual
+  - Card de coste estimado de tableros
+- ProOptimizationScreen:
+  - Barras de uso por tablero con colores adaptativos
+    (verde >80%, naranja >50%, rojo <50%)
+  - Porcentaje de uso en cabecera
+
+Archivos clave:
+- src/screens/ProjectsScreen.tsx
+- src/screens/ProjectDetailScreen.tsx
+- src/screens/OnboardingScreen.tsx
+- src/screens/SettingsScreen.tsx
+- src/screens/HomeScreen.tsx (mejorada)
+- src/hooks/useProjects.ts
+- src/components/EfficiencyGauge.tsx
+
+Dependencias: Fase 5 (integracion), Fase 2 (storage)
+Estado: HECHA
+
+================================================================================
+FASE 7 — BETA, PUBLICACION Y OPERACION REAL
+================================================================================
+Objetivo: Preparar el producto para beta real con builds, monitoring,
+analytics y feedback.
+
+Entregables:
+- Configuracion de entornos:
+  - app.config.ts con APP_VARIANT (development/preview/production)
+  - Bundle IDs por entorno (com.diyapp.dev/.preview/.production)
+  - API URL por entorno
+  - Splash y fondo rustico (#2c1e1e)
+- EAS Build:
+  - eas.json con 3 perfiles (development, preview, production)
+  - Perfil development con simulator: true
+  - Perfil preview con distribucion interna
+- Crash reporting:
+  - @sentry/react-native instalado
+  - initSentry() en src/services/monitoring/sentry.ts
+  - Sentry.wrap(App) en App.tsx
+  - captureError, captureMessage, setUser helpers
+- Analytics de producto:
+  - 17 eventos definidos (app_opened, mode_selected, diy_request_*, etc.)
+  - Cola en memoria con auto-flush cada 10 eventos
+  - POST /analytics/events al backend
+  - console.log en __DEV__
+- FeedbackScreen:
+  - Selector tipo (bug/sugerencia/otro)
+  - Campo mensaje + email opcional
+  - Estado enviado con confirmacion visual
+  - POST /feedback al backend
+- Backend ampliado:
+  - POST /feedback (loguea feedback)
+  - POST /analytics/events (loguea eventos)
+  - Rate limiting: 30 req/min AI, 100 req/min general
+- Documentacion release:
+  - docs/release/beta-checklist.md (40+ items)
+  - docs/release/environments.md (tabla entornos + comandos)
+  - docs/release/analytics-events.md (tabla 17 eventos)
+
+Archivos clave:
+- app.config.ts
+- eas.json
+- src/services/monitoring/sentry.ts
+- src/services/analytics/events.ts
+- src/services/feedback/feedbackService.ts
+- src/screens/FeedbackScreen.tsx
+- backend/src/routes/feedback.ts
+- backend/src/routes/analytics.ts
+- backend/src/app.ts (rate limiting)
+- docs/release/*.md
+
+Dependencias: Fase 6 (MVP cerrado)
+Estado: HECHA
+
+================================================================================
+FASE 7.5 — AUDITORIA DE HUECOS
+================================================================================
+Objetivo: Recorrer todas las fases y tapar huecos entre spec e implementacion.
+
+Entregables:
+- apiClient.ts actualizado: lee API URL de app.config.ts via expo-constants
+- pieceRepository: añadido updatePiece() y deletePiece()
+- materialRepository: añadido updateMaterial() y deleteMaterial()
+- unitConverter.ts: convert(value, from, to), formatWithUnit, getUnitLabel
+- Sentry inicializado en App.tsx con Sentry.wrap()
+- trackEvent('app_opened') al arrancar la app
+- express-rate-limit instalado y configurado en backend
+
+Archivos clave:
+- src/services/apiClient.ts (expo-constants)
+- src/storage/pieceRepository.ts (+update, +delete)
+- src/storage/materialRepository.ts (+update, +delete)
+- src/utils/unitConverter.ts (nuevo)
+- App.tsx (Sentry.wrap + analytics)
+- backend/src/app.ts (rate limiting)
+
+Dependencias: Todas las fases anteriores
+Estado: HECHA
+
+================================================================================
+FASE 8 — ROADMAP POST-BETA, PRIORIZACION Y ESCALADO
+================================================================================
+Objetivo: Definir estrategia de producto post-beta con metricas, backlog,
+V2, monetizacion, riesgos y plan de decision.
+
+Entregables (documentos en docs/product/):
+- 01-analisis-post-beta.md:
+  Fortalezas (offline-first, optimizador de cortes, 2 modos)
+  Debilidades (tiendas mock, templates limitados, sin fotos)
+  Fricciones esperadas y oportunidades
+- 02-metricas-post-beta.md:
+  Metricas de activacion, valor, retencion, IA y friccion
+  Decision framework (si A+B → hacer X)
+- 03-backlog-priorizado.md:
+  P0 (5 items): precios reales, sugerencias, diagrama 2D, cache IA, exportar lista
+  P1 (5 items): PDF, fotos, plantillas, presupuesto, notificaciones
+  P2 (6 items): auth, sync, herrajes, historial versiones, web, voz
+  P3 (5 items): OCR, planos CAD, catalogos, multi-idioma extra, IA voz
+- 04-propuesta-v2.md:
+  V2 "Del taller a la tienda": 7 features, 4-6 semanas
+  Que entra, que no, por que, complejidad tecnica
+- 05-monetizacion.md:
+  Freemium con creditos IA
+  Free: logica local ilimitada + 5 generaciones IA/mes
+  Pro (4.99 EUR/mes): IA ilimitada + PDF + precios reales
+- 06-evolucion-tecnica.md:
+  Hacer pronto (cache, logs, feature flags)
+  Hacer con traccion (auth, sync, precios reales, panel admin)
+  No tocar (microservicios, GraphQL, K8s, ML propio)
+- 07-riesgos-y-mitigaciones.md:
+  10 riesgos con probabilidad, impacto y mitigacion
+- 08-plan-decision-post-beta.md:
+  6 escenarios (A-F) con senales y acciones concretas
+  Cadencia de review: semana 1, 2, 4
+- 09-plantilla-review-semanal.md:
+  Template para review semanal de beta
+
+Archivos clave: docs/product/*.md (9 documentos)
+Dependencias: Fase 7 (beta operativa)
+Estado: HECHA
+
+================================================================================
+FASE 9 — DOCUMENTACION MAESTRA Y SISTEMA DE EJECUCION
+================================================================================
+Objetivo: Cerrar el proyecto a nivel documental con documentos maestros,
+criterios de aceptacion, checklists y backlog vivo.
+
+Entregables:
+- docs/PROJECT_MASTER.md:
+  Vision, arquitectura, stack, estructura completa del proyecto,
+  proximas acciones
+- docs/PHASE_STATUS.md:
+  9 fases con criterios de aceptacion detallados y checkboxes
+  Todas marcadas como HECHAS
+- docs/EXECUTION_CHECKLIST.md:
+  Checklist generico por fase (pre, implementacion, validacion, cierre)
+  Orden de ejecucion con dependencias
+  Cuando parar y validar
+- docs/BACKLOG_LIVE.md:
+  Backlog vivo separado del roadmap cerrado
+  Prioridad alta, media, baja
+  Seccion bugs conocidos y feedback de beta
+
+Archivos clave: docs/*.md (4 documentos)
+Dependencias: Todas las fases
+Estado: HECHA
+
+================================================================================
+RESUMEN FINAL
+================================================================================
+
+Total archivos de codigo y docs: ~85
+Total commits: 15
+Total pantallas: 13
+Total servicios app: 9
+Total repositorios storage: 5
+Total endpoints backend: 5 (health, diy-generate, pro-plan, feedback, analytics)
+Total tools IA: 3 (optimizeCuts, estimateMaterials, compareStoreOptions)
+Total hooks: 4 (useAsyncAction, useDIYWorkflow, useProWorkflow, useProjects)
+Total componentes: 7 (Card, Button, SectionTitle, EfficiencyGauge, LoadingState, ErrorState, SourceBadge)
+Total idiomas: 2 (ES, EN)
+Total templates DIY: 9
+Total documentos producto: 9
+Total documentos release: 3
+Total documentos maestros: 4
+
+Proyecto listo para:
+1. Configurar .env con OPENAI_API_KEY
+2. eas build --profile preview
+3. Distribuir beta
+4. Recoger metricas y feedback
+5. Decidir V2 segun plan de decision (Fase 8)
+
+FIN DEL MAPA MAESTRO
