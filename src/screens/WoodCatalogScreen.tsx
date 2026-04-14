@@ -1,0 +1,124 @@
+import React, { useState, useMemo } from 'react';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
+import { colors, spacing, radius, typography, shadows } from '../theme';
+import { WoodFilter, WoodUse, WoodHardness, WoodPrice } from '../models/wood';
+import { searchWood } from '../services/woodSearchService';
+import { WOOD_CATEGORIES } from '../data/woodData';
+
+type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCatalog'> };
+
+const USES: { key: WoodUse | ''; label: string }[] = [
+  { key: '', label: 'Todos' }, { key: 'interior', label: '🏠 Interior' }, { key: 'exterior', label: '☀️ Exterior' }, { key: 'both', label: '🔄 Ambos' },
+];
+const HARDNESS: { key: WoodHardness | ''; label: string }[] = [
+  { key: '', label: 'Todas' }, { key: 'soft', label: 'Blanda' }, { key: 'medium', label: 'Media' }, { key: 'hard', label: 'Dura' }, { key: 'very_hard', label: 'Muy dura' },
+];
+const PRICES: { key: WoodPrice | ''; label: string }[] = [
+  { key: '', label: 'Todos' }, { key: 'budget', label: '💰 Económico' }, { key: 'mid', label: '💰💰 Medio' }, { key: 'premium', label: '💰💰💰 Premium' },
+];
+
+const hardnessColors = { soft: colors.success, medium: colors.warning, hard: colors.primary, very_hard: colors.danger };
+const hardnessLabels = { soft: 'Blanda', medium: 'Media', hard: 'Dura', very_hard: 'Muy dura' };
+const useLabels = { interior: '🏠 Interior', exterior: '☀️ Exterior', both: '🔄 Int/Ext' };
+
+export default function WoodCatalogScreen({ navigation }: Props) {
+  const [query, setQuery] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [use, setUse] = useState<WoodUse | ''>('');
+  const [hardness, setHardness] = useState<WoodHardness | ''>('');
+  const [priceLevel, setPriceLevel] = useState<WoodPrice | ''>('');
+
+  const filter: WoodFilter = {
+    query: query || undefined,
+    categoryId: categoryId || undefined,
+    use: use || undefined,
+    hardness: hardness || undefined,
+    priceLevel: priceLevel || undefined,
+  };
+
+  const results = useMemo(() => searchWood(filter), [query, categoryId, use, hardness, priceLevel]);
+
+  const Chip = ({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) => (
+    <TouchableOpacity style={[styles.chip, active && styles.chipActive]} onPress={onPress}>
+      <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.container}>
+      <TextInput style={styles.search} placeholder="Buscar madera o tablero..." placeholderTextColor={colors.textMuted} value={query} onChangeText={setQuery} />
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+        <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
+        {WOOD_CATEGORIES.map(c => <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />)}
+      </ScrollView>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+        {USES.map(u => <Chip key={u.key} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as WoodUse)} />)}
+        <View style={styles.divider} />
+        {HARDNESS.map(h => <Chip key={h.key} label={h.label} active={hardness === h.key} onPress={() => setHardness(hardness === h.key ? '' : h.key as WoodHardness)} />)}
+        <View style={styles.divider} />
+        {PRICES.map(p => <Chip key={p.key} label={p.label} active={priceLevel === p.key} onPress={() => setPriceLevel(priceLevel === p.key ? '' : p.key as WoodPrice)} />)}
+      </ScrollView>
+
+      <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} resultado{results.length !== 1 ? 's' : ''}</Text>
+
+      <FlatList
+        data={results}
+        keyExtractor={item => item.id}
+        contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
+            onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(item.name + ' madera')}`)}
+          >
+            <View style={styles.cardHeader}>
+              <Text style={[typography.h3, { flex: 1 }]}>{item.name}</Text>
+              <View style={[styles.badge, { backgroundColor: hardnessColors[item.hardness] + '22' }]}>
+                <Text style={[typography.caption, { color: hardnessColors[item.hardness] }]}>{hardnessLabels[item.hardness]}</Text>
+              </View>
+            </View>
+
+            <Text style={[typography.bodySmall, { marginTop: spacing.sm }]}>{item.description}</Text>
+
+            <View style={styles.metaRow}>
+              <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{item.priceRange}</Text>
+              <Text style={typography.caption}>{useLabels[item.use]}</Text>
+            </View>
+
+            {item.commonSizes.length > 0 && (
+              <Text style={[typography.caption, { marginTop: spacing.xs }]}>Medidas: {item.commonSizes.join(', ')}</Text>
+            )}
+
+            <View style={styles.prosConsRow}>
+              <View style={{ flex: 1 }}>
+                {item.pros.slice(0, 2).map((p, i) => <Text key={i} style={[typography.caption, { color: colors.success }]}>✓ {p}</Text>)}
+              </View>
+              <View style={{ flex: 1 }}>
+                {item.cons.slice(0, 2).map((c, i) => <Text key={i} style={[typography.caption, { color: colors.danger }]}>✗ {c}</Text>)}
+              </View>
+            </View>
+
+            <Text style={[typography.bodySmall, { marginTop: spacing.sm, fontStyle: 'italic' }]}>Ideal para: {item.bestFor}</Text>
+            <Text style={[typography.caption, { color: colors.primary, marginTop: spacing.sm }]}>🛒 Buscar en Amazon →</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.bg },
+  search: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, margin: spacing.xl, marginBottom: spacing.sm },
+  chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.sm, maxHeight: 40 },
+  chip: { backgroundColor: colors.surface, borderRadius: radius.full, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, marginRight: spacing.sm, borderWidth: 1, borderColor: colors.border },
+  chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
+  divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
+  card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  badge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
+  metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.md },
+  prosConsRow: { flexDirection: 'row', marginTop: spacing.sm, gap: spacing.md },
+});

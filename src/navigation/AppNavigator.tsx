@@ -18,6 +18,8 @@ import SettingsScreen from '../screens/SettingsScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import ProjectDetailScreen from '../screens/ProjectDetailScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
+import ToolSearchScreen from '../screens/ToolSearchScreen';
+import WoodCatalogScreen from '../screens/WoodCatalogScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -27,6 +29,8 @@ export type RootStackParamList = {
   ProjectDetail: { projectId: string };
   Settings: undefined;
   Feedback: undefined;
+  ToolSearch: undefined;
+  WoodCatalog: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult };
@@ -67,6 +71,8 @@ export default function AppNavigator() {
       <Stack.Screen name="ProjectDetail" component={ProjectDetailScreen} options={{ title: 'Proyecto' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: '⚙️' }} />
       <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '💬 Feedback' }} />
+      <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: '🔧 Herramientas' }} />
+      <Stack.Screen name="WoodCatalog" component={WoodCatalogScreen} options={{ title: '🪵 Maderas' }} />
     </Stack.Navigator>
   );
 }

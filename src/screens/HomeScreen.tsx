@@ -77,6 +77,18 @@ export default function HomeScreen({ navigation }: Props) {
         <Text style={[typography.buttonSmall, { color: colors.textSecondary }]}>📂 {t('home.myProjects')}</Text>
       </TouchableOpacity>
 
+      {/* Catalogs */}
+      <View style={styles.catalogRow}>
+        <TouchableOpacity style={[styles.catalogBtn, shadows.sm]} onPress={() => navigation.navigate('ToolSearch')} activeOpacity={0.8}>
+          <Text style={{ fontSize: 28 }}>🔧</Text>
+          <Text style={[typography.buttonSmall, { color: colors.text, marginTop: spacing.sm }]}>Herramientas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.catalogBtn, shadows.sm]} onPress={() => navigation.navigate('WoodCatalog')} activeOpacity={0.8}>
+          <Text style={{ fontSize: 28 }}>🪵</Text>
+          <Text style={[typography.buttonSmall, { color: colors.text, marginTop: spacing.sm }]}>Maderas</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Features grid */}
       <Text style={[typography.label, { marginTop: spacing.xxl, marginBottom: spacing.lg }]}>{t('home.whatCanYouDo')}</Text>
       <View style={styles.grid}>
@@ -191,5 +203,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   featureIcon: { fontSize: 26, marginBottom: spacing.sm },
+  catalogRow: { flexDirection: 'row', gap: spacing.md, marginBottom: spacing.lg },
+  catalogBtn: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.xl, alignItems: 'center' },
   footer: { alignItems: 'center', marginTop: spacing.xxxl },
 });
