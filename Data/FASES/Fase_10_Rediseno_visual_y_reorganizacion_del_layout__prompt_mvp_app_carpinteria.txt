@@ -1,0 +1,377 @@
+FASE 10 — REDISEÑO VISUAL Y REORGANIZACIÓN DEL LAYOUT (DIY / CARPINTERÍA / RÚSTICO ELEGANTE)
+
+Quiero que actúes como un diseñador de producto senior y desarrollador senior de React Native con TypeScript.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+
+FASE 4A — IA real
+- backend con OpenAI
+- DIY con IA estructurada
+- PRO con IA + tools
+
+FASE 5 — Integración end-to-end
+- flujos DIY y PRO conectados
+- loading, error, retry
+- guardado y reapertura
+
+FASE 6 — Cierre de MVP y pulido real
+- historial de proyectos
+- edición
+- duplicado y borrado
+- UX mejorada
+
+FASE 7 — Beta y operación real
+- entornos
+- observabilidad
+- analytics
+- feedback
+
+FASE 8 — Roadmap post-beta
+- backlog priorizado
+- V2
+- monetización
+- evolución técnica
+
+FASE 9 — Documentación maestra y sistema de ejecución
+- criterios de cierre
+- checklist
+- mapa de fases
+
+OBJETIVO DE ESTA FASE
+Quiero reorganizar el layout y rediseñar la app para que tenga una identidad visual clara, bonita y coherente con:
+- DIY
+- carpintería
+- taller
+- bricolaje
+- materiales
+- herramientas
+- proyectos hechos a mano
+
+Pero IMPORTANTÍSIMO:
+No quiero una app hortera con textura de madera falsa por todas partes.
+Quiero una estética “modern rustic workshop”:
+- moderna en estructura
+- cálida en color
+- artesanal en carácter
+- limpia en jerarquía
+- profesional y usable
+
+DECISIONES YA TOMADAS
+- No quiero pagar por una template premium
+- Quiero usar solo recursos gratuitos o open source
+- No quiero rehacer la arquitectura
+- No quiero cambiar Expo
+- No quiero romper lo ya implementado
+- Quiero una fase centrada en diseño visual, layout y componentes
+- Quiero que el resultado sea bonito de verdad, no solo “más marrón”
+
+DIRECCIÓN VISUAL QUE QUIERO
+Quiero una dirección visual tipo:
+- modern rustic workshop
+- DIY elegante
+- carpintería contemporánea
+- mezcla de app moderna + alma de taller
+
+REFERENCIAS DE ESTILO
+Toma como dirección conceptual:
+- cards limpias
+- colores cálidos
+- tonos arena, crema, nogal, cuero, verde bosque o verde salvia como acento
+- iconografía de herramientas y medidas
+- jerarquía visual clara
+- paneles técnicos limpios en modo PRO
+- tono más inspiracional en modo DIY
+- textura o guiño material solo en detalles, nunca invadiendo toda la app
+
+NO QUIERO
+- fondos de madera por todas partes
+- skeumorphism cutre
+- app recargada
+- exceso de marrones oscuros
+- tipografías raras
+- estilo de ferretería vieja o catálogo noventero
+
+QUIERO QUE TOMES ESTAS DECISIONES SIN AMBIGÜEDAD
+
+1. Sistema de UI
+Elige una solución concreta y gratuita para implementar el rediseño.
+
+Puedes usar recursos open source, pero no quiero una mezcla caótica.
+Elige un camino y sigue.
+
+Mi preferencia es que elijas una opción realista para Expo y React Native, por ejemplo:
+- NativeWind
+o
+- Tamagui OSS
+o
+- StyleSheet bien estructurado si crees que es mejor
+
+Pero no me des tres opciones.
+Elige una.
+
+2. Sistema visual
+Quiero que definas:
+- paleta de color principal
+- colores por rol (background, surface, primary, accent, border, muted, warning, success, error)
+- tipografías o jerarquía tipográfica
+- spacing
+- radios
+- sombras
+- estilo de botones
+- estilo de cards
+- estilo de inputs
+- estilo de estados vacíos
+- estilo de loaders y errores
+
+3. Layout general
+Quiero reorganizar el layout de la app para que:
+- la Home tenga más presencia
+- DIY y PRO se entiendan visualmente de un vistazo
+- Projects / historial tenga sentido visual
+- resultados DIY se vean inspiracionales pero ordenados
+- resultados PRO se vean técnicos pero bonitos
+- navegación y jerarquía se sientan coherentes
+
+4. Iconografía e identidad
+Quiero iconos y elementos visuales alineados con:
+- herramientas
+- medidas
+- materiales
+- montaje
+- taller
+
+Puedes usar una librería gratuita como Lucide si lo ves adecuado.
+Elige una y sigue.
+
+5. Recursos gratuitos únicamente
+No quiero nada que dependa de una template de pago.
+No quiero componentes premium.
+No quiero licencias raras.
+Todo debe poder hacerse con stack gratuito/open source.
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. Theme y design tokens
+Quiero un sistema de diseño mínimo pero real:
+- colores
+- tipografía
+- espacios
+- radios
+- sombras
+- tamaños de icono
+- variantes de botón
+- variantes de card
+
+2. Home rediseñada
+Quiero una Home más potente visualmente.
+
+Debe incluir:
+- hero o encabezado con personalidad
+- acceso claro a DIY
+- acceso claro a PRO
+- acceso a proyectos recientes
+- sensación de producto cuidado
+- un layout más bonito y claro que el actual
+
+3. DIY rediseñado
+Quiero que el flujo DIY se vea:
+- cercano
+- creativo
+- cálido
+- muy fácil de usar
+
+Necesito mejorar:
+- input principal
+- pantalla de resultado
+- listas de pasos
+- herramientas
+- materiales
+- acciones de guardado o relanzado
+
+4. PRO rediseñado
+Quiero que el flujo PRO se vea:
+- más técnico
+- más preciso
+- más limpio
+- más profesional
+
+Necesito mejorar:
+- inputs de piezas y parámetros
+- resumen de optimización
+- materiales
+- recomendaciones
+- avisos y warnings
+- lectura de resultados
+
+5. Historial / proyectos rediseñado
+Quiero que la pantalla de proyectos tenga:
+- cards elegantes
+- sensación de ficha de taller
+- buena jerarquía visual
+- acciones claras
+- estado vacío bonito
+
+6. Componentes reutilizables
+Si hace falta, crea o refactoriza componentes como:
+- AppHeader
+- HeroCard
+- SectionCard
+- ModeCard
+- ProjectCard
+- EmptyState
+- ResultSection
+- MetricCard
+- WarningChip
+- MaterialRow
+- ToolRow
+- StepRow
+- PrimaryButton / SecondaryButton
+
+No quiero crear componentes por crear.
+Solo los que den orden real.
+
+7. Consistencia visual
+Quiero que unifiques:
+- paddings
+- márgenes
+- títulos
+- subtítulos
+- iconos
+- botones
+- chips
+- estados de carga
+- mensajes de error
+- estados vacíos
+
+8. Navegación visual
+Si hace falta ajustar headers, tabs o títulos para que todo quede más coherente, hazlo.
+Pero sin romper la navegación existente.
+
+9. Modo oscuro solo si encaja
+No quiero que te líes con dark mode salvo que quede muy bien encaminado.
+Si no compensa, déjalo preparado pero no lo conviertas en el foco.
+
+ESTRUCTURA ESPERADA
+Puedes proponer la estructura exacta, pero espero algo como:
+
+src/
+  theme/
+    colors.ts
+    spacing.ts
+    typography.ts
+    shadows.ts
+    radius.ts
+    index.ts
+  components/
+    AppHeader.tsx
+    HeroCard.tsx
+    ModeCard.tsx
+    ProjectCard.tsx
+    EmptyState.tsx
+    ResultSection.tsx
+    MetricCard.tsx
+    WarningChip.tsx
+    PrimaryButton.tsx
+    SecondaryButton.tsx
+    [los mínimos necesarios]
+  screens/
+    HomeScreen.tsx
+    DIYInputScreen.tsx
+    DIYResultScreen.tsx
+    ProInputScreen.tsx
+    ProResultsScreen.tsx
+    ProjectsScreen.tsx
+  navigation/
+    [ajustes si hacen falta]
+  utils/
+    [helpers visuales si hacen falta]
+
+Si prefieres otra estructura coherente, vale, pero no la compliques.
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Dirección visual elegida
+2. Decisión técnica del sistema de UI
+3. Paleta y design tokens
+4. Archivos a crear o modificar
+5. Theme base
+6. Componentes reutilizables
+7. HomeScreen rediseñada
+8. DIY screens rediseñadas
+9. PRO screens rediseñadas
+10. ProjectsScreen rediseñada
+11. Ajustes mínimos de navegación si hacen falta
+12. Qué queda visualmente cerrado al terminar esta fase
+
+REQUISITOS DE CALIDAD
+- TypeScript real
+- código completo por archivo
+- sin pseudocódigo
+- sin teoría larga
+- sin rehacer arquitectura
+- sin meter dependencias premium
+- sin inventar assets de pago
+- diseño bonito pero usable
+- estética rústica elegante, no cliché barato
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi diseñador de producto técnico.
+
+Reglas:
+- no me des teoría innecesaria
+- quiero código útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos caminos, elige uno
+- mantén coherencia con todas las fases anteriores
+- no me rompas lo ya construido
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Dirección visual elegida
+2. Sistema de UI elegido
+3. Design tokens / theme
+4. Archivos a crear o modificar
+5. Componentes reutilizables
+6. Home rediseñada
+7. DIY rediseñado
+8. PRO rediseñado
+9. Projects rediseñado
+10. Ajustes de navegación
+11. Qué queda visualmente cerrado
+
+IMPORTANTE FINAL
+Quiero que esta Fase 10 deje la app bonita de verdad:
+- con identidad DIY/carpintería
+- con layout más cuidado
+- con sensación de producto real
+- sin depender de templates de pago
+- sin caer en estética cutre de madera falsa
+
+No vuelvas atrás a discutir arquitectura.
+No cambies Expo.
+No metas librerías premium.
+No rehagas la lógica del producto.
+Construye esta fase encima de todo lo ya hecho.

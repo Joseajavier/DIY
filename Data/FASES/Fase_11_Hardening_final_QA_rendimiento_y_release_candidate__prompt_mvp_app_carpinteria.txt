@@ -1,0 +1,298 @@
+FASE 11 — HARDENING FINAL, QA, RENDIMIENTO Y RELEASE CANDIDATE
+
+Quiero que actúes como un arquitecto y desarrollador senior de React Native, backend y producto con mentalidad de release final.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+
+FASE 4A — IA real
+- backend con OpenAI
+- DIY con IA estructurada
+- PRO con IA + tools
+
+FASE 5 — Integración end-to-end
+- flujos DIY y PRO conectados
+- loading, error, retry
+- guardado y reapertura
+
+FASE 6 — Cierre de MVP y pulido real
+- historial de proyectos
+- edición
+- duplicado y borrado
+- UX mejorada
+
+FASE 7 — Beta y operación real
+- entornos
+- observabilidad
+- analytics
+- feedback
+- builds beta
+
+FASE 8 — Roadmap post-beta
+- backlog priorizado
+- V2
+- monetización
+- evolución técnica
+
+FASE 9 — Documentación maestra y sistema de ejecución
+- criterios de cierre
+- checklist
+- mapa de fases
+
+FASE 10 — Rediseño visual y reorganización del layout
+- identidad visual DIY / carpintería
+- layout más cuidado
+- componentes reutilizables visuales
+- app más bonita y coherente
+
+OBJETIVO DE ESTA FASE
+Quiero dejar el producto listo como release candidate serio.
+
+No quiero meter nuevas features grandes.
+No quiero rehacer arquitectura.
+No quiero cambiar el producto de dirección.
+Quiero endurecer lo ya construido y cerrar calidad real de uso.
+
+RESULTADO QUE QUIERO
+Al terminar esta fase, quiero tener:
+- app robusta y estable
+- edge cases importantes cubiertos
+- mejor rendimiento
+- accesibilidad mínima seria
+- errores de red, IA y storage bien resueltos
+- flujos críticos probados
+- base para release candidate real
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. QA funcional de flujos críticos
+Quiero revisar y reforzar como mínimo:
+- abrir app
+- elegir DIY o PRO
+- crear proyecto DIY
+- crear proyecto PRO
+- guardar proyecto
+- reabrir proyecto
+- editar proyecto
+- relanzar IA
+- fallback local
+- historial
+- borrado / duplicado
+- errores de red
+- errores de backend
+- errores de storage
+
+Quiero que identifiques huecos reales y los cierres con criterio.
+
+2. Manejo de edge cases
+Quiero cubrir casos como:
+- inputs vacíos
+- inputs absurdos
+- piezas con medidas inválidas
+- tiempos de respuesta largos
+- timeouts
+- backend caído
+- respuesta IA incompleta
+- storage corrupto o lectura fallida
+- duplicados
+- navegación rara entre pantallas
+- doble submit
+- volver atrás durante operaciones críticas
+
+No quiero teoría.
+Quiero solución práctica en app y backend cuando haga falta.
+
+3. Rendimiento
+Quiero revisar y mejorar:
+- renders innecesarios
+- listas de proyectos
+- listas de materiales / pasos / piezas
+- uso de hooks
+- memoización donde tenga sentido
+- cargas iniciales
+- navegación entre pantallas
+- evitar trabajo repetido
+
+No quiero optimización obsesiva.
+Quiero mejoras con impacto real y mantenibles.
+
+4. Accesibilidad mínima seria
+Quiero dejar cubierto como mínimo:
+- tamaños y contraste razonables
+- labels o accessibilityLabel en botones clave
+- jerarquía visual legible
+- estados de error comprensibles
+- targets táctiles razonables
+- navegación usable sin depender solo del color
+- textos suficientemente claros
+
+No quiero una auditoría infinita.
+Quiero un nivel serio para no dejar esto descuidado.
+
+5. Hardening visual y de UX
+Después del rediseño, quiero revisar:
+- consistency de espaciados
+- estados de carga
+- estados vacíos
+- feedback de éxito
+- feedback de error
+- diálogos de confirmación
+- textos visibles al usuario
+- casos donde la UI se rompe o queda rara
+
+6. Hardening de backend y llamadas IA
+Quiero reforzar:
+- timeouts razonables
+- retries controlados donde tenga sentido
+- errores normalizados
+- validación de respuesta
+- logs útiles
+- evitar que una mala respuesta de IA rompa la app
+- límites básicos de coste o uso si procede
+
+7. Test plan real
+No necesito una suite gigantesca si no compensa, pero sí quiero:
+- estrategia de tests mínima útil
+- test plan manual claro
+- si ves útil, tests unitarios en piezas críticas
+- si ves útil, tests de integración en partes clave
+
+Quiero que elijas una estrategia razonable y pragmática.
+
+8. Release candidate checklist
+Quiero una checklist final tipo RC con:
+- flujos críticos validados
+- errores graves resueltos
+- rendimiento aceptable
+- crash reporting activo
+- analytics activo
+- build beta final probada
+- textos revisados
+- accesibilidad mínima revisada
+- backend estable
+- fallback razonable funcionando
+
+9. Decisiones técnicas claras
+Quiero que tomes decisiones sin ambigüedad sobre:
+- qué optimizar y qué no tocar
+- qué edge cases cubrir ya y cuáles no merecen la pena ahora
+- cuánto testing meter en esta fase
+- qué parte del backend endurecer primero
+- qué significa “listo para RC”
+
+No me des veinte opciones.
+Elige una solución razonable y sigue.
+
+ESTRUCTURA ESPERADA
+Puedes proponer la estructura exacta, pero espero algo como:
+
+src/
+  hooks/
+    [ajustes de rendimiento si hacen falta]
+  components/
+    [refuerzos mínimos]
+  screens/
+    [ajustes de UX y edge cases]
+  services/
+    api/
+    workflows/
+    [normalización de errores si hace falta]
+  utils/
+    errors.ts
+    validation.ts
+    performance.ts
+    accessibility.ts
+
+backend/
+  src/
+    middleware/
+    services/
+    utils/
+    [ajustes mínimos de robustez]
+
+docs/
+  qa/
+    manual-test-plan.md
+    release-candidate-checklist.md
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Estrategia de hardening elegida
+2. Áreas críticas a reforzar
+3. Archivos a crear o modificar
+4. Validaciones y manejo de edge cases
+5. Mejoras de rendimiento
+6. Mejoras de accesibilidad
+7. Mejoras de backend y llamadas IA
+8. Test plan y estrategia de testing
+9. Release candidate checklist
+10. Qué queda realmente listo al cerrar esta fase
+
+REQUISITOS DE CALIDAD
+- TypeScript real donde aplique
+- código completo por archivo
+- sin pseudocódigo
+- sin teoría larga
+- sin meter features nuevas grandes
+- sin rehacer arquitectura
+- enfoque práctico
+- prioridad en estabilidad real
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi responsable técnico de cierre final.
+
+Reglas:
+- no me des teoría innecesaria
+- quiero código útil y checklist útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos caminos, elige uno
+- mantén coherencia con todas las fases anteriores
+- no me rompas lo ya construido
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Estrategia elegida
+2. Áreas críticas a reforzar
+3. Archivos a crear o modificar
+4. Edge cases y validaciones
+5. Rendimiento
+6. Accesibilidad
+7. Backend / IA hardening
+8. Test plan
+9. Release candidate checklist
+10. Qué queda listo al terminar esta fase
+
+IMPORTANTE FINAL
+Quiero que esta Fase 11 deje el producto realmente fuerte:
+- más estable
+- más usable
+- más robusto
+- mejor preparado para release candidate
+
+No metas features nuevas grandes.
+No rehagas arquitectura.
+No cambies Expo.
+No rompas el diseño ya trabajado.
+Construye esta fase encima de todo lo ya hecho.

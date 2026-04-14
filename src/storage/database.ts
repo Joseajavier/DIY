@@ -7,12 +7,8 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (db) return db;
 
   db = await SQLite.openDatabaseAsync('diy_app.db');
-
-  // Enable WAL mode for better performance
   await db.execAsync('PRAGMA journal_mode = WAL;');
-  // Enable foreign keys
   await db.execAsync('PRAGMA foreign_keys = ON;');
-
   await runMigrations(db);
 
   return db;
