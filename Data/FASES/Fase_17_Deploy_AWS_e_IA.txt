@@ -1,0 +1,73 @@
+FASE 17 — DEPLOY EN AWS E IA
+
+CONTEXTO
+- El propietario tiene cuenta AWS de empresa
+- Puede crear VMs (EC2) con los specs que quiera
+- Tiene infraestructura real disponible
+
+DECISIÓN: OPCIÓN A (t3.small + OpenAI)
+- VM: t3.small (2GB RAM, 2 vCPU) → ~15€/mes
+- IA: OpenAI gpt-4o-mini → ~50-100€/mes según uso
+- Total estimado: 65-115€/mes
+- Más barato y simple que IA local para MVP
+
+ALTERNATIVA FUTURA: IA LOCAL
+Si escala a +10.000 usuarios o necesita privacidad:
+- VM: t3.xlarge (16GB RAM) → ~120€/mes
+- Ollama + Llama 3.1 8B o Mistral 7B
+- Coste IA: 0€
+- Solo compensa con mucho volumen
+
+QUÉ MONTAR EN LA VM
+1. Docker + Docker Compose
+2. Node.js backend (Express)
+3. Nginx como reverse proxy + SSL (Let's Encrypt)
+4. Base de datos catálogo (JSON o SQLite)
+5. Archivos de catálogo editables
+6. Variables de entorno (.env)
+7. PM2 o similar para mantener el proceso
+
+DEPLOY FLOW
+1. Crear EC2 t3.small con Ubuntu 22.04
+2. Security group: puertos 80, 443, 22
+3. Elastic IP (IP fija gratuita)
+4. Instalar Docker
+5. Clonar repo backend
+6. Configurar .env con OPENAI_API_KEY
+7. docker-compose up -d
+8. Configurar Nginx + Certbot SSL
+9. Apuntar dominio (si tiene) al Elastic IP
+10. Verificar endpoints funcionan
+
+DOCKER COMPOSE
+backend:
+  - Node.js 20 Alpine
+  - Puerto 3001
+  - .env montado
+  - data/ montado (catálogos editables)
+  - Restart always
+
+nginx:
+  - Puerto 80/443
+  - SSL con Certbot
+  - Proxy pass a backend:3001
+
+MONITORIZACIÓN
+- CloudWatch básico (CPU, RAM, disco) → incluido gratis
+- Logs del backend en /var/log o CloudWatch Logs
+- Alertas si CPU > 80% o disco > 90%
+
+SEGURIDAD
+- SSH solo con key pair (no password)
+- Security group restrictivo
+- .env no en el repo
+- OPENAI_API_KEY solo en la VM
+- Nginx con headers de seguridad
+- Rate limiting en Express (ya implementado)
+
+NO IMPLEMENTAR HASTA
+- Tener dominio decidido (o usar IP directa)
+- Confirmar que quiere Opción A
+- Tener la app lista para beta real (fases anteriores cerradas)
+
+TIEMPO ESTIMADO: 2-3 horas de setup
