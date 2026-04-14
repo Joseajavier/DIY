@@ -1,0 +1,261 @@
+FASE 13 — BUSCADOR DE HERRAMIENTAS CON FILTROS Y CATALOGO DE MARCAS
+
+OBJETIVO
+Crear un buscador de herramientas dentro de la app que permita al usuario
+encontrar la herramienta ideal segun sus necesidades, presupuesto y nivel
+de uso. Con catalogo de marcas reales organizado por gamas.
+
+FLUJO DEL USUARIO
+1. Pulsa "Buscar herramientas" (nuevo boton en Home o tab)
+2. Selecciona TIPO de herramienta (sierra circular, taladro, lijadora, etc.)
+3. Filtra por:
+   - Gama: Basica / Media / Profesional
+   - Uso: Casa / Taller / Obra
+   - Presupuesto: <50€ / 50-100€ / 100-200€ / 200-500€ / >500€
+   - Alimentacion: Bateria / Cable / Manual
+4. Ve un listado de herramientas reales organizadas por marca y gama
+5. Cada herramienta muestra: marca, modelo, precio orientativo, para que sirve
+6. Opcionalmente enlace de compra (afiliado Amazon cuando este disponible)
+
+CATALOGO DE MARCAS POR GAMA
+
+GAMA BASICA (hogar, uso ocasional, <100€)
+- Parkside (Lidl)
+- Einhell
+- Vevor
+- Tacklife
+- Hychika
+- Black+Decker
+
+GAMA MEDIA (bricolaje frecuente, taller hobby, 80-250€)
+- Bosch (linea verde / Home)
+- Makita (modelos entry)
+- DeWalt (modelos entry)
+- Metabo
+- Ryobi
+- Worx
+
+GAMA PROFESIONAL (uso diario, obra, taller profesional, 150-600€+)
+- Bosch Professional (linea azul)
+- Makita (linea profesional)
+- DeWalt (linea XR/FlexVolt)
+- Milwaukee (M18/M12)
+- Hilti
+- Festool
+- Hikoki (antigua Hitachi)
+
+TIPOS DE HERRAMIENTAS (catalogo base)
+
+CORTE
+- Sierra circular
+- Sierra de calar
+- Sierra ingletadora
+- Sierra de mesa
+- Sierra de sable
+- Multiherramienta oscilante
+
+TALADRADO Y ATORNILLADO
+- Taladro atornillador
+- Taladro percutor
+- Atornillador de impacto
+- Taladro de columna
+
+LIJADO Y FRESADO
+- Lijadora orbital
+- Lijadora de banda
+- Lijadora de detalle
+- Fresadora / Tupí
+
+MEDICION
+- Metro laser
+- Nivel laser
+- Nivel de burbuja
+- Escuadra digital
+- Calibre / pie de rey
+
+SUJECION
+- Sargentos
+- Tornillo de banco
+- Pinzas de apriete
+
+ACABADO
+- Pistola de pintura
+- Compresor
+- Grapadora electrica
+- Pistola de calor
+
+MODELO DE DATOS
+
+ToolCategory
+  - id: string
+  - name: string (ej: "Corte")
+  - icon: string
+
+ToolType
+  - id: string
+  - categoryId: string
+  - name: string (ej: "Sierra circular")
+  - description: string
+  - icon: string
+
+ToolBrand
+  - id: string
+  - name: string (ej: "DeWalt")
+  - country: string (ej: "USA")
+  - tiers: ('basic' | 'mid' | 'pro')[]
+  - logo?: string
+
+ToolProduct
+  - id: string
+  - typeId: string
+  - brandId: string
+  - model: string (ej: "DWE575K")
+  - tier: 'basic' | 'mid' | 'pro'
+  - use: ('home' | 'workshop' | 'construction')[]
+  - power: 'battery' | 'corded' | 'manual'
+  - priceRange: { min: number, max: number }
+  - description: string
+  - features: string[]
+  - bestFor: string (ej: "Cortes rectos en tableros de hasta 65mm")
+  - amazonSearchQuery?: string (para buscar luego en API)
+
+ToolFilter
+  - type?: string
+  - tier?: 'basic' | 'mid' | 'pro'
+  - use?: 'home' | 'workshop' | 'construction'
+  - priceMax?: number
+  - power?: 'battery' | 'corded' | 'manual'
+
+DATOS MOCK INICIALES (ejemplos para sierra circular)
+
+Sierra circular — Gama basica:
+  Parkside PHKS 1350 | 35-50€ | Casa | Cable | 1350W
+    "Sierra potente para su precio. Ideal para cortes basicos en tableros"
+  Einhell TC-CS 1400 | 45-60€ | Casa | Cable | 1400W
+    "Buena relacion calidad-precio para bricolaje ocasional"
+  Vevor 185mm | 30-45€ | Casa | Cable | 1200W
+    "La opcion mas economica. Aceptable para cortes puntuales"
+
+Sierra circular — Gama media:
+  Bosch PKS 66 AF | 120-150€ | Casa/Taller | Cable | 1600W
+    "Linea verde Bosch. Guia integrada, buen acabado de corte"
+  Makita HS7611 | 130-160€ | Taller | Cable | 1600W
+    "Robusta y fiable. La favorita de muchos carpinteros hobby"
+  DeWalt DWE560 | 140-170€ | Taller | Cable | 1350W
+    "Compacta y precisa. Buena extraccion de polvo"
+
+Sierra circular — Gama profesional:
+  Bosch GKS 190 Professional | 160-200€ | Taller/Obra | Cable | 1400W
+    "Linea azul. Estandar de la industria, fiable y precisa"
+  Makita DHS680Z | 200-250€ | Taller/Obra | Bateria 18V | Sin bateria
+    "Bateria LXT. Libertad de movimiento sin perder potencia"
+  DeWalt DCS570N | 220-280€ | Taller/Obra | Bateria 18V | Sin bateria
+    "Sistema XR. Corte impecable, motor brushless"
+  Milwaukee M18 CCS55 | 250-320€ | Obra | Bateria 18V | Sin bateria
+    "Potencia brutal. Para profesionales exigentes"
+  Festool TS 55 | 500-600€ | Taller pro | Cable | 1200W
+    "La referencia absoluta. Corte perfecto con carril guia"
+
+PANTALLAS NUEVAS
+
+ToolSearchScreen (pantalla principal del buscador)
+  - Barra de busqueda por texto
+  - Categorias como chips horizontales (Corte, Taladro, Lijado, etc.)
+  - Filtros desplegables: Gama, Uso, Precio, Alimentacion
+  - Lista de resultados con ToolProductCard
+
+ToolDetailScreen (detalle de herramienta)
+  - Marca + modelo
+  - Gama (badge color)
+  - Rango de precio
+  - Para que sirve
+  - Caracteristicas
+  - Ideal para: texto
+  - Boton "Buscar en Amazon" (abre busqueda o enlace afiliado)
+  - Boton "Comparar" (futuro)
+
+COMPONENTES NUEVOS
+
+ToolProductCard
+  - Icono de marca o tipo
+  - Nombre: "DeWalt DCS570N"
+  - Badge gama: Basica (gris) / Media (azul) / Pro (dorado)
+  - Precio: "220-280€"
+  - Uso: iconos (casa/taller/obra)
+  - Alimentacion: icono bateria/cable
+  - Descripcion corta 1 linea
+
+ToolFilterBar
+  - Chips de filtro horizontal scrollable
+  - Gama: Todas / Basica / Media / Pro
+  - Uso: Todos / Casa / Taller / Obra
+  - Precio: Todos / <50€ / 50-100€ / 100-200€ / 200-500€ / >500€
+  - Alimentacion: Todas / Bateria / Cable
+
+CategoryChips
+  - Scroll horizontal con iconos de categoria
+  - Corte 🪚 / Taladro 🔩 / Lijado ✨ / Medicion 📏 / Sujecion 🔧 / Acabado 🎨
+
+ESTRUCTURA DE ARCHIVOS
+
+src/
+  data/
+    toolCategories.ts        ← categorias con iconos
+    toolTypes.ts             ← tipos de herramienta
+    toolBrands.ts            ← marcas con gamas
+    toolProducts.ts          ← catalogo de productos (mock inicial)
+  screens/
+    ToolSearchScreen.tsx     ← buscador con filtros
+    ToolDetailScreen.tsx     ← detalle de herramienta
+  components/
+    ToolProductCard.tsx      ← tarjeta de producto
+    ToolFilterBar.tsx        ← barra de filtros
+    CategoryChips.tsx        ← chips de categoria
+  services/
+    toolSearchService.ts     ← filtrado y busqueda local
+  models/
+    tools.ts                 ← tipos ToolCategory, ToolType, ToolBrand, ToolProduct, ToolFilter
+
+NAVEGACION
+- Nuevo boton en HomeScreen: "🔧 Buscar herramientas"
+- Ruta: ToolSearch → ToolDetail
+- Añadir a AppNavigator
+
+INTEGRACION CON FASE 12 (AFILIADOS)
+Cuando la Fase 12 este implementada:
+- El boton "Buscar en Amazon" en ToolDetailScreen hara busqueda real en PA-API
+- Usara amazonSearchQuery del producto como query
+- Mostrara precio real + enlace de afiliado
+- Sin Fase 12: abre busqueda generica en amazon.es en el navegador
+
+DATOS INICIALES
+Empezar con datos mock para:
+- 6 categorias
+- 20+ tipos de herramienta
+- 15+ marcas
+- 50-100 productos con modelo, precio orientativo, descripcion
+- Los datos son estaticos en la app (no necesitan backend)
+
+METRICAS
+- tool_search_started
+- tool_filter_applied (que filtro, que valor)
+- tool_detail_viewed (que herramienta)
+- tool_amazon_clicked (que herramienta)
+
+ORDEN DE IMPLEMENTACION
+1. Crear modelos en models/tools.ts
+2. Crear datos mock en src/data/ (categorias, tipos, marcas, productos)
+3. Crear toolSearchService.ts (filtrado local)
+4. Crear componentes (ToolProductCard, ToolFilterBar, CategoryChips)
+5. Crear ToolSearchScreen
+6. Crear ToolDetailScreen
+7. Añadir navegacion
+8. Añadir boton en HomeScreen
+9. Testear filtros y busqueda
+10. Conectar con Fase 12 cuando este disponible
+
+IMPORTANTE
+- Los datos de productos son MOCK con precios orientativos reales
+- No depende del backend ni de API externa
+- Se puede implementar ahora mismo
+- Cuando la Fase 12 este lista, se enriquece con datos reales de Amazon
