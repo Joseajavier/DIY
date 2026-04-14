@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +14,13 @@ type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'Projec
 export default function ProjectsScreen({ navigation }: Props) {
   const { t } = useTranslation();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [search, setSearch] = useState('');
 
   useFocusEffect(useCallback(() => { getProjects().then(setProjects); }, []));
+
+  const filtered = search.trim()
+    ? projects.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+    : projects;
 
   const handleDelete = (id: string, name: string) => {
     Alert.alert(t('projects.delete'), t('projects.deleteConfirm', { name }), [
@@ -46,7 +51,16 @@ export default function ProjectsScreen({ navigation }: Props) {
     <FlatList
       style={styles.container}
       contentContainerStyle={styles.content}
-      data={projects}
+      ListHeaderComponent={
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar proyecto..."
+          placeholderTextColor={colors.textMuted}
+          value={search}
+          onChangeText={setSearch}
+        />
+      }
+      data={filtered}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('ProjectDetail', { projectId: item.id })} activeOpacity={0.8}>
@@ -76,6 +90,7 @@ export default function ProjectsScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 40 },
+  searchInput: { backgroundColor: colors.card, borderRadius: 10, padding: 14, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, marginBottom: 16 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   info: { flex: 1 },
   name: { fontSize: 16, fontWeight: '600', color: colors.text, marginBottom: 6 },
