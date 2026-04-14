@@ -1,0 +1,298 @@
+FASE 6 — CIERRE DE MVP Y PULIDO REAL
+
+Quiero que actúes como un arquitecto y desarrollador senior de React Native con TypeScript.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local útil ya implementada o diseñada
+
+FASE 4A — IA real
+- backend con OpenAI
+- endpoint DIY con salida estructurada
+- endpoint PRO con IA + tools
+- cliente API mínimo para Expo
+- integración mínima ya planteada
+
+FASE 5 — Integración end-to-end en la app
+- flujo DIY completo
+- flujo PRO completo
+- loading, error, retry
+- persistencia útil
+- reapertura de proyectos
+- integración real UI + backend + storage
+
+OBJETIVO DE ESTA FASE
+Quiero cerrar el MVP y pulirlo para que tenga sensación de producto real y no de prototipo.
+
+En esta fase no quiero rehacer arquitectura.
+No quiero cambiar Expo.
+No quiero cambiar backend ni storage salvo ajustes pequeños y justificados.
+Quiero mejorar el producto, la edición, la gestión de proyectos y la experiencia de uso.
+
+RESULTADO QUE QUIERO
+Al terminar esta fase, la app debe permitir:
+- ver proyectos guardados
+- abrirlos de nuevo
+- renombrarlos
+- duplicarlos si tiene sentido
+- borrarlos con confirmación
+- editar datos clave
+- recalcular resultados
+- relanzar IA cuando proceda
+- recordar preferencias y último contexto
+- mostrar estados vacíos y errores buenos
+- tener sensación de app presentable
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. Pantalla de proyectos / historial
+Quiero una pantalla real para gestionar proyectos guardados.
+
+Debe permitir:
+- listar proyectos
+- mostrar nombre, modo, fecha y estado resumido
+- abrir un proyecto
+- renombrarlo
+- duplicarlo si tiene sentido
+- borrarlo con confirmación
+- ordenar por fecha reciente
+- mostrar estado vacío si no hay nada
+
+Puede llamarse:
+- ProjectsScreen
+o
+- ProjectHistoryScreen
+
+Elige una y sigue.
+
+2. Reapertura y continuidad
+Quiero que el usuario pueda:
+- reabrir último proyecto
+- continuar donde lo dejó
+- volver a resultados guardados
+- no sentir que pierde el trabajo entre sesiones
+
+Decide claramente:
+- qué se guarda como “último proyecto”
+- cuándo se actualiza
+- cómo se reabre al entrar en la app o al volver al modo DIY/PRO
+
+3. Edición de proyectos
+Quiero que el usuario pueda editar:
+- nombre del proyecto
+- descripción
+- piezas en modo PRO
+- prompt o idea base en modo DIY si aplica
+
+Y después:
+- recalcular materiales si hace falta
+- relanzar IA si procede
+- actualizar resultados persistidos
+
+No quiero una edición caótica.
+Quiero una estrategia clara.
+
+4. Acciones de proyecto
+Quiero que implementes acciones coherentes como:
+- abrir
+- editar
+- duplicar
+- borrar
+- recalcular
+- volver a pedir recomendación IA
+
+No hace falta meter todas en la primera pantalla si no encajan, pero quiero que el flujo exista y sea usable.
+
+5. Confirmaciones y UX crítica
+Quiero mejorar la UX en puntos delicados:
+- confirmación antes de borrar
+- feedback al guardar
+- feedback al duplicar
+- feedback al recalcular
+- feedback cuando se usa fallback local
+- mensajes claros si no hay conexión o falla IA
+
+6. Estados vacíos y errores
+Quiero estados buenos para:
+- sin proyectos guardados
+- error al cargar historial
+- error al guardar
+- error al recalcular
+- error al relanzar IA
+- datos insuficientes en modo PRO
+
+Nada de mensajes cutres tipo “undefined” o errores de desarrollador visibles al usuario.
+
+7. Preferencias y onboarding ligero
+Quiero pulir la parte de preferencias ligeras y onboarding.
+
+Como mínimo:
+- recordar último modo usado
+- recordar unidades preferidas
+- recordar último proyecto abierto
+- mostrar onboarding simple solo la primera vez si encaja bien
+
+Si hace falta:
+- pantalla breve o modal simple de bienvenida
+- explicación rápida DIY vs PRO
+
+No quiero una barbaridad de onboarding, solo algo útil.
+
+8. Calidad de interacción
+Quiero mejorar:
+- validaciones de formularios
+- evitar dobles pulsaciones
+- evitar pantallas inconsistentes
+- coherencia de botones y acciones
+- mensajes humanos y claros
+
+9. Refactor ligero si hace falta
+Si para dejar esto bien hay que:
+- extraer algún hook
+- extraer algún componente
+- crear helpers de proyecto
+- limpiar algo de navegación
+
+Hazlo, pero con moderación.
+No quiero reescribir medio proyecto.
+
+10. Cierre de MVP
+Quiero que al final de esta fase el proyecto quede:
+- estable
+- entendible
+- navegable
+- presentable
+- preparado para enseñar a usuarios o hacer una beta pequeña
+
+DECISIONES TÉCNICAS QUE QUIERO QUE TOMES
+Quiero que tomes decisiones claras sobre:
+- nombre y estructura de la pantalla de historial
+- si duplicar proyecto copia todo o solo parte
+- cuándo recalcular automáticamente y cuándo bajo acción explícita
+- cómo manejar relanzar IA sin generar caos en datos
+- cómo distinguir resultados IA de fallback local si aplica
+
+No quiero muchas opciones.
+Elige una solución razonable y sigue.
+
+ESTRUCTURA ESPERADA
+Puedes proponer la estructura exacta, pero espero algo como:
+
+src/
+  screens/
+    ProjectsScreen.tsx
+    DIYInputScreen.tsx
+    DIYResultScreen.tsx
+    ProInputScreen.tsx
+    ProResultsScreen.tsx
+    [alguna pantalla extra si realmente hace falta]
+  components/
+    EmptyState.tsx
+    ConfirmDialog.tsx
+    ProjectCard.tsx
+    SaveFeedback.tsx
+    [otros mínimos si aportan]
+  hooks/
+    useProjects.ts
+    [algún hook extra si hace falta]
+  services/
+    workflows/
+    mappers/
+    [helpers de proyecto si hacen falta]
+  storage/
+    [repositorios existentes + ajustes pequeños si hacen falta]
+  models/
+    index.ts
+  navigation/
+    [actualizar navegación para historial/reapertura]
+
+Si prefieres una estructura algo distinta, vale, pero que sea coherente.
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Estrategia de cierre de MVP elegida
+2. Archivos a crear o modificar
+3. Cambios en modelos/tipos si hacen falta
+4. Hooks o helpers de proyectos
+5. Componentes reutilizables mínimos
+6. Pantalla de historial/proyectos
+7. Cambios en DIY para edición/reapertura
+8. Cambios en PRO para edición/reapertura
+9. Preferencias y onboarding ligero
+10. Confirmaciones, estados vacíos y mensajes
+11. Qué queda ya cerrado al terminar esta fase
+
+REQUISITOS DE CALIDAD
+- TypeScript real
+- código completo por archivo
+- sin pseudocódigo
+- sin teoría larga
+- sin rehacer arquitectura
+- sin inventar dependencias si no hacen falta
+- nombres limpios
+- UX clara
+- complejidad contenida
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico.
+
+Reglas:
+- no me des teoría innecesaria
+- quiero código útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos caminos, elige uno
+- mantén el proyecto coherente con las fases anteriores
+- no me rompas la estructura ya creada
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Estrategia elegida
+2. Archivos a crear o modificar
+3. Cambios en modelos/tipos si hacen falta
+4. Hooks o helpers
+5. Componentes reutilizables
+6. ProjectsScreen
+7. Cambios en DIY
+8. Cambios en PRO
+9. Preferencias y onboarding
+10. Confirmaciones y empty states
+11. Qué queda cerrado del MVP
+
+IMPORTANTE FINAL
+Quiero que esta Fase 6 cierre de verdad el MVP:
+- historial de proyectos
+- reapertura
+- edición útil
+- duplicado y borrado
+- relanzar IA cuando proceda
+- mejor UX
+- mejor estabilidad
+- sensación de producto real
+
+No vuelvas atrás a discutir arquitectura.
+No cambies Expo.
+No cambies el backend salvo ajustes menores.
+No cambies SQLite/MMKV salvo ajustes menores.
+Construye esta fase encima de todo lo ya hecho.

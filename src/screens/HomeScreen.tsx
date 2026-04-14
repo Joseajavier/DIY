@@ -8,6 +8,7 @@ import { colors } from '../utils/theme';
 import { Card } from '../components';
 import { Project } from '../models';
 import { getProjects } from '../storage/projectRepository';
+import { getLastProjectId } from '../storage/settingsStorage';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -16,10 +17,12 @@ type Props = {
 export default function HomeScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
   const [recentProjects, setRecentProjects] = useState<Project[]>([]);
+  const [lastProjectId, setLastPid] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
       getProjects().then((all) => setRecentProjects(all.slice(0, 3)));
+      setLastPid(getLastProjectId());
     }, [])
   );
 
@@ -62,6 +65,16 @@ export default function HomeScreen({ navigation }: Props) {
         <Text style={styles.ctaText}>{t('home.start')}</Text>
         <Text style={styles.ctaArrow}>→</Text>
       </TouchableOpacity>
+
+      {lastProjectId && (
+        <TouchableOpacity
+          style={styles.continueButton}
+          onPress={() => navigation.navigate('ProjectDetail', { projectId: lastProjectId })}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.continueText}>↩️ Continuar último proyecto</Text>
+        </TouchableOpacity>
+      )}
 
       <TouchableOpacity
         style={styles.projectsButton}
@@ -186,6 +199,18 @@ const styles = StyleSheet.create({
   },
   ctaText: { fontSize: 18, fontWeight: '700', color: colors.textDark, marginRight: 8 },
   ctaArrow: { fontSize: 20, color: colors.textDark },
+  continueButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: colors.accentPro + '22',
+    borderWidth: 1,
+    borderColor: colors.accentPro,
+    marginBottom: 10,
+  },
+  continueText: { fontSize: 15, color: colors.accentPro, fontWeight: '600' },
   projectsButton: {
     flexDirection: 'row',
     alignItems: 'center',

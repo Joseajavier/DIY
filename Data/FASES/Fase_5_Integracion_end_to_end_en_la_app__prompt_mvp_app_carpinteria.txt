@@ -1,0 +1,315 @@
+FASE 5 — INTEGRACIÓN END-TO-END EN LA APP (UX REAL + IA + PERSISTENCIA)
+
+Quiero que actúes como un arquitecto y desarrollador senior de React Native con TypeScript.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local útil ya implementada o diseñada
+
+FASE 4A — IA real
+- backend con OpenAI
+- endpoint DIY con salida estructurada
+- endpoint PRO con IA + tools
+- cliente API mínimo para Expo
+- integración mínima ya planteada
+
+OBJETIVO DE ESTA FASE
+Quiero convertir todo lo anterior en una experiencia real dentro de la app.
+
+En esta fase no quiero más arquitectura teórica.
+Quiero la integración completa en pantallas y flujo de uso real.
+
+Lo que quiero conseguir es:
+- que el usuario pueda usar el modo DIY con IA de principio a fin
+- que el usuario pueda usar el modo PRO con IA + tools de principio a fin
+- que la app gestione carga, error, reintento y guardado
+- que los resultados se persistan localmente cuando convenga
+- que la UX sea clara y usable
+- que exista un fallback razonable a lógica local cuando falle la IA o no haya red, si eso encaja bien
+
+IMPORTANTE
+No quiero rehacer la arquitectura.
+No quiero volver atrás a discutir Expo, backend o base de datos.
+No quiero otra capa enorme de complejidad.
+Quiero dejar la app utilizable de verdad.
+
+RESTRICCIONES
+- mantener Expo
+- mantener backend ya definido
+- mantener SQLite y MMKV
+- mantener Fase 3 como motor local reutilizable
+- no meter librerías innecesarias
+- no romper lo ya hecho
+- no hacer una UI extremadamente sofisticada: quiero una UI clara, seria y funcional
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. Flujo DIY completo en la app
+Quiero que el usuario pueda:
+- escribir su idea de proyecto
+- enviar la solicitud al backend /ai/diy-generate
+- ver loading real
+- ver errores si algo falla
+- reintentar
+- ver resultado estructurado en pantalla
+- guardar el resultado como proyecto local
+- reabrirlo después desde almacenamiento local
+- editar nombre o descripción si procede
+
+Pantallas o componentes implicados:
+- DIYInputScreen
+- pantalla o sección de resultado DIY
+- integración con repositorios de Fase 2 v2
+
+2. Flujo PRO completo en la app
+Quiero que el usuario pueda:
+- introducir o revisar piezas y parámetros
+- lanzar el análisis PRO contra /ai/pro-plan
+- ver loading real
+- ver avisos o warnings
+- ver resultado técnico estructurado
+- ver resumen de optimización
+- ver materiales estimados
+- ver recomendación de compra
+- guardar el proyecto y sus resultados localmente
+- volver a abrirlo después
+
+Pantallas o componentes implicados:
+- ProInputScreen
+- ProOptimizationScreen
+- ProResultsScreen
+- integración con storage y cliente API
+
+3. Gestión de estado y UX
+Quiero una solución simple y robusta para manejar:
+- idle
+- loading
+- success
+- error
+- retry
+
+Puedes usar estado local o una solución ligera si ya existe, pero no quiero sobreingeniería.
+Si basta con hooks y servicios bien organizados, perfecto.
+
+Quiero también:
+- indicadores de carga claros
+- errores entendibles por humanos
+- botón de reintento
+- evitar dobles envíos
+- proteger navegación si hay una operación en curso cuando tenga sentido
+
+4. Persistencia útil
+Quiero que decidas claramente qué guardar y cuándo.
+
+Ejemplos:
+- guardar automáticamente último proyecto abierto
+- guardar drafts si tiene sentido
+- guardar resultados confirmados
+- no guardar basura temporal innecesaria
+
+Quiero que reutilices:
+- SQLite para proyectos, piezas, materiales, optimizaciones, tiendas y resultados que merezca conservar
+- MMKV para selectedMode, lastProjectId, units, flags ligeros
+
+Si necesitas ampliar ligeramente el modelo de datos para guardar resultado IA o metadata, hazlo con criterio y sin romper Fase 2 v2.
+
+5. Fallback a lógica local
+Si lo ves sensato, quiero que implementes un fallback cuando falle el backend o no haya conectividad:
+- DIY: usar diyGenerator.ts local como respaldo
+- PRO: usar motor local de materiales/optimización cuando sea razonable
+
+Pero:
+- no quiero un sistema caótico
+- no quiero resultados inconsistentes sin avisar
+- si usas fallback, el usuario debe saber que es una estimación local
+
+Elige una estrategia clara y mantenible.
+
+6. Servicios de aplicación
+Quiero una capa de servicios o hooks de aplicación que conecte:
+- UI
+- cliente API
+- storage
+- lógica local fallback
+
+Puedes organizar algo así:
+src/
+  features/
+    diy/
+    pro/
+  hooks/
+  services/
+  storage/
+  screens/
+
+O una estructura similar, pero elige una y sigue.
+
+Quiero algo como:
+- diyWorkflowService.ts o useDIYWorkflow.ts
+- proWorkflowService.ts o useProWorkflow.ts
+- mappers si hacen falta
+- helpers de guardado si hacen falta
+
+7. Componentes reutilizables
+Si hace falta, crea componentes simples y reutilizables como:
+- LoadingState
+- ErrorState
+- ResultSection
+- WarningList
+- StepList
+- MaterialList
+- ToolList
+- RecommendationCard
+
+No quiero veinte componentes triviales, solo los que aporten orden real.
+
+8. Navegación y reapertura
+Quiero que el flujo permita:
+- entrar en un proyecto guardado
+- reabrir último proyecto
+- volver a resultados previamente guardados
+- navegar sin perder contexto
+
+No quiero que el usuario tenga sensación de “todo desaparece”.
+
+9. Calidad de producto mínima
+Quiero que esto quede con sensación de producto real:
+- estados vacíos decentes
+- mensajes de error claros
+- consistencia de nombres
+- botones razonables
+- sin textos técnicos absurdos de desarrollador visibles al usuario
+
+DECISIONES TÉCNICAS QUE QUIERO QUE TOMES
+Quiero que tomes decisiones claras sobre:
+- si usar hooks de workflow o servicios de workflow
+- si guardar automáticamente o bajo acción explícita
+- si usar fallback local siempre o solo en errores concretos
+- cómo mapear respuesta backend a modelos locales
+
+No me des tres opciones.
+Elige una solución razonable y sigue.
+
+ESTRUCTURA ESPERADA
+Puedes proponer la estructura exacta, pero espero algo cercano a esto:
+
+src/
+  screens/
+    DIYInputScreen.tsx
+    DIYResultScreen.tsx
+    ProInputScreen.tsx
+    ProOptimizationScreen.tsx
+    ProResultsScreen.tsx
+  components/
+    LoadingState.tsx
+    ErrorState.tsx
+    StepList.tsx
+    MaterialList.tsx
+    ToolList.tsx
+    WarningList.tsx
+    RecommendationCard.tsx
+  hooks/
+    useDIYWorkflow.ts
+    useProWorkflow.ts
+  services/
+    api/
+      aiClient.ts
+    workflows/
+      diyWorkflowService.ts
+      proWorkflowService.ts
+    mappers/
+      diyMapper.ts
+      proMapper.ts
+  storage/
+    [repositorios existentes]
+  models/
+    index.ts
+  navigation/
+    [actualizar solo si hace falta]
+
+Si prefieres una estructura algo distinta, vale, pero que sea coherente.
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Decidir la estrategia de integración real en la app
+2. Proponer estructura de archivos a crear o modificar
+3. Ajustar tipos si hace falta
+4. Implementar hooks o servicios de workflow
+5. Implementar componentes reutilizables mínimos
+6. Actualizar pantallas DIY
+7. Actualizar pantallas PRO
+8. Conectar guardado local
+9. Implementar estrategia de fallback local si la usas
+10. Explicar qué se guarda automáticamente y qué no
+
+REQUISITOS DE CALIDAD
+- TypeScript real
+- código completo por archivo
+- sin pseudocódigo
+- sin teoría larga
+- sin rehacer arquitectura
+- sin inventar dependencias si no hacen falta
+- nombres limpios
+- UX clara
+- complejidad contenida
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico.
+
+Reglas:
+- no me des teoría innecesaria
+- quiero código útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos caminos, elige uno
+- mantén el proyecto coherente con las fases anteriores
+- no me rompas la estructura ya creada
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Estrategia elegida
+2. Archivos a crear o modificar
+3. Cambios en modelos/tipos si hacen falta
+4. Hooks o servicios de workflow
+5. Componentes reutilizables
+6. DIY screens actualizadas
+7. PRO screens actualizadas
+8. Integración con storage
+9. Estrategia de fallback local
+10. Qué se guarda automáticamente y qué no
+
+IMPORTANTE FINAL
+Quiero que esta Fase 5 deje la app utilizable de verdad por un usuario:
+- DIY con IA real y persistencia
+- PRO con IA + tools + persistencia
+- UX clara
+- reintentos
+- reapertura de proyectos
+- integración real end-to-end
+
+No vuelvas atrás a discutir arquitectura.
+No cambies Expo.
+No quites SQLite/MMKV.
+No muevas la key a la app.
+Construye esta fase encima de todo lo ya hecho.
