@@ -1,0 +1,276 @@
+FASE 8 — ROADMAP POST-BETA, PRIORIZACIÓN Y ESCALADO DEL PRODUCTO
+
+Quiero que actúes como un arquitecto de producto y desarrollador senior con experiencia en React Native, backend, IA aplicada y lanzamiento de productos digitales.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local útil ya implementada o diseñada
+
+FASE 4A — IA real
+- backend con OpenAI
+- endpoint DIY con salida estructurada
+- endpoint PRO con IA + tools
+- cliente API mínimo para Expo
+- integración mínima ya planteada
+
+FASE 5 — Integración end-to-end en la app
+- flujo DIY completo
+- flujo PRO completo
+- loading, error, retry
+- persistencia útil
+- reapertura de proyectos
+- integración real UI + backend + storage
+
+FASE 6 — Cierre de MVP y pulido real
+- historial de proyectos
+- reapertura
+- edición útil
+- duplicado y borrado
+- relanzar IA cuando proceda
+- UX mejorada
+- sensación de producto real
+
+FASE 7 — Beta, publicación y operación real
+- entornos
+- builds beta
+- observabilidad mínima
+- crash reporting
+- analytics útiles
+- feedback
+- release checklist
+- base operativa para beta real
+
+OBJETIVO DE ESTA FASE
+Quiero definir qué pasa después de la beta y convertir el proyecto en un producto con dirección clara.
+
+No quiero teoría genérica de startups.
+Quiero una propuesta concreta de evolución del producto basada en lo ya construido.
+
+Esta fase debe dejar claro:
+- qué aprender en beta
+- cómo priorizar mejoras
+- qué funcionalidades entran en v2
+- qué no debe entrar todavía
+- cómo monetizar si tiene sentido
+- cómo escalar técnica y funcionalmente sin romper el proyecto
+
+RESULTADO QUE QUIERO
+Al terminar esta fase, quiero tener:
+- roadmap post-beta claro
+- backlog priorizado
+- criterios para decidir qué construir después
+- hipótesis de producto a validar
+- plan de evolución técnica razonable
+- propuesta de packaging o monetización si encaja
+- definición de una v2 coherente
+
+LO QUE QUIERO QUE HAGAS
+
+1. Analizar el producto tal como queda tras la beta
+Quiero que partas de este escenario:
+- app funcional
+- dos modos: DIY y PRO
+- persistencia local
+- IA real para generación y orquestación
+- backend propio
+- beta con analytics y feedback
+
+Y que me digas:
+- cuáles son las debilidades previsibles del MVP
+- qué fricciones de uso verías venir
+- qué cosas del producto son prometedoras
+- qué cosas podrían estar sobrediseñadas o infravaloradas
+
+2. Definir qué métricas y señales decidirán la v2
+Quiero que definas las señales que realmente importan después de la beta.
+
+Ejemplos:
+- cuántos usuarios completan un flujo DIY
+- cuántos usuarios completan un flujo PRO
+- cuántos guardan proyectos
+- cuántos reabren proyectos
+- dónde abandonan
+- cuánto se usa fallback local
+- si relanzan IA
+- si el historial se usa
+- si la recomendación de compra se consulta o no
+
+No quiero vanity metrics.
+Quiero métricas accionables.
+
+3. Priorizar backlog post-beta
+Quiero que me propongas un backlog priorizado en niveles como:
+- P0 = imprescindible
+- P1 = siguiente bloque de valor claro
+- P2 = interesante pero no urgente
+- P3 = aparcado
+
+Quiero que incluyas funcionalidades posibles como:
+- compartir proyectos
+- exportar PDF
+- lista de compra exportable
+- cuentas de usuario
+- sincronización nube
+- multi-dispositivo
+- favoritos o plantillas
+- biblioteca de proyectos
+- fotos o imagen de referencia
+- voz
+- OCR o lectura de medidas
+- importación de planos
+- versión web o panel admin
+- colaboración con otros usuarios
+- recomendaciones de compra reales en vez de mock
+- presupuesto de proyecto
+- catálogos reales de materiales
+- histórico de versiones del proyecto
+
+No hace falta meter todo.
+Quiero criterio claro.
+
+4. Definir una V2 razonable
+Quiero que propongas una V2 de producto clara y acotada.
+
+La V2 debe decir:
+- qué entra
+- qué se queda fuera
+- por qué
+- qué valor aporta
+- qué complejidad técnica introduce
+
+Quiero una V2 realista, no una fantasía infinita.
+
+5. Estrategia de monetización o packaging
+Quiero que me digas cómo tendría sentido empaquetar el producto si decidimos llevarlo a mercado.
+
+Puedes valorar algo como:
+- freemium
+- DIY gratis y PRO de pago
+- número limitado de proyectos
+- créditos IA
+- suscripción
+- pago único
+- versión profesional para carpintería / talleres
+- versión consumo y versión pro
+
+No quiero una disertación abstracta.
+Quiero una propuesta concreta y razonada.
+
+6. Evolución técnica razonable
+Quiero que me digas qué cambios técnicos tendría sentido hacer después si el producto funciona.
+
+Ejemplos:
+- pasar parte del storage a nube
+- auth
+- sincronización
+- colas de backend
+- cache de respuestas IA
+- control de costes de OpenAI
+- feature flags más serios
+- panel de administración
+- catálogos reales
+- arquitectura compartida para motor determinista entre app y backend
+
+Quiero que diferencies:
+- lo que harías pronto
+- lo que harías solo si hay tracción real
+- lo que no tocarías todavía
+
+7. Riesgos de producto y de negocio
+Quiero que me señales riesgos reales como:
+- coste de IA demasiado alto
+- resultado inconsistente
+- poco uso del modo PRO
+- demasiada complejidad para usuario medio
+- propuestas de compra poco creíbles si siguen siendo mock
+- baja retención si no se guardan proyectos útiles
+- app útil pero no imprescindible
+
+Quiero riesgos concretos y qué harías para mitigarlos.
+
+8. Plan de decisión post-beta
+Quiero que me des un marco claro para decidir entre escenarios como:
+- seguir iterando
+- pivotar más a DIY
+- pivotar más a PRO
+- convertirlo en herramienta de productividad de carpintería
+- congelar el proyecto
+- pasar a monetización temprana
+
+Quiero algo tipo:
+- si ocurre A y B, hacemos X
+- si ocurre C y D, hacemos Y
+
+9. Entregables claros
+Quiero que me entregues esta fase con:
+- roadmap por bloques
+- backlog priorizado
+- tabla o lista de hipótesis a validar
+- propuesta V2
+- estrategia de monetización
+- riesgos y mitigaciones
+- plan de decisión post-beta
+
+No necesito código grande en esta fase si no hace falta, pero sí quiero artefactos prácticos, estructurados y accionables.
+
+10. Opcional: pequeños artefactos útiles
+Si lo ves útil, puedes incluir:
+- plantilla de review semanal de beta
+- plantilla de análisis de feedback
+- esquema de priorización
+- documento de roadmap en markdown
+
+Si los incluyes, hazlos de forma breve y muy útil.
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi responsable de producto técnico.
+
+Reglas:
+- no me des teoría larga
+- no me des frases vacías de consultor
+- quiero decisiones claras
+- quiero priorización real
+- quiero propuestas concretas
+- si hay dos caminos, elige uno y justifícalo brevemente
+- mantén coherencia con todas las fases anteriores
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Lectura crítica del producto tras beta
+2. Métricas y señales que importan
+3. Backlog priorizado post-beta
+4. V2 propuesta
+5. Monetización o packaging propuesto
+6. Evolución técnica razonable
+7. Riesgos y mitigaciones
+8. Plan de decisión post-beta
+9. Artefactos o plantillas útiles si las añades
+
+IMPORTANTE FINAL
+Quiero que esta Fase 8 me deje claro qué hacer después de la beta y cómo evitar perder meses construyendo cosas que no importan.
+
+No vuelvas atrás a rehacer arquitectura.
+No me propongas una lista infinita de features sin prioridad.
+No me des humo.
+Quiero una dirección clara, práctica y accionable para la siguiente etapa del producto.

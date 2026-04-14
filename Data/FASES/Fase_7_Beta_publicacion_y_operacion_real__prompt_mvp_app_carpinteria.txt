@@ -1,0 +1,333 @@
+FASE 7 — BETA, PUBLICACIÓN Y OPERACIÓN REAL
+
+Quiero que actúes como un arquitecto y desarrollador senior de producto, móvil y backend con experiencia en lanzamiento de apps React Native.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas o definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local útil ya implementada o diseñada
+
+FASE 4A — IA real
+- backend con OpenAI
+- endpoint DIY con salida estructurada
+- endpoint PRO con IA + tools
+- cliente API mínimo para Expo
+- integración mínima ya planteada
+
+FASE 5 — Integración end-to-end en la app
+- flujo DIY completo
+- flujo PRO completo
+- loading, error, retry
+- persistencia útil
+- reapertura de proyectos
+- integración real UI + backend + storage
+
+FASE 6 — Cierre de MVP y pulido real
+- historial de proyectos
+- reapertura
+- edición útil
+- duplicado y borrado
+- relanzar IA cuando proceda
+- UX mejorada
+- sensación de producto real
+
+OBJETIVO DE ESTA FASE
+Quiero preparar el producto para uso real fuera de desarrollo.
+
+Esta fase debe dejar el proyecto listo para:
+- pruebas beta reales
+- distribución interna o cerrada
+- observabilidad mínima
+- feedback de usuarios
+- publicación posterior con menos riesgo
+
+IMPORTANTE
+No quiero rehacer arquitectura.
+No quiero rediseñar toda la app.
+No quiero meter complejidad absurda.
+Quiero cerrar la parte operativa y de lanzamiento de forma seria y práctica.
+
+RESULTADO QUE QUIERO
+Al terminar esta fase, quiero tener:
+- builds beta utilizables
+- configuración por entornos
+- logging y observabilidad mínima
+- crash reporting
+- analytics básicos orientados a producto
+- feedback simple desde la app o canal claro de feedback
+- checklist de release
+- base preparada para publicar o testear con usuarios reales
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. Entornos y configuración
+Quiero separar claramente:
+- development
+- staging o beta
+- production
+
+Necesito:
+- variables por entorno
+- API base URL por entorno
+- flags básicos si hacen falta
+- configuración limpia para Expo y backend
+
+Quiero una solución clara y mantenible.
+No quiero una jungla de configuraciones.
+
+2. Builds beta reales
+Quiero que definas y prepares cómo generar builds para:
+- iOS beta
+- Android beta
+
+Si encaja bien con Expo:
+- EAS Build
+- perfiles dev / preview / production
+
+Quiero:
+- archivos de configuración necesarios
+- estrategia de perfiles
+- comandos de build
+- qué build usar para pruebas internas
+
+3. Observabilidad mínima
+Quiero implementar una base seria de observabilidad.
+
+Como mínimo:
+- logging útil en backend
+- trazabilidad mínima de errores
+- identificar fallos en llamadas a IA
+- tiempos básicos de respuesta
+- errores de app que merezca registrar
+
+No quiero un monstruo enterprise.
+Quiero lo suficiente para no ir ciego en beta.
+
+4. Crash reporting
+Quiero que decidas e implementes una solución razonable para capturar errores de la app y, si procede, del backend.
+
+Elige una solución clara y mantenible.
+Puede ser, por ejemplo:
+- Sentry
+o algo similar
+
+Pero no me des tres opciones.
+Elige una y sigue.
+
+Quiero:
+- instalación
+- configuración básica
+- ejemplos mínimos de captura
+- cuidado para no exponer secretos
+
+5. Analytics de producto
+Quiero analytics mínimos, orientados a saber si la app se usa de verdad.
+
+No quiero vanity metrics absurdas.
+Quiero eventos útiles como:
+- app_opened
+- mode_selected
+- diy_request_started
+- diy_request_succeeded
+- diy_request_failed
+- pro_request_started
+- pro_request_succeeded
+- pro_request_failed
+- project_saved
+- project_reopened
+- fallback_used
+- recommendation_accepted si aplica
+
+Quiero que elijas una solución razonable y simple.
+Puede ser una solución SaaS si tiene sentido, pero elige una y sigue.
+
+6. Feedback de usuarios
+Quiero una vía simple para recoger feedback durante beta.
+
+Puede ser:
+- botón “Enviar feedback”
+- pantalla simple de feedback
+- abrir email
+- enviar al backend
+- o una solución muy ligera pero usable
+
+Elige una estrategia razonable.
+No quiero una feature enorme.
+Quiero algo que funcione para una beta pequeña.
+
+7. Release checklist
+Quiero una checklist operativa real para lanzar beta o preparar publicación.
+
+Debe cubrir como mínimo:
+- variables de entorno
+- build correcta
+- pruebas mínimas
+- errores críticos revisados
+- endpoints funcionando
+- storage validado
+- IA validada
+- fallback validado
+- analytics y crash reporting activos
+- revisión de textos visibles
+- revisión de permisos
+- plan de rollback o reacción ante errores graves
+
+8. Seguridad operativa básica
+Quiero asegurar que:
+- no se expone la API key en la app
+- secrets en backend y CI
+- logs no filtran datos sensibles
+- el feedback o analytics no manda más datos de los necesarios
+- manejo básico de rate limiting y errores del backend
+
+9. Preparación para publicación futura
+No quiero que publiques todavía necesariamente, pero sí dejar listo:
+- nombre y bundle coherentes
+- iconos y splash si procede
+- permisos mínimos claros
+- metadatos o checklist para store más adelante
+- una estrategia razonable para pasar de beta a producción
+
+10. Cierre operativo
+Quiero que al final de esta fase el proyecto quede:
+- listo para test con usuarios reales
+- con visibilidad de errores
+- con medición mínima
+- con builds repetibles
+- con proceso claro de release
+
+DECISIONES TÉCNICAS QUE QUIERO QUE TOMES
+Quiero que tomes decisiones claras sobre:
+- herramienta de crash reporting
+- herramienta de analytics
+- estrategia de feedback
+- cómo separar entornos
+- cómo desplegar backend para beta
+- cómo evitar mezclar configuración de dev y prod
+
+No me des muchas alternativas.
+Elige una solución razonable y sigue.
+
+ESTRUCTURA ESPERADA
+Puedes proponer la estructura exacta, pero espero algo como:
+
+app/
+  app.config.ts o equivalente
+  eas.json
+  src/
+    services/
+      analytics/
+      monitoring/
+      feedback/
+    screens/
+      SettingsScreen.tsx o similar
+      FeedbackScreen.tsx si hace falta
+
+backend/
+  src/
+    config/
+      env.ts
+    utils/
+      logger.ts
+      monitoring.ts
+    middleware/
+      errorHandler.ts
+      requestLogger.ts
+      rateLimiter.ts
+    routes/
+      feedback.ts si procede
+
+docs/
+  release/
+    beta-checklist.md
+    environments.md
+    analytics-events.md
+
+Si prefieres una estructura algo distinta, vale, pero que sea coherente.
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Estrategia operativa elegida
+2. Librerías a instalar
+3. Archivos a crear o modificar
+4. Configuración de entornos
+5. Configuración de builds beta
+6. Crash reporting
+7. Analytics
+8. Feedback
+9. Cambios mínimos en app y backend
+10. Checklist de beta/release
+11. Qué queda listo al terminar esta fase
+
+REQUISITOS DE CALIDAD
+- TypeScript real donde aplique
+- código completo por archivo
+- sin pseudocódigo
+- sin teoría larga
+- sin rehacer arquitectura
+- sin inventar dependencias si no hacen falta
+- enfoque práctico y de producto real
+- complejidad contenida
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico y de lanzamiento.
+
+Reglas:
+- no me des teoría innecesaria
+- quiero código útil y configuración útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos caminos, elige uno
+- mantén coherencia con todas las fases anteriores
+- no me rompas lo ya construido
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Estrategia elegida
+2. Librerías a instalar
+3. Archivos a crear o modificar
+4. Configuración de entornos
+5. Builds beta / EAS
+6. Crash reporting
+7. Analytics
+8. Feedback
+9. Cambios mínimos en app
+10. Cambios mínimos en backend
+11. Checklist de beta/release
+12. Qué queda listo al terminar esta fase
+
+IMPORTANTE FINAL
+Quiero que esta Fase 7 deje el proyecto preparado para salir del entorno de desarrollo y entrar en una beta real con control:
+- builds repetibles
+- observabilidad mínima
+- crash reporting
+- analytics útiles
+- feedback
+- release checklist
+- base lista para publicar después
+
+No vuelvas atrás a discutir arquitectura.
+No cambies Expo por otra cosa.
+No muevas la API key a la app.
+No rehagas backend ni storage sin necesidad.
+Construye esta fase encima de todo lo ya hecho.
