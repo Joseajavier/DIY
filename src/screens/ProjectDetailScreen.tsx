@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -124,6 +124,33 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
           <Text style={styles.buttonTextWhite}>Recalcular</Text>
         </TouchableOpacity>
       )}
+
+      <TouchableOpacity style={styles.shareBtn} onPress={async () => {
+        let text = `🪵 ${project.name} (${project.mode.toUpperCase()})\n`;
+        if (project.description) text += `${project.description}\n`;
+        text += '\n';
+        if (pieces.length) {
+          text += '📐 Piezas:\n';
+          pieces.forEach((p) => { text += `  • ${p.width}×${p.height}cm × ${p.quantity}ud\n`; });
+          text += '\n';
+        }
+        if (optimization) {
+          text += `📊 Optimización: ${optimization.total_boards} tableros, ${optimization.efficiency.toFixed(1)}% eficiencia\n\n`;
+        }
+        if (materials.length) {
+          text += '📦 Materiales:\n';
+          materials.forEach((m) => { text += `  • ${m.name}: ${m.quantity} ${m.unit || 'ud'}\n`; });
+          text += '\n';
+        }
+        if (shops.length) {
+          text += '🛒 Tiendas:\n';
+          shops.forEach((s) => { text += `  • ${s.name}: ${s.price.toFixed(2)}€ (${s.time})\n`; });
+        }
+        text += '\n— Generado con DIY App';
+        await Share.share({ message: text });
+      }}>
+        <Text style={styles.shareText}>📤 Compartir proyecto</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -149,4 +176,6 @@ const styles = StyleSheet.create({
   buttonPro: { backgroundColor: colors.accentPro, paddingVertical: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
   buttonText: { fontSize: 16, fontWeight: '600', color: colors.textDark },
   buttonTextWhite: { fontSize: 16, fontWeight: '600', color: colors.white },
+  shareBtn: { backgroundColor: colors.bgAlt, paddingVertical: 14, borderRadius: 12, alignItems: 'center', marginTop: 12, borderWidth: 1, borderColor: colors.border },
+  shareText: { fontSize: 15, color: colors.text },
 });

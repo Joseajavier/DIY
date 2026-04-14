@@ -32,13 +32,22 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
         <View style={styles.stat}><Text style={styles.statVal}>{optimization.totalWaste.toFixed(1)}%</Text><Text style={styles.statLbl}>{t('pro.waste')}</Text></View>
       </View>
       <Text style={styles.section}>{t('pro.boardDistribution')}</Text>
-      {optimization.boards.map((board, i) => (
-        <View key={i} style={styles.boardCard}>
-          <Text style={styles.boardTitle}>{t('pro.board')} {board.boardIndex + 1}</Text>
-          <Text style={styles.boardWaste}>{t('pro.waste')}: {board.wastePercentage.toFixed(1)}%</Text>
-          {board.pieces.map((p, j) => <Text key={j} style={styles.pieceText}>• {p.width} × {p.height} cm</Text>)}
-        </View>
-      ))}
+      {optimization.boards.map((board, i) => {
+        const usedPct = 100 - board.wastePercentage;
+        return (
+          <View key={i} style={styles.boardCard}>
+            <View style={styles.boardHeader}>
+              <Text style={styles.boardTitle}>{t('pro.board')} {board.boardIndex + 1}</Text>
+              <Text style={styles.boardPct}>{usedPct.toFixed(0)}%</Text>
+            </View>
+            <View style={styles.usageBar}>
+              <View style={[styles.usageFill, { width: `${usedPct}%`, backgroundColor: usedPct > 80 ? colors.success : usedPct > 50 ? colors.accent : colors.danger }]} />
+            </View>
+            <Text style={styles.boardWaste}>{t('pro.waste')}: {board.wastePercentage.toFixed(1)}%</Text>
+            {board.pieces.map((p, j) => <Text key={j} style={styles.pieceText}>• {p.width} × {p.height} cm</Text>)}
+          </View>
+        );
+      })}
       <TouchableOpacity style={styles.button} onPress={async () => {
         const pid = getLastProjectId();
         if (pid) {
@@ -64,7 +73,11 @@ const styles = StyleSheet.create({
   statLbl: { fontSize: 12, color: colors.textSecondary, marginTop: 4 },
   section: { fontSize: 18, fontWeight: '600', color: colors.text, marginBottom: 14 },
   boardCard: { backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 12 },
+  boardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   boardTitle: { fontSize: 16, fontWeight: '600', color: colors.accent },
+  boardPct: { fontSize: 14, fontWeight: 'bold', color: colors.accentPro },
+  usageBar: { height: 8, backgroundColor: colors.border, borderRadius: 4, marginVertical: 8 },
+  usageFill: { height: 8, borderRadius: 4 },
   boardWaste: { fontSize: 13, color: colors.textSecondary, marginBottom: 8 },
   pieceText: { fontSize: 14, color: colors.textSecondary, marginLeft: 8, marginBottom: 2 },
   button: { backgroundColor: colors.accentPro, paddingVertical: 16, borderRadius: 12, alignItems: 'center', marginTop: 16 },

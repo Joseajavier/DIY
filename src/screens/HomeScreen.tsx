@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors } from '../utils/theme';
 import { Card } from '../components';
+import { Project } from '../models';
+import { getProjects } from '../storage/projectRepository';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -12,6 +15,13 @@ type Props = {
 
 export default function HomeScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
+  const [recentProjects, setRecentProjects] = useState<Project[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getProjects().then((all) => setRecentProjects(all.slice(0, 3)));
+    }, [])
+  );
 
   const features = [
     { icon: '📋', title: t('home.features.steps'), desc: t('home.features.stepsDesc') },
@@ -115,6 +125,31 @@ export default function HomeScreen({ navigation }: Props) {
         </Card>
       </TouchableOpacity>
 
+      {recentProjects.length > 0 && (
+        <>
+          <Text style={styles.sectionTitle}>Proyectos recientes</Text>
+          {recentProjects.map((p) => (
+            <TouchableOpacity
+              key={p.id}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('ProjectDetail', { projectId: p.id })}
+            >
+              <Card>
+                <View style={styles.recentRow}>
+                  <View>
+                    <Text style={styles.recentName}>{p.name}</Text>
+                    <Text style={styles.recentMeta}>
+                      {p.mode.toUpperCase()} • {p.createdAt ? new Date(p.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }) : ''}
+                    </Text>
+                  </View>
+                  <Text style={styles.recentArrow}>→</Text>
+                </View>
+              </Card>
+            </TouchableOpacity>
+          ))}
+        </>
+      )}
+
       <View style={styles.footer}>
         <Text style={styles.footerText}>{t('app.name')} {t('app.version')} — {t('app.footer')}</Text>
       </View>
@@ -178,6 +213,10 @@ const styles = StyleSheet.create({
   modeTagRow: { flexDirection: 'row', marginTop: 12, gap: 8 },
   tag: { borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 },
   tagText: { fontSize: 11, fontWeight: '600' },
+  recentRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  recentName: { fontSize: 15, fontWeight: '600', color: colors.text },
+  recentMeta: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
+  recentArrow: { fontSize: 18, color: colors.textMuted },
   footer: { alignItems: 'center', marginTop: 32 },
   footerText: { fontSize: 12, color: colors.textMuted },
 });
