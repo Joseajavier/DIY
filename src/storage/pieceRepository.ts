@@ -45,6 +45,26 @@ export async function getPiecesByProject(projectId: string): Promise<Piece[]> {
   return rows.map(rowToPiece);
 }
 
+export async function updatePiece(id: string, piece: Partial<Piece>): Promise<void> {
+  const db = await getDatabase();
+  const fields: string[] = [];
+  const values: (string | number)[] = [];
+
+  if (piece.width !== undefined) { fields.push('width = ?'); values.push(piece.width); }
+  if (piece.height !== undefined) { fields.push('height = ?'); values.push(piece.height); }
+  if (piece.quantity !== undefined) { fields.push('quantity = ?'); values.push(piece.quantity); }
+  if (piece.thickness !== undefined) { fields.push('thickness = ?'); values.push(piece.thickness); }
+
+  if (fields.length === 0) return;
+  values.push(id);
+  await db.runAsync(`UPDATE pieces SET ${fields.join(', ')} WHERE id = ?`, ...values);
+}
+
+export async function deletePiece(id: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync('DELETE FROM pieces WHERE id = ?', id);
+}
+
 export async function deletePiecesByProject(projectId: string): Promise<void> {
   const db = await getDatabase();
   await db.runAsync('DELETE FROM pieces WHERE project_id = ?', projectId);

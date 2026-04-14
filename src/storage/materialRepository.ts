@@ -44,6 +44,25 @@ export async function getMaterialsByProject(projectId: string): Promise<Material
   return rows.map(rowToMaterial);
 }
 
+export async function updateMaterial(id: string, data: Partial<Material>): Promise<void> {
+  const db = await getDatabase();
+  const fields: string[] = [];
+  const values: (string | number)[] = [];
+
+  if (data.name !== undefined) { fields.push('name = ?'); values.push(data.name); }
+  if (data.quantity !== undefined) { fields.push('quantity = ?'); values.push(data.quantity); }
+  if (data.unit !== undefined) { fields.push('unit = ?'); values.push(data.unit); }
+
+  if (fields.length === 0) return;
+  values.push(id);
+  await db.runAsync(`UPDATE materials SET ${fields.join(', ')} WHERE id = ?`, ...values);
+}
+
+export async function deleteMaterial(id: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync('DELETE FROM materials WHERE id = ?', id);
+}
+
 export async function deleteMaterialsByProject(projectId: string): Promise<void> {
   const db = await getDatabase();
   await db.runAsync('DELETE FROM materials WHERE project_id = ?', projectId);

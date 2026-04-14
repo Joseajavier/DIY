@@ -1,0 +1,84 @@
+MAPA MAESTRO DE FASES — APP MVP CARPINTERÍA / DIY
+
+FASE 1 — Base del proyecto y navegación
+Objetivo:
+- crear estructura base
+- navegación
+- pantallas vacías
+- proyecto compilando
+
+FASE 2A — Validación de arquitectura (opcional)
+Objetivo:
+- confirmar que no hace falta migrar a bare React Native
+- decidir Expo + prebuild + dev build
+
+FASE 2 v2 — BBDD local y persistencia en Expo
+Objetivo:
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias
+- repositorios
+- storage y persistencia local
+
+FASE 3 — Motor de lógica del producto
+Objetivo:
+- diyGenerator
+- materialsGenerator
+- cuttingOptimizer
+- storeRecommender
+- priceComparator
+
+FASE 4A — Integración de IA real
+Objetivo:
+- backend propio
+- OpenAI Responses API
+- DIY con IA estructurada
+- PRO con IA + tools + motor determinista
+
+FASE 5 — Integración end-to-end en la app
+Objetivo:
+- conectar UI + backend + storage + fallback
+- flujos reales DIY y PRO
+- loading, error, retry, guardado
+
+FASE 6 — Cierre de MVP y pulido real
+Objetivo:
+- historial de proyectos
+- reapertura
+- edición
+- duplicado y borrado
+- UX más sólida
+- sensación de producto real
+
+FASE 7 — Beta, publicación y operación real
+Objetivo:
+- entornos
+- builds beta
+- crash reporting
+- analytics
+- feedback
+- checklist de release
+
+FASE 8 — Roadmap post-beta, priorización y escalado
+Objetivo:
+- métricas que importan
+- backlog priorizado
+- V2
+- monetización o packaging
+- evolución técnica razonable
+
+FASE 9 — Documentación maestra y sistema de ejecución
+Objetivo:
+- documento maestro
+- criterios de aceptación
+- checklist de ejecución
+- estado por fases
+- backlog vivo separado
+- orden real de ejecución
+
+FIN DEL MAPA BASE
+Después de la Fase 9 no faltan más fases estructurales.
+Lo que queda es:
+- ejecutar
+- probar
+- validar
+- decidir la dirección del producto.

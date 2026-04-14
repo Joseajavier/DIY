@@ -1,8 +1,8 @@
-// In development, the backend runs on localhost:3001
-// For production, change this to your server URL
-const BASE_URL = __DEV__
-  ? 'http://localhost:3001'
-  : 'https://your-production-server.com';
+import Constants from 'expo-constants';
+
+const BASE_URL: string =
+  Constants.expoConfig?.extra?.apiUrl ??
+  (__DEV__ ? 'http://localhost:3001' : 'https://diy-backend.up.railway.app');
 
 async function request<T>(endpoint: string, body: any): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, {

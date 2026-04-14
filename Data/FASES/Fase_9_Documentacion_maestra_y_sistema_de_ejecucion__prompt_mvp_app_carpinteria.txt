@@ -1,0 +1,231 @@
+FASE 9 — DOCUMENTACIÓN MAESTRA Y SISTEMA DE EJECUCIÓN
+
+Quiero que actúes como un arquitecto de producto y responsable técnico senior con experiencia en documentación de sistemas, coordinación de desarrollo y ejecución por fases.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están definidas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- Expo + prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- storage ya preparado
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local útil ya implementada o diseñada
+
+FASE 4A — IA real
+- backend con OpenAI
+- endpoint DIY con salida estructurada
+- endpoint PRO con IA + tools
+- cliente API mínimo para Expo
+- integración mínima ya planteada
+
+FASE 5 — Integración end-to-end en la app
+- flujo DIY completo
+- flujo PRO completo
+- loading, error, retry
+- persistencia útil
+- reapertura de proyectos
+- integración real UI + backend + storage
+
+FASE 6 — Cierre de MVP y pulido real
+- historial de proyectos
+- reapertura
+- edición útil
+- duplicado y borrado
+- relanzar IA cuando proceda
+- UX mejorada
+- sensación de producto real
+
+FASE 7 — Beta, publicación y operación real
+- entornos
+- builds beta
+- observabilidad mínima
+- crash reporting
+- analytics útiles
+- feedback
+- release checklist
+- base operativa para beta real
+
+FASE 8 — Roadmap post-beta, priorización y escalado
+- backlog priorizado
+- métricas que importan
+- V2 propuesta
+- monetización o packaging
+- evolución técnica razonable
+- riesgos y mitigaciones
+- plan de decisión post-beta
+
+OBJETIVO DE ESTA FASE
+Quiero cerrar el proyecto a nivel de documentación maestra y sistema de ejecución.
+
+No quiero más arquitectura nueva.
+No quiero más features nuevas.
+Quiero dejar un sistema claro para:
+- ejecutar las fases sin caos
+- saber qué está hecho y qué no
+- evaluar si cada fase está bien cerrada
+- tener un documento maestro único
+- poder seguir el proyecto yo o cualquier desarrollador sin perderse
+
+RESULTADO QUE QUIERO
+Al terminar esta fase, quiero tener:
+- un documento maestro del producto
+- un mapa consolidado de fases
+- criterios de aceptación por fase
+- checklist de ejecución por fase
+- estado del proyecto (pendiente / en curso / hecho)
+- dependencias entre fases
+- riesgos de ejecución
+- orden recomendado real
+- backlog vivo separado del roadmap cerrado
+
+LO QUE QUIERO QUE HAGAS
+
+1. Documento maestro del proyecto
+Quiero un documento único en markdown que resuma:
+- visión del producto
+- arquitectura final decidida
+- fases 1 a 8
+- dependencias entre fases
+- estado de cada fase
+- riesgos principales
+- próximas acciones
+
+Debe ser claro y utilizable de verdad.
+
+2. Mapa consolidado de fases
+Quiero una lista maestra y limpia de todas las fases:
+- Fase 1
+- Fase 2 v2
+- Fase 3
+- Fase 4A
+- Fase 5
+- Fase 6
+- Fase 7
+- Fase 8
+- Fase 9
+
+Para cada una:
+- objetivo
+- entregables
+- dependencias
+- criterio de cierre
+
+3. Criterios de aceptación
+Quiero definir para cada fase:
+- qué significa “terminada”
+- qué pruebas o validaciones mínimas hay que pasar
+- qué artefactos deben existir
+- qué cosas NO hace falta tener aún
+
+Nada ambiguo.
+
+4. Checklist de ejecución
+Quiero una checklist útil para ejecutar el proyecto fase por fase.
+
+Ejemplo:
+- prompt preparado
+- implementación realizada
+- compilación OK
+- pruebas mínimas OK
+- revisión manual OK
+- documentación actualizada
+- fase marcada como cerrada
+
+5. Estado del proyecto
+Quiero una estructura simple para marcar cada fase como:
+- pendiente
+- en curso
+- bloqueada
+- hecha
+
+Y que quede claro:
+- qué falta
+- qué depende de qué
+- qué se puede hacer en paralelo
+- qué no conviene tocar aún
+
+6. Backlog vivo separado
+Quiero separar claramente:
+- roadmap cerrado por fases
+- backlog vivo de mejoras e ideas
+
+No quiero que futuras ideas ensucien el mapa base.
+Quiero una distinción clara entre:
+- sistema base del proyecto
+- mejoras futuras o cambios de dirección
+
+7. Riesgos de ejecución
+Quiero que señales riesgos reales de ejecución como:
+- atascarse en IA antes de cerrar UX
+- romper consistencia entre app y backend
+- meter features nuevas antes de cerrar beta
+- no validar bien en móvil real
+- dejar documentación desactualizada
+- acumular deuda por prompts inconexos
+
+Y quiero mitigaciones concretas.
+
+8. Orden real recomendado
+Quiero que dejes claro:
+- qué orden seguiría yo de verdad
+- qué fases se pueden solapar
+- qué no conviene empezar antes de cerrar lo anterior
+- cuándo parar de construir y pasar a validar
+
+9. Artefactos finales útiles
+Si lo ves útil, incluye:
+- PROJECT_MASTER.md
+- EXECUTION_CHECKLIST.md
+- PHASE_STATUS.md
+- BACKLOG_LIVE.md
+
+No hace falta que sean larguísimos.
+Quiero que sean claros y accionables.
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi responsable técnico de ejecución.
+
+Reglas:
+- no me des teoría larga
+- no me des frases vacías
+- quiero documentos útiles
+- quiero estructura clara
+- quiero criterios de cierre reales
+- si hay dos formas de organizarlo, elige una y sigue
+- mantén coherencia total con las fases anteriores
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Estructura de documentos finales
+2. Mapa consolidado de fases
+3. Criterios de aceptación por fase
+4. Checklist de ejecución
+5. Estado del proyecto y dependencias
+6. Backlog vivo separado
+7. Riesgos de ejecución y mitigaciones
+8. Orden real recomendado
+9. Documentos finales en markdown
+
+IMPORTANTE FINAL
+Quiero que esta Fase 9 deje el proyecto completamente ordenado a nivel de dirección y ejecución.
+
+No añadas más fases nuevas.
+No metas nuevas features.
+No rehagas arquitectura.
+Cierra el sistema, ordénalo y deja todo listo para ejecutar y validar sin caos.
