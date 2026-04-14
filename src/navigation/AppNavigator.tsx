@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { DIYResult, Material, OptimizationResult, Piece } from '../models';
-import { colors } from '../utils/theme';
+import { colors } from '../theme';
 
 import HomeScreen from '../screens/HomeScreen';
 import ModeSelectionScreen from '../screens/ModeSelectionScreen';

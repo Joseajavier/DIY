@@ -4,8 +4,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors } from '../utils/theme';
-import { Card } from '../components';
+import { colors, spacing, radius, typography, shadows } from '../theme';
+import { ModeCard, ProjectCard } from '../components';
 import { Project } from '../models';
 import { getProjects } from '../storage/projectRepository';
 import { getLastProjectId } from '../storage/settingsStorage';
@@ -13,6 +13,13 @@ import { getLastProjectId } from '../storage/settingsStorage';
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
+
+const features = [
+  { icon: '📋', key: 'steps' },
+  { icon: '🪚', key: 'optimize' },
+  { icon: '📦', key: 'materials' },
+  { icon: '🛒', key: 'shop' },
+];
 
 export default function HomeScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
@@ -26,145 +33,107 @@ export default function HomeScreen({ navigation }: Props) {
     }, [])
   );
 
-  const features = [
-    { icon: '📋', title: t('home.features.steps'), desc: t('home.features.stepsDesc') },
-    { icon: '🪚', title: t('home.features.optimize'), desc: t('home.features.optimizeDesc') },
-    { icon: '📦', title: t('home.features.materials'), desc: t('home.features.materialsDesc') },
-    { icon: '🛒', title: t('home.features.shop'), desc: t('home.features.shopDesc') },
-  ];
-
-  const toggleLang = () => {
-    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
-  };
+  const toggleLang = () => i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Top bar */}
       <View style={styles.topBar}>
-        <TouchableOpacity style={styles.langBtn} onPress={toggleLang}>
-          <Text style={styles.langText}>
-            {i18n.language === 'es' ? '🇬🇧 EN' : '🇪🇸 ES'}
-          </Text>
+        <TouchableOpacity style={styles.chipBtn} onPress={toggleLang}>
+          <Text style={styles.chipText}>{i18n.language === 'es' ? '🇬🇧 EN' : '🇪🇸 ES'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.langBtn} onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.langText}>⚙️</Text>
+        <TouchableOpacity style={styles.chipBtn} onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.chipText}>⚙️</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Hero */}
       <View style={styles.hero}>
-        <Text style={styles.logo}>🪵</Text>
-        <Text style={styles.title}>{t('app.name')}</Text>
-        <Text style={styles.subtitle}>{t('app.subtitle')}</Text>
-        <Text style={styles.tagline}>{t('app.tagline')}</Text>
+        <Text style={styles.logoIcon}>🪵</Text>
+        <Text style={typography.hero}>{t('app.name')}</Text>
+        <Text style={[typography.h3, { color: colors.textSecondary, marginTop: spacing.xs }]}>
+          {t('app.subtitle')}
+        </Text>
+        <Text style={[typography.bodySmall, { marginTop: spacing.sm, textAlign: 'center' }]}>
+          {t('app.tagline')}
+        </Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.ctaButton}
-        onPress={() => navigation.navigate('ModeSelection')}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.ctaText}>{t('home.start')}</Text>
+      {/* CTA */}
+      <TouchableOpacity style={[styles.ctaButton, shadows.md]} onPress={() => navigation.navigate('ModeSelection')} activeOpacity={0.8}>
+        <Text style={[typography.button, { color: colors.textOnPrimary }]}>{t('home.start')}</Text>
         <Text style={styles.ctaArrow}>→</Text>
       </TouchableOpacity>
 
+      {/* Continue last project */}
       {lastProjectId && (
-        <TouchableOpacity
-          style={styles.continueButton}
-          onPress={() => navigation.navigate('ProjectDetail', { projectId: lastProjectId })}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.continueText}>↩️ Continuar último proyecto</Text>
+        <TouchableOpacity style={styles.continueBtn} onPress={() => navigation.navigate('ProjectDetail', { projectId: lastProjectId })} activeOpacity={0.8}>
+          <Text style={[typography.buttonSmall, { color: colors.accent }]}>↩️ Continuar ultimo proyecto</Text>
         </TouchableOpacity>
       )}
 
-      <TouchableOpacity
-        style={styles.projectsButton}
-        onPress={() => navigation.navigate('Projects')}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.projectsIcon}>📂</Text>
-        <Text style={styles.projectsText}>{t('home.myProjects')}</Text>
+      {/* My projects */}
+      <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate('Projects')} activeOpacity={0.8}>
+        <Text style={[typography.buttonSmall, { color: colors.textSecondary }]}>📂 {t('home.myProjects')}</Text>
       </TouchableOpacity>
 
-      <Text style={styles.sectionTitle}>{t('home.whatCanYouDo')}</Text>
-      <View style={styles.featuresGrid}>
-        {features.map((f, i) => (
-          <Card key={i} style={styles.featureCard}>
+      {/* Features grid */}
+      <Text style={[typography.label, { marginTop: spacing.xxl, marginBottom: spacing.lg }]}>{t('home.whatCanYouDo')}</Text>
+      <View style={styles.grid}>
+        {features.map((f) => (
+          <View key={f.key} style={[styles.featureCard, shadows.sm]}>
             <Text style={styles.featureIcon}>{f.icon}</Text>
-            <Text style={styles.featureTitle}>{f.title}</Text>
-            <Text style={styles.featureDesc}>{f.desc}</Text>
-          </Card>
+            <Text style={[typography.bodySmall, { fontWeight: '600', color: colors.text, textAlign: 'center' }]}>
+              {t(`home.features.${f.key}`)}
+            </Text>
+            <Text style={[typography.caption, { textAlign: 'center', marginTop: 2 }]}>
+              {t(`home.features.${f.key}Desc`)}
+            </Text>
+          </View>
         ))}
       </View>
 
-      <Text style={styles.sectionTitle}>{t('home.availableModes')}</Text>
+      {/* Modes */}
+      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>{t('home.availableModes')}</Text>
+      <ModeCard
+        icon="🔨"
+        title={t('modes.diy')}
+        description={t('modes.diyLong')}
+        tags={[t('modes.diyTag'), t('modes.diyTag2')]}
+        variant="diy"
+        onPress={() => navigation.navigate('DIYInput')}
+      />
+      <ModeCard
+        icon="📐"
+        title={t('modes.pro')}
+        description={t('modes.proLong')}
+        tags={[t('modes.proTag'), t('modes.proTag2')]}
+        variant="pro"
+        onPress={() => navigation.navigate('ProInput')}
+      />
 
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('DIYInput')}>
-        <Card highlight="accent" style={styles.modeCard}>
-          <View style={styles.modeHeader}>
-            <Text style={styles.modeEmoji}>🔨</Text>
-            <View style={styles.modeInfo}>
-              <Text style={styles.modeName}>{t('modes.diy')}</Text>
-              <Text style={styles.modeDesc}>{t('modes.diyLong')}</Text>
-            </View>
-          </View>
-          <View style={styles.modeTagRow}>
-            <View style={[styles.tag, { backgroundColor: colors.accent + '33' }]}>
-              <Text style={[styles.tagText, { color: colors.accent }]}>{t('modes.diyTag')}</Text>
-            </View>
-            <View style={[styles.tag, { backgroundColor: colors.accent + '33' }]}>
-              <Text style={[styles.tagText, { color: colors.accent }]}>{t('modes.diyTag2')}</Text>
-            </View>
-          </View>
-        </Card>
-      </TouchableOpacity>
-
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('ProInput')}>
-        <Card highlight="pro" style={styles.modeCard}>
-          <View style={styles.modeHeader}>
-            <Text style={styles.modeEmoji}>📐</Text>
-            <View style={styles.modeInfo}>
-              <Text style={styles.modeName}>{t('modes.pro')}</Text>
-              <Text style={styles.modeDesc}>{t('modes.proLong')}</Text>
-            </View>
-          </View>
-          <View style={styles.modeTagRow}>
-            <View style={[styles.tag, { backgroundColor: colors.accentPro + '33' }]}>
-              <Text style={[styles.tagText, { color: colors.accentPro }]}>{t('modes.proTag')}</Text>
-            </View>
-            <View style={[styles.tag, { backgroundColor: colors.accentPro + '33' }]}>
-              <Text style={[styles.tagText, { color: colors.accentPro }]}>{t('modes.proTag2')}</Text>
-            </View>
-          </View>
-        </Card>
-      </TouchableOpacity>
-
+      {/* Recent projects */}
       {recentProjects.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>Proyectos recientes</Text>
+          <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>Proyectos recientes</Text>
           {recentProjects.map((p) => (
-            <TouchableOpacity
+            <ProjectCard
               key={p.id}
-              activeOpacity={0.8}
+              project={p}
               onPress={() => navigation.navigate('ProjectDetail', { projectId: p.id })}
-            >
-              <Card>
-                <View style={styles.recentRow}>
-                  <View>
-                    <Text style={styles.recentName}>{p.name}</Text>
-                    <Text style={styles.recentMeta}>
-                      {p.mode.toUpperCase()} • {p.createdAt ? new Date(p.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }) : ''}
-                    </Text>
-                  </View>
-                  <Text style={styles.recentArrow}>→</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
+            />
           ))}
         </>
       )}
 
+      {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>{t('app.name')} {t('app.version')} — {t('app.footer')}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Feedback')}>
+          <Text style={[typography.caption, { color: colors.primary }]}>💬 Enviar feedback</Text>
+        </TouchableOpacity>
+        <Text style={[typography.caption, { marginTop: spacing.sm }]}>
+          {t('app.name')} {t('app.version')} — {t('app.footer')}
+        </Text>
       </View>
     </ScrollView>
   );
@@ -172,76 +141,55 @@ export default function HomeScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24, paddingBottom: 40 },
-  topBar: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10 },
-  langBtn: {
-    backgroundColor: colors.card,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', gap: spacing.sm },
+  chipBtn: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
   },
-  langText: { fontSize: 14, color: colors.text, fontWeight: '600' },
-  hero: { alignItems: 'center', marginTop: 12, marginBottom: 28 },
-  logo: { fontSize: 56, marginBottom: 4 },
-  title: { fontSize: 42, fontWeight: 'bold', color: colors.accent },
-  subtitle: { fontSize: 18, color: colors.text, marginTop: 2 },
-  tagline: { fontSize: 13, color: colors.textSecondary, marginTop: 8, textAlign: 'center' },
+  chipText: { ...typography.caption, color: colors.text },
+  hero: { alignItems: 'center', marginTop: spacing.xl, marginBottom: spacing.xxl },
+  logoIcon: { fontSize: 52, marginBottom: spacing.sm },
   ctaButton: {
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 18,
-    borderRadius: 14,
-    marginBottom: 12,
+    borderRadius: radius.lg,
+    marginBottom: spacing.md,
   },
-  ctaText: { fontSize: 18, fontWeight: '700', color: colors.textDark, marginRight: 8 },
-  ctaArrow: { fontSize: 20, color: colors.textDark },
-  continueButton: {
-    flexDirection: 'row',
+  ctaArrow: { ...typography.button, color: colors.textOnPrimary, marginLeft: spacing.sm },
+  continueBtn: {
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 12,
-    backgroundColor: colors.accentPro + '22',
+    paddingVertical: spacing.lg,
+    borderRadius: radius.md,
+    backgroundColor: colors.accentMuted,
     borderWidth: 1,
-    borderColor: colors.accentPro,
-    marginBottom: 10,
+    borderColor: colors.accent,
+    marginBottom: spacing.sm,
   },
-  continueText: { fontSize: 15, color: colors.accentPro, fontWeight: '600' },
-  projectsButton: {
-    flexDirection: 'row',
+  secondaryBtn: {
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 12,
+    paddingVertical: spacing.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    marginBottom: 32,
+    marginBottom: spacing.lg,
   },
-  projectsIcon: { fontSize: 18, marginRight: 8 },
-  projectsText: { fontSize: 15, color: colors.textSecondary, fontWeight: '500' },
-  sectionTitle: { fontSize: 18, fontWeight: '600', color: colors.text, marginBottom: 14 },
-  featuresGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginBottom: 28 },
-  featureCard: { width: '48%', alignItems: 'center', paddingVertical: 20 },
-  featureIcon: { fontSize: 28, marginBottom: 8 },
-  featureTitle: { fontSize: 14, fontWeight: '600', color: colors.text, marginBottom: 4 },
-  featureDesc: { fontSize: 11, color: colors.textSecondary, textAlign: 'center' },
-  modeCard: { marginBottom: 14 },
-  modeHeader: { flexDirection: 'row', alignItems: 'flex-start' },
-  modeEmoji: { fontSize: 36, marginRight: 14 },
-  modeInfo: { flex: 1 },
-  modeName: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 4 },
-  modeDesc: { fontSize: 13, color: colors.textSecondary, lineHeight: 19 },
-  modeTagRow: { flexDirection: 'row', marginTop: 12, gap: 8 },
-  tag: { borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 },
-  tagText: { fontSize: 11, fontWeight: '600' },
-  recentRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  recentName: { fontSize: 15, fontWeight: '600', color: colors.text },
-  recentMeta: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
-  recentArrow: { fontSize: 18, color: colors.textMuted },
-  footer: { alignItems: 'center', marginTop: 32 },
-  footerText: { fontSize: 12, color: colors.textMuted },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  featureCard: {
+    width: '48%',
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  featureIcon: { fontSize: 26, marginBottom: spacing.sm },
+  footer: { alignItems: 'center', marginTop: spacing.xxxl },
 });
