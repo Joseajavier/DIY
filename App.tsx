@@ -13,7 +13,7 @@ trackEvent('app_opened');
 function App() {
   return (
     <NavigationContainer>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <AppNavigator />
     </NavigationContainer>
   );

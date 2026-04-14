@@ -1,47 +1,48 @@
-// Modern Rustic Workshop palette
+// Modern Rustic Workshop — LIGHT THEME
+// Arena, crema, nogal, cobre, verde salvia
 export const colors = {
-  // Backgrounds
-  bg: '#1C1614',           // deep espresso
-  bgAlt: '#241E1B',       // warm dark brown
-  surface: '#2E2520',     // walnut dark
-  surfaceLight: '#3A302A', // walnut medium
+  // Backgrounds — arena/crema claros
+  bg: '#FAF5EE',            // warm cream
+  bgAlt: '#F0E8DD',         // sand light
+  surface: '#FFFFFF',        // white cards
+  surfaceLight: '#F5EFE6',   // off-white
 
   // Primary — warm copper/amber
-  primary: '#C8935A',
-  primaryLight: '#DBA76E',
-  primaryDark: '#A67842',
-  primaryMuted: '#C8935A22',
+  primary: '#B8763C',
+  primaryLight: '#D4956A',
+  primaryDark: '#8B5A2B',
+  primaryMuted: '#B8763C15',
 
   // Accent — sage green
-  accent: '#7B9E7B',
-  accentLight: '#93B493',
-  accentDark: '#5C7D5C',
-  accentMuted: '#7B9E7B22',
+  accent: '#5B8A5B',
+  accentLight: '#7AA87A',
+  accentDark: '#3D6B3D',
+  accentMuted: '#5B8A5B15',
 
-  // Text
-  text: '#F5EDE4',         // warm white / linen
-  textSecondary: '#C4B5A4', // warm sand
-  textMuted: '#8B7D6E',    // muted earth
-  textOnPrimary: '#1C1614',
-  textOnAccent: '#F5EDE4',
+  // Text — dark walnut on light background
+  text: '#2C1E14',           // deep espresso
+  textSecondary: '#6B5B4E',  // warm brown
+  textMuted: '#A89888',      // muted sand
+  textOnPrimary: '#FFFFFF',
+  textOnAccent: '#FFFFFF',
 
   // Borders
-  border: '#3A302A',
-  borderLight: '#4A3F38',
+  border: '#E0D5C8',
+  borderLight: '#EDE6DC',
 
   // Semantic
-  success: '#7B9E7B',
-  warning: '#D4A04A',
+  success: '#5B8A5B',
+  warning: '#C8923A',
   danger: '#C25D4A',
-  info: '#6B8DAE',
+  info: '#5A7EA8',
 
   // Overlays
-  overlay: 'rgba(28, 22, 20, 0.7)',
-  cardShadow: 'rgba(0, 0, 0, 0.3)',
+  overlay: 'rgba(44, 30, 20, 0.5)',
+  cardShadow: 'rgba(139, 90, 43, 0.12)',
 
-  // Backwards compatibility aliases (old theme names)
-  card: '#2E2520',
-  accentPro: '#7B9E7B',
-  white: '#F5EDE4',
-  textDark: '#1C1614',
+  // Backwards compatibility aliases
+  card: '#FFFFFF',
+  accentPro: '#5B8A5B',
+  white: '#FFFFFF',
+  textDark: '#2C1E14',
 };
