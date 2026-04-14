@@ -61,6 +61,106 @@ const PROJECT_TEMPLATES: Record<
       { name: 'Escuadra de carpintero' },
     ],
   },
+  caja: {
+    steps: [
+      { number: 1, title: 'Cortar las 6 caras', description: 'Corta base (30×20cm), tapa (30×20cm), 2 laterales largos (30×15cm) y 2 cortos (20×15cm).' },
+      { number: 2, title: 'Lijar todas las piezas', description: 'Lija con grano 120 y repasa con 220 para un acabado suave.' },
+      { number: 3, title: 'Montar la base y laterales', description: 'Pega y atornilla los 4 laterales a la base. Usa escuadra para ángulos rectos.' },
+      { number: 4, title: 'Instalar la tapa', description: 'Coloca bisagras pequeñas para que la tapa abra y cierre.' },
+      { number: 5, title: 'Acabado', description: 'Aplica barniz, pintura o decora a tu gusto. Puedes añadir un cierre.' },
+    ],
+    materials: [
+      { name: 'Tablero de pino 60×40cm', quantity: 1, unit: 'ud' },
+      { name: 'Tornillos 3×20mm', quantity: 16, unit: 'ud' },
+      { name: 'Bisagras pequeñas', quantity: 2, unit: 'ud' },
+      { name: 'Cola de carpintero', quantity: 1, unit: 'bote' },
+      { name: 'Lija grano 120 y 220', quantity: 2, unit: 'hojas' },
+      { name: 'Barniz / Pintura', quantity: 1, unit: 'bote' },
+    ],
+    tools: [
+      { name: 'Sierra de calar' },
+      { name: 'Taladro atornillador' },
+      { name: 'Metro y lápiz' },
+      { name: 'Escuadra de carpintero' },
+      { name: 'Lijadora orbital', optional: true },
+    ],
+  },
+  banco: {
+    steps: [
+      { number: 1, title: 'Cortar patas', description: 'Corta 4 patas de 7×7cm a 43cm de alto (altura estándar de banco).' },
+      { number: 2, title: 'Cortar asiento', description: 'Corta 3 tablones de 100×12cm o un tablero macizo de 100×35cm.' },
+      { number: 3, title: 'Montar travesaños', description: 'Une las patas con travesaños a 10cm del suelo y a 10cm del asiento.' },
+      { number: 4, title: 'Fijar asiento', description: 'Atornilla los tablones del asiento al bastidor. Deja 5mm entre tablones para drenaje si es exterior.' },
+      { number: 5, title: 'Reforzar', description: 'Añade una cruceta diagonal debajo para mayor estabilidad.' },
+      { number: 6, title: 'Acabado', description: 'Lija y aplica aceite de teca (exterior) o barniz (interior). 2 capas mínimo.' },
+    ],
+    materials: [
+      { name: 'Listón 7×7cm (2m)', quantity: 2, unit: 'ud' },
+      { name: 'Tablón 100×12cm', quantity: 3, unit: 'ud' },
+      { name: 'Listón 5×3cm (2m)', quantity: 2, unit: 'ud' },
+      { name: 'Tornillos 5×70mm', quantity: 16, unit: 'ud' },
+      { name: 'Tornillos 4×40mm', quantity: 12, unit: 'ud' },
+      { name: 'Cola de carpintero', quantity: 1, unit: 'bote' },
+      { name: 'Aceite de teca / Barniz', quantity: 1, unit: 'bote' },
+      { name: 'Lija grano 80, 120 y 220', quantity: 3, unit: 'hojas' },
+    ],
+    tools: [
+      { name: 'Sierra circular / ingletadora' },
+      { name: 'Taladro atornillador' },
+      { name: 'Sargentos (mínimo 4)' },
+      { name: 'Metro y lápiz' },
+      { name: 'Escuadra de carpintero' },
+      { name: 'Lijadora orbital', optional: true },
+    ],
+  },
+  perchero: {
+    steps: [
+      { number: 1, title: 'Cortar tabla base', description: 'Corta un tablón de 80×15cm que servirá de soporte para los ganchos.' },
+      { number: 2, title: 'Lijar y redondear', description: 'Lija la tabla y redondea las esquinas con lija o fresadora.' },
+      { number: 3, title: 'Marcar posiciones', description: 'Marca los puntos para los ganchos cada 15cm, centrados en la tabla.' },
+      { number: 4, title: 'Instalar ganchos', description: 'Atornilla los ganchos de percha en las marcas. Predrillar para evitar grietas.' },
+      { number: 5, title: 'Acabado', description: 'Aplica barniz, pintura o cera. Puedes añadir una balda superior.' },
+      { number: 6, title: 'Montar en pared', description: 'Fija con tacos y tirafondos a la pared. Verifica nivel.' },
+    ],
+    materials: [
+      { name: 'Tablón macizo 80×15cm', quantity: 1, unit: 'ud' },
+      { name: 'Ganchos de percha', quantity: 5, unit: 'ud' },
+      { name: 'Tornillos 3×20mm', quantity: 10, unit: 'ud' },
+      { name: 'Tacos + tirafondos pared', quantity: 3, unit: 'ud' },
+      { name: 'Barniz / Pintura', quantity: 1, unit: 'bote' },
+      { name: 'Lija grano 120 y 220', quantity: 2, unit: 'hojas' },
+    ],
+    tools: [
+      { name: 'Sierra de calar' },
+      { name: 'Taladro atornillador' },
+      { name: 'Metro y lápiz' },
+      { name: 'Nivel de burbuja' },
+      { name: 'Fresadora', optional: true },
+    ],
+  },
+  marco: {
+    steps: [
+      { number: 1, title: 'Cortar listones a 45°', description: 'Corta 4 listones con inglete a 45° en ambos extremos. Medida exterior según foto/espejo.' },
+      { number: 2, title: 'Lijar cortes', description: 'Lija las superficies y los cortes en inglete para un ajuste perfecto.' },
+      { number: 3, title: 'Encolar y unir', description: 'Aplica cola en los ingletes y une con sargentos de esquina. Refuerza con clavos sin cabeza.' },
+      { number: 4, title: 'Fresar rebajo', description: 'Haz un rebajo en la parte trasera para encajar el cristal/foto. Si no tienes fresadora, usa listones finos.' },
+      { number: 5, title: 'Acabado', description: 'Lija, tiñe o pinta el marco. Inserta el contenido y cierra con clips o tapa trasera.' },
+    ],
+    materials: [
+      { name: 'Listón moldura 3×2cm (2m)', quantity: 1, unit: 'ud' },
+      { name: 'Clavos sin cabeza 20mm', quantity: 8, unit: 'ud' },
+      { name: 'Cola de carpintero', quantity: 1, unit: 'bote' },
+      { name: 'Clips sujeta-marco', quantity: 4, unit: 'ud' },
+      { name: 'Tinte / Pintura', quantity: 1, unit: 'bote' },
+    ],
+    tools: [
+      { name: 'Sierra ingletadora / caja de ingletes' },
+      { name: 'Sargentos de esquina' },
+      { name: 'Martillo pequeño' },
+      { name: 'Metro y lápiz' },
+      { name: 'Fresadora', optional: true },
+    ],
+  },
 };
 
 const DEFAULT_TEMPLATE = {
@@ -96,6 +196,18 @@ function matchTemplate(description: string) {
   }
   if (lower.includes('mesa') || lower.includes('escritorio') || lower.includes('table')) {
     return PROJECT_TEMPLATES.mesa;
+  }
+  if (lower.includes('caja') || lower.includes('cofre') || lower.includes('baúl') || lower.includes('baul')) {
+    return PROJECT_TEMPLATES.caja;
+  }
+  if (lower.includes('banco') || lower.includes('banqueta') || lower.includes('asiento')) {
+    return PROJECT_TEMPLATES.banco;
+  }
+  if (lower.includes('perchero') || lower.includes('colgador') || lower.includes('gancho')) {
+    return PROJECT_TEMPLATES.perchero;
+  }
+  if (lower.includes('marco') || lower.includes('cuadro') || lower.includes('espejo')) {
+    return PROJECT_TEMPLATES.marco;
   }
   return DEFAULT_TEMPLATE;
 }
