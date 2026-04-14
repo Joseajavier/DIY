@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking, Image } from 'react-native';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking, Image, SectionList } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
-import { ToolFilter, ToolTier, ToolUse, ToolPower } from '../models/tools';
+import { ToolFilter, ToolTier, ToolUse, ToolPower, ToolProduct } from '../models/tools';
 import { searchTools, getToolBrandName, getToolTypeName } from '../services/toolSearchService';
 import { TOOL_CATEGORIES, TOOL_TYPES } from '../data/toolData';
+import { fetchToolCatalog } from '../services/catalogApiClient';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'ToolSearch'> };
 
@@ -39,6 +40,21 @@ export default function ToolSearchScreen({ navigation }: Props) {
 
   const results = useMemo(() => searchTools(filter), [query, categoryId, tier, use, power]);
 
+  // Group results by type for sections
+  const sections = useMemo(() => {
+    const grouped: Record<string, ToolProduct[]> = {};
+    for (const p of results) {
+      if (!grouped[p.typeId]) grouped[p.typeId] = [];
+      grouped[p.typeId].push(p);
+    }
+    return Object.entries(grouped).map(([typeId, data]) => ({
+      typeId,
+      title: getToolTypeName(typeId),
+      icon: TOOL_TYPES.find(t => t.id === typeId)?.icon || '🔧',
+      data,
+    }));
+  }, [results]);
+
   const Chip = ({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) => (
     <TouchableOpacity style={[styles.chip, active && styles.chipActive]} onPress={onPress}>
       <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted }]}>{label}</Text>
@@ -62,12 +78,20 @@ export default function ToolSearchScreen({ navigation }: Props) {
         {POWERS.map(p => <Chip key={p.key} label={p.label} active={power === p.key} onPress={() => setPower(power === p.key ? '' : p.key as ToolPower)} />)}
       </ScrollView>
 
-      <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} resultado{results.length !== 1 ? 's' : ''}</Text>
+      <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} herramienta{results.length !== 1 ? 's' : ''} en {sections.length} categoría{sections.length !== 1 ? 's' : ''}</Text>
 
-      <FlatList
-        data={results}
+      <SectionList
+        sections={sections}
         keyExtractor={item => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section }) => (
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>{section.icon}</Text>
+            <Text style={[typography.h2, { flex: 1 }]}>{section.title}</Text>
+            <Text style={typography.caption}>{section.data.length}</Text>
+          </View>
+        )}
         renderItem={({ item }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
@@ -119,6 +143,8 @@ const styles = StyleSheet.create({
   chip: { backgroundColor: colors.surface, borderRadius: radius.full, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, marginRight: spacing.sm, borderWidth: 1, borderColor: colors.border },
   chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xl, marginBottom: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border },
+  sectionIcon: { fontSize: 22 },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
   cardRow: { flexDirection: 'row', gap: spacing.md },
   cardImage: { width: 72, height: 72, borderRadius: radius.md, backgroundColor: colors.bgAlt },

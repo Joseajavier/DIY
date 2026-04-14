@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import aiRoutes from './routes/ai';
 import feedbackRoutes from './routes/feedback';
 import analyticsRoutes from './routes/analytics';
+import catalogRoutes from './routes/catalog';
 import { errorHandler } from './utils/errors';
 
 const app = express();
@@ -35,6 +36,7 @@ app.get('/health', (_req, res) => {
 app.use('/ai', aiLimiter, aiRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/analytics', analyticsRoutes);
+app.use('/catalog', catalogRoutes);
 
 // Error handler
 app.use(errorHandler);
