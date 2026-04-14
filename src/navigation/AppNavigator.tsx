@@ -14,10 +14,15 @@ import ProOptimizationScreen from '../screens/ProOptimizationScreen';
 import ProResultsScreen from '../screens/ProResultsScreen';
 import ShopScreen from '../screens/ShopScreen';
 import ProjectsScreen from '../screens/ProjectsScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
+import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
+  Onboarding: undefined;
   Home: undefined;
   Projects: undefined;
+  Settings: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult };
@@ -40,8 +45,11 @@ export default function AppNavigator() {
     contentStyle: { backgroundColor: colors.bg },
   };
 
+  const hasSeenOnboarding = getHasSeenOnboarding();
+
   return (
-    <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Navigator screenOptions={screenOptions} initialRouteName={hasSeenOnboarding ? 'Home' : 'Onboarding'}>
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Projects" component={ProjectsScreen} options={{ title: t('nav.myProjects') }} />
       <Stack.Screen name="ModeSelection" component={ModeSelectionScreen} options={{ title: t('nav.selectMode') }} />
@@ -52,6 +60,7 @@ export default function AppNavigator() {
       <Stack.Screen name="ProOptimization" component={ProOptimizationScreen} options={{ title: t('nav.optimization') }} />
       <Stack.Screen name="ProResults" component={ProResultsScreen} options={{ title: t('nav.results') }} />
       <Stack.Screen name="Shop" component={ShopScreen} options={{ title: t('nav.shops') }} />
+      <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: '⚙️' }} />
     </Stack.Navigator>
   );
 }

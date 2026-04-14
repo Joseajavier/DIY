@@ -26,11 +26,16 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <TouchableOpacity style={styles.langBtn} onPress={toggleLang}>
-        <Text style={styles.langText}>
-          {i18n.language === 'es' ? '🇬🇧 EN' : '🇪🇸 ES'}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.langBtn} onPress={toggleLang}>
+          <Text style={styles.langText}>
+            {i18n.language === 'es' ? '🇬🇧 EN' : '🇪🇸 ES'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.langBtn} onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.langText}>⚙️</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.hero}>
         <Text style={styles.logo}>🪵</Text>
@@ -120,8 +125,8 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 40 },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10 },
   langBtn: {
-    alignSelf: 'flex-end',
     backgroundColor: colors.card,
     borderRadius: 8,
     paddingHorizontal: 12,
