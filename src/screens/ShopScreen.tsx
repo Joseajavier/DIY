@@ -8,7 +8,7 @@ import { getStoreRecommendations } from '../services/storeRecommender';
 import { comparePrices } from '../services/priceComparator';
 import { saveShopOptions } from '../storage/shopRepository';
 import { getLastProjectId } from '../storage/settingsStorage';
-import { colors } from '../utils/theme';
+import { colors, spacing, radius, typography, shadows } from '../theme';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Shop'>;
@@ -21,54 +21,53 @@ export default function ShopScreen({ navigation, route }: Props) {
   const stores = useMemo(() => getStoreRecommendations(materials), [materials]);
   const comparison = useMemo(() => comparePrices(stores), [stores]);
 
-  // Persist store options to SQLite
   useEffect(() => {
     const pid = getLastProjectId();
-    if (pid && stores.length) {
-      saveShopOptions(pid, stores);
-    }
+    if (pid && stores.length) saveShopOptions(pid, stores);
   }, [stores]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>{t('shop.title')}</Text>
-      <Text style={styles.subtitle}>{mode === 'diy' ? t('shop.diyRecommendations') : t('shop.proComparison')}</Text>
+      <Text style={[typography.h1, { color: colors.primary }]}>{t('shop.title')}</Text>
+      <Text style={[typography.bodySmall, { marginBottom: spacing.xl }]}>
+        {mode === 'diy' ? t('shop.diyRecommendations') : t('shop.proComparison')}
+      </Text>
 
       {comparison.best && (
-        <View style={styles.bestCard}>
-          <Text style={styles.bestLabel}>⭐ {t('shop.bestOption')}</Text>
-          <Text style={styles.bestName}>{comparison.best.name}</Text>
+        <View style={[styles.bestCard, shadows.md]}>
+          <Text style={[typography.caption, { color: colors.primary }]}>⭐ {t('shop.bestOption')}</Text>
+          <Text style={[typography.h2, { marginTop: spacing.sm }]}>{comparison.best.name}</Text>
           <Text style={styles.bestPrice}>{comparison.best.price.toFixed(2)} €</Text>
-          <Text style={styles.bestTime}>{t('shop.delivery')}: {comparison.best.time}</Text>
+          <Text style={typography.caption}>{t('shop.delivery')}: {comparison.best.time}</Text>
         </View>
       )}
 
       {comparison.recommendation && (
         <View style={styles.recoCard}>
-          <Text style={styles.recoText}>💡 {comparison.recommendation}</Text>
+          <Text style={[typography.bodySmall, { lineHeight: 20 }]}>💡 {comparison.recommendation}</Text>
         </View>
       )}
 
-      <Text style={styles.section}>{t('shop.allOptions')}</Text>
+      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>{t('shop.allOptions')}</Text>
       {comparison.ranked.map((store, i) => (
-        <View key={i} style={styles.storeCard}>
+        <View key={i} style={[styles.storeCard, shadows.sm]}>
           <View style={styles.storeHeader}>
-            <Text style={styles.storeName}>{store.name}</Text>
-            <View style={[styles.badge, { backgroundColor: store.type === 'online' ? colors.accentPro : colors.accent }]}>
-              <Text style={styles.badgeText}>{store.type === 'online' ? t('shop.online') : t('shop.store')}</Text>
+            <Text style={typography.h3}>{store.name}</Text>
+            <View style={[styles.badge, { backgroundColor: store.type === 'online' ? colors.accent : colors.primary }]}>
+              <Text style={[typography.caption, { color: colors.text }]}>{store.type === 'online' ? t('shop.online') : t('shop.store')}</Text>
             </View>
           </View>
           <View style={styles.storeDetails}>
-            <Text style={styles.storePrice}>{store.price.toFixed(2)} €</Text>
-            <Text style={styles.storeTime}>{store.time}</Text>
+            <Text style={[typography.body, { fontWeight: '700', color: colors.success }]}>{store.price.toFixed(2)} €</Text>
+            <Text style={typography.caption}>{store.time}</Text>
             <View style={styles.scoreBar}><View style={[styles.scoreFill, { width: `${store.score * 10}%` }]} /></View>
-            <Text style={styles.scoreText}>{store.score}/10</Text>
+            <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{store.score}/10</Text>
           </View>
         </View>
       ))}
 
-      <TouchableOpacity style={styles.homeButton} onPress={() => navigation.popToTop()}>
-        <Text style={styles.homeButtonText}>{t('shop.backHome')}</Text>
+      <TouchableOpacity style={styles.homeBtn} onPress={() => navigation.popToTop()}>
+        <Text style={[typography.buttonSmall, { color: colors.text }]}>{t('shop.backHome')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -76,28 +75,15 @@ export default function ShopScreen({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24, paddingBottom: 40 },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.accent, marginBottom: 4 },
-  subtitle: { fontSize: 16, color: colors.textSecondary, marginBottom: 24 },
-  bestCard: { backgroundColor: colors.card, borderRadius: 14, padding: 20, marginBottom: 28, borderWidth: 2, borderColor: colors.accent, alignItems: 'center' },
-  bestLabel: { fontSize: 14, color: colors.accent, marginBottom: 8 },
-  bestName: { fontSize: 20, fontWeight: 'bold', color: colors.text },
-  bestPrice: { fontSize: 28, fontWeight: 'bold', color: colors.success, marginTop: 4 },
-  bestTime: { fontSize: 13, color: colors.textSecondary, marginTop: 4 },
-  recoCard: { backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 20, borderLeftWidth: 3, borderLeftColor: colors.accent },
-  recoText: { fontSize: 13, color: colors.textSecondary, lineHeight: 19 },
-  section: { fontSize: 18, fontWeight: '600', color: colors.text, marginBottom: 14 },
-  storeCard: { backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 12 },
-  storeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  storeName: { fontSize: 16, fontWeight: '600', color: colors.text },
-  badge: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 },
-  badgeText: { fontSize: 11, color: colors.white, fontWeight: '600' },
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
+  bestCard: { backgroundColor: colors.surface, borderRadius: radius.xl, padding: spacing.xl, alignItems: 'center', borderWidth: 2, borderColor: colors.primary, marginBottom: spacing.xl },
+  bestPrice: { fontSize: 30, fontWeight: '800', color: colors.success, marginVertical: spacing.sm },
+  recoCard: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, borderLeftWidth: 3, borderLeftColor: colors.primary, marginBottom: spacing.lg },
+  storeCard: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
+  storeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md },
+  badge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 3 },
   storeDetails: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  storePrice: { fontSize: 16, fontWeight: 'bold', color: colors.success },
-  storeTime: { fontSize: 12, color: colors.textSecondary },
   scoreBar: { width: 60, height: 6, backgroundColor: colors.border, borderRadius: 3 },
-  scoreFill: { height: 6, backgroundColor: colors.accent, borderRadius: 3 },
-  scoreText: { fontSize: 12, color: colors.accent, fontWeight: '600' },
-  homeButton: { backgroundColor: colors.bgAlt, paddingVertical: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
-  homeButtonText: { fontSize: 16, color: colors.text },
+  scoreFill: { height: 6, backgroundColor: colors.primary, borderRadius: 3 },
+  homeBtn: { backgroundColor: colors.surfaceLight, paddingVertical: 16, borderRadius: radius.lg, alignItems: 'center', marginTop: spacing.xxl },
 });

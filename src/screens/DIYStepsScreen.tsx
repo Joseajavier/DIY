@@ -4,15 +4,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors } from '../utils/theme';
+import { colors, spacing, radius, typography, shadows } from '../theme';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DIYSteps'>;
   route: RouteProp<RootStackParamList, 'DIYSteps'>;
 };
 
-const difficultyColors = { easy: '#5a9e6f', medium: '#c97b3d', hard: '#b54a3a' };
-const difficultyLabels = { easy: '🟢 Fácil', medium: '🟡 Media', hard: '🔴 Difícil' };
+const diffColors = { easy: colors.success, medium: colors.warning, hard: colors.danger };
+const diffLabels = { easy: '🟢 Facil', medium: '🟡 Media', hard: '🔴 Dificil' };
 
 export default function DIYStepsScreen({ navigation, route }: Props) {
   const { t } = useTranslation();
@@ -20,34 +20,33 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>{result.projectName}</Text>
-      {result.summary && <Text style={styles.summary}>{result.summary}</Text>}
+      <Text style={[typography.h1, { color: colors.primary }]}>{result.projectName}</Text>
+      {result.summary && <Text style={[typography.bodySmall, { marginTop: spacing.sm, marginBottom: spacing.lg }]}>{result.summary}</Text>}
 
       <View style={styles.metaRow}>
-        <View style={[styles.metaBadge, { backgroundColor: difficultyColors[result.difficulty] + '33' }]}>
-          <Text style={[styles.metaText, { color: difficultyColors[result.difficulty] }]}>
-            {difficultyLabels[result.difficulty]}
-          </Text>
+        <View style={[styles.chip, { backgroundColor: diffColors[result.difficulty] + '22' }]}>
+          <Text style={[typography.caption, { color: diffColors[result.difficulty] }]}>{diffLabels[result.difficulty]}</Text>
         </View>
-        <View style={styles.metaBadge}>
-          <Text style={styles.metaText}>⏱ {result.estimatedTime}</Text>
+        <View style={styles.chip}>
+          <Text style={typography.caption}>⏱ {result.estimatedTime}</Text>
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>{t('diy.steps')}</Text>
+      <Text style={[typography.label, { marginBottom: spacing.lg }]}>{t('diy.steps')}</Text>
       {result.steps.map((step) => (
-        <View key={step.number} style={styles.stepCard}>
-          <View style={styles.stepNumber}>
-            <Text style={styles.stepNumberText}>{step.number}</Text>
+        <View key={step.number} style={[styles.stepCard, shadows.sm]}>
+          <View style={styles.stepNum}>
+            <Text style={styles.stepNumText}>{step.number}</Text>
           </View>
-          <View style={styles.stepContent}>
-            <Text style={styles.stepTitle}>{step.title}</Text>
-            <Text style={styles.stepDesc}>{step.description}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={typography.h3}>{step.title}</Text>
+            <Text style={[typography.bodySmall, { marginTop: spacing.xs }]}>{step.description}</Text>
           </View>
         </View>
       ))}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DIYMaterials', { result })}>
-        <Text style={styles.buttonText}>{t('diy.viewMaterials')}</Text>
+
+      <TouchableOpacity style={[styles.button, shadows.md]} onPress={() => navigation.navigate('DIYMaterials', { result })}>
+        <Text style={[typography.button, { color: colors.textOnPrimary }]}>{t('diy.viewMaterials')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -55,19 +54,11 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24, paddingBottom: 40 },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.accent, marginBottom: 4 },
-  summary: { fontSize: 14, color: colors.textSecondary, lineHeight: 20, marginBottom: 16 },
-  metaRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
-  metaBadge: { backgroundColor: colors.card, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6 },
-  metaText: { fontSize: 13, fontWeight: '600', color: colors.textSecondary },
-  sectionTitle: { fontSize: 16, color: colors.textSecondary, marginBottom: 16 },
-  stepCard: { flexDirection: 'row', backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 12 },
-  stepNumber: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.accent, justifyContent: 'center', alignItems: 'center', marginRight: 14, marginTop: 2 },
-  stepNumberText: { fontWeight: 'bold', color: colors.textDark, fontSize: 14 },
-  stepContent: { flex: 1 },
-  stepTitle: { fontSize: 16, fontWeight: '600', color: colors.text, marginBottom: 4 },
-  stepDesc: { fontSize: 13, color: colors.textSecondary, lineHeight: 19 },
-  button: { backgroundColor: colors.accent, paddingVertical: 16, borderRadius: 12, alignItems: 'center', marginTop: 16 },
-  buttonText: { fontSize: 16, fontWeight: '600', color: colors.textDark },
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
+  metaRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.xl },
+  chip: { backgroundColor: colors.surface, borderRadius: radius.sm, paddingHorizontal: spacing.md, paddingVertical: spacing.sm },
+  stepCard: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
+  stepNum: { width: 34, height: 34, borderRadius: 17, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', marginRight: spacing.lg },
+  stepNumText: { ...typography.button, color: colors.textOnPrimary, fontSize: 14 },
+  button: { backgroundColor: colors.primary, paddingVertical: 18, borderRadius: radius.lg, alignItems: 'center', marginTop: spacing.xl },
 });

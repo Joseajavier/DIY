@@ -1,21 +1,18 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { colors } from '../utils/theme';
+import { colors, spacing, radius, typography, shadows } from '../theme';
 
-type Props = {
-  message: string;
-  onRetry?: () => void;
-};
+type Props = { message: string; onRetry?: () => void };
 
 export default function ErrorState({ message, onRetry }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>⚠️</Text>
-      <Text style={styles.title}>Algo salió mal</Text>
-      <Text style={styles.message}>{message}</Text>
+      <Text style={{ fontSize: 48, marginBottom: spacing.xl }}>⚠️</Text>
+      <Text style={[typography.h2, { textAlign: 'center', marginBottom: spacing.sm }]}>Algo salio mal</Text>
+      <Text style={[typography.bodySmall, { textAlign: 'center', marginBottom: spacing.xxl }]}>{message}</Text>
       {onRetry && (
-        <TouchableOpacity style={styles.button} onPress={onRetry}>
-          <Text style={styles.buttonText}>Reintentar</Text>
+        <TouchableOpacity style={[styles.button, shadows.md]} onPress={onRetry}>
+          <Text style={[typography.button, { color: colors.textOnPrimary }]}>Reintentar</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -23,10 +20,6 @@ export default function ErrorState({ message, onRetry }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40, backgroundColor: colors.bg },
-  icon: { fontSize: 48, marginBottom: 16 },
-  title: { fontSize: 20, fontWeight: '600', color: colors.text, marginBottom: 8 },
-  message: { fontSize: 14, color: colors.textSecondary, textAlign: 'center', marginBottom: 24, lineHeight: 20 },
-  button: { backgroundColor: colors.accent, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 12 },
-  buttonText: { fontSize: 16, fontWeight: '600', color: colors.textDark },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xxxl, backgroundColor: colors.bg },
+  button: { backgroundColor: colors.primary, paddingHorizontal: spacing.xxl, paddingVertical: spacing.lg, borderRadius: radius.lg },
 });

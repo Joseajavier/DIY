@@ -1,42 +1,31 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../utils/theme';
+import { colors, spacing, radius, typography } from '../theme';
 
-type Props = {
-  value: number; // 0-100
-  label: string;
-  size?: 'small' | 'large';
-};
+type Props = { value: number; label: string; size?: 'small' | 'large' };
 
 export default function EfficiencyGauge({ value, label, size = 'large' }: Props) {
-  const clampedValue = Math.max(0, Math.min(100, value));
-  const barColor = clampedValue > 80 ? colors.success : clampedValue > 50 ? colors.accent : colors.danger;
-  const isLarge = size === 'large';
+  const v = Math.max(0, Math.min(100, value));
+  const barColor = v > 80 ? colors.success : v > 50 ? colors.warning : colors.danger;
+  const lg = size === 'large';
 
   return (
-    <View style={[styles.container, isLarge && styles.containerLarge]}>
-      <View style={styles.headerRow}>
-        <Text style={[styles.label, isLarge && styles.labelLarge]}>{label}</Text>
-        <Text style={[styles.value, isLarge && styles.valueLarge, { color: barColor }]}>
-          {clampedValue.toFixed(1)}%
-        </Text>
+    <View style={{ marginBottom: lg ? spacing.xl : spacing.md }}>
+      <View style={styles.header}>
+        <Text style={lg ? typography.body : typography.bodySmall}>{label}</Text>
+        <Text style={[lg ? typography.h2 : typography.body, { color: barColor }]}>{v.toFixed(1)}%</Text>
       </View>
-      <View style={[styles.bar, isLarge && styles.barLarge]}>
-        <View style={[styles.fill, { width: `${clampedValue}%`, backgroundColor: barColor }]} />
+      <View style={[styles.bar, lg && styles.barLg]}>
+        <View style={[styles.fill, lg && styles.fillLg, { width: `${v}%`, backgroundColor: barColor }]} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { marginBottom: 12 },
-  containerLarge: { marginBottom: 20 },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  label: { fontSize: 13, color: colors.textSecondary },
-  labelLarge: { fontSize: 15, fontWeight: '600' },
-  value: { fontSize: 14, fontWeight: 'bold' },
-  valueLarge: { fontSize: 20 },
-  bar: { height: 8, backgroundColor: colors.border, borderRadius: 4 },
-  barLarge: { height: 12, borderRadius: 6 },
-  fill: { height: '100%', borderRadius: 4 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
+  bar: { height: 8, backgroundColor: colors.border, borderRadius: radius.sm },
+  barLg: { height: 12 },
+  fill: { height: 8, borderRadius: radius.sm },
+  fillLg: { height: 12 },
 });

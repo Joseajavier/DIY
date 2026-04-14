@@ -1,21 +1,18 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { colors } from '../utils/theme';
+import { colors, spacing, typography } from '../theme';
 
-type Props = {
-  message?: string;
-};
+type Props = { message?: string };
 
 export default function LoadingState({ message = 'Procesando...' }: Props) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color={colors.accent} />
-      <Text style={styles.text}>{message}</Text>
+      <ActivityIndicator size="large" color={colors.primary} />
+      <Text style={[typography.bodySmall, { marginTop: spacing.xl }]}>{message}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40, backgroundColor: colors.bg },
-  text: { fontSize: 16, color: colors.textSecondary, marginTop: 16 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xxxl, backgroundColor: colors.bg },
 });
