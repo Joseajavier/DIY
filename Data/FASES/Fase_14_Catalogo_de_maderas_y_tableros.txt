@@ -1,0 +1,241 @@
+FASE 14 — CATALOGO DE MADERAS, TABLEROS Y MATERIALES
+
+OBJETIVO
+Buscador de maderas y tableros dentro de la app. El usuario puede explorar
+tipos de madera, tableros, listones, contrachapados, etc. con informacion
+de uso, dureza, precio orientativo, donde se usa y para que sirve.
+
+FLUJO DEL USUARIO
+1. Pulsa "🪵 Catalogo de maderas" en Home
+2. Ve categorias: Tableros, Maciza, Listones, Contrachapado, Especiales
+3. Filtra por:
+   - Uso: Interior / Exterior / Ambos
+   - Resistencia: Baja / Media / Alta
+   - Precio: Economico / Medio / Premium
+   - Acabado: Sin tratar / Tratada / Laminada / Chapada
+4. Ve listado de maderas/tableros con ficha
+5. Cada ficha: nombre, foto/icono, medidas habituales, precio/m2, para que sirve
+
+CATEGORIAS
+
+TABLEROS DERIVADOS
+- Aglomerado / Melamina
+  Medidas habituales: 244x122cm, 366x183cm
+  Grosores: 10, 16, 18, 22, 25mm
+  Precio: 8-20€/m2
+  Uso: muebles de interior, estanterias, armarios
+  Pros: barato, facil de trabajar, muchos acabados
+  Contras: no resiste humedad, bordes fragiles
+
+- MDF (fibra de media densidad)
+  Medidas: 244x122cm
+  Grosores: 3, 5, 10, 16, 19mm
+  Precio: 6-15€/m2
+  Uso: muebles lacados, molduras, puertas
+  Pros: superficie perfecta para pintar, bordes limpios
+  Contras: pesado, no resiste agua, polvo toxico al cortar
+
+- Contrachapado
+  Medidas: 244x122cm
+  Grosores: 4, 6, 9, 12, 15, 18mm
+  Precio: 15-40€/m2 segun calidad
+  Uso: fondos de mueble, cajoneras, estructuras
+  Tipos: abedul, okume, fenolico (exterior)
+  Pros: fuerte, estable, ligero
+  Contras: mas caro, bordes visibles
+
+- OSB (oriented strand board)
+  Medidas: 244x122cm
+  Grosores: 9, 12, 15, 18mm
+  Precio: 5-12€/m2
+  Uso: construccion, suelos, paredes, bricolaje industrial
+  Pros: muy barato, resistente, OSB3 para exterior
+  Contras: aspecto rustico, dificil de pintar
+
+- Tablero alistonado
+  Medidas: 200x40cm, 200x60cm, a medida
+  Grosores: 18, 20, 27mm
+  Precio: 20-45€/m2
+  Uso: mesas, encimeras, estanterias vistas
+  Madera: pino, abeto, haya, roble
+  Pros: aspecto madera real, resistente, bonito
+  Contras: mas caro, puede alabearse
+
+MADERA MACIZA
+- Pino
+  Precio: 5-15€/m lineal (segun seccion)
+  Dureza: blanda
+  Uso: estructuras, muebles basicos, bricolaje general
+  Color: claro, amarillento, con nudos
+
+- Abeto
+  Precio: 4-12€/m lineal
+  Dureza: blanda
+  Uso: estructuras, construccion, exterior tratado
+  Color: claro, pocos nudos
+
+- Haya
+  Precio: 15-30€/m lineal
+  Dureza: dura
+  Uso: muebles de calidad, encimeras, torneria
+  Color: rosado claro, veta fina
+
+- Roble
+  Precio: 25-50€/m lineal
+  Dureza: muy dura
+  Uso: muebles premium, suelos, exterior
+  Color: marron dorado, veta marcada
+
+- Fresno
+  Precio: 20-40€/m lineal
+  Dureza: dura
+  Uso: muebles, mangos de herramienta, curvado
+  Color: claro, veta decorativa
+
+- Nogal
+  Precio: 40-80€/m lineal
+  Dureza: dura
+  Uso: muebles de lujo, ebanisteria, detalles
+  Color: marron oscuro, muy decorativo
+
+- Cerezo
+  Precio: 30-60€/m lineal
+  Dureza: media-dura
+  Uso: muebles finos, armarios, detalles
+  Color: rojizo, oscurece con el tiempo
+
+- Iroko
+  Precio: 25-45€/m lineal
+  Dureza: muy dura
+  Uso: exterior, terrazas, jardin, nautica
+  Color: marron dorado, resiste intemperie
+
+- Teca
+  Precio: 50-100€/m lineal
+  Dureza: muy dura
+  Uso: exterior premium, nautica, jardin
+  Color: marron dorado, aceites naturales
+
+LISTONES Y PERFILES
+- Liston cuadrado (pino): 3x3, 4x4, 5x5, 6x6, 7x7cm
+- Liston rectangular: 3x2, 4x2, 5x3, 6x3, 7x4cm
+- Molduras: media cana, cuarto de circulo, tapajuntas
+- Rodapies: 7cm, 10cm, 12cm alto
+- Pasamanos y barandillas
+
+MATERIALES COMPLEMENTARIOS
+- Cinta de canto (melamina, PVC, chapa)
+- Herrajes (bisagras, guias cajon, correderas)
+- Tornilleria (confirmat, tirafondos, autorroscantes)
+- Cola (blanca, PU, contacto, epoxi)
+- Acabados (barniz, aceite, cera, lasur, esmalte)
+- Abrasivos (lijas grano 40-400)
+
+MODELO DE DATOS
+
+WoodCategory
+  - id: string
+  - name: string
+  - icon: string
+
+WoodProduct
+  - id: string
+  - categoryId: string
+  - name: string
+  - description: string
+  - variants: WoodVariant[]
+  - use: ('interior' | 'exterior' | 'both')[]
+  - hardness: 'soft' | 'medium' | 'hard' | 'very_hard'
+  - priceRange: { min: number, max: number, unit: string }
+  - commonSizes: string[]
+  - thicknesses?: number[]
+  - pros: string[]
+  - cons: string[]
+  - bestFor: string
+  - color: string
+  - amazonSearchQuery?: string
+
+WoodVariant
+  - size: string (ej: "244x122cm")
+  - thickness: number (mm)
+  - priceEstimate: number
+
+WoodFilter
+  - category?: string
+  - use?: 'interior' | 'exterior' | 'both'
+  - hardness?: string
+  - priceLevel?: 'budget' | 'mid' | 'premium'
+  - finish?: 'raw' | 'treated' | 'laminated' | 'veneered'
+
+PANTALLAS
+
+WoodCatalogScreen
+  - Categorias como cards grandes con icono
+  - Filtros: uso, resistencia, precio
+  - Lista de maderas/tableros
+
+WoodDetailScreen
+  - Nombre + descripcion
+  - Badge: uso interior/exterior
+  - Badge: dureza
+  - Medidas disponibles con precios
+  - Pros y contras
+  - "Ideal para: ..."
+  - Boton "Buscar en Amazon / Leroy Merlin"
+
+COMPONENTES
+
+WoodProductCard
+  - Icono o color representativo
+  - Nombre: "Aglomerado Melamina Blanca"
+  - Precio: "8-20€/m2"
+  - Badges: Interior | Blanda | Economico
+  - 1 linea descripcion
+
+WoodFilterBar
+  - Similar a ToolFilterBar
+  - Chips: Uso, Dureza, Precio, Acabado
+
+INTEGRACION CON LA APP
+- Nuevo boton en HomeScreen: "🪵 Catalogo de maderas"
+- Conectar con flujo PRO: cuando el usuario necesita elegir tablero,
+  sugerir "Ver catalogo de tableros" con enlace a WoodCatalogScreen
+- Conectar con flujo DIY: en la lista de materiales, enlazar cada
+  material de madera al catalogo
+
+INTEGRACION CON FASE 12 (AFILIADOS)
+- amazonSearchQuery por producto para buscar en PA-API cuando disponible
+- Sin afiliados: abrir busqueda en amazon.es en el navegador
+
+ESTRUCTURA DE ARCHIVOS
+
+src/
+  data/
+    woodCategories.ts        ← categorias
+    woodProducts.ts          ← catalogo completo
+  screens/
+    WoodCatalogScreen.tsx    ← buscador con filtros
+    WoodDetailScreen.tsx     ← detalle de madera/tablero
+  components/
+    WoodProductCard.tsx      ← tarjeta de producto
+    WoodFilterBar.tsx        ← filtros
+  services/
+    woodSearchService.ts     ← filtrado local
+  models/
+    wood.ts                  ← tipos
+
+ORDEN DE IMPLEMENTACION
+1. Crear modelos en models/wood.ts
+2. Crear datos en src/data/ (5 categorias, 30+ productos)
+3. Crear woodSearchService.ts
+4. Crear componentes
+5. Crear WoodCatalogScreen + WoodDetailScreen
+6. Añadir navegacion
+7. Añadir boton en HomeScreen
+8. Conectar con flujos DIY/PRO
+9. Testear
+
+IMPORTANTE
+- Todo local, no necesita backend
+- Se puede implementar ahora mismo junto con Fase 13
+- Datos basados en precios reales del mercado español 2024-2026
