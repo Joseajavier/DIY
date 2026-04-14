@@ -1,0 +1,124 @@
+{
+  "app": {
+    "name": "DIY",
+    "subtitle": "Carpentry & Woodworking",
+    "tagline": "Your smart assistant for wood projects",
+    "footer": "Made with wood and code",
+    "version": "v1.0"
+  },
+  "home": {
+    "start": "Start a project",
+    "myProjects": "My projects",
+    "whatCanYouDo": "What can you do?",
+    "availableModes": "Available modes",
+    "features": {
+      "steps": "Guided steps",
+      "stepsDesc": "Clear step-by-step instructions",
+      "optimize": "Cut optimization",
+      "optimizeDesc": "Minimize wood waste",
+      "materials": "Materials list",
+      "materialsDesc": "Everything you need to buy",
+      "shop": "Where to buy",
+      "shopDesc": "Compare prices and stores"
+    }
+  },
+  "modes": {
+    "select": "Choose your mode",
+    "diy": "DIY Mode",
+    "diyDesc": "Simple step-by-step projects.\nIdeal for beginners.",
+    "diyTag": "Beginner",
+    "diyTag2": "Step by step",
+    "diyLong": "Describe your idea and instantly generate steps, materials and tools.",
+    "pro": "PRO Mode",
+    "proDesc": "Exact calculations and optimization.\nFor professionals.",
+    "proTag": "Professional",
+    "proTag2": "Optimization",
+    "proLong": "Enter exact measurements, optimize cuts and calculate materials precisely."
+  },
+  "diy": {
+    "title": "New DIY project",
+    "projectName": "Project name",
+    "projectNamePlaceholder": "E.g.: Wall shelf",
+    "whatToBuild": "What do you want to build?",
+    "descriptionPlaceholder": "Describe your project: materials, approximate size, use...",
+    "generate": "Generate project",
+    "steps": "Assembly steps",
+    "viewMaterials": "View materials and tools"
+  },
+  "pro": {
+    "title": "PRO Project",
+    "projectName": "Project name",
+    "projectNamePlaceholder": "E.g.: Built-in wardrobe",
+    "boardSize": "Board size (cm)",
+    "piecesToCut": "Pieces to cut",
+    "width": "Width",
+    "height": "Height",
+    "qty": "Qty",
+    "addPiece": "+ Add piece",
+    "optimize": "Optimize cuts",
+    "optimization": "Cut optimization",
+    "boards": "Boards",
+    "efficiency": "Efficiency",
+    "waste": "Waste",
+    "boardDistribution": "Distribution by board",
+    "board": "Board",
+    "viewResults": "View full results",
+    "results": "Results",
+    "optimizationSummary": "Optimization summary",
+    "boardsNeeded": "Boards needed",
+    "totalEfficiency": "Total efficiency",
+    "totalWaste": "Total waste",
+    "estimatedMaterials": "Estimated materials"
+  },
+  "materials": {
+    "title": "Materials",
+    "tools": "Tools",
+    "optional": "optional"
+  },
+  "shop": {
+    "title": "Where to buy",
+    "diyRecommendations": "DIY Recommendations",
+    "proComparison": "PRO Comparison",
+    "bestOption": "Best option",
+    "allOptions": "All options",
+    "delivery": "Delivery",
+    "online": "Online",
+    "store": "Store",
+    "whereToBuy": "Where to buy?",
+    "backHome": "Back to home"
+  },
+  "projects": {
+    "title": "My projects",
+    "empty": "No saved projects",
+    "emptyDesc": "Projects you create will appear here",
+    "create": "Create project",
+    "delete": "Delete project",
+    "deleteConfirm": "Delete \"{{name}}\"?",
+    "cancel": "Cancel",
+    "deleteBtn": "Delete",
+    "piece": "piece",
+    "pieces": "pieces"
+  },
+  "nav": {
+    "selectMode": "Select mode",
+    "newDIY": "New DIY project",
+    "steps": "Steps",
+    "materials": "Materials",
+    "proPro": "PRO Project",
+    "optimization": "Optimization",
+    "results": "Results",
+    "shops": "Shops",
+    "myProjects": "My projects"
+  },
+  "errors": {
+    "noName": "Enter a project name",
+    "noDescription": "Describe what you want to build",
+    "noPieces": "Add at least one piece with valid dimensions",
+    "error": "Error"
+  },
+  "settings": {
+    "language": "Language",
+    "spanish": "Español",
+    "english": "English"
+  }
+}

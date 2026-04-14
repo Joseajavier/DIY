@@ -1,0 +1,74 @@
+FASE 3 — DISEÑO RÚSTICO + MULTIIDIOMA
+
+1. REDISEÑO VISUAL — ESTÉTICA CARPINTERO
+
+Concepto: la app debe sentirse como un taller de carpintería, no como una app tech.
+
+Paleta de colores:
+- Fondo: tonos madera oscura (#3b2f2f, #2c1e1e)
+- Cards: madera clara / pergamino (#d4a76a, #f5e6c8)
+- Accent: naranja herrumbre / cobre (#c97b3d, #a0522d)
+- Texto principal: crema (#faf0e6)
+- Texto secundario: sepia (#8b7355)
+- Pro mode: verde bosque (#4a7c59)
+- Bordes: marrón oscuro (#5c3d2e)
+
+Tipografía:
+- Evaluar fuentes rústicas/serif para títulos (ej: Playfair Display, Merriweather)
+- Body en sans-serif limpio (ej: Inter, Nunito)
+
+Iconos y decoración:
+- Emojis actuales están bien para MVP
+- Futuro: iconos custom estilo herramientas de carpintería
+- Considerar texturas sutiles de madera en headers/cards
+
+Componentes a rediseñar:
+- Theme completo (utils/theme.ts)
+- Todos los estilos de pantallas
+- Cards con bordes redondeados tipo madera
+- Botones con aspecto más orgánico
+- Headers con tono taller
+
+2. MULTIIDIOMA (i18n)
+
+Stack recomendado:
+- i18next + react-i18next
+- expo-localization para detectar idioma del dispositivo
+
+Idiomas mínimos:
+- Español (es) — idioma base
+- Inglés (en)
+- Francés (fr) — opcional
+
+Estructura:
+src/
+  i18n/
+    index.ts          → configuración i18next
+    locales/
+      es.json         → traducciones español
+      en.json         → traducciones inglés
+
+Alcance:
+- Todos los textos de pantallas
+- Todos los textos de servicios (pasos DIY, materiales, herramientas)
+- Labels de navegación
+- Mensajes de error/validación
+- Nombres de tiendas se mantienen (Amazon, Leroy Merlin, etc.)
+
+Persistencia:
+- Guardar idioma seleccionado en MMKV
+- Añadir key @diy_language en settingsStorage.ts
+
+UI:
+- Selector de idioma en HomeScreen o Settings
+- Banderitas o código ISO como opciones
+
+ORDEN DE IMPLEMENTACIÓN
+1. Instalar i18next + react-i18next + expo-localization
+2. Crear estructura i18n con traducciones ES/EN
+3. Extraer todos los strings hardcodeados
+4. Integrar con pantallas
+5. Rediseñar theme.ts con paleta rústica
+6. Aplicar nuevo tema a todas las pantallas
+7. Añadir selector de idioma
+8. Verificar compilación

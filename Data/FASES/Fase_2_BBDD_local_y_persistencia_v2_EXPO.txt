@@ -1,0 +1,200 @@
+FASE 2 — BBDD LOCAL Y PERSISTENCIA (OPCIÓN B: EXPO + PREBUILD)
+
+DECISIÓN ARQUITECTÓNICA
+Se mantiene Expo (SDK 54). No se migra a bare React Native.
+Se usa Expo con development builds (prebuild) para acceder a módulos nativos.
+
+STACK DE PERSISTENCIA
+- expo-sqlite       → datos estructurados (proyectos, piezas, materiales, optimizaciones, tiendas)
+- react-native-mmkv → preferencias ligeras (modo, último proyecto, unidades, onboarding)
+
+LIBRERÍAS A INSTALAR
+yarn:
+  npx expo install expo-sqlite
+  npx expo install react-native-mmkv
+
+PREPARACIÓN DEL ENTORNO
+1. npx expo install --fix              → corregir dependencias desactualizadas
+2. npx expo install expo-sqlite        → SQLite oficial de Expo
+3. npx expo install react-native-mmkv  → MMKV para preferencias
+4. npx expo prebuild                   → genera ios/ y android/
+5. npx expo run:ios (o run:android)    → compilar dev build
+
+ESTRUCTURA DE CARPETAS
+
+src/
+  models/
+    index.ts                → modelos tipados (actualizado)
+  storage/
+    database.ts             → inicialización SQLite + singleton
+    migrations.ts           → esquema de tablas + versionado
+    projectRepository.ts    → CRUD proyectos
+    pieceRepository.ts      → CRUD piezas por proyecto
+    materialRepository.ts   → CRUD materiales por proyecto
+    optimizationRepository.ts → CRUD resultados optimización
+    shopRepository.ts       → CRUD opciones de compra por proyecto
+    settingsStorage.ts      → lectura/escritura MMKV
+    index.ts                → re-exports
+  services/                 → (ya existente, sin cambios)
+  screens/                  → (ya existente, se integra persistencia)
+  components/               → (ya existente, sin cambios)
+  navigation/               → (ya existente, sin cambios)
+  utils/                    → (ya existente, sin cambios)
+
+MODELOS TYPESCRIPT AMPLIADOS
+
+Project
+  - id: string
+  - name: string
+  - mode: 'diy' | 'pro'
+  - description: string
+  - createdAt: string (ISO)
+  - updatedAt: string (ISO)
+
+Piece
+  - id: string
+  - projectId: string
+  - width: number
+  - height: number
+  - quantity: number
+  - thickness: number (default 18mm)
+
+Material
+  - id: string
+  - projectId: string
+  - name: string
+  - quantity: number
+  - unit: string
+
+Optimization
+  - id: string
+  - projectId: string
+  - boardWidth: number
+  - boardHeight: number
+  - totalBoards: number
+  - wastePercentage: number
+  - efficiency: number
+  - createdAt: string (ISO)
+
+StoreOption
+  - id: string
+  - projectId: string
+  - storeName: string
+  - type: 'online' | 'physical'
+  - price: number
+  - deliveryTime: string
+  - score: number
+
+UserSettings (MMKV)
+  - selectedMode: 'diy' | 'pro'
+  - lastProjectId: string
+  - userUnits: 'cm' | 'mm' | 'in'
+  - hasSeenOnboarding: boolean
+
+ESQUEMA SQLITE
+
+TABLE projects
+  id TEXT PRIMARY KEY
+  name TEXT NOT NULL
+  mode TEXT NOT NULL CHECK(mode IN ('diy','pro'))
+  description TEXT DEFAULT ''
+  created_at TEXT NOT NULL
+  updated_at TEXT NOT NULL
+
+TABLE pieces
+  id TEXT PRIMARY KEY
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE
+  width REAL NOT NULL
+  height REAL NOT NULL
+  quantity INTEGER NOT NULL DEFAULT 1
+  thickness REAL NOT NULL DEFAULT 18
+
+TABLE materials
+  id TEXT PRIMARY KEY
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE
+  name TEXT NOT NULL
+  quantity REAL NOT NULL
+  unit TEXT DEFAULT 'ud'
+
+TABLE optimizations
+  id TEXT PRIMARY KEY
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE
+  board_width REAL NOT NULL
+  board_height REAL NOT NULL
+  total_boards INTEGER NOT NULL
+  waste_percentage REAL NOT NULL
+  efficiency REAL NOT NULL
+  created_at TEXT NOT NULL
+
+TABLE shop_options
+  id TEXT PRIMARY KEY
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE
+  store_name TEXT NOT NULL
+  type TEXT NOT NULL CHECK(type IN ('online','physical'))
+  price REAL NOT NULL
+  delivery_time TEXT NOT NULL
+  score REAL NOT NULL
+
+MMKV KEYS
+  @diy_selected_mode     → 'diy' | 'pro'
+  @diy_last_project_id   → string
+  @diy_user_units        → 'cm' | 'mm' | 'in'
+  @diy_has_seen_onboarding → boolean
+
+CRUD MÍNIMO POR REPOSITORIO
+
+projectRepository:
+  - createProject(project) → void
+  - getProjects() → Project[]
+  - getProjectById(id) → Project | null
+  - updateProject(id, data) → void
+  - deleteProject(id) → void
+
+pieceRepository:
+  - createPiece(piece) → void
+  - getPiecesByProject(projectId) → Piece[]
+  - deletePiecesByProject(projectId) → void
+
+materialRepository:
+  - createMaterial(material) → void
+  - getMaterialsByProject(projectId) → Material[]
+  - deleteMaterialsByProject(projectId) → void
+
+optimizationRepository:
+  - saveOptimization(optimization) → void
+  - getOptimizationByProject(projectId) → Optimization | null
+
+shopRepository:
+  - saveShopOptions(projectId, options[]) → void
+  - getShopOptionsByProject(projectId) → StoreOption[]
+
+settingsStorage:
+  - getSelectedMode() → 'diy' | 'pro'
+  - setSelectedMode(mode) → void
+  - getLastProjectId() → string | null
+  - setLastProjectId(id) → void
+  - getUserUnits() → 'cm' | 'mm' | 'in'
+  - setUserUnits(units) → void
+  - getHasSeenOnboarding() → boolean
+  - setHasSeenOnboarding(value) → void
+
+ORDEN DE IMPLEMENTACIÓN
+1. Corregir dependencias (npx expo install --fix)
+2. Instalar expo-sqlite y react-native-mmkv
+3. npx expo prebuild
+4. Verificar que compila
+5. Crear modelos ampliados en models/index.ts
+6. Crear storage/database.ts (singleton SQLite)
+7. Crear storage/migrations.ts (esquema + versionado)
+8. Crear storage/settingsStorage.ts (MMKV)
+9. Crear repositorios CRUD uno a uno
+10. Integrar persistencia con pantallas existentes
+11. Eliminar AsyncStorage (reemplazado por MMKV + SQLite)
+12. Verificar compilación final
+
+NOTAS
+- Se elimina @react-native-async-storage/async-storage al final
+- Se elimina src/services/projectStorage.ts (reemplazado por repositorios)
+- Los servicios existentes (diyGenerator, cuttingOptimizer, etc.) NO cambian
+- Las pantallas se actualizan para usar repositorios en vez de estado efímero
+- El documento original Fase_2 queda como referencia histórica

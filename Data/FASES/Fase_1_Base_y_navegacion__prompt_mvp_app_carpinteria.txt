@@ -1,0 +1,197 @@
+FASE 1 — BASE DEL PROYECTO Y NAVEGACIÓN
+
+Quiero que actúes como un arquitecto y desarrollador senior de React Native con TypeScript.
+
+Necesito que me ayudes a construir un MVP de una app móvil de carpintería y bricolaje. La app debe estar pensada para dos tipos de usuario:
+
+1. DIY MODE (principiante)
+2. PRO MODE (avanzado)
+
+OBJETIVO DEL PRODUCTO
+La app debe ayudar a:
+- crear proyectos DIY en casa
+- calcular materiales y herramientas
+- generar pasos de montaje
+- optimizar cortes de madera
+- recomendar dónde comprar materiales
+- comparar opciones de compra
+
+ALCANCE DEL MVP
+Quiero un MVP SIN:
+- backend
+- autenticación
+- APIs de IA
+- 3D
+
+Quiero un MVP CON:
+- lógica local
+- datos mock
+- navegación completa
+- flujo funcional de principio a fin
+
+STACK OBLIGATORIO
+- React Native
+- TypeScript
+- React Navigation
+- estado local
+- usar Yarn, no npm
+
+ARQUITECTURA BASE
+Quiero esta estructura:
+
+src/
+  screens/
+  components/
+  services/
+  models/
+  utils/
+  navigation/
+
+PANTALLAS NECESARIAS
+
+Base:
+- HomeScreen
+- ModeSelectionScreen
+
+Flujo DIY:
+- DIYInputScreen
+- DIYStepsScreen
+- DIYMaterialsScreen
+
+Flujo PRO:
+- ProInputScreen
+- ProOptimizationScreen
+- ProResultsScreen
+
+Compras:
+- ShopScreen
+
+FLUJOS
+
+DIY MODE
+El usuario describe un proyecto sencillo y la app devuelve:
+- pasos de trabajo
+- materiales
+- herramientas
+- recomendaciones de compra mock
+
+PRO MODE
+El usuario introduce medidas exactas y la app devuelve:
+- piezas
+- optimización de cortes
+- eficiencia de material
+- materiales estimados
+- recomendaciones de compra mock
+
+SERVICIOS QUE QUIERO IMPLEMENTAR
+Crea estos servicios con lógica sencilla pero útil:
+
+1. diyGenerator.ts
+- convierte una idea simple en pasos
+- propone materiales
+- propone herramientas
+
+2. materialsGenerator.ts
+- calcula tableros
+- estima tornillos (aprox. 8 por unión cuando tenga sentido)
+- contempla cola
+
+3. cuttingOptimizer.ts
+- ordena piezas de mayor a menor
+- intenta encajarlas en tableros
+- minimiza desperdicio
+- enfoque simple tipo Cutting Stock Problem para MVP
+
+4. storeRecommender.ts
+- devuelve opciones mock de tiendas
+- Amazon = rápido
+- AliExpress = barato
+- Leroy Merlin = tienda física
+
+5. priceComparator.ts
+- compara precio
+- compara plazo de entrega
+- calcula una puntuación simple de recomendación
+
+MODELOS
+Quiero como mínimo estos modelos tipados:
+
+Project
+- id
+- name
+- mode
+- pieces
+
+Piece
+- width
+- height
+- quantity
+
+Material
+- name
+- quantity
+
+StoreOption
+- name
+- type
+- price
+- time
+- score
+
+FASES DEL TRABAJO
+
+FASE 1 — Estructura y navegación
+Quiero que empieces por:
+1. proponer la estructura exacta de carpetas y archivos
+2. definir la navegación completa
+3. crear el código base de las pantallas vacías
+4. dejar listo el proyecto para que compile
+
+FASE 2 — Flujo DIY
+Después:
+1. implementar el flujo DIY con datos mock
+2. generar pasos
+3. mostrar materiales
+4. mostrar herramientas
+5. conectar con recomendaciones de compra mock
+
+FASE 3 — Flujo PRO
+Después:
+1. crear entrada de piezas y medidas
+2. implementar optimización simple de cortes
+3. calcular eficiencia de material
+4. mostrar materiales estimados
+5. conectar con recomendaciones de compra mock
+
+FASE 4 — Servicios y conexión
+Después:
+1. terminar servicios
+2. conectar resultados con pantallas
+3. unificar tipos y modelos
+4. revisar consistencia del flujo completo
+
+FASE 5 — Mejora
+Después:
+1. mejorar validaciones
+2. mejorar UX
+3. limpiar estructura
+4. dejar el MVP presentable
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico.
+
+Reglas:
+- no me des teoría innecesaria
+- no me sueltes un resumen genérico
+- entrégame código útil
+- ve paso a paso
+- di claramente qué archivo estás creando o modificando
+- devuelve el código completo de cada archivo
+- usa TypeScript real
+- usa nombres limpios y consistentes
+- mantén el diseño simple pero serio
+- no inventes dependencias extra si no hacen falta
+
+IMPORTANTE
+Ahora mismo quiero que empieces solo por la FASE 1.
+Cuando termines la FASE 1, continúa con la FASE 2.

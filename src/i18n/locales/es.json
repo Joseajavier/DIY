@@ -1,0 +1,124 @@
+{
+  "app": {
+    "name": "DIY",
+    "subtitle": "Carpintería & Bricolaje",
+    "tagline": "Tu asistente para proyectos de madera",
+    "footer": "Hecho con madera y código",
+    "version": "v1.0"
+  },
+  "home": {
+    "start": "Empezar un proyecto",
+    "myProjects": "Mis proyectos",
+    "whatCanYouDo": "¿Qué puedes hacer?",
+    "availableModes": "Modos disponibles",
+    "features": {
+      "steps": "Pasos guiados",
+      "stepsDesc": "Instrucciones claras paso a paso",
+      "optimize": "Optimizar cortes",
+      "optimizeDesc": "Minimiza desperdicio de madera",
+      "materials": "Lista de materiales",
+      "materialsDesc": "Todo lo que necesitas comprar",
+      "shop": "Dónde comprar",
+      "shopDesc": "Compara precios y tiendas"
+    }
+  },
+  "modes": {
+    "select": "Elige tu modo",
+    "diy": "DIY Mode",
+    "diyDesc": "Proyectos sencillos paso a paso.\nIdeal para principiantes.",
+    "diyTag": "Principiante",
+    "diyTag2": "Paso a paso",
+    "diyLong": "Describe tu idea y genera pasos, materiales y herramientas al instante.",
+    "pro": "PRO Mode",
+    "proDesc": "Cálculos exactos y optimización.\nPara profesionales.",
+    "proTag": "Profesional",
+    "proTag2": "Optimización",
+    "proLong": "Introduce medidas exactas, optimiza cortes y calcula materiales con precisión."
+  },
+  "diy": {
+    "title": "Nuevo proyecto DIY",
+    "projectName": "Nombre del proyecto",
+    "projectNamePlaceholder": "Ej: Estantería de pared",
+    "whatToBuild": "¿Qué quieres construir?",
+    "descriptionPlaceholder": "Describe tu proyecto: materiales, tamaño aproximado, uso...",
+    "generate": "Generar proyecto",
+    "steps": "Pasos de montaje",
+    "viewMaterials": "Ver materiales y herramientas"
+  },
+  "pro": {
+    "title": "Proyecto PRO",
+    "projectName": "Nombre del proyecto",
+    "projectNamePlaceholder": "Ej: Armario empotrado",
+    "boardSize": "Tamaño del tablero (cm)",
+    "piecesToCut": "Piezas a cortar",
+    "width": "Ancho",
+    "height": "Alto",
+    "qty": "Qty",
+    "addPiece": "+ Añadir pieza",
+    "optimize": "Optimizar cortes",
+    "optimization": "Optimización de cortes",
+    "boards": "Tableros",
+    "efficiency": "Eficiencia",
+    "waste": "Desperdicio",
+    "boardDistribution": "Distribución por tablero",
+    "board": "Tablero",
+    "viewResults": "Ver resultados completos",
+    "results": "Resultados",
+    "optimizationSummary": "Resumen de optimización",
+    "boardsNeeded": "Tableros necesarios",
+    "totalEfficiency": "Eficiencia total",
+    "totalWaste": "Desperdicio total",
+    "estimatedMaterials": "Materiales estimados"
+  },
+  "materials": {
+    "title": "Materiales",
+    "tools": "Herramientas",
+    "optional": "opcional"
+  },
+  "shop": {
+    "title": "Dónde comprar",
+    "diyRecommendations": "Recomendaciones DIY",
+    "proComparison": "Comparativa PRO",
+    "bestOption": "Mejor opción",
+    "allOptions": "Todas las opciones",
+    "delivery": "Entrega",
+    "online": "Online",
+    "store": "Tienda",
+    "whereToBuy": "¿Dónde comprar?",
+    "backHome": "Volver al inicio"
+  },
+  "projects": {
+    "title": "Mis proyectos",
+    "empty": "Sin proyectos guardados",
+    "emptyDesc": "Los proyectos que crees aparecerán aquí",
+    "create": "Crear proyecto",
+    "delete": "Eliminar proyecto",
+    "deleteConfirm": "¿Eliminar \"{{name}}\"?",
+    "cancel": "Cancelar",
+    "deleteBtn": "Eliminar",
+    "piece": "pieza",
+    "pieces": "piezas"
+  },
+  "nav": {
+    "selectMode": "Seleccionar modo",
+    "newDIY": "Nuevo proyecto DIY",
+    "steps": "Pasos",
+    "materials": "Materiales",
+    "proPro": "Proyecto PRO",
+    "optimization": "Optimización",
+    "results": "Resultados",
+    "shops": "Tiendas",
+    "myProjects": "Mis proyectos"
+  },
+  "errors": {
+    "noName": "Introduce un nombre para el proyecto",
+    "noDescription": "Describe qué quieres construir",
+    "noPieces": "Añade al menos una pieza con dimensiones válidas",
+    "error": "Error"
+  },
+  "settings": {
+    "language": "Idioma",
+    "spanish": "Español",
+    "english": "English"
+  }
+}

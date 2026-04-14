@@ -1,0 +1,261 @@
+FASE 3 — MOTOR DE LÓGICA DEL PRODUCTO
+
+Quiero que actúes como un arquitecto y desarrollador senior de React Native con TypeScript.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- se mantiene Expo
+- workflow con Expo prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- capa de storage ya preparada
+
+IMPORTANTE
+No quiero rehacer la arquitectura.
+No quiero volver a discutir Expo vs bare React Native.
+No quiero cambiar la persistencia salvo que detectes un bug técnico real.
+En esta fase quiero centrarme solo en la lógica funcional del producto.
+
+OBJETIVO DE ESTA FASE
+Quiero construir el motor de lógica que hace útil la app de carpintería y bricolaje.
+
+Esta fase debe implementar la inteligencia funcional local del MVP:
+- convertir ideas DIY en pasos
+- estimar materiales
+- sugerir herramientas
+- optimizar cortes
+- calcular eficiencia y desperdicio
+- generar tiendas mock
+- comparar opciones de compra
+
+RESTRICCIONES
+- sin backend
+- sin APIs de IA
+- sin llamadas externas reales
+- sin 3D
+- sin cambiar a otra arquitectura
+- sin rehacer storage
+- sin complejidad innecesaria
+
+STACK Y CONTEXTO TÉCNICO
+- React Native
+- TypeScript
+- Expo
+- expo-sqlite ya integrado
+- react-native-mmkv ya integrado
+- proyecto existente con src/models, src/services, src/storage, src/screens, src/navigation, src/utils
+
+LO QUE QUIERO QUE IMPLEMENTES
+
+1. diyGenerator.ts
+Quiero un generador local y determinista que reciba una idea o descripción sencilla de proyecto DIY y devuelva:
+- nombre sugerido del proyecto
+- breve descripción normalizada
+- lista de pasos
+- lista de materiales estimados
+- lista de herramientas sugeridas
+- dificultad estimada: 'easy' | 'medium' | 'hard'
+- tiempo estimado en texto: por ejemplo '2-3 horas'
+
+Este generador no tiene que ser IA real.
+Quiero lógica local razonable basada en reglas simples y palabras clave.
+
+Ejemplos de entradas:
+- "quiero hacer una balda de pared"
+- "mesa auxiliar pequeña"
+- "estantería sencilla para libros"
+- "soporte para plantas"
+
+Quiero que la salida sea útil y consistente, aunque sea heurística.
+
+2. materialsGenerator.ts
+Quiero un servicio que, a partir de piezas o de un tipo de proyecto, calcule materiales base.
+Debe poder:
+- estimar tableros
+- estimar listones si aplica
+- estimar tornillos
+- estimar cola
+- estimar cantos o acabado básico si procede
+- devolver materiales con cantidad y unidad
+
+Reglas mínimas:
+- aproximación simple pero coherente
+- tornillos estimados con una regla clara
+- cola como cantidad estimada razonable
+- no inventar cálculos absurdos
+
+3. cuttingOptimizer.ts
+Quiero un optimizador local simple de cortes para MVP.
+Debe:
+- recibir piezas con width, height, quantity, thickness
+- expandir cantidades en piezas individuales
+- ordenar piezas de mayor a menor
+- asignarlas a tableros
+- intentar minimizar desperdicio
+- calcular:
+  - totalBoards
+  - usedArea
+  - wasteArea
+  - wastePercentage
+  - efficiency
+- devolver también el detalle de distribución por tablero
+
+No necesito un algoritmo perfecto.
+Necesito uno simple, explicable y útil para MVP.
+Puede ser un algoritmo heurístico tipo first-fit decreasing o similar.
+
+IMPORTANTE
+Quiero que el resultado sea estable y legible.
+No quiero magia negra ni un algoritmo difícil de mantener.
+
+4. storeRecommender.ts
+Quiero un servicio local mock que genere opciones de tienda según el tipo de compra.
+
+Tiendas base:
+- Amazon → rápido
+- AliExpress → barato
+- Leroy Merlin → física / bricolaje
+
+Puede incluir alguna más si tiene sentido, pero no muchas.
+
+Debe devolver para cada opción:
+- id
+- projectId si aplica
+- storeName
+- type
+- price
+- deliveryTime
+- score
+
+La lógica puede basarse en:
+- rapidez
+- precio
+- conveniencia según el proyecto
+- si el usuario está en modo DIY o PRO
+
+5. priceComparator.ts
+Quiero un servicio que reciba varias StoreOption y calcule:
+- ranking final
+- mejor opción por precio
+- mejor opción por rapidez
+- mejor opción global
+- explicación corta del motivo de la recomendación
+
+Debe generar una puntuación clara y simple.
+No quiero una fórmula absurda.
+Quiero algo fácil de entender y mantener.
+
+6. Orquestador opcional
+Si lo ves útil, puedes crear un servicio adicional tipo:
+- projectEngine.ts
+o
+- recommendationEngine.ts
+
+Solo si realmente ayuda a unir:
+- generación DIY
+- materiales
+- optimización
+- tiendas
+- comparativa
+
+Si lo haces, mantenlo simple.
+
+MODELOS Y TIPOS
+Quiero que reutilices los modelos existentes y, si hace falta, los amplíes sin romper la Fase 2 v2.
+
+Puedes añadir tipos auxiliares como:
+- DIYGenerationResult
+- ToolSuggestion
+- OptimizationBoardLayout
+- OptimizationPiecePlacement
+- ComparisonResult
+- ProjectDifficulty
+
+Pero no quiero duplicar modelos sin necesidad.
+
+ESTRUCTURA ESPERADA
+Trabaja dentro de:
+
+src/
+  services/
+    diyGenerator.ts
+    materialsGenerator.ts
+    cuttingOptimizer.ts
+    storeRecommender.ts
+    priceComparator.ts
+    [algún orquestador solo si hace falta]
+  models/
+    index.ts
+  utils/
+    [helpers si hacen falta]
+
+Si necesitas crear tipos auxiliares en models o utils, hazlo con orden.
+
+LO QUE QUIERO EN LA RESPUESTA
+
+1. Revisar brevemente si falta algún tipo antes de empezar
+2. Proponer la estructura exacta de archivos a tocar o crear
+3. Implementar cada servicio
+4. Devolver código completo por archivo
+5. Añadir ejemplos de uso reales
+6. Mostrar cómo conectar esta lógica con:
+   - una pantalla DIY
+   - una pantalla PRO
+7. Indicar qué resultados conviene guardar luego con la capa de storage ya creada en Fase 2 v2
+
+IMPORTANTE
+No quiero todavía rehacer todas las pantallas.
+Solo quiero dejar lista la lógica y ejemplos claros de integración.
+
+REQUISITOS DE CALIDAD
+- TypeScript real
+- código limpio
+- funciones pequeñas
+- nombres consistentes
+- sin teoría innecesaria
+- sin pseudo-código
+- sin respuestas vagas
+- sin depender de internet
+- sin librerías extra salvo que sean realmente necesarias
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico.
+
+Reglas:
+- no me des teoría larga
+- no me des solo ideas
+- quiero código útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- mantén una complejidad razonable para MVP
+- si alguna decisión técnica tiene dos opciones, elige una y sigue
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Archivos a crear o modificar
+2. Tipos nuevos o cambios en models/index.ts
+3. diyGenerator.ts
+4. materialsGenerator.ts
+5. cuttingOptimizer.ts
+6. storeRecommender.ts
+7. priceComparator.ts
+8. Orquestador opcional si lo creas
+9. Ejemplos de uso e integración mínima con pantallas
+10. Qué guardar después en SQLite / MMKV y qué no
+
+IMPORTANTE FINAL
+No vuelvas atrás a discutir arquitectura.
+No migres nada.
+No cambies Expo.
+No cambies la base de datos.
+Construye solo la Fase 3 sobre lo ya existente.

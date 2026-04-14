@@ -1,0 +1,312 @@
+FASE 4A — INTEGRACIÓN DE IA REAL (DIY CON IA + PRO CON IA Y TOOLS)
+
+Quiero que actúes como un arquitecto y desarrollador senior full-stack especializado en React Native, TypeScript y OpenAI.
+
+CONTEXTO REAL DEL PROYECTO
+Ya están hechas estas fases:
+
+FASE 1 — Base del proyecto
+- estructura base
+- navegación
+- pantallas
+- proyecto funcionando
+
+FASE 2 v2 — Persistencia local en Expo
+- se mantiene Expo
+- workflow con Expo prebuild / development build
+- expo-sqlite para datos estructurados
+- react-native-mmkv para preferencias ligeras
+- modelos y repositorios ya creados
+- capa de storage ya preparada
+
+FASE 3 — Motor de lógica del producto
+- diyGenerator.ts
+- materialsGenerator.ts
+- cuttingOptimizer.ts
+- storeRecommender.ts
+- priceComparator.ts
+- lógica local ya implementada o planificada
+
+OBJETIVO DE ESTA FASE
+Quiero convertir la app en una solución con IA real.
+
+Quiero dos comportamientos diferenciados:
+
+1. MODO NORMAL / DIY CON IA
+La IA debe generar:
+- nombre del proyecto
+- resumen
+- pasos
+- materiales
+- herramientas
+- dificultad
+- tiempo estimado
+
+Aquí la IA puede trabajar de forma bastante directa, pero la salida debe ser estructurada y validable.
+
+2. MODO PRO CON IA + TOOLS
+La IA NO debe inventarse los cálculos técnicos críticos.
+La IA debe:
+- entender la intención del usuario
+- validar o normalizar la entrada
+- detectar datos que faltan
+- llamar funciones internas para cálculo real
+- explicar el resultado al usuario de forma clara
+
+Los cálculos reales deben seguir haciéndose con lógica determinista propia, por ejemplo:
+- optimizeCuts
+- estimateMaterials
+- compareStoreOptions
+
+IMPORTANTE
+No quiero meter la API key en la app Expo.
+No quiero llamar a OpenAI directamente desde el cliente móvil.
+Quiero backend obligatorio entre la app y OpenAI.
+
+DECISIONES YA TOMADAS
+- La app sigue en Expo
+- No se migra a bare React Native
+- No se rehace la base de datos local
+- No se rompe la Fase 2 v2
+- No se reemplaza la lógica local de la Fase 3: se reutiliza como motor determinista cuando convenga
+- OpenAI se usará desde backend
+- La app móvil consumirá endpoints propios
+
+ARQUITECTURA QUE QUIERO
+Quiero que me propongas e implementes una arquitectura mínima pero profesional con:
+
+APP EXPO
+→ llama a mi backend
+BACKEND
+→ llama a OpenAI
+→ valida salidas
+→ ejecuta tools / funciones internas
+→ devuelve JSON limpio a la app
+
+PREFIERO
+- Node.js
+- TypeScript
+- una solución simple y seria
+- sin sobreingeniería
+
+Puedes elegir entre Express o Fastify, pero elige una y sigue sin ambigüedad.
+
+API DE OPENAI
+Quiero que uses la API moderna adecuada para este caso:
+- Responses API
+- structured outputs cuando aplique
+- function/tool calling cuando aplique
+
+No quiero ejemplos obsoletos.
+No quiero que uses patrones viejos si hay uno mejor.
+
+OBJETIVOS FUNCIONALES
+
+A. DIY CON IA REAL
+Quiero un endpoint tipo:
+POST /ai/diy-generate
+
+Entrada:
+- prompt del usuario
+- unidades preferidas
+- nivel del usuario si hace falta
+
+Salida estructurada:
+- projectName
+- summary
+- steps[]
+- materials[]
+- tools[]
+- difficulty
+- estimatedTime
+
+La respuesta debe ser robusta y fácil de mostrar en la app.
+
+B. PRO CON IA + TOOLS
+Quiero un endpoint tipo:
+POST /ai/pro-plan
+
+Entrada:
+- piezas
+- dimensiones de tablero
+- grosor
+- restricciones
+- modo de trabajo
+- contexto del proyecto
+
+Comportamiento esperado:
+- la IA analiza la solicitud
+- detecta si faltan datos
+- llama herramientas internas cuando proceda
+- usa resultados deterministas reales
+- devuelve una respuesta final clara y estructurada
+
+Salida esperada:
+- normalizedInput
+- warnings[]
+- optimizationSummary
+- materialsSummary
+- storeComparison
+- recommendation
+- explanation
+
+TOOLS / FUNCIONES INTERNAS
+Quiero que definas y conectes como tools del backend, como mínimo:
+- generateDIYPlan
+- estimateMaterials
+- optimizeCuts
+- compareStoreOptions
+
+Si ves útil:
+- validateProjectInput
+- normalizeUnits
+- saveProjectDraft
+
+Puedes añadir alguna más si aporta valor real, pero no quiero diez tools innecesarias.
+
+SEGURIDAD
+Quiero que quede claro:
+- la API key vive solo en backend
+- uso de variables de entorno
+- validación de entrada
+- manejo básico de errores
+- rate limiting básico si procede
+- no exponer secretos en la app
+
+ESTRUCTURA QUE QUIERO
+Puedes proponer la estructura exacta, pero me encaja algo así:
+
+backend/
+  src/
+    app.ts
+    server.ts
+    routes/
+      ai.ts
+    services/
+      openaiClient.ts
+      diyAiService.ts
+      proAiService.ts
+      toolRegistry.ts
+    tools/
+      generateDIYPlan.ts
+      estimateMaterials.ts
+      optimizeCuts.ts
+      compareStoreOptions.ts
+    schemas/
+      diySchema.ts
+      proSchema.ts
+      toolSchemas.ts
+    utils/
+      errors.ts
+      logger.ts
+      env.ts
+
+Y en la app Expo:
+- un cliente API mínimo
+- servicios para llamar a /ai/diy-generate y /ai/pro-plan
+- ejemplos de integración desde pantallas existentes
+
+MODELOS Y ESQUEMAS
+Quiero JSON schemas o validación equivalente para:
+- DIYGenerationResponse
+- ProPlanResponse
+- tool inputs
+- tool outputs
+
+Quiero respuestas consistentes.
+No quiero texto libre imposible de parsear.
+
+LO QUE NECESITO QUE HAGAS
+
+1. Decidir la arquitectura final
+- backend elegido
+- librerías necesarias
+- estructura de carpetas
+- flujo completo app → backend → OpenAI → app
+
+2. Preparar backend mínimo
+- servidor
+- configuración
+- variables de entorno
+- cliente OpenAI
+- rutas
+
+3. Implementar endpoint DIY con IA real
+- prompt del sistema
+- schema de salida
+- llamada a OpenAI
+- validación de respuesta
+- respuesta JSON limpia
+
+4. Implementar endpoint PRO con IA + tools
+- prompt del sistema
+- definición de tools
+- tool registry
+- ejecución de funciones internas
+- consolidación de la respuesta final
+
+5. Integración mínima con Expo
+- cliente HTTP
+- función para llamar al endpoint DIY
+- función para llamar al endpoint PRO
+- ejemplo de uso en pantalla DIY
+- ejemplo de uso en pantalla PRO
+
+6. Decidir cómo conectar Fase 3 con backend
+Aquí quiero que tomes una decisión técnica clara:
+- o reutilizar lógica pura de Fase 3 en un módulo compartido
+- o duplicar mínimamente en backend solo lo imprescindible
+- o mover el motor determinista a una zona compartida
+
+Pero elige una opción razonable y explícalo brevemente.
+No quiero ambigüedad.
+
+RESTRICCIONES IMPORTANTES
+- no rehacer Fase 1
+- no rehacer Fase 2 v2
+- no destruir Fase 3
+- no meter la key en Expo
+- no darme una arquitectura teórica sin código
+- no usar pseudocódigo
+- no inventar dependencias si no hacen falta
+- no complicarlo con microservicios
+
+FORMA DE RESPONDER
+Quiero que trabajes como si fueras mi programador técnico.
+
+Reglas:
+- no me des teoría larga
+- quiero código útil
+- di claramente qué archivo creas o modificas
+- devuelve el código completo de cada archivo
+- si hay dos opciones técnicas, elige una
+- usa TypeScript real
+- mantén la complejidad contenida
+- usa nombres consistentes
+- dame una solución que pueda empezar a montar ya
+
+ORDEN DE ENTREGA
+Quiero que me lo entregues en este orden:
+
+1. Decisión de arquitectura
+2. Librerías a instalar
+3. Estructura de carpetas
+4. Variables de entorno necesarias
+5. Schemas / tipos de respuesta
+6. Cliente OpenAI
+7. Tools y tool registry
+8. Endpoint DIY con IA real
+9. Endpoint PRO con IA + tools
+10. Cliente API para Expo
+11. Ejemplos de integración mínima en pantallas
+12. Qué guardar localmente y qué no
+
+IMPORTANTE FINAL
+Quiero que esta fase deje el proyecto listo para tener IA real de verdad:
+- DIY con generación IA estructurada
+- PRO con IA orquestando tools y motor determinista
+
+No vuelvas atrás a discutir Expo vs bare.
+No me propongas llamar a OpenAI directamente desde la app.
+No cambies la arquitectura previa.
+Construye esta fase sobre lo que ya existe.
