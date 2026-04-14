@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { ToolFilter, ToolTier, ToolUse, ToolPower } from '../models/tools';
 import { searchTools, getToolBrandName, getToolTypeName } from '../services/toolSearchService';
-import { TOOL_CATEGORIES } from '../data/toolData';
+import { TOOL_CATEGORIES, TOOL_TYPES } from '../data/toolData';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'ToolSearch'> };
 
@@ -72,27 +72,39 @@ export default function ToolSearchScreen({ navigation }: Props) {
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
           >
-            <View style={styles.cardHeader}>
+            <View style={styles.cardRow}>
+              {item.imageUrl ? (
+                <Image source={{ uri: item.imageUrl }} style={styles.cardImage} resizeMode="contain" />
+              ) : (
+                <View style={styles.cardImagePlaceholder}>
+                  <Text style={{ fontSize: 28 }}>{TOOL_CATEGORIES.find(c => TOOL_TYPES.find(t => t.id === item.typeId)?.categoryId === c.id)?.icon || '🔧'}</Text>
+                </View>
+              )}
               <View style={{ flex: 1 }}>
-                <Text style={typography.h3}>{getToolBrandName(item.brandId)} {item.model}</Text>
+                <View style={styles.cardHeader}>
+                  <Text style={[typography.h3, { flex: 1 }]}>{getToolBrandName(item.brandId)}</Text>
+                  <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
+                    <Text style={[typography.caption, { color: tierColors[item.tier] }]}>{tierLabels[item.tier]}</Text>
+                  </View>
+                </View>
+                <Text style={[typography.bodySmall, { fontWeight: '600' }]}>{item.model}</Text>
                 <Text style={[typography.caption, { marginTop: 2 }]}>{getToolTypeName(item.typeId)}</Text>
-              </View>
-              <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
-                <Text style={[typography.caption, { color: tierColors[item.tier] }]}>{tierLabels[item.tier]}</Text>
-              </View>
-            </View>
-            <Text style={[typography.bodySmall, { marginTop: spacing.sm }]}>{item.description}</Text>
-            <View style={styles.cardFooter}>
-              <Text style={[typography.h3, { color: colors.primary }]}>{item.priceMin}-{item.priceMax}€</Text>
-              <View style={styles.tags}>
-                {item.power === 'battery' && <Text style={typography.caption}>🔋</Text>}
-                {item.power === 'corded' && <Text style={typography.caption}>🔌</Text>}
-                {item.use.includes('home') && <Text style={typography.caption}>🏠</Text>}
-                {item.use.includes('workshop') && <Text style={typography.caption}>🔧</Text>}
-                {item.use.includes('construction') && <Text style={typography.caption}>🏗</Text>}
+                <Text style={[typography.bodySmall, { marginTop: spacing.xs }]} numberOfLines={2}>{item.description}</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={[typography.h3, { color: colors.primary }]}>{item.priceMin}-{item.priceMax}€</Text>
+                  <View style={styles.tags}>
+                    {item.power === 'battery' && <Text style={typography.caption}>🔋</Text>}
+                    {item.power === 'corded' && <Text style={typography.caption}>🔌</Text>}
+                    {item.use.includes('home') && <Text style={typography.caption}>🏠</Text>}
+                    {item.use.includes('workshop') && <Text style={typography.caption}>🔧</Text>}
+                    {item.use.includes('construction') && <Text style={typography.caption}>🏗</Text>}
+                  </View>
+                </View>
               </View>
             </View>
-            <Text style={[typography.caption, { color: colors.primary, marginTop: spacing.sm }]}>🛒 Buscar en Amazon →</Text>
+            <TouchableOpacity style={styles.amazonBtn} onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}>
+              <Text style={[typography.buttonSmall, { color: colors.primary }]}>🛒 Ver en Amazon</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
         )}
       />
@@ -108,8 +120,12 @@ const styles = StyleSheet.create({
   chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
+  cardRow: { flexDirection: 'row', gap: spacing.md },
+  cardImage: { width: 72, height: 72, borderRadius: radius.md, backgroundColor: colors.bgAlt },
+  cardImagePlaceholder: { width: 72, height: 72, borderRadius: radius.md, backgroundColor: colors.bgAlt, justifyContent: 'center', alignItems: 'center' },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   tierBadge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.md },
   tags: { flexDirection: 'row', gap: spacing.sm },
+  amazonBtn: { backgroundColor: colors.primaryMuted, borderRadius: radius.md, paddingVertical: spacing.sm, alignItems: 'center', marginTop: spacing.md, borderWidth: 1, borderColor: colors.primary + '33' },
 });

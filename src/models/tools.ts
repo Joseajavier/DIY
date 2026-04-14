@@ -34,6 +34,7 @@ export interface ToolProduct {
   description: string;
   features: string[];
   bestFor: string;
+  imageUrl?: string;
 }
 
 export interface ToolFilter {

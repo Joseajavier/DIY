@@ -1,0 +1,103 @@
+FASE 15 — SISTEMA DE ACTUALIZACION DE CATALOGOS
+
+PROBLEMA
+Los catalogos de herramientas y maderas son datos estaticos dentro de la app.
+Si sale un modelo nuevo de Makita o DeWalt, hay que actualizar la app entera.
+Los precios cambian constantemente.
+
+SOLUCION PROPUESTA
+Mover los catalogos al backend y servir como API. La app descarga y cachea.
+
+ARQUITECTURA
+
+App Expo
+→ GET /catalog/tools (con filtros)
+→ GET /catalog/wood (con filtros)
+→ Cache local SQLite (24h)
+→ Si no hay red: usa cache local
+
+Backend
+→ Lee datos de una fuente actualizable
+→ Puede ser: JSON en fichero, base de datos, o Google Sheets como CMS
+
+OPCIONES DE FUENTE DE DATOS
+
+OPCION A — JSON en el backend (simple)
+- Ficheros JSON en backend/data/tools.json y wood.json
+- Se actualizan manualmente o con un script
+- Deploy del backend actualiza los datos
+- Pro: simple, sin dependencias
+- Contra: hay que hacer deploy para actualizar
+
+OPCION B — Base de datos (SQLite o PostgreSQL en backend)
+- Panel admin web para añadir/editar/borrar productos
+- CRUD completo
+- Pro: editable sin deploy
+- Contra: necesita panel admin
+
+OPCION C — Google Sheets como CMS (intermedia, recomendada)
+- Crear un Google Sheet con las columnas del catalogo
+- El backend lee el Sheet periodicamente (cada 6h o diario)
+- Cachea en memoria o SQLite del backend
+- Pro: el propietario edita desde Google Sheets, sin tocar codigo
+- Contra: depende de Google Sheets API (gratuita)
+
+RECOMENDACION: OPCION C para MVP
+
+Flujo:
+1. Propietario edita Google Sheet (añade herramienta, cambia precio)
+2. Backend lee el Sheet cada 6 horas automaticamente
+3. Backend sirve datos actualizados a la app
+4. App cachea 24h en SQLite local
+5. Si no hay red: usa cache
+
+IMPLEMENTACION GOOGLE SHEETS
+
+Google Sheet estructura (pestana "Herramientas"):
+| id | type | brand | model | tier | use | power | priceMin | priceMax | description | features | bestFor | imageUrl |
+
+Google Sheet estructura (pestana "Maderas"):
+| id | category | name | description | use | hardness | priceLevel | priceRange | sizes | pros | cons | bestFor | color | imageUrl |
+
+Backend:
+- google-spreadsheet (npm) para leer Sheets
+- Cron job cada 6h para refrescar datos
+- Cache en memoria + fallback a datos estaticos
+- Endpoint GET /catalog/tools?category=cut&tier=pro
+- Endpoint GET /catalog/wood?category=board&use=interior
+
+App:
+- Servicio catalogApiClient.ts
+- Cache en SQLite con timestamp
+- Si cache < 24h: usar cache
+- Si cache > 24h y hay red: refrescar
+- Si no hay red: usar cache aunque sea vieja
+- Fallback final: datos estaticos embebidos
+
+CREDENCIALES NECESARIAS
+1. Crear proyecto en Google Cloud Console (gratis)
+2. Habilitar Google Sheets API
+3. Crear Service Account
+4. Descargar JSON de credenciales
+5. Compartir el Sheet con el email del Service Account
+
+METRICAS
+- catalog_loaded (source: cache/api/static)
+- catalog_refresh_success
+- catalog_refresh_failed
+
+ORDEN DE IMPLEMENTACION
+1. Crear Google Sheet con datos actuales
+2. Configurar Google Cloud + Service Account
+3. Implementar lector de Sheets en backend
+4. Crear endpoints GET /catalog/tools y /catalog/wood
+5. Implementar cache en app (SQLite)
+6. Actualizar ToolSearchScreen y WoodCatalogScreen para usar API
+7. Mantener fallback a datos estaticos
+
+ALTERNATIVA FUTURA
+Si el producto escala, migrar a:
+- Panel admin web propio
+- Base de datos PostgreSQL
+- CMS headless (Strapi, Directus)
+Pero para MVP, Google Sheets es mas que suficiente.
