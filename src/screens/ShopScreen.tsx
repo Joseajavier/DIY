@@ -33,6 +33,12 @@ export default function ShopScreen({ navigation, route }: Props) {
         </View>
       )}
 
+      {comparison.recommendation && (
+        <View style={styles.recoCard}>
+          <Text style={styles.recoText}>💡 {comparison.recommendation}</Text>
+        </View>
+      )}
+
       <Text style={styles.section}>{t('shop.allOptions')}</Text>
       {comparison.ranked.map((store, i) => (
         <View key={i} style={styles.storeCard}>
@@ -68,6 +74,8 @@ const styles = StyleSheet.create({
   bestName: { fontSize: 20, fontWeight: 'bold', color: colors.text },
   bestPrice: { fontSize: 28, fontWeight: 'bold', color: colors.success, marginTop: 4 },
   bestTime: { fontSize: 13, color: colors.textSecondary, marginTop: 4 },
+  recoCard: { backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 20, borderLeftWidth: 3, borderLeftColor: colors.accent },
+  recoText: { fontSize: 13, color: colors.textSecondary, lineHeight: 19 },
   section: { fontSize: 18, fontWeight: '600', color: colors.text, marginBottom: 14 },
   storeCard: { backgroundColor: colors.card, borderRadius: 12, padding: 16, marginBottom: 12 },
   storeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },

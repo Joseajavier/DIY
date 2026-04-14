@@ -1,10 +1,19 @@
-import { DIYResult, DIYStep, Material, Tool } from '../models';
+import { DIYResult, DIYStep, Material, Tool, ProjectDifficulty } from '../models';
 
-const PROJECT_TEMPLATES: Record<
-  string,
-  { steps: DIYStep[]; materials: Material[]; tools: Tool[] }
-> = {
+interface TemplateData {
+  steps: DIYStep[];
+  materials: Material[];
+  tools: Tool[];
+  difficulty: ProjectDifficulty;
+  estimatedTime: string;
+  summary: string;
+}
+
+const TEMPLATES: Record<string, TemplateData> = {
   estanteria: {
+    summary: 'Estantería de madera para pared con varios estantes y panel trasero.',
+    difficulty: 'medium',
+    estimatedTime: '3-4 horas',
     steps: [
       { number: 1, title: 'Medir y planificar', description: 'Mide el espacio donde irá la estantería. Decide número de estantes y separación entre ellos.' },
       { number: 2, title: 'Cortar tableros', description: 'Corta los tableros laterales y los estantes a la medida. Lija los bordes.' },
@@ -34,6 +43,9 @@ const PROJECT_TEMPLATES: Record<
     ],
   },
   mesa: {
+    summary: 'Mesa de madera maciza con patas cuadradas y bastidor reforzado.',
+    difficulty: 'medium',
+    estimatedTime: '4-5 horas',
     steps: [
       { number: 1, title: 'Diseñar medidas', description: 'Define largo, ancho y alto de la mesa. Estándar: 120×60×75cm.' },
       { number: 2, title: 'Cortar patas', description: 'Corta 4 patas de sección cuadrada (6×6cm) a 73cm de alto.' },
@@ -62,6 +74,9 @@ const PROJECT_TEMPLATES: Record<
     ],
   },
   caja: {
+    summary: 'Caja de madera con tapa abatible y bisagras. Proyecto rápido ideal para principiantes.',
+    difficulty: 'easy',
+    estimatedTime: '1-2 horas',
     steps: [
       { number: 1, title: 'Cortar las 6 caras', description: 'Corta base (30×20cm), tapa (30×20cm), 2 laterales largos (30×15cm) y 2 cortos (20×15cm).' },
       { number: 2, title: 'Lijar todas las piezas', description: 'Lija con grano 120 y repasa con 220 para un acabado suave.' },
@@ -86,6 +101,9 @@ const PROJECT_TEMPLATES: Record<
     ],
   },
   banco: {
+    summary: 'Banco de madera resistente para exterior o interior con travesaños reforzados.',
+    difficulty: 'medium',
+    estimatedTime: '3-4 horas',
     steps: [
       { number: 1, title: 'Cortar patas', description: 'Corta 4 patas de 7×7cm a 43cm de alto (altura estándar de banco).' },
       { number: 2, title: 'Cortar asiento', description: 'Corta 3 tablones de 100×12cm o un tablero macizo de 100×35cm.' },
@@ -114,6 +132,9 @@ const PROJECT_TEMPLATES: Record<
     ],
   },
   perchero: {
+    summary: 'Perchero de pared con ganchos sobre tabla de madera maciza.',
+    difficulty: 'easy',
+    estimatedTime: '1 hora',
     steps: [
       { number: 1, title: 'Cortar tabla base', description: 'Corta un tablón de 80×15cm que servirá de soporte para los ganchos.' },
       { number: 2, title: 'Lijar y redondear', description: 'Lija la tabla y redondea las esquinas con lija o fresadora.' },
@@ -139,6 +160,9 @@ const PROJECT_TEMPLATES: Record<
     ],
   },
   marco: {
+    summary: 'Marco de madera con cortes a inglete para foto, espejo o cuadro.',
+    difficulty: 'hard',
+    estimatedTime: '2-3 horas',
     steps: [
       { number: 1, title: 'Cortar listones a 45°', description: 'Corta 4 listones con inglete a 45° en ambos extremos. Medida exterior según foto/espejo.' },
       { number: 2, title: 'Lijar cortes', description: 'Lija las superficies y los cortes en inglete para un ajuste perfecto.' },
@@ -161,9 +185,65 @@ const PROJECT_TEMPLATES: Record<
       { name: 'Fresadora', optional: true },
     ],
   },
+  soporte_plantas: {
+    summary: 'Soporte escalado para macetas con varios niveles.',
+    difficulty: 'easy',
+    estimatedTime: '2 horas',
+    steps: [
+      { number: 1, title: 'Cortar bases', description: 'Corta 3 cuadrados de diferentes tamaños: 30×30, 25×25 y 20×20cm.' },
+      { number: 2, title: 'Cortar patas', description: 'Corta 4 listones de 3×3cm a 25cm para el nivel inferior y 4 a 20cm para el superior.' },
+      { number: 3, title: 'Lijar todo', description: 'Lija todas las piezas con grano 120 y 220.' },
+      { number: 4, title: 'Montar niveles', description: 'Atornilla las patas a cada base creando una estructura escalonada.' },
+      { number: 5, title: 'Acabado impermeable', description: 'Aplica aceite o barniz impermeable ya que estará en contacto con agua de riego.' },
+    ],
+    materials: [
+      { name: 'Tablero de pino 60×30cm', quantity: 1, unit: 'ud' },
+      { name: 'Listón 3×3cm (2m)', quantity: 2, unit: 'ud' },
+      { name: 'Tornillos 4×30mm', quantity: 16, unit: 'ud' },
+      { name: 'Barniz impermeable', quantity: 1, unit: 'bote' },
+      { name: 'Lija grano 120 y 220', quantity: 2, unit: 'hojas' },
+    ],
+    tools: [
+      { name: 'Sierra de calar' },
+      { name: 'Taladro atornillador' },
+      { name: 'Metro y lápiz' },
+      { name: 'Escuadra de carpintero' },
+    ],
+  },
+  zapatero: {
+    summary: 'Zapatero abierto de madera con 3-4 estantes inclinados.',
+    difficulty: 'medium',
+    estimatedTime: '3 horas',
+    steps: [
+      { number: 1, title: 'Cortar laterales', description: 'Corta 2 tableros laterales de 80×25cm.' },
+      { number: 2, title: 'Cortar estantes', description: 'Corta 3-4 estantes de 60×20cm.' },
+      { number: 3, title: 'Marcar inclinación', description: 'Marca en los laterales la posición de cada estante con 10° de inclinación hacia atrás.' },
+      { number: 4, title: 'Ensamblar', description: 'Fija los estantes a los laterales con tornillos y cola. La inclinación evita que caigan los zapatos.' },
+      { number: 5, title: 'Añadir tope', description: 'Coloca un listón fino en el borde de cada estante como tope.' },
+      { number: 6, title: 'Acabado', description: 'Lija y aplica barniz o pintura. Opcional: ruedas en la base.' },
+    ],
+    materials: [
+      { name: 'Tablero de pino 80×25cm', quantity: 2, unit: 'ud' },
+      { name: 'Tablero de pino 60×20cm', quantity: 4, unit: 'ud' },
+      { name: 'Listón fino 60cm', quantity: 4, unit: 'ud' },
+      { name: 'Tornillos 4×40mm', quantity: 24, unit: 'ud' },
+      { name: 'Cola de carpintero', quantity: 1, unit: 'bote' },
+      { name: 'Barniz / Pintura', quantity: 1, unit: 'bote' },
+    ],
+    tools: [
+      { name: 'Sierra de calar' },
+      { name: 'Taladro atornillador' },
+      { name: 'Transportador de ángulos', optional: true },
+      { name: 'Metro y lápiz' },
+      { name: 'Escuadra de carpintero' },
+    ],
+  },
 };
 
-const DEFAULT_TEMPLATE = {
+const DEFAULT_TEMPLATE: TemplateData = {
+  summary: 'Proyecto de carpintería personalizado con materiales básicos.',
+  difficulty: 'medium',
+  estimatedTime: '2-4 horas',
   steps: [
     { number: 1, title: 'Planificar el proyecto', description: 'Define medidas, haz un boceto y decide los materiales que necesitas.' },
     { number: 2, title: 'Comprar materiales', description: 'Consigue todos los materiales y herramientas antes de empezar.' },
@@ -189,25 +269,23 @@ const DEFAULT_TEMPLATE = {
   ],
 };
 
-function matchTemplate(description: string) {
+const KEYWORD_MAP: [string[], string][] = [
+  [['estanter', 'balda', 'repisa', 'librería', 'libreria'], 'estanteria'],
+  [['mesa', 'escritorio', 'table'], 'mesa'],
+  [['caja', 'cofre', 'baúl', 'baul', 'cajón', 'cajon'], 'caja'],
+  [['banco', 'banqueta', 'asiento', 'taburete'], 'banco'],
+  [['perchero', 'colgador', 'gancho'], 'perchero'],
+  [['marco', 'cuadro', 'espejo'], 'marco'],
+  [['planta', 'maceta', 'soporte', 'jardinera'], 'soporte_plantas'],
+  [['zapatero', 'zapato', 'calzado'], 'zapatero'],
+];
+
+function matchTemplate(description: string): TemplateData {
   const lower = description.toLowerCase();
-  if (lower.includes('estanter') || lower.includes('balda') || lower.includes('repisa')) {
-    return PROJECT_TEMPLATES.estanteria;
-  }
-  if (lower.includes('mesa') || lower.includes('escritorio') || lower.includes('table')) {
-    return PROJECT_TEMPLATES.mesa;
-  }
-  if (lower.includes('caja') || lower.includes('cofre') || lower.includes('baúl') || lower.includes('baul')) {
-    return PROJECT_TEMPLATES.caja;
-  }
-  if (lower.includes('banco') || lower.includes('banqueta') || lower.includes('asiento')) {
-    return PROJECT_TEMPLATES.banco;
-  }
-  if (lower.includes('perchero') || lower.includes('colgador') || lower.includes('gancho')) {
-    return PROJECT_TEMPLATES.perchero;
-  }
-  if (lower.includes('marco') || lower.includes('cuadro') || lower.includes('espejo')) {
-    return PROJECT_TEMPLATES.marco;
+  for (const [keywords, templateKey] of KEYWORD_MAP) {
+    if (keywords.some((kw) => lower.includes(kw))) {
+      return TEMPLATES[templateKey];
+    }
   }
   return DEFAULT_TEMPLATE;
 }
@@ -216,8 +294,11 @@ export function generateDIYProject(name: string, description: string): DIYResult
   const template = matchTemplate(description);
   return {
     projectName: name,
+    summary: template.summary,
     steps: template.steps,
     materials: template.materials,
     tools: template.tools,
+    difficulty: template.difficulty,
+    estimatedTime: template.estimatedTime,
   };
 }

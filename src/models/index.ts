@@ -41,11 +41,16 @@ export interface DIYStep {
   description: string;
 }
 
+export type ProjectDifficulty = 'easy' | 'medium' | 'hard';
+
 export interface DIYResult {
   projectName: string;
+  summary?: string;
   steps: DIYStep[];
   materials: Material[];
   tools: Tool[];
+  difficulty: ProjectDifficulty;
+  estimatedTime: string;
 }
 
 // ── Cutting Optimization ──
@@ -124,6 +129,30 @@ export interface ShopOptionRow {
   price: number;
   delivery_time: string;
   score: number;
+}
+
+// ── Comparison ──
+export interface ComparisonResult {
+  ranked: StoreOption[];
+  best: StoreOption | null;
+  cheapest: StoreOption | null;
+  fastest: StoreOption | null;
+  recommendation?: string;
+}
+
+// ── Full Project Result (orquestador) ──
+export interface FullDIYResult {
+  project: DIYResult;
+  stores: StoreOption[];
+  comparison: ComparisonResult;
+}
+
+export interface FullProResult {
+  projectName: string;
+  optimization: OptimizationResult;
+  materials: Material[];
+  stores: StoreOption[];
+  comparison: ComparisonResult;
 }
 
 // ── User Settings (MMKV) ──
