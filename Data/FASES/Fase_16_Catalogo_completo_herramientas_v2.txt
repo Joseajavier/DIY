@@ -1,0 +1,128 @@
+FASE 16 — CATALOGO COMPLETO DE HERRAMIENTAS V2
+
+PROBLEMA ACTUAL
+- Faltan muchas marcas importantes
+- Faltan tipos de herramienta (torno, tupí, lijadora de tambor, etc.)
+- No hay imágenes
+- Las cards se ven mal sin foto
+- El catálogo está incompleto y hecho deprisa
+
+MARCAS QUE FALTAN (añadir)
+
+Básicas / DIY:
+- Tacklife
+- Hychika
+- Ratio (mercado español)
+- Stayer (mercado español)
+- Erbauer (Brico Depot)
+
+Media:
+- AEG
+- Ridgid
+- Fein (multiherramientas)
+- Virutex (española, especialista madera)
+- Evolution (sierras multipropósito)
+- Flex
+- Record Power (UK, tornos y sierras de cinta)
+- Trend (UK, fresadoras y plantillas)
+
+Profesional:
+- Powermatic (máquinas estacionarias)
+- Jet (máquinas estacionarias)
+- Laguna Tools (sierras de cinta, tornos)
+- SawStop (sierras de mesa con detección)
+- Hammer / Felder (austriacas, combinadas)
+- SCM / Minimax (italianas industriales)
+- Nova / Teknatool (tornos)
+
+TIPOS DE HERRAMIENTA QUE FALTAN (añadir)
+
+Corte:
+- Sierra de scroll / marquetería eléctrica
+
+Torneado:
+- Torno de madera
+
+Lijado:
+- Lijadora de tambor (drum sander)
+- Lijadora de husillo oscilante
+- Lijadora de disco / combo disco-banda
+
+Uniones:
+- Escopleadora (mortajadora)
+- Sistema de espigas (doweling jig)
+- Engalletadora (ya está pero ampliar modelos)
+
+Conformado:
+- Tupí / spindle moulder
+- Mesa de fresado (router table)
+
+Acabado:
+- Clavadora de brad / pin nailer (diferente de clavadora gruesa)
+- Canteadora de bordes (edge bander)
+
+Medición:
+- Transportador digital / buscador de ángulos
+
+IMÁGENES
+Para las imágenes de herramientas:
+- NO podemos usar fotos de Amazon (copyright)
+- NO podemos usar fotos de las marcas (copyright)
+
+OPCIONES:
+A) Usar iconos/emojis por tipo (lo que tenemos ahora) — FÁCIL pero feo
+B) Usar imágenes genéricas de herramientas de Unsplash/Pexels — LEGAL pero poco específicas
+C) Usar la API de Amazon Associates (Fase 12) para obtener imágenes — LEGAL y específicas
+   → Las imágenes de productos que devuelve la PA-API se pueden mostrar mientras
+     se enlace al producto. Es parte del programa de afiliados.
+D) Generar iconos SVG simples por tipo de herramienta — PROPIO y escalable
+
+RECOMENDACIÓN: Combinación C + D
+- Ahora mismo: iconos SVG o ilustraciones simples por tipo (Fase 16)
+- Cuando tenga Amazon Associates: fotos reales del producto (Fase 12)
+
+DISEÑO DE CARDS (como pide el usuario)
+El usuario quiere que se parezca al estilo Amazon:
+- Imagen grande a la izquierda
+- Nombre completo del producto
+- Badge de tipo (Cable eléctrico / Batería)
+- Estrellas / valoración (mock por ahora, real con API)
+- Precio grande y visible
+- Entrega estimada (mock)
+- Botón "Añadir a la cesta" / "Ver en Amazon"
+
+AGRUPACIÓN POR SECCIONES
+El usuario quiere ver por secciones, no todo mezclado:
+- Header de sección: "🪚 Sierras circulares" con número de resultados
+- Debajo las cards de esa sección
+- Luego "🪚 Sierras de inmersión" etc.
+- Las secciones se filtran con los chips de categoría
+
+ESTRUCTURA DE DATOS MEJORADA
+Cada producto debe tener:
+- id, typeId, brandId, model
+- tier, use[], power
+- priceMin, priceMax
+- description (1-2 líneas)
+- features[] (specs clave)
+- bestFor (1 línea)
+- rating: number (1-5, mock)
+- reviewCount: number (mock)
+- imageUrl?: string (para futuro)
+
+ORDEN DE IMPLEMENTACIÓN
+1. Ampliar TOOL_BRANDS con marcas que faltan
+2. Ampliar TOOL_TYPES con tipos que faltan
+3. Ampliar TOOL_PRODUCTS con al menos 3 productos por tipo (básico/medio/pro)
+4. Añadir rating y reviewCount mock a cada producto
+5. Rediseñar ToolSearchScreen para agrupar por secciones
+6. Mejorar card con layout tipo Amazon
+7. Añadir iconos por tipo de herramienta en el placeholder de imagen
+8. Testear filtros con el catálogo ampliado
+9. Commit
+
+OBJETIVO FINAL
+~120 productos, ~25 marcas, ~30 tipos de herramienta
+Agrupados por tipo con sección visible
+Cards con aspecto profesional tipo catálogo
+Preparado para recibir imágenes reales cuando haya API de Amazon
