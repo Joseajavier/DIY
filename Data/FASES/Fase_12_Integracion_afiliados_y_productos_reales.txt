@@ -1,0 +1,176 @@
+FASE 12 — INTEGRACION DE AFILIADOS Y PRODUCTOS REALES
+
+OBJETIVO
+Reemplazar las tiendas mock por productos reales de Amazon (y opcionalmente Leroy Merlin / ManoMano) usando programas de afiliados. El usuario ve productos reales con foto, precio, enlace de compra. Si compra, la app gana comision.
+
+PREREQUISITOS
+Antes de implementar esta fase, el propietario debe:
+1. Registrarse en Amazon Associates España: affiliate-program.amazon.es
+2. Esperar aprobacion (1-2 dias)
+3. Obtener: Associate Tag (ej: diyapp-21)
+4. Activar PA-API 5.0 en la consola de Associates
+5. Obtener: Access Key + Secret Key
+6. Guardar las 3 credenciales en el .env del backend
+
+CREDENCIALES NECESARIAS EN BACKEND .env
+AMAZON_ASSOCIATE_TAG=diyapp-21
+AMAZON_ACCESS_KEY=AKIA...
+AMAZON_SECRET_KEY=xxxxx...
+AMAZON_MARKETPLACE=www.amazon.es
+AMAZON_REGION=eu-west-1
+
+OPCIONAL FUTURO
+- Leroy Merlin: registrarse en Awin (awin.com) → buscar Leroy Merlin como anunciante
+- ManoMano: contactar en manomano.es/partners
+
+ARQUITECTURA
+
+App Expo
+→ llama al backend (sin cambios en la app, misma estructura)
+
+Backend
+→ nuevo servicio: amazonProductService.ts
+→ busca productos en Amazon PA-API 5.0
+→ devuelve: titulo, precio, foto, enlace afiliado, valoraciones, disponibilidad
+→ cache de resultados (1h) para no abusar de la API
+
+ENDPOINTS NUEVOS O MODIFICADOS
+
+POST /shop/search
+Input:
+  - query: string (ej: "tablero melamina 244x122cm")
+  - category: string (opcional, ej: "Tools", "DIY")
+  - country: string (ej: "es", "uk", "de")
+Output:
+  - products[]:
+    - title: string
+    - price: number
+    - currency: string
+    - imageUrl: string
+    - productUrl: string (con tag afiliado)
+    - rating: number
+    - reviewCount: number
+    - availability: string
+    - source: "amazon"
+
+POST /shop/materials-search
+Input:
+  - materials[]: { name, quantity, unit }
+  - country: string
+Output:
+  - results[]:
+    - materialName: string
+    - products[]: (mismo formato que arriba)
+    - bestMatch: product (el mas relevante)
+
+LOGICA DE BUSQUEDA
+Para cada material de la lista:
+1. Generar query de busqueda inteligente
+   - "Tablero melamina 244x122cm" → buscar tal cual
+   - "Tornillos confirmat 5x50mm" → buscar "tornillos confirmat 5x50"
+   - "Cola de carpintero" → buscar "cola carpintero madera"
+2. Buscar en Amazon PA-API con SearchItems
+3. Filtrar por categoria relevante (DIY, Tools, Industrial)
+4. Ordenar por relevancia + precio
+5. Devolver top 3 resultados por material
+6. Cachear resultado por query + pais (1 hora)
+
+MULTI-PAIS
+Detectar pais del usuario por:
+1. Setting de idioma en la app (es → amazon.es, en → amazon.co.uk)
+2. O setting explicito en SettingsScreen
+
+Marketplaces Amazon:
+- es → www.amazon.es (eu-west-1)
+- uk → www.amazon.co.uk (eu-west-1)
+- fr → www.amazon.fr (eu-west-1)
+- de → www.amazon.de (eu-west-1)
+- it → www.amazon.it (eu-west-1)
+- us → www.amazon.com (us-east-1)
+
+CAMBIOS EN LA APP
+
+ShopScreen actualizada:
+- En vez de tiendas mock, muestra productos reales
+- Cada producto: foto + titulo + precio + boton "Comprar en Amazon"
+- El boton abre el enlace afiliado en el navegador
+- Si la API falla, fallback a tiendas mock actuales
+
+Nuevo componente: ProductCard
+- Foto del producto (Image)
+- Titulo (max 2 lineas)
+- Precio en negrita
+- Estrellas de valoracion
+- Boton "Ver en Amazon" con icono
+- Badge "Disponible" / "No disponible"
+
+Nuevo componente: MaterialProductList
+- Para cada material de la lista
+- Muestra nombre del material como header
+- Lista de 1-3 productos reales debajo
+- "Ver mas en Amazon" link
+
+ESTRUCTURA DE ARCHIVOS
+
+backend/src/
+  services/
+    amazonProductService.ts    ← nuevo: busqueda PA-API 5.0
+    productCache.ts            ← nuevo: cache en memoria/SQLite
+  routes/
+    shop.ts                    ← nuevo: POST /shop/search, /shop/materials-search
+  utils/
+    amazonAuth.ts              ← nuevo: firma de requests PA-API
+
+src/
+  services/
+    shopApiClient.ts           ← nuevo: cliente para /shop/*
+  components/
+    ProductCard.tsx             ← nuevo: tarjeta de producto real
+    MaterialProductList.tsx     ← nuevo: lista materiales → productos
+  screens/
+    ShopScreen.tsx              ← actualizado: productos reales
+
+LIBRERIAS BACKEND
+- amazon-paapi (npm) o implementar firma manualmente
+- node-cache o lru-cache para cache en memoria
+
+MONETIZACION
+- Comision Amazon Associates: 1-10% segun categoria
+- Herramientas/DIY suele ser 3-5%
+- Si un usuario compra 50€ en materiales → 1.50-2.50€ de comision
+- Con 1000 usuarios activos que compren 1 vez/mes → 1500-2500€/mes
+
+METRICAS NUEVAS
+- product_search_started
+- product_search_succeeded
+- product_search_failed
+- product_link_clicked (trackear que producto, que material)
+- affiliate_conversion (si Amazon lo reporta via API)
+
+ORDEN DE IMPLEMENTACION
+1. Esperar credenciales de Amazon Associates
+2. Implementar amazonProductService.ts en backend
+3. Implementar cache
+4. Crear endpoint POST /shop/search
+5. Crear endpoint POST /shop/materials-search
+6. Crear ProductCard y MaterialProductList en app
+7. Actualizar ShopScreen para productos reales
+8. Añadir setting de pais en SettingsScreen
+9. Testear con materiales reales
+10. Verificar que enlaces de afiliado funcionan
+
+RESTRICCIONES
+- No guardar precios en SQLite local (cambian constantemente)
+- Cachear solo en backend (max 1 hora)
+- No mostrar precio si no viene de la API (evitar datos obsoletos)
+- Si API falla → fallback a mock con mensaje "Precios no disponibles, mostrando estimacion"
+- Respetar limites de Amazon PA-API (1 request/segundo)
+
+IMPORTANTE
+Esta fase NO se puede implementar sin las credenciales de Amazon Associates.
+El propietario debe registrarse primero y proporcionar:
+- Associate Tag
+- Access Key
+- Secret Key
+
+Una vez tenga las credenciales, se puede implementar en 3-5 dias.
