@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { optimizeCuts } from '../services/cuttingOptimizer';
 import { generateMaterials } from '../services/materialsGenerator';
+import { saveOptimization } from '../storage/optimizationRepository';
+import { createMaterials } from '../storage/materialRepository';
+import { getLastProjectId } from '../storage/settingsStorage';
 import { colors } from '../utils/theme';
 
 type Props = {
@@ -36,7 +39,14 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
           {board.pieces.map((p, j) => <Text key={j} style={styles.pieceText}>• {p.width} × {p.height} cm</Text>)}
         </View>
       ))}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProResults', { projectName, optimization, materials })}>
+      <TouchableOpacity style={styles.button} onPress={async () => {
+        const pid = getLastProjectId();
+        if (pid) {
+          await saveOptimization({ projectId: pid, boardWidth, boardHeight, totalBoards: optimization.totalBoards, wastePercentage: optimization.totalWaste, efficiency: optimization.efficiency });
+          await createMaterials(pid, materials);
+        }
+        navigation.navigate('ProResults', { projectName, optimization, materials });
+      }}>
         <Text style={styles.buttonText}>{t('pro.viewResults')}</Text>
       </TouchableOpacity>
     </ScrollView>

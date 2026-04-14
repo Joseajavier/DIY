@@ -49,7 +49,7 @@ export default function ProjectsScreen({ navigation }: Props) {
       data={projects}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => item.mode === 'diy' ? navigation.navigate('DIYInput') : navigation.navigate('ProInput')} activeOpacity={0.8}>
+        <TouchableOpacity onPress={() => navigation.navigate('ProjectDetail', { projectId: item.id })} activeOpacity={0.8}>
           <Card>
             <View style={styles.row}>
               <View style={styles.info}>

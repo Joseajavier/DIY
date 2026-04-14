@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { getStoreRecommendations } from '../services/storeRecommender';
 import { comparePrices } from '../services/priceComparator';
+import { saveShopOptions } from '../storage/shopRepository';
+import { getLastProjectId } from '../storage/settingsStorage';
 import { colors } from '../utils/theme';
 
 type Props = {
@@ -18,6 +20,14 @@ export default function ShopScreen({ navigation, route }: Props) {
   const { materials, mode } = route.params;
   const stores = useMemo(() => getStoreRecommendations(materials), [materials]);
   const comparison = useMemo(() => comparePrices(stores), [stores]);
+
+  // Persist store options to SQLite
+  useEffect(() => {
+    const pid = getLastProjectId();
+    if (pid && stores.length) {
+      saveShopOptions(pid, stores);
+    }
+  }, [stores]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
