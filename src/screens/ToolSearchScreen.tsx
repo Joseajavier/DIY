@@ -97,13 +97,10 @@ export default function ToolSearchScreen({ navigation }: Props) {
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
           >
             <View style={styles.cardRow}>
-              {item.imageUrl ? (
-                <Image source={{ uri: item.imageUrl }} style={styles.cardImage} resizeMode="contain" />
-              ) : (
-                <View style={styles.cardImagePlaceholder}>
-                  <Text style={{ fontSize: 28 }}>{TOOL_CATEGORIES.find(c => TOOL_TYPES.find(t => t.id === item.typeId)?.categoryId === c.id)?.icon || '🔧'}</Text>
-                </View>
-              )}
+              <View style={[styles.cardImagePlaceholder, { backgroundColor: item.tier === 'pro' ? colors.danger + '15' : item.tier === 'mid' ? colors.warning + '15' : colors.success + '15' }]}>
+                <Text style={{ fontSize: 32 }}>{TOOL_CATEGORIES.find(c => TOOL_TYPES.find(t => t.id === item.typeId)?.categoryId === c.id)?.icon || '🔧'}</Text>
+                <Text style={[typography.caption, { fontSize: 9, marginTop: 2 }]}>{item.power === 'battery' ? '🔋' : item.power === 'corded' ? '🔌' : '✋'}</Text>
+              </View>
               <View style={{ flex: 1 }}>
                 <View style={styles.cardHeader}>
                   <Text style={[typography.h3, { flex: 1 }]}>{getToolBrandName(item.brandId)}</Text>
