@@ -34,5 +34,9 @@ export async function generateDIYWithAI(req: DIYGenerateRequest) {
   const content = response.choices[0]?.message?.content;
   if (!content) throw new Error('Empty response from OpenAI');
 
-  return JSON.parse(content);
+  try {
+    return JSON.parse(content);
+  } catch {
+    throw new Error('Invalid JSON response from OpenAI');
+  }
 }
