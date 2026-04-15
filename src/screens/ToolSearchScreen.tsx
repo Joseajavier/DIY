@@ -6,7 +6,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { ToolFilter, ToolTier, ToolUse, ToolPower, ToolProduct } from '../models/tools';
 import { searchTools, getToolBrandName, getToolTypeName } from '../services/toolSearchService';
-import { TOOL_CATEGORIES, TOOL_TYPES } from '../data/toolData';
+import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../data/toolData';
 import { fetchToolCatalog } from '../services/catalogApiClient';
 import Icon, { IconName } from '../components/Icon';
 import RetailerSheet from '../components/RetailerSheet';
@@ -20,6 +20,14 @@ import { getCurrentCountry } from '../services/locationService';
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ToolSearch'>;
   route: RouteProp<RootStackParamList, 'ToolSearch'>;
+};
+
+type ToolSection = {
+  typeId: string;
+  title: string;
+  categoryId: string;
+  data: ToolProduct[];
+  isBrandGroup: boolean;
 };
 
 const TIERS: { key: ToolTier | ''; label: string; dot?: string }[] = [
@@ -53,6 +61,26 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   const [power, setPower] = useState<ToolPower | ''>('');
   const [sheetProduct, setSheetProduct] = useState<ToolProduct | null>(null);
   const [deals, setDeals] = useState<Deal[]>([]);
+  const [remoteProducts, setRemoteProducts] = useState<ToolProduct[] | null>(null);
+  const [source, setSource] = useState<'loading' | 'online' | 'offline'>('loading');
+
+  // Carga catálogo remoto; si falla usa local (fallback)
+  useEffect(() => {
+    let active = true;
+    fetchToolCatalog()
+      .then((res) => {
+        if (!active) return;
+        const prods = res?.products;
+        if (prods && prods.length > 0) {
+          setRemoteProducts(prods as ToolProduct[]);
+          setSource('online');
+        } else {
+          setSource('offline');
+        }
+      })
+      .catch(() => { if (active) setSource('offline'); });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -74,7 +102,12 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     power: power || undefined,
   };
 
-  const results = useMemo(() => searchTools(filter), [query, categoryId, tier, use, power]);
+  const productPool = remoteProducts ?? TOOL_PRODUCTS;
+  const results = useMemo(
+    () => searchTools(filter, productPool),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query, categoryId, tier, use, power, productPool],
+  );
 
   const dealMatchByProduct = useMemo(() => {
     const map = new Map<string, { score: number; deal: Deal }>();
@@ -90,8 +123,26 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     return map;
   }, [results, deals]);
 
-  // Group results by type for sections
-  const sections = useMemo(() => {
+  // Agrupa por MARCA si hay categoría activa; por TIPO si no hay filtro
+  const sections = useMemo<ToolSection[]>(() => {
+    if (categoryId) {
+      // ── Vista por marca ────────────────────────────────────────
+      const grouped: Record<string, ToolProduct[]> = {};
+      for (const p of results) {
+        if (!grouped[p.brandId]) grouped[p.brandId] = [];
+        grouped[p.brandId].push(p);
+      }
+      return Object.entries(grouped)
+        .sort((a, b) => b[1].length - a[1].length) // más productos primero
+        .map(([brandId, data]) => ({
+          typeId: brandId,
+          title: getToolBrandName(brandId),
+          categoryId,
+          data,
+          isBrandGroup: true,
+        }));
+    }
+    // ── Vista por tipo (sin filtro de categoría) ───────────────
     const grouped: Record<string, ToolProduct[]> = {};
     for (const p of results) {
       if (!grouped[p.typeId]) grouped[p.typeId] = [];
@@ -104,9 +155,10 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         title: getToolTypeName(typeId),
         categoryId: type?.categoryId ?? '',
         data,
+        isBrandGroup: false,
       };
     });
-  }, [results]);
+  }, [results, categoryId]);
 
   const Chip = ({
     label,
@@ -194,31 +246,53 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         ))}
       </ScrollView>
 
-      <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} herramienta{results.length !== 1 ? 's' : ''} en {sections.length} categoría{sections.length !== 1 ? 's' : ''}</Text>
+      <View style={styles.resultBar}>
+        <Text style={typography.caption}>
+          {results.length} herramienta{results.length !== 1 ? 's' : ''}{' '}
+          · {sections.length} {categoryId ? 'marca' : 'tipo'}{sections.length !== 1 ? 's' : ''}
+        </Text>
+        {source === 'online' && <Text style={styles.sourceBadge}>🌐</Text>}
+        {source === 'offline' && <Text style={[styles.sourceBadge, { color: colors.textMuted }]}>📦</Text>}
+      </View>
 
       <SectionList
         sections={sections}
         keyExtractor={item => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section }) => (
-          <View style={styles.sectionHeader}>
-            <View
-              style={[
-                styles.sectionIconBox,
-                { backgroundColor: categoryColor(section.categoryId) + '22' },
-              ]}
-            >
-              <Icon
-                name={categoryIcon(section.categoryId)}
-                size={18}
-                color={categoryColor(section.categoryId)}
-              />
+        renderSectionHeader={({ section }) => {
+          if (section.isBrandGroup) {
+            // ── Cabecera de marca ──────────────────────────────
+            const tiers = [...new Set(section.data.map((p: ToolProduct) => p.tier))];
+            const typeNames = [...new Set(section.data.map((p: ToolProduct) => getToolTypeName(p.typeId)))];
+            return (
+              <View style={styles.sectionHeader}>
+                <View style={styles.tierDots}>
+                  {(tiers as string[]).includes('basic') && <View style={[styles.tierDot, { backgroundColor: colors.success }]} />}
+                  {(tiers as string[]).includes('mid') && <View style={[styles.tierDot, { backgroundColor: colors.warning }]} />}
+                  {(tiers as string[]).includes('pro') && <View style={[styles.tierDot, { backgroundColor: colors.danger }]} />}
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={typography.h2}>{section.title}</Text>
+                  <Text style={[typography.caption, { color: colors.textMuted }]} numberOfLines={1}>
+                    {typeNames.slice(0, 3).join(' · ')}{typeNames.length > 3 ? ` +${typeNames.length - 3}` : ''}
+                  </Text>
+                </View>
+                <Text style={typography.caption}>{section.data.length}</Text>
+              </View>
+            );
+          }
+          // ── Cabecera de tipo ───────────────────────────────────
+          return (
+            <View style={styles.sectionHeader}>
+              <View style={[styles.sectionIconBox, { backgroundColor: categoryColor(section.categoryId) + '22' }]}>
+                <Icon name={categoryIcon(section.categoryId)} size={18} color={categoryColor(section.categoryId)} />
+              </View>
+              <Text style={[typography.h2, { flex: 1 }]}>{section.title}</Text>
+              <Text style={typography.caption}>{section.data.length}</Text>
             </View>
-            <Text style={[typography.h2, { flex: 1 }]}>{section.title}</Text>
-            <Text style={typography.caption}>{section.data.length}</Text>
-          </View>
-        )}
+          );
+        }}
         renderItem={({ item }: { item: ToolProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => setSheetProduct(item)}
@@ -343,8 +417,12 @@ const styles = StyleSheet.create({
   chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   chipDot: { width: 8, height: 8, borderRadius: 4 },
   divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
+  resultBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: spacing.xl, marginBottom: spacing.sm },
+  sourceBadge: { ...typography.caption, color: colors.primary },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xl, marginBottom: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border },
   sectionIconBox: { width: 32, height: 32, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  tierDots: { flexDirection: 'row', gap: 4, alignItems: 'center', marginRight: spacing.sm },
+  tierDot: { width: 10, height: 10, borderRadius: 5 },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
   cardRow: { flexDirection: 'row', gap: spacing.md },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },

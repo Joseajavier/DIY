@@ -1,8 +1,8 @@
 import { ToolProduct, ToolFilter } from '../models/tools';
 import { TOOL_PRODUCTS, TOOL_TYPES, TOOL_BRANDS } from '../data/toolData';
 
-export function searchTools(filter: ToolFilter): ToolProduct[] {
-  let results = [...TOOL_PRODUCTS];
+export function searchTools(filter: ToolFilter, products?: ToolProduct[]): ToolProduct[] {
+  let results = [...(products ?? TOOL_PRODUCTS)];
 
   if (filter.categoryId) {
     const typeIds = TOOL_TYPES.filter(t => t.categoryId === filter.categoryId).map(t => t.id);
