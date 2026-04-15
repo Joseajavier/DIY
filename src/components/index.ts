@@ -9,3 +9,5 @@ export { default as ModeCard } from './ModeCard';
 export { default as MetricCard } from './MetricCard';
 export { default as ProjectCard } from './ProjectCard';
 export { default as EmptyState } from './EmptyState';
+export { default as Icon } from './Icon';
+export type { IconName } from './Icon';

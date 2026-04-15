@@ -19,8 +19,14 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import ProjectDetailScreen from '../screens/ProjectDetailScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import ToolSearchScreen from '../screens/ToolSearchScreen';
+import ToolCategoriesScreen from '../screens/ToolCategoriesScreen';
 import WoodCatalogScreen from '../screens/WoodCatalogScreen';
 import WoodzyHomeScreen from '../screens/WoodzyHomeScreen';
+import CalculatorsScreen from '../screens/CalculatorsScreen';
+import GoldenRatioScreen from '../screens/calculators/GoldenRatioScreen';
+import WainscotCalcScreen from '../screens/calculators/WainscotCalcScreen';
+import ShelfCalcScreen from '../screens/calculators/ShelfCalcScreen';
+import FractionCalcScreen from '../screens/calculators/FractionCalcScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -30,9 +36,15 @@ export type RootStackParamList = {
   ProjectDetail: { projectId: string };
   Settings: undefined;
   Feedback: undefined;
-  ToolSearch: undefined;
+  ToolCategories: undefined;
+  ToolSearch: { categoryId?: string } | undefined;
   WoodCatalog: undefined;
   WoodzyHome: undefined;
+  Calculators: undefined;
+  GoldenRatio: undefined;
+  WainscotCalc: undefined;
+  ShelfCalc: undefined;
+  FractionCalc: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult };
@@ -73,9 +85,15 @@ export default function AppNavigator() {
       <Stack.Screen name="ProjectDetail" component={ProjectDetailScreen} options={{ title: 'Proyecto' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: '⚙️' }} />
       <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '💬 Feedback' }} />
-      <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: '🔧 Herramientas' }} />
+      <Stack.Screen name="ToolCategories" component={ToolCategoriesScreen} options={{ title: '🔧 Herramientas' }} />
+      <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: '🔧 Catálogo' }} />
       <Stack.Screen name="WoodCatalog" component={WoodCatalogScreen} options={{ title: '🪵 Maderas' }} />
       <Stack.Screen name="WoodzyHome" component={WoodzyHomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Calculators" component={CalculatorsScreen} options={{ title: '🧮 Calculadoras' }} />
+      <Stack.Screen name="GoldenRatio" component={GoldenRatioScreen} options={{ title: 'φ Proporción áurea' }} />
+      <Stack.Screen name="WainscotCalc" component={WainscotCalcScreen} options={{ title: '🪟 Wainscot' }} />
+      <Stack.Screen name="ShelfCalc" component={ShelfCalcScreen} options={{ title: '📚 Baldas' }} />
+      <Stack.Screen name="FractionCalc" component={FractionCalcScreen} options={{ title: '½ Fracciones' }} />
     </Stack.Navigator>
   );
 }

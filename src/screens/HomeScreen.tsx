@@ -1,11 +1,30 @@
+// ═══════════════════════════════════════════════════════════════
+// HOME SCREEN — reestructurado (fase 12.1)
+// ───────────────────────────────────────────────────────────────
+// Cambios clave:
+// • Iconos vectoriales (MaterialCommunityIcons) en lugar de emojis
+//   → arreglan los cuadrados `[?]` que aparecían en el simulador.
+// • Layout más limpio: hero compacto, CTA, grid 2×2 de accesos,
+//   modos, recientes, footer.
+// • "Herramientas" ahora navega a ToolCategories (grid Parkside),
+//   no directamente a ToolSearch.
+// ═══════════════════════════════════════════════════════════════
+
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
-import { ModeCard, ProjectCard } from '../components';
+import { ModeCard, ProjectCard, Icon, IconName } from '../components';
 import { Project } from '../models';
 import { getProjects } from '../storage/projectRepository';
 import { getLastProjectId } from '../storage/settingsStorage';
@@ -14,12 +33,13 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
 
-const features = [
-  { icon: '📋', key: 'steps' },
-  { icon: '🪚', key: 'optimize' },
-  { icon: '📦', key: 'materials' },
-  { icon: '🛒', key: 'shop' },
-];
+type QuickAction = {
+  key: string;
+  icon: IconName;
+  label: string;
+  color: string;
+  onPress: () => void;
+};
 
 export default function HomeScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
@@ -30,141 +50,225 @@ export default function HomeScreen({ navigation }: Props) {
     useCallback(() => {
       getProjects().then((all) => setRecentProjects(all.slice(0, 3)));
       setLastPid(getLastProjectId());
-    }, [])
+    }, []),
   );
 
-  const toggleLang = () => i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
+  const toggleLang = () =>
+    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
+
+  const quickActions: QuickAction[] = [
+    {
+      key: 'projects',
+      icon: 'projects',
+      label: t('home.myProjects'),
+      color: colors.primary,
+      onPress: () => navigation.navigate('Projects'),
+    },
+    {
+      key: 'tools',
+      icon: 'tools',
+      label: 'Herramientas',
+      color: '#C4804A',
+      onPress: () => navigation.navigate('ToolCategories'),
+    },
+    {
+      key: 'wood',
+      icon: 'wood',
+      label: 'Maderas',
+      color: '#6B8E5A',
+      onPress: () => navigation.navigate('WoodCatalog'),
+    },
+    {
+      key: 'calculators',
+      icon: 'calculator',
+      label: 'Calculadoras',
+      color: '#5A7D9A',
+      onPress: () => navigation.navigate('Calculators'),
+    },
+  ];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Top bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.chipBtn} onPress={toggleLang}>
-          <Text style={styles.chipText}>{i18n.language === 'es' ? '🇬🇧 EN' : '🇪🇸 ES'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.chipBtn} onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.chipText}>⚙️</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Hero */}
-      <View style={styles.hero}>
-        <Text style={styles.logoIcon}>🪵</Text>
-        <Text style={typography.hero}>{t('app.name')}</Text>
-        <Text style={[typography.h3, { color: colors.textSecondary, marginTop: spacing.xs }]}>
-          {t('app.subtitle')}
-        </Text>
-        <Text style={[typography.bodySmall, { marginTop: spacing.sm, textAlign: 'center' }]}>
-          {t('app.tagline')}
-        </Text>
-      </View>
-
-      {/* CTA */}
-      <TouchableOpacity style={[styles.ctaButton, shadows.md]} onPress={() => navigation.navigate('ModeSelection')} activeOpacity={0.8}>
-        <Text style={[typography.button, { color: colors.textOnPrimary }]}>{t('home.start')}</Text>
-        <Text style={styles.ctaArrow}>→</Text>
-      </TouchableOpacity>
-
-      {/* Continue last project */}
-      {lastProjectId && (
-        <TouchableOpacity style={styles.continueBtn} onPress={() => navigation.navigate('ProjectDetail', { projectId: lastProjectId })} activeOpacity={0.8}>
-          <Text style={[typography.buttonSmall, { color: colors.accent }]}>↩️ Continuar ultimo proyecto</Text>
-        </TouchableOpacity>
-      )}
-
-      {/* My projects */}
-      <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate('Projects')} activeOpacity={0.8}>
-        <Text style={[typography.buttonSmall, { color: colors.textSecondary }]}>📂 {t('home.myProjects')}</Text>
-      </TouchableOpacity>
-
-      {/* Catalogs */}
-      <View style={styles.catalogRow}>
-        <TouchableOpacity style={[styles.catalogBtn, shadows.sm]} onPress={() => navigation.navigate('ToolSearch')} activeOpacity={0.8}>
-          <Text style={{ fontSize: 28 }}>🔧</Text>
-          <Text style={[typography.buttonSmall, { color: colors.text, marginTop: spacing.sm }]}>Herramientas</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.catalogBtn, shadows.sm]} onPress={() => navigation.navigate('WoodCatalog')} activeOpacity={0.8}>
-          <Text style={{ fontSize: 28 }}>🪵</Text>
-          <Text style={[typography.buttonSmall, { color: colors.text, marginTop: spacing.sm }]}>Maderas</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Woodzy Theme Preview (temporal — Fase 12) */}
-      <TouchableOpacity
-        style={styles.woodzyPreviewBtn}
-        onPress={() => navigation.navigate('WoodzyHome')}
-        activeOpacity={0.85}
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.woodzyPreviewText}>🎨  Ver preview theme Woodzy</Text>
-      </TouchableOpacity>
+        {/* Top bar */}
+        <View style={styles.topBar}>
+          <TouchableOpacity style={styles.chipBtn} onPress={toggleLang}>
+            <Icon name="language" size={14} color={colors.text} />
+            <Text style={styles.chipText}>
+              {i18n.language === 'es' ? 'EN' : 'ES'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.chipBtn}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Icon name="settings" size={14} color={colors.text} />
+          </TouchableOpacity>
+        </View>
 
-      {/* Features grid */}
-      <Text style={[typography.label, { marginTop: spacing.xxl, marginBottom: spacing.lg }]}>{t('home.whatCanYouDo')}</Text>
-      <View style={styles.grid}>
-        {features.map((f) => (
-          <View key={f.key} style={[styles.featureCard, shadows.sm]}>
-            <Text style={styles.featureIcon}>{f.icon}</Text>
-            <Text style={[typography.bodySmall, { fontWeight: '600', color: colors.text, textAlign: 'center' }]}>
-              {t(`home.features.${f.key}`)}
-            </Text>
-            <Text style={[typography.caption, { textAlign: 'center', marginTop: 2 }]}>
-              {t(`home.features.${f.key}Desc`)}
-            </Text>
+        {/* Hero compacto */}
+        <View style={styles.hero}>
+          <View style={styles.logoBox}>
+            <Icon name="hammer" size={32} color={colors.primary} />
           </View>
-        ))}
-      </View>
+          <Text style={typography.hero}>{t('app.name')}</Text>
+          <Text style={styles.heroSubtitle}>{t('app.subtitle')}</Text>
+        </View>
 
-      {/* Modes */}
-      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>{t('home.availableModes')}</Text>
-      <ModeCard
-        icon="🔨"
-        title={t('modes.diy')}
-        description={t('modes.diyLong')}
-        tags={[t('modes.diyTag'), t('modes.diyTag2')]}
-        variant="diy"
-        onPress={() => navigation.navigate('DIYInput')}
-      />
-      <ModeCard
-        icon="📐"
-        title={t('modes.pro')}
-        description={t('modes.proLong')}
-        tags={[t('modes.proTag'), t('modes.proTag2')]}
-        variant="pro"
-        onPress={() => navigation.navigate('ProInput')}
-      />
-
-      {/* Recent projects */}
-      {recentProjects.length > 0 && (
-        <>
-          <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>Proyectos recientes</Text>
-          {recentProjects.map((p: Project) => (
-            <ProjectCard
-              key={p.id}
-              project={p}
-              onPress={() => navigation.navigate('ProjectDetail', { projectId: p.id })}
-            />
-          ))}
-        </>
-      )}
-
-      {/* Footer */}
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Feedback')}>
-          <Text style={[typography.caption, { color: colors.primary }]}>💬 Enviar feedback</Text>
+        {/* CTA principal */}
+        <TouchableOpacity
+          style={[styles.ctaButton, shadows.md]}
+          onPress={() => navigation.navigate('ModeSelection')}
+          activeOpacity={0.85}
+        >
+          <Text
+            style={[typography.button, { color: colors.textOnPrimary }]}
+          >
+            {t('home.start')}
+          </Text>
+          <Icon name="forward" size={20} color={colors.textOnPrimary} />
         </TouchableOpacity>
-        <Text style={[typography.caption, { marginTop: spacing.sm }]}>
-          {t('app.name')} {t('app.version')} — {t('app.footer')}
-        </Text>
-      </View>
-    </ScrollView>
+
+        {/* Continuar último proyecto */}
+        {lastProjectId && (
+          <TouchableOpacity
+            style={styles.continueBtn}
+            onPress={() =>
+              navigation.navigate('ProjectDetail', { projectId: lastProjectId })
+            }
+            activeOpacity={0.85}
+          >
+            <Icon name="back" size={16} color={colors.accent} />
+            <Text
+              style={[
+                typography.buttonSmall,
+                { color: colors.accent, marginLeft: spacing.sm },
+              ]}
+            >
+              Continuar último proyecto
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Accesos rápidos 2×2 */}
+        <Text style={styles.sectionLabel}>Accesos rápidos</Text>
+        <View style={styles.grid}>
+          {quickActions.map((a) => (
+            <TouchableOpacity
+              key={a.key}
+              style={[styles.quickCard, shadows.sm]}
+              onPress={a.onPress}
+              activeOpacity={0.85}
+            >
+              <View
+                style={[
+                  styles.quickIconBox,
+                  { backgroundColor: a.color + '1A' },
+                ]}
+              >
+                <Icon name={a.icon} size={28} color={a.color} />
+              </View>
+              <Text style={styles.quickLabel}>{a.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Modos */}
+        <Text style={styles.sectionLabel}>{t('home.availableModes')}</Text>
+        <ModeCard
+          icon="hammer"
+          title={t('modes.diy')}
+          description={t('modes.diyLong')}
+          tags={[t('modes.diyTag'), t('modes.diyTag2')]}
+          variant="diy"
+          onPress={() => navigation.navigate('DIYInput')}
+        />
+        <ModeCard
+          icon="ruler"
+          title={t('modes.pro')}
+          description={t('modes.proLong')}
+          tags={[t('modes.proTag'), t('modes.proTag2')]}
+          variant="pro"
+          onPress={() => navigation.navigate('ProInput')}
+        />
+
+        {/* Recientes */}
+        {recentProjects.length > 0 && (
+          <>
+            <Text style={styles.sectionLabel}>Proyectos recientes</Text>
+            {recentProjects.map((p: Project) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                onPress={() =>
+                  navigation.navigate('ProjectDetail', { projectId: p.id })
+                }
+              />
+            ))}
+          </>
+        )}
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.footerLink}
+            onPress={() => navigation.navigate('Feedback')}
+          >
+            <Icon name="feedback" size={14} color={colors.primary} />
+            <Text
+              style={[
+                typography.caption,
+                { color: colors.primary, marginLeft: spacing.xs },
+              ]}
+            >
+              Enviar feedback
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.footerLink}
+            onPress={() => navigation.navigate('WoodzyHome')}
+          >
+            <Icon name="theme" size={14} color={colors.textMuted} />
+            <Text
+              style={[
+                typography.caption,
+                { color: colors.textMuted, marginLeft: spacing.xs },
+              ]}
+            >
+              Preview theme Woodzy
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.footerVersion}>
+            {t('app.name')} {t('app.version')} · {t('app.footer')}
+          </Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  topBar: { flexDirection: 'row', justifyContent: 'flex-end', gap: spacing.sm },
+  safe: { flex: 1, backgroundColor: colors.bg },
+  container: { flex: 1 },
+  content: {
+    padding: spacing.xl,
+    paddingBottom: spacing.xxxl,
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: spacing.sm,
+  },
   chipBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
     backgroundColor: colors.surface,
     borderRadius: radius.sm,
     paddingHorizontal: spacing.md,
@@ -173,59 +277,92 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   chipText: { ...typography.caption, color: colors.text },
-  hero: { alignItems: 'center', marginTop: spacing.xl, marginBottom: spacing.xxl },
-  logoIcon: { fontSize: 52, marginBottom: spacing.sm },
+  hero: {
+    alignItems: 'center',
+    marginTop: spacing.lg,
+    marginBottom: spacing.xl,
+  },
+  logoBox: {
+    width: 64,
+    height: 64,
+    borderRadius: radius.lg,
+    backgroundColor: colors.primaryMuted,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+  },
+  heroSubtitle: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+  },
   ctaButton: {
     backgroundColor: colors.primary,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: spacing.sm,
     paddingVertical: 18,
     borderRadius: radius.lg,
     marginBottom: spacing.md,
   },
-  ctaArrow: { ...typography.button, color: colors.textOnPrimary, marginLeft: spacing.sm },
   continueBtn: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: spacing.lg,
     borderRadius: radius.md,
     backgroundColor: colors.accentMuted,
     borderWidth: 1,
     borderColor: colors.accent,
-    marginBottom: spacing.sm,
-  },
-  secondaryBtn: {
-    alignItems: 'center',
-    paddingVertical: spacing.lg,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
     marginBottom: spacing.lg,
   },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  featureCard: {
+  sectionLabel: {
+    ...typography.label,
+    color: colors.textSecondary,
+    marginTop: spacing.xl,
+    marginBottom: spacing.md,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  quickCard: {
     width: '48%',
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     padding: spacing.lg,
     alignItems: 'center',
     marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  featureIcon: { fontSize: 26, marginBottom: spacing.sm },
-  catalogRow: { flexDirection: 'row', gap: spacing.md, marginBottom: spacing.lg },
-  catalogBtn: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.xl, alignItems: 'center' },
-  woodzyPreviewBtn: {
-    backgroundColor: '#0D0C0C',
-    borderRadius: 999,
-    paddingVertical: spacing.lg,
+  quickIconBox: {
+    width: 56,
+    height: 56,
+    borderRadius: radius.md,
     alignItems: 'center',
-    marginBottom: spacing.lg,
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
   },
-  woodzyPreviewText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 0.3,
+  quickLabel: {
+    ...typography.bodySmall,
+    fontWeight: '700',
+    color: colors.text,
+    textAlign: 'center',
   },
-  footer: { alignItems: 'center', marginTop: spacing.xxxl },
+  footer: {
+    alignItems: 'center',
+    marginTop: spacing.xxxl,
+    gap: spacing.sm,
+  },
+  footerLink: { flexDirection: 'row', alignItems: 'center' },
+  footerVersion: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: spacing.sm,
+  },
 });
