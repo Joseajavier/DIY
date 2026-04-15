@@ -9,6 +9,7 @@ import { searchTools, getToolBrandName, getToolTypeName } from '../services/tool
 import { TOOL_CATEGORIES, TOOL_TYPES } from '../data/toolData';
 import { fetchToolCatalog } from '../services/catalogApiClient';
 import Icon, { IconName } from '../components/Icon';
+import RetailerSheet from '../components/RetailerSheet';
 import { categoryIcon, categoryColor } from '../utils/categoryIcons';
 
 type Props = {
@@ -45,6 +46,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   const [tier, setTier] = useState<ToolTier | ''>('');
   const [use, setUse] = useState<ToolUse | ''>('');
   const [power, setPower] = useState<ToolPower | ''>('');
+  const [sheetProduct, setSheetProduct] = useState<ToolProduct | null>(null);
 
   const filter: ToolFilter = {
     query: query || undefined,
@@ -187,7 +189,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         )}
         renderItem={({ item }: { item: ToolProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
-            onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
+            onPress={() => setSheetProduct(item)}
           >
             <View style={styles.cardRow}>
               {(() => {
@@ -254,13 +256,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
             </View>
             <TouchableOpacity
               style={styles.amazonBtn}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.amazon.es/s?k=${encodeURIComponent(
-                    getToolBrandName(item.brandId) + ' ' + item.model,
-                  )}`,
-                )
-              }
+              onPress={() => setSheetProduct(item)}
             >
               <Icon name="shop" size={16} color={colors.primary} />
               <Text
@@ -269,11 +265,26 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                   { color: colors.primary, marginLeft: spacing.sm },
                 ]}
               >
-                Ver en Amazon
+                Comprar en…
               </Text>
             </TouchableOpacity>
           </TouchableOpacity>
         )}
+      />
+
+      <RetailerSheet
+        visible={sheetProduct !== null}
+        onClose={() => setSheetProduct(null)}
+        query={
+          sheetProduct
+            ? `${getToolBrandName(sheetProduct.brandId)} ${sheetProduct.model}`
+            : ''
+        }
+        productLabel={
+          sheetProduct
+            ? `${getToolBrandName(sheetProduct.brandId)} · ${sheetProduct.model}`
+            : undefined
+        }
       />
     </View>
   );

@@ -11,3 +11,4 @@ export { default as ProjectCard } from './ProjectCard';
 export { default as EmptyState } from './EmptyState';
 export { default as Icon } from './Icon';
 export type { IconName } from './Icon';
+export { default as RetailerSheet } from './RetailerSheet';
