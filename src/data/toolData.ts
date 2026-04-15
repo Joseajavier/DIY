@@ -64,11 +64,8 @@ export const TOOL_TYPES: ToolType[] = [
   { id: 'marking_square', categoryId: 'measure', name: 'Escuadras y falsos escuadros', icon: '📏' },
   { id: 'marking_gauge', categoryId: 'measure', name: 'Gramil y útiles de trazado', icon: '📏' },
   // Sujeción
-  { id: 'corner_clamps', categoryId: 'clamp', name: 'Sargentos de esquina', icon: '🔧' },
-  { id: 'bench_vise', categoryId: 'clamp', name: 'Tornillo de banco', icon: '🔧' },
   { id: 'guide_rail', categoryId: 'clamp', name: 'Carriles guía y plantillas', icon: '🔧' },
   // Acabado
-  { id: 'spray_gun', categoryId: 'finish', name: 'Pistola HVLP / pulverizador', icon: '🎨' },
   { id: 'brad_nailer', categoryId: 'finish', name: 'Clavadora de cuadradillo', icon: '🎨' },
 ];
 
@@ -485,4 +482,52 @@ export const TOOL_PRODUCTS: ToolProduct[] = [
 
   // ═══ FESTOOL ADICIONAL ═══
   { id: 'dd06', typeId: 'drill_driver', brandId: 'festool', model: 'CXS 18', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 350, priceMax: 450, description: 'Taladro compacto premium.', features: ['18V', 'Compacto', 'Brushless'], bestFor: 'Ebanistería precisa' },
+
+  // ══════════════════════════════════════════════════════════════
+  // ═══ FASE 20 — Marcas nuevas ══════════════════════════════════
+  // ══════════════════════════════════════════════════════════════
+
+  // ─── STAYER (básica española) ─────────────────────────────────
+  { id: 'stayer-cs190', typeId: 'circular_saw', brandId: 'stayer', model: 'BCS 190', tier: 'basic', use: ['home'], power: 'corded', priceMin: 28, priceMax: 45, description: 'Sierra circular 1200W, disco 190mm. Relación calidad-precio española.', features: ['1200W', '190mm', 'Guía paralela', 'Ligera 3.5kg'], bestFor: 'Cortes básicos en tableros de bricolaje' },
+  { id: 'stayer-dd13', typeId: 'drill_driver', brandId: 'stayer', model: 'BDD 13-1', tier: 'basic', use: ['home'], power: 'battery', priceMin: 30, priceMax: 50, description: 'Taladro atornillador 18V con batería incluida. Ideal para montar muebles.', features: ['18V', '30Nm', '13mm', 'Batería incluida'], bestFor: 'Bricolaje doméstico general' },
+  { id: 'stayer-os125', typeId: 'orbital_sander', brandId: 'stayer', model: 'BOS 125/A', tier: 'basic', use: ['home'], power: 'corded', priceMin: 18, priceMax: 32, description: 'Lijadora orbital 230W, plato 125mm. Aspiración integrada.', features: ['230W', '125mm', 'Aspiración', 'Cambio lija rápido'], bestFor: 'Lijar muebles en casa' },
+
+  // ─── AEG (prosumer alemán) ────────────────────────────────────
+  { id: 'aeg-bss18bl', typeId: 'circular_saw', brandId: 'aeg', model: 'BSS 18BL', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 155, priceMax: 210, description: 'Sierra circular 18V brushless sin batería. 165mm, eje compatible Milwaukee M18.', features: ['18V Brushless', '165mm', 'Compatible M18', 'Freno rápido'], bestFor: 'Taller o reforma sin cable' },
+  { id: 'aeg-bs18bl', typeId: 'drill_driver', brandId: 'aeg', model: 'BS 18BL', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 85, priceMax: 130, description: 'Taladro atornillador 18V brushless, 60Nm. Plataforma AEG/Milwaukee.', features: ['18V Brushless', '60Nm', 'Compacto', '2 velocidades'], bestFor: 'Bricolaje avanzado y taller' },
+  { id: 'aeg-bex18bl', typeId: 'orbital_sander', brandId: 'aeg', model: 'BEX 18BL', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 95, priceMax: 140, description: 'Lijadora excéntrica 18V brushless, 125mm. Sin cable para talleres pequeños.', features: ['18V Brushless', '125mm', 'Sin cable', 'Aspiración'], bestFor: 'Lijar sin cables en taller o obra' },
+
+  // ─── WOLFCRAFT (accesorios alemanes) ──────────────────────────
+  { id: 'wolfcraft-5005', typeId: 'f_clamps', brandId: 'wolfcraft', model: '5005000 400mm', tier: 'basic', use: ['home', 'workshop'], power: 'manual', priceMin: 7, priceMax: 14, description: 'Sargento F clásico 400mm de apertura. Acero robusto para encolados.', features: ['400mm apertura', 'Acero', 'Mordazas protegidas'], bestFor: 'Encolados básicos de tableros' },
+  { id: 'wolfcraft-3440', typeId: 'quick_clamps', brandId: 'wolfcraft', model: '3440000 150mm', tier: 'basic', use: ['home', 'workshop'], power: 'manual', priceMin: 6, priceMax: 12, description: 'Sargento rápido a una mano 150mm. Reversible para separar piezas.', features: ['150mm', 'Una mano', 'Reversible'], bestFor: 'Sujeción rápida en bricolaje' },
+  { id: 'wolfcraft-5109', typeId: 'workbench', brandId: 'wolfcraft', model: 'Master 700', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 110, priceMax: 170, description: 'Banco de trabajo plegable 700mm con mordaza. Sistema de topes integrado.', features: ['Plegable', 'Mordaza 140mm', 'Topes', '200kg carga'], bestFor: 'Taller doméstico versátil' },
+
+  // ─── PIHER (sargentos españoles) ──────────────────────────────
+  { id: 'piher-mf300', typeId: 'f_clamps', brandId: 'piher', model: 'Max-Force 300mm', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 11, priceMax: 20, description: 'Sargento F español Max-Force 300mm. Alta presión 5500N. Referencia en carpintería.', features: ['300mm', '5500N', 'Fabricado en España', 'Tornillo rápido'], bestFor: 'Encolados de carpintería' },
+  { id: 'piher-nx300', typeId: 'quick_clamps', brandId: 'piher', model: 'New Xtreme 300mm', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 13, priceMax: 22, description: 'Sargento rápido New Xtreme 300mm. Presión 340kg, accionamiento a una mano.', features: ['300mm', '340kg presión', 'Una mano', 'Cabezal giratorio'], bestFor: 'Trabajos frecuentes en taller' },
+
+  // ─── CMT ORANGE TOOLS (fresas y discos pro) ───────────────────
+  { id: 'cmt-rb12s', typeId: 'router_bits', brandId: 'cmt_orange_tools', model: 'Set 12 fresas 8mm', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 75, priceMax: 130, description: 'Set 12 fresas profesionales vástago 8mm. Carburo micrograno, recubrimiento naranja.', features: ['12 fresas', 'Vástago 8mm', 'Carburo micrograno', 'Recubrimiento PTFE'], bestFor: 'Fresadora de taller profesional' },
+  { id: 'cmt-sb250060', typeId: 'saw_blade', brandId: 'cmt_orange_tools', model: '215.060.10 250×60D', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 45, priceMax: 75, description: 'Disco sierra 250mm 60 dientes para ingletadora. ATB+, acabado fino.', features: ['250mm', '60 dientes', 'ATB+', 'Antirruido'], bestFor: 'Cortes de acabado en ingletadora' },
+
+  // ─── FREUD (discos y fresas premium) ──────────────────────────
+  { id: 'freud-lm74m', typeId: 'saw_blade', brandId: 'freud', model: 'LM 74 M 250×60D', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 48, priceMax: 82, description: 'Disco LM 74M 250mm 60 dientes. Tecnología TiCo, larga vida. Referencia profesional.', features: ['250mm', '60 dientes', 'TiCo carburo', 'Anti-vibraciones'], bestFor: 'Sierra de mesa y ingletadora profesional' },
+  { id: 'freud-rb8s', typeId: 'router_bits', brandId: 'freud', model: 'Set 15 fresas vástago 8mm', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 65, priceMax: 105, description: 'Set 15 fresas carburo, vástago 8mm. Recubrimiento antifricción rojo Freud.', features: ['15 fresas', 'Vástago 8mm', 'Carburo TiCo', 'Maletín'], bestFor: 'Fresadora de sobremesa profesional' },
+
+  // ─── FACOM (medición profesional francesa) ────────────────────
+  { id: 'facom-904a150', typeId: 'digital_caliper', brandId: 'facom', model: '904A.150', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 50, priceMax: 90, description: 'Calibre digital 150mm acero inoxidable. Resolución 0.01mm. Lectura mm/pulgadas.', features: ['150mm', '0.01mm', 'Inox', 'mm/pulgadas'], bestFor: 'Taller de precisión profesional' },
+  { id: 'facom-ms150', typeId: 'marking_square', brandId: 'facom', model: 'MS.150', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 35, priceMax: 60, description: 'Escuadra de acero templado 150mm. Tolerancia ±0.02mm. Uso profesional.', features: ['150mm', '±0.02mm', 'Acero templado', 'Certificada'], bestFor: 'Marcado preciso en ebanistería' },
+
+  // ─── FEMI (máquinas italianas) ────────────────────────────────
+  { id: 'femi-n650xl', typeId: 'band_saw', brandId: 'femi', model: 'N 650 XL', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 270, priceMax: 380, description: 'Sierra de cinta italiana 370W. Garganta 310mm, corte 150mm altura. Construcción profesional.', features: ['370W', '310mm garganta', '150mm altura corte', 'Guía paralela'], bestFor: 'Carpintería de curvas y rebanado' },
+  { id: 'femi-703175', typeId: 'drill_press', brandId: 'femi', model: '703/175', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 310, priceMax: 440, description: 'Taladro de columna 550W, portabrocas 16mm. Mesa inclinable ±45°. Made in Italy.', features: ['550W', '16mm portabrocas', 'Mesa ±45°', 'Made in Italy'], bestFor: 'Taladros perpendiculares de precisión' },
+
+  // ─── PARKSIDE PERFORMANCE (prosumer) ─────────────────────────
+  { id: 'pp-pabs20li', typeId: 'drill_driver', brandId: 'parkside_performance', model: 'PBS 20-Li A1', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 60, priceMax: 95, description: 'Taladro atornillador 20V brushless, 65Nm. Versión Performance de Parkside.', features: ['20V Brushless', '65Nm', 'LED', 'Cinturón compatible'], bestFor: 'Bricolaje intensivo y taller doméstico' },
+
+  // ─── EINHELL PROFESSIONAL ────────────────────────────────────
+  { id: 'ep-tebba18', typeId: 'drill_driver', brandId: 'einhell_professional', model: 'TE-BBA 18/45 BL Li-i', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 80, priceMax: 125, description: 'Taladro atornillador brushless 18V, 80Nm. Versión Professional con más autonomía.', features: ['18V Brushless', '80Nm', 'Brushless', 'Compatible Power X-Change'], bestFor: 'Taladrado y atornillado intensivo' },
+
+  // ─── STANLEY FATMAX ──────────────────────────────────────────
+  { id: 'sfm-fmht83191', typeId: 'quick_clamps', brandId: 'stanley_fatmax', model: 'FMHT83191 450mm', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 14, priceMax: 24, description: 'Sargento rápido FatMax 450mm, presión 340kg. Ergonómico, una mano.', features: ['450mm', '340kg presión', 'Una mano', 'Cabeza antivibraciones'], bestFor: 'Encolados y sujeciones frecuentes' },
 ];
