@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SectionList, Linking } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SectionList, Linking, Image } from 'react-native';
+import { getBrandLogo } from '../assets/brands';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -265,18 +266,28 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
             // ── Cabecera de marca ──────────────────────────────
             const tiers = [...new Set(section.data.map((p: ToolProduct) => p.tier))];
             const typeNames = [...new Set(section.data.map((p: ToolProduct) => getToolTypeName(p.typeId)))];
+            const logo = getBrandLogo(section.typeId);
             return (
               <View style={styles.sectionHeader}>
-                <View style={styles.tierDots}>
-                  {(tiers as string[]).includes('basic') && <View style={[styles.tierDot, { backgroundColor: colors.success }]} />}
-                  {(tiers as string[]).includes('mid') && <View style={[styles.tierDot, { backgroundColor: colors.warning }]} />}
-                  {(tiers as string[]).includes('pro') && <View style={[styles.tierDot, { backgroundColor: colors.danger }]} />}
-                </View>
+                {logo ? (
+                  <Image source={logo} style={styles.brandLogo} resizeMode="contain" />
+                ) : (
+                  <View style={styles.tierDots}>
+                    {(tiers as string[]).includes('basic') && <View style={[styles.tierDot, { backgroundColor: colors.success }]} />}
+                    {(tiers as string[]).includes('mid') && <View style={[styles.tierDot, { backgroundColor: colors.warning }]} />}
+                    {(tiers as string[]).includes('pro') && <View style={[styles.tierDot, { backgroundColor: colors.danger }]} />}
+                  </View>
+                )}
                 <View style={{ flex: 1 }}>
                   <Text style={typography.h2}>{section.title}</Text>
                   <Text style={[typography.caption, { color: colors.textMuted }]} numberOfLines={1}>
                     {typeNames.slice(0, 3).join(' · ')}{typeNames.length > 3 ? ` +${typeNames.length - 3}` : ''}
                   </Text>
+                </View>
+                <View style={styles.tierDots}>
+                  {(tiers as string[]).includes('basic') && <View style={[styles.tierDot, { backgroundColor: colors.success }]} />}
+                  {(tiers as string[]).includes('mid') && <View style={[styles.tierDot, { backgroundColor: colors.warning }]} />}
+                  {(tiers as string[]).includes('pro') && <View style={[styles.tierDot, { backgroundColor: colors.danger }]} />}
                 </View>
                 <Text style={typography.caption}>{section.data.length}</Text>
               </View>
@@ -421,6 +432,7 @@ const styles = StyleSheet.create({
   sourceBadge: { ...typography.caption, color: colors.primary },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xl, marginBottom: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border },
   sectionIconBox: { width: 32, height: 32, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  brandLogo: { width: 64, height: 28, marginRight: spacing.sm },
   tierDots: { flexDirection: 'row', gap: 4, alignItems: 'center', marginRight: spacing.sm },
   tierDot: { width: 10, height: 10, borderRadius: 5 },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },

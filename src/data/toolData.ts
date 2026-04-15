@@ -49,6 +49,27 @@ export const TOOL_TYPES: ToolType[] = [
   { id: 'heat_gun', categoryId: 'finish', name: 'Pistola de calor', icon: '🎨' },
   { id: 'shop_vac', categoryId: 'extract', name: 'Aspirador de taller', icon: '💨' },
   { id: 'dust_collector', categoryId: 'extract', name: 'Sistema de aspiración', icon: '💨' },
+
+  // ── Fase 20 — tipos nuevos ──────────────────────────────────
+  // Corte manual
+  { id: 'hand_saw', categoryId: 'cut', name: 'Serrucho manual / japonés', icon: '🪚' },
+  { id: 'saw_blade', categoryId: 'cut', name: 'Discos y hojas de sierra', icon: '🪚' },
+  // Lijado / fresado
+  { id: 'abrasives', categoryId: 'sand', name: 'Abrasivos y lijas', icon: '✨' },
+  { id: 'router_bits', categoryId: 'sand', name: 'Fresas y accesorios de fresadora', icon: '✨' },
+  { id: 'spindle_sander', categoryId: 'sand', name: 'Lijadora de bobina', icon: '✨' },
+  // Cepillado manual
+  { id: 'hand_plane', categoryId: 'plane', name: 'Cepillo manual', icon: '🪵' },
+  // Medición
+  { id: 'marking_square', categoryId: 'measure', name: 'Escuadras y falsos escuadros', icon: '📏' },
+  { id: 'marking_gauge', categoryId: 'measure', name: 'Gramil y útiles de trazado', icon: '📏' },
+  // Sujeción
+  { id: 'corner_clamps', categoryId: 'clamp', name: 'Sargentos de esquina', icon: '🔧' },
+  { id: 'bench_vise', categoryId: 'clamp', name: 'Tornillo de banco', icon: '🔧' },
+  { id: 'guide_rail', categoryId: 'clamp', name: 'Carriles guía y plantillas', icon: '🔧' },
+  // Acabado
+  { id: 'spray_gun', categoryId: 'finish', name: 'Pistola HVLP / pulverizador', icon: '🎨' },
+  { id: 'brad_nailer', categoryId: 'finish', name: 'Clavadora de cuadradillo', icon: '🎨' },
 ];
 
 export const TOOL_BRANDS: ToolBrand[] = [
@@ -103,6 +124,32 @@ export const TOOL_BRANDS: ToolBrand[] = [
   { id: 'steinel', name: 'Steinel', tiers: ['mid', 'pro'] },
   { id: 'karcher', name: 'Kärcher', tiers: ['basic', 'mid'] },
   { id: 'leica', name: 'Leica', tiers: ['pro'] },
+
+  // ── Fase 20 — marcas nuevas ─────────────────────────────────
+  // Generalistas España
+  { id: 'stayer', name: 'Stayer', tiers: ['basic', 'mid'], level: 'diy', origin: 'ES' },
+  { id: 'aeg', name: 'AEG', tiers: ['mid', 'pro'], level: 'prosumer', origin: 'DE' },
+  { id: 'dexter', name: 'Dexter', tiers: ['basic'], level: 'diy', origin: 'FR' },
+  { id: 'parkside_performance', name: 'Parkside Performance', tiers: ['mid'], level: 'prosumer', origin: 'DE' },
+  { id: 'einhell_professional', name: 'Einhell Professional', tiers: ['mid', 'pro'], level: 'prosumer', origin: 'DE' },
+  { id: 'stanley_fatmax', name: 'Stanley FatMax', tiers: ['mid', 'pro'], level: 'prosumer', origin: 'US' },
+  { id: 'femi', name: 'Femi', tiers: ['mid', 'pro'], level: 'pro', origin: 'IT' },
+  { id: 'powerplus', name: 'PowerPlus', tiers: ['basic'], level: 'diy', origin: 'BE' },
+  { id: 'koma_tools', name: 'Koma Tools', tiers: ['basic', 'mid'], level: 'diy', origin: 'ES' },
+  { id: 'toolson', name: 'Toolson', tiers: ['basic', 'mid'], level: 'diy', origin: 'DE' },
+  { id: 'vito', name: 'Vito', tiers: ['basic', 'mid'], level: 'diy', origin: 'ES' },
+
+  // Carpintería especializada
+  { id: 'cmt_orange_tools', name: 'CMT Orange Tools', tiers: ['pro'], level: 'accessories', origin: 'IT' },
+  { id: 'freud', name: 'Freud', tiers: ['pro'], level: 'accessories', origin: 'IT' },
+
+  // Sujeción y accesorios
+  { id: 'piher', name: 'Piher', tiers: ['mid'], level: 'accessories', origin: 'ES' },
+  { id: 'wolfcraft', name: 'Wolfcraft', tiers: ['basic', 'mid'], level: 'accessories', origin: 'DE' },
+  { id: 'kwb', name: 'KWB', tiers: ['basic', 'mid'], level: 'accessories', origin: 'DE' },
+
+  // Otras relevantes
+  { id: 'facom', name: 'Facom', tiers: ['pro'], level: 'pro', origin: 'FR' },
 ];
 
 export const TOOL_PRODUCTS: ToolProduct[] = [

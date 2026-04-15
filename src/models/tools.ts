@@ -19,6 +19,12 @@ export interface ToolBrand {
   id: string;
   name: string;
   tiers: ToolTier[];
+  /** Imagen local require() o URL remota */
+  logo?: any;
+  /** Nivel de la marca: diy / prosumer / pro / premium / accessories */
+  level?: 'diy' | 'prosumer' | 'pro' | 'premium' | 'accessories';
+  /** País de origen */
+  origin?: string;
 }
 
 export interface ToolProduct {
