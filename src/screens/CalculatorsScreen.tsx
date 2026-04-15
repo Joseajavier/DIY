@@ -67,6 +67,14 @@ const ITEMS: CalcItem[] = [
     route: 'FractionCalc',
     accent: '#AB130A',
   },
+  {
+    id: 'screws',
+    icon: 'screw',
+    title: 'Selector de tornillos',
+    subtitle: '¿Qué tornillo uso? Elige materiales y te digo cuál',
+    route: 'ScrewSelector',
+    accent: '#5A7D9A',
+  },
 ];
 
 export default function CalculatorsScreen({ navigation }: Props) {

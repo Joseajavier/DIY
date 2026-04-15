@@ -67,6 +67,7 @@ export type IconName =
   | 'wall'
   | 'shelf'
   | 'fraction'
+  | 'screw'
   | 'info';
 
 type IonName = React.ComponentProps<typeof Ionicons>['name'];
@@ -142,6 +143,7 @@ const MAP: Record<IconName, Mapping> = {
   wall: { pack: 'mci', name: 'wall' },
   shelf: { pack: 'mci', name: 'bookshelf' },
   fraction: { pack: 'mci', name: 'fraction-one-half' },
+  screw: { pack: 'mci', name: 'screw-flat-top' },
   info: { pack: 'ion', name: 'information-circle' },
 };
 

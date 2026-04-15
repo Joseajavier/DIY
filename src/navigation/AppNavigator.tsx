@@ -31,6 +31,7 @@ import GoldenRatioScreen from '../screens/calculators/GoldenRatioScreen';
 import WainscotCalcScreen from '../screens/calculators/WainscotCalcScreen';
 import ShelfCalcScreen from '../screens/calculators/ShelfCalcScreen';
 import FractionCalcScreen from '../screens/calculators/FractionCalcScreen';
+import ScrewSelectorScreen from '../screens/ScrewSelectorScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -53,6 +54,7 @@ export type RootStackParamList = {
   WainscotCalc: undefined;
   ShelfCalc: undefined;
   FractionCalc: undefined;
+  ScrewSelector: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult; projectId?: string };
@@ -106,6 +108,7 @@ export default function AppNavigator() {
       <Stack.Screen name="WainscotCalc" component={WainscotCalcScreen} options={{ title: '🪟 Wainscot' }} />
       <Stack.Screen name="ShelfCalc" component={ShelfCalcScreen} options={{ title: '📚 Baldas' }} />
       <Stack.Screen name="FractionCalc" component={FractionCalcScreen} options={{ title: '½ Fracciones' }} />
+      <Stack.Screen name="ScrewSelector" component={ScrewSelectorScreen} options={{ title: '🔩 Selector de tornillos' }} />
     </Stack.Navigator>
   );
 }
