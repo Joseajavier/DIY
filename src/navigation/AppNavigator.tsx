@@ -21,6 +21,7 @@ import FeedbackScreen from '../screens/FeedbackScreen';
 import ToolSearchScreen from '../screens/ToolSearchScreen';
 import ToolCategoriesScreen from '../screens/ToolCategoriesScreen';
 import WoodCatalogScreen from '../screens/WoodCatalogScreen';
+import WoodCategoriesScreen from '../screens/WoodCategoriesScreen';
 import WoodzyHomeScreen from '../screens/WoodzyHomeScreen';
 import CalculatorsScreen from '../screens/CalculatorsScreen';
 import GoldenRatioScreen from '../screens/calculators/GoldenRatioScreen';
@@ -38,7 +39,8 @@ export type RootStackParamList = {
   Feedback: undefined;
   ToolCategories: undefined;
   ToolSearch: { categoryId?: string } | undefined;
-  WoodCatalog: undefined;
+  WoodCategories: undefined;
+  WoodCatalog: { categoryId?: string } | undefined;
   WoodzyHome: undefined;
   Calculators: undefined;
   GoldenRatio: undefined;
@@ -85,9 +87,10 @@ export default function AppNavigator() {
       <Stack.Screen name="ProjectDetail" component={ProjectDetailScreen} options={{ title: 'Proyecto' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: '⚙️' }} />
       <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '💬 Feedback' }} />
-      <Stack.Screen name="ToolCategories" component={ToolCategoriesScreen} options={{ title: '🔧 Herramientas' }} />
-      <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: '🔧 Catálogo' }} />
-      <Stack.Screen name="WoodCatalog" component={WoodCatalogScreen} options={{ title: '🪵 Maderas' }} />
+      <Stack.Screen name="ToolCategories" component={ToolCategoriesScreen} options={{ title: 'Herramientas' }} />
+      <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: 'Catálogo' }} />
+      <Stack.Screen name="WoodCategories" component={WoodCategoriesScreen} options={{ title: 'Maderas' }} />
+      <Stack.Screen name="WoodCatalog" component={WoodCatalogScreen} options={{ title: 'Catálogo' }} />
       <Stack.Screen name="WoodzyHome" component={WoodzyHomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Calculators" component={CalculatorsScreen} options={{ title: '🧮 Calculadoras' }} />
       <Stack.Screen name="GoldenRatio" component={GoldenRatioScreen} options={{ title: 'φ Proporción áurea' }} />

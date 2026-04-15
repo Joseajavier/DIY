@@ -76,7 +76,7 @@ export default function HomeScreen({ navigation }: Props) {
       icon: 'wood',
       label: 'Maderas',
       color: '#6B8E5A',
-      onPress: () => navigation.navigate('WoodCatalog'),
+      onPress: () => navigation.navigate('WoodCategories'),
     },
     {
       key: 'calculators',

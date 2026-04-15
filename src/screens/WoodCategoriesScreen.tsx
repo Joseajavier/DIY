@@ -1,11 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
-// TOOL CATEGORIES SCREEN — grid de subcategorías de herramientas.
+// WOOD CATEGORIES SCREEN — grid de subcategorías de madera.
 // ───────────────────────────────────────────────────────────────
-// TEMA CLARO unificado con el resto de la app (antes era oscuro
-// estilo Parkside; se cambió para no mezclar temas).
+// Usa el TEMA CLARO de la app (mismo que Home, Calculadoras, etc).
+// Diferenciado a propósito de ToolCategories (que es oscuro).
 //
-// Estructura: grid de tarjetas con icono vectorial + nombre +
-// contador de productos. Tap → ToolSearch filtrado por categoryId.
+// Estructura:
+//   • Tableros (MDF, melamina, OSB, alistonado, etc)
+//   • Contrachapado
+//   • Madera maciza
+//   • Listones y molduras
+//   • Especiales (termotratada, composite, corcho…)
+//
+// Tap sobre una card → WoodCatalog filtrado por categoryId.
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useEffect, useState } from 'react';
@@ -20,23 +26,63 @@ import {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
-import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../data/toolData';
-import { fetchToolCatalog } from '../services/catalogApiClient';
-import Icon from '../components/Icon';
-import { categoryIcon, categoryColor } from '../utils/categoryIcons';
+import { WOOD_CATEGORIES, WOOD_PRODUCTS } from '../data/woodData';
+import { fetchWoodCatalog } from '../services/catalogApiClient';
+import Icon, { IconName } from '../components/Icon';
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'ToolCategories'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCategories'>;
 };
 
 type CategoryCount = {
   id: string;
   name: string;
-  typeCount: number;
   productCount: number;
 };
 
-export default function ToolCategoriesScreen({ navigation }: Props) {
+// Iconos + colores por categoría (tema claro).
+const CAT_META: Record<
+  string,
+  { icon: IconName; color: string; subtitle: string }
+> = {
+  board: {
+    icon: 'board',
+    color: '#B88658',
+    subtitle: 'MDF · Melamina · OSB · Alistonado',
+  },
+  plywood: {
+    icon: 'materials',
+    color: '#8A5A3C',
+    subtitle: 'Abedul · Okumé · Fenólico · Marino',
+  },
+  solid: {
+    icon: 'wood',
+    color: '#6B8E5A',
+    subtitle: 'Pino · Roble · Haya · Nogal · Teca',
+  },
+  strips: {
+    icon: 'ruler',
+    color: '#C4804A',
+    subtitle: 'Cuadrados · Rectangulares · Molduras',
+  },
+  special: {
+    icon: 'info',
+    color: '#B24A6E',
+    subtitle: 'Termotratada · WPC · Corcho',
+  },
+};
+
+function metaFor(id: string) {
+  return (
+    CAT_META[id] ?? {
+      icon: 'wood' as IconName,
+      color: '#8A5A3C',
+      subtitle: '',
+    }
+  );
+}
+
+export default function WoodCategoriesScreen({ navigation }: Props) {
   const [counts, setCounts] = useState<CategoryCount[]>([]);
   const [total, setTotal] = useState(0);
 
@@ -44,77 +90,48 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
     let cancelled = false;
 
     const computeFromLocal = () => {
-      const typesByCategory: Record<string, string[]> = {};
-      for (const t of TOOL_TYPES) {
-        if (!typesByCategory[t.categoryId]) typesByCategory[t.categoryId] = [];
-        typesByCategory[t.categoryId].push(t.id);
+      const byCat: Record<string, number> = {};
+      for (const p of WOOD_PRODUCTS) {
+        byCat[p.categoryId] = (byCat[p.categoryId] || 0) + 1;
       }
-      const productsByType: Record<string, number> = {};
-      for (const p of TOOL_PRODUCTS) {
-        productsByType[p.typeId] = (productsByType[p.typeId] || 0) + 1;
-      }
-      return TOOL_CATEGORIES.map((c) => {
-        const typeIds = typesByCategory[c.id] || [];
-        const productCount = typeIds.reduce(
-          (acc, tid) => acc + (productsByType[tid] || 0),
-          0,
-        );
-        return {
-          id: c.id,
-          name: c.name,
-          typeCount: typeIds.length,
-          productCount,
-        };
-      });
+      return WOOD_CATEGORIES.map((c) => ({
+        id: c.id,
+        name: c.name,
+        productCount: byCat[c.id] || 0,
+      }));
     };
 
-    fetchToolCatalog()
+    fetchWoodCatalog()
       .then((res) => {
         if (cancelled) return;
         if (res && Array.isArray(res.products) && res.products.length > 0) {
-          const typesByCategory: Record<string, string[]> = {};
-          for (const t of (res.types || TOOL_TYPES) as Array<{
-            id: string;
-            categoryId: string;
-          }>) {
-            if (!typesByCategory[t.categoryId]) typesByCategory[t.categoryId] = [];
-            typesByCategory[t.categoryId].push(t.id);
+          const byCat: Record<string, number> = {};
+          for (const p of res.products as Array<{ categoryId: string }>) {
+            byCat[p.categoryId] = (byCat[p.categoryId] || 0) + 1;
           }
-          const productsByType: Record<string, number> = {};
-          for (const p of res.products as Array<{ typeId: string }>) {
-            productsByType[p.typeId] = (productsByType[p.typeId] || 0) + 1;
-          }
-          const remoteCats = (res.categories || TOOL_CATEGORIES) as Array<{
+          const remoteCats = (res.categories || WOOD_CATEGORIES) as Array<{
             id: string;
             name: string;
           }>;
           setCounts(
-            remoteCats.map((c) => {
-              const typeIds = typesByCategory[c.id] || [];
-              const productCount = typeIds.reduce(
-                (acc, tid) => acc + (productsByType[tid] || 0),
-                0,
-              );
-              return {
-                id: c.id,
-                name: c.name,
-                typeCount: typeIds.length,
-                productCount,
-              };
-            }),
+            remoteCats.map((c) => ({
+              id: c.id,
+              name: c.name,
+              productCount: byCat[c.id] || 0,
+            })),
           );
           setTotal(res.products.length);
         } else {
           const local = computeFromLocal();
           setCounts(local);
-          setTotal(TOOL_PRODUCTS.length);
+          setTotal(WOOD_PRODUCTS.length);
         }
       })
       .catch(() => {
         if (cancelled) return;
         const local = computeFromLocal();
         setCounts(local);
-        setTotal(TOOL_PRODUCTS.length);
+        setTotal(WOOD_PRODUCTS.length);
       });
 
     return () => {
@@ -129,14 +146,14 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Herramientas{'\n'}por tipo</Text>
+        <Text style={styles.title}>Maderas{'\n'}por tipo</Text>
         <Text style={styles.subtitle}>
           {total} productos en {counts.length} subcategorías
         </Text>
 
         <View style={styles.grid}>
           {counts.map((c) => {
-            const color = categoryColor(c.id);
+            const meta = metaFor(c.id);
             return (
               <Pressable
                 key={c.id}
@@ -146,26 +163,29 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
                   pressed && styles.cardPressed,
                 ]}
                 onPress={() =>
-                  navigation.navigate('ToolSearch', { categoryId: c.id })
+                  navigation.navigate('WoodCatalog', { categoryId: c.id })
                 }
                 accessibilityRole="button"
                 accessibilityLabel={`${c.name}, ${c.productCount} productos`}
               >
                 <View
-                  style={[styles.cardIconBox, { backgroundColor: color + '1A' }]}
+                  style={[
+                    styles.cardIconBox,
+                    { backgroundColor: meta.color + '1A' },
+                  ]}
                 >
-                  <Icon name={categoryIcon(c.id)} size={36} color={color} />
+                  <Icon name={meta.icon} size={36} color={meta.color} />
                 </View>
                 <View style={styles.cardTextCol}>
                   <Text style={styles.cardName} numberOfLines={1}>
                     {c.name}
                   </Text>
+                  <Text style={styles.cardSubtitle} numberOfLines={2}>
+                    {meta.subtitle}
+                  </Text>
                   <Text style={styles.cardMeta}>
                     {c.productCount} producto
                     {c.productCount !== 1 ? 's' : ''}
-                    {c.typeCount > 0
-                      ? ` · ${c.typeCount} tipo${c.typeCount !== 1 ? 's' : ''}`
-                      : ''}
                   </Text>
                 </View>
                 <Icon name="forward" size={20} color={colors.textMuted} />
@@ -180,11 +200,11 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
             pressed && { opacity: 0.85 },
           ]}
           onPress={() =>
-            navigation.navigate('ToolSearch', { categoryId: undefined })
+            navigation.navigate('WoodCatalog', { categoryId: undefined })
           }
         >
           <Icon name="search" size={18} color={colors.primary} />
-          <Text style={styles.allBtnText}>Ver todas las herramientas</Text>
+          <Text style={styles.allBtnText}>Ver todas las maderas</Text>
           <Icon name="forward" size={18} color={colors.primary} />
         </Pressable>
       </ScrollView>
@@ -244,10 +264,16 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '700',
   },
+  cardSubtitle: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
   cardMeta: {
     ...typography.caption,
     color: colors.textMuted,
     marginTop: 4,
+    fontSize: 11,
   },
   allBtn: {
     flexDirection: 'row',

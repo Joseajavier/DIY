@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { WoodFilter, WoodUse, WoodHardness, WoodPrice, WoodProduct } from '../models/wood';
@@ -8,7 +9,10 @@ import { searchWood } from '../services/woodSearchService';
 import { WOOD_CATEGORIES } from '../data/woodData';
 import { fetchWoodCatalog } from '../services/catalogApiClient';
 
-type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCatalog'> };
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCatalog'>;
+  route: RouteProp<RootStackParamList, 'WoodCatalog'>;
+};
 
 const USES: { key: WoodUse | ''; label: string }[] = [
   { key: '', label: 'Todos' }, { key: 'interior', label: '🏠 Interior' }, { key: 'exterior', label: '☀️ Exterior' }, { key: 'both', label: '🔄 Ambos' },
@@ -24,9 +28,10 @@ const hardnessColors: Record<WoodHardness, string> = { soft: colors.success, med
 const hardnessLabels: Record<WoodHardness, string> = { soft: 'Blanda', medium: 'Media', hard: 'Dura', very_hard: 'Muy dura' };
 const useLabels: Record<WoodUse, string> = { interior: '🏠 Interior', exterior: '☀️ Exterior', both: '🔄 Int/Ext' };
 
-export default function WoodCatalogScreen({ navigation }: Props) {
+export default function WoodCatalogScreen({ navigation, route }: Props) {
+  const initialCategoryId = route.params?.categoryId ?? '';
   const [query, setQuery] = useState('');
-  const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState(initialCategoryId);
   const [use, setUse] = useState<WoodUse | ''>('');
   const [hardness, setHardness] = useState<WoodHardness | ''>('');
   const [priceLevel, setPriceLevel] = useState<WoodPrice | ''>('');
