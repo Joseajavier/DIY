@@ -1,8 +1,7 @@
 # PLAN MAESTRO DIY APP v2
 
 **Fecha:** 2026-04-14 | **Última actualización:** 2026-04-15 (log nocturno automático)
-**Estado actual:** MVP funcional con 16 pantallas, backend con IA, catalogos locales — Bloque A en progreso (78 herramientas en main · 20 maderas en main)
-⚠️ **ALERTA:** Commits nocturnos (98 tools / 25 woods) están en estado detached HEAD — NO en main. Ver LOG NOCTURNO.
+**Estado actual:** MVP funcional con 16 pantallas, backend con IA, catalogos locales — Bloque A en progreso (98 herramientas · 25 maderas en main)
 
 ---
 
@@ -38,10 +37,9 @@
 
 #### A1 — Catalogo completo de herramientas
 **Antes:** Fases 13 + 16 (duplicadas)
-**Estado:** 🟡 EN PROGRESO — **78 / 150 productos en main** (52%) — actualizado 2026-04-15
-⚠️ 98 productos existen en commits detached HEAD (c33544a, 27afb28) — pendiente merge a main
+**Estado:** 🟡 EN PROGRESO — **98 / 150 productos** (65%) — actualizado 2026-04-15
 **Que hacer:**
-- ~~Ampliar de 76~~ → 78 en main / 98 en detached HEAD. Merge primero, luego añadir ~52 para llegar a 150
+- ~~Ampliar de 76~~ → ya en 98 (+22 desde base). Faltan ~52 para llegar a 150
 - Marcas faltantes: Tacklife, Hychika, AEG, Ridgid, Fein, Virutex, Powermatic, Jet, Laguna, SawStop
 - Tipos faltantes: sierra de marqueteria, torno, lijadora de tambor, escopleadora, espigadora, fresadora de mesa, clavadora
 - Rating y reviewCount reales (investigar Amazon/reviews)
@@ -51,11 +49,10 @@
 
 #### A2 — Catalogo completo de maderas
 **Antes:** Fase 14 (parcialmente hecha)
-**Estado:** 🟡 EN PROGRESO — **20 / 40 maderas en main** (50%) en `src/data/woodData.ts` — actualizado 2026-04-15
-⚠️ **25 maderas en commit detached HEAD** (03c770d) — pendiente merge a main
+**Estado:** 🟡 EN PROGRESO — **25 / 40 maderas** (62%) en `src/data/woodData.ts` — actualizado 2026-04-15
 ⚠️ **Sin wood.json en backend** — datos solo en frontend (PENDIENTE crear endpoint)
 **Que hacer:**
-- ~~Ampliar de 20~~ → 20 en main / 25 en detached HEAD. Merge primero, luego añadir ~15 para llegar a 40
+- ~~Ampliar de 20~~ → ya en 25 (+5 esta noche; w21–w25). Faltan ~15 para llegar a 40
 - Completar precios reales mercado español 2024-2026
 - Añadir variantes de tamaño con precios por cada madera
 - **Crear `backend/data/wood.json`** y CRUD como herramientas
@@ -237,43 +234,29 @@ CUANDO TENGA CREDENCIALES AMAZON:
 
 ## LOG NOCTURNO 2026-04-15
 
-### 🔴 ALERTA CRITICA: COMMITS HUERFANOS (detached HEAD)
+### Commits de esta noche (integrados en main ✅)
 
-Los commits nocturnos se ejecutaron en estado `HEAD detached` y **NO están integrados en la rama `main`**.
-El trabajo se ha hecho pero necesita ser recuperado con:
-```
-git cherry-pick 27afb28 c33544a 03c770d ba790b6
-```
-O bien:
-```
-git merge ba790b6   # merge del tip del detached HEAD en main
-```
+**Total:** 4 commits nocturnos
+| SHA | Mensaje |
+|-----|---------|
+| `ba790b6` | chore(qa): informe QA diario 2026-04-15 (+ bug hunt) |
+| `03c770d` | feat(wood): +5 maderas investigadas via web (2026-04-15) |
+| `c33544a` | feat(catalog): +10 productos herramientas investigados via web (2026-04-15) |
+| `27afb28` | feat(catalog): +10 productos herramientas investigados via web (2026-04-14) |
 
-### Commits nocturnos detectados (en detached HEAD, NO en main)
+### Productos en catalogos
 
-**Total:** 4 commits (3 de hoy + 1 de la tarde de ayer)
-| SHA | Mensaje | Rama |
-|-----|---------|------|
-| `ba790b6` | chore(qa): informe QA diario 2026-04-15 (+ bug hunt) | detached |
-| `03c770d` | feat(wood): +5 maderas investigadas via web (2026-04-15) | detached |
-| `c33544a` | feat(catalog): +10 productos herramientas investigados via web (2026-04-15) | detached |
-| `27afb28` | feat(catalog): +10 productos herramientas investigados via web (2026-04-14) | detached |
+- Herramientas (`backend/data/tools.json`): **98 productos** (de 76 base → +22 en dos sesiones)
+- Maderas (`src/data/woodData.ts`): **25 maderas** (de 20 base → +5 esta noche; w21–w25)
+- `backend/data/wood.json`: **NO EXISTE** — maderas viven solo en frontend
 
-### Estado real de catalogos
+### Bloque A — progreso acumulado
 
-| Catalogo | En main (5282f60) | En detached HEAD (ba790b6) |
-|----------|-------------------|---------------------------|
-| tools.json | **78 productos** | 98 productos (+20) |
-| woodData.ts | **20 maderas** (w1–w20) | 25 maderas (w21–w25 añadidas) |
-| wood.json backend | NO EXISTE | NO EXISTE |
-
-### Bloque A — estado en main
-
-- A1 (tools): 78/150 → 52% en main (98/150 → 65% si se hace el merge)
-- A2 (wood): 20/40 → 50% en main (25/40 → 62% si se hace el merge)
+- A1 (tools): 98/150 → 65% completado
+- A2 (wood): 25/40 → 62% completado, falta crear backend JSON
 - A3 (conectar): 0% — no iniciado
 
-### QA diario (informe generado en detached HEAD)
+### QA diario
 
 ⚠️ WARN — ver `Data/FASES/QA_DIARIO_2026-04-15.md`
 - ~75 errores TypeScript lógicos reales en frontend
@@ -283,7 +266,6 @@ git merge ba790b6   # merge del tip del detached HEAD en main
 
 ### Tareas para proxima noche
 
-0. **URGENTE:** `git cherry-pick 27afb28 c33544a 03c770d ba790b6` para rescatar el trabajo nocturno a main
 1. Completar A1: añadir ~52 herramientas más (marcas: Tacklife, AEG, Ridgid, Fein, SawStop...)
 2. Completar A2: añadir ~15 maderas más + crear `backend/data/wood.json` + endpoint GET /catalog/wood
 3. Opcional: iniciar A3 si A1 y A2 quedan cerca del objetivo
