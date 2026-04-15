@@ -20,9 +20,9 @@ const PRICES: { key: WoodPrice | ''; label: string }[] = [
   { key: '', label: 'Todos' }, { key: 'budget', label: '💰 Económico' }, { key: 'mid', label: '💰💰 Medio' }, { key: 'premium', label: '💰💰💰 Premium' },
 ];
 
-const hardnessColors = { soft: colors.success, medium: colors.warning, hard: colors.primary, very_hard: colors.danger };
-const hardnessLabels = { soft: 'Blanda', medium: 'Media', hard: 'Dura', very_hard: 'Muy dura' };
-const useLabels = { interior: '🏠 Interior', exterior: '☀️ Exterior', both: '🔄 Int/Ext' };
+const hardnessColors: Record<WoodHardness, string> = { soft: colors.success, medium: colors.warning, hard: colors.primary, very_hard: colors.danger };
+const hardnessLabels: Record<WoodHardness, string> = { soft: 'Blanda', medium: 'Media', hard: 'Dura', very_hard: 'Muy dura' };
+const useLabels: Record<WoodUse, string> = { interior: '🏠 Interior', exterior: '☀️ Exterior', both: '🔄 Int/Ext' };
 
 export default function WoodCatalogScreen({ navigation }: Props) {
   const [query, setQuery] = useState('');
@@ -73,15 +73,23 @@ export default function WoodCatalogScreen({ navigation }: Props) {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
         <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
-        {WOOD_CATEGORIES.map(c => <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />)}
+        {WOOD_CATEGORIES.map((c: { id: string; icon: string; name: string }) => (
+          <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />
+        ))}
       </ScrollView>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
-        {USES.map(u => <Chip key={u.key} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as WoodUse)} />)}
+        {USES.map((u: { key: WoodUse | ''; label: string }) => (
+          <Chip key={u.key || 'all'} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as WoodUse)} />
+        ))}
         <View style={styles.divider} />
-        {HARDNESS.map(h => <Chip key={h.key} label={h.label} active={hardness === h.key} onPress={() => setHardness(hardness === h.key ? '' : h.key as WoodHardness)} />)}
+        {HARDNESS.map((h: { key: WoodHardness | ''; label: string }) => (
+          <Chip key={h.key || 'all'} label={h.label} active={hardness === h.key} onPress={() => setHardness(hardness === h.key ? '' : h.key as WoodHardness)} />
+        ))}
         <View style={styles.divider} />
-        {PRICES.map(p => <Chip key={p.key} label={p.label} active={priceLevel === p.key} onPress={() => setPriceLevel(priceLevel === p.key ? '' : p.key as WoodPrice)} />)}
+        {PRICES.map((p: { key: WoodPrice | ''; label: string }) => (
+          <Chip key={p.key || 'all'} label={p.label} active={priceLevel === p.key} onPress={() => setPriceLevel(priceLevel === p.key ? '' : p.key as WoodPrice)} />
+        ))}
       </ScrollView>
 
       <View style={styles.resultRow}>
@@ -95,7 +103,7 @@ export default function WoodCatalogScreen({ navigation }: Props) {
         data={results}
         keyExtractor={item => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: WoodProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(item.name + ' madera')}`)}
           >

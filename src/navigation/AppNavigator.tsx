@@ -20,6 +20,7 @@ import ProjectDetailScreen from '../screens/ProjectDetailScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import ToolSearchScreen from '../screens/ToolSearchScreen';
 import WoodCatalogScreen from '../screens/WoodCatalogScreen';
+import WoodzyHomeScreen from '../screens/WoodzyHomeScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -31,6 +32,7 @@ export type RootStackParamList = {
   Feedback: undefined;
   ToolSearch: undefined;
   WoodCatalog: undefined;
+  WoodzyHome: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult };
@@ -73,6 +75,7 @@ export default function AppNavigator() {
       <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '💬 Feedback' }} />
       <Stack.Screen name="ToolSearch" component={ToolSearchScreen} options={{ title: '🔧 Herramientas' }} />
       <Stack.Screen name="WoodCatalog" component={WoodCatalogScreen} options={{ title: '🪵 Maderas' }} />
+      <Stack.Screen name="WoodzyHome" component={WoodzyHomeScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

@@ -89,6 +89,15 @@ export default function HomeScreen({ navigation }: Props) {
         </TouchableOpacity>
       </View>
 
+      {/* Woodzy Theme Preview (temporal — Fase 12) */}
+      <TouchableOpacity
+        style={styles.woodzyPreviewBtn}
+        onPress={() => navigation.navigate('WoodzyHome')}
+        activeOpacity={0.85}
+      >
+        <Text style={styles.woodzyPreviewText}>🎨  Ver preview theme Woodzy</Text>
+      </TouchableOpacity>
+
       {/* Features grid */}
       <Text style={[typography.label, { marginTop: spacing.xxl, marginBottom: spacing.lg }]}>{t('home.whatCanYouDo')}</Text>
       <View style={styles.grid}>
@@ -128,7 +137,7 @@ export default function HomeScreen({ navigation }: Props) {
       {recentProjects.length > 0 && (
         <>
           <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>Proyectos recientes</Text>
-          {recentProjects.map((p) => (
+          {recentProjects.map((p: Project) => (
             <ProjectCard
               key={p.id}
               project={p}
@@ -205,5 +214,18 @@ const styles = StyleSheet.create({
   featureIcon: { fontSize: 26, marginBottom: spacing.sm },
   catalogRow: { flexDirection: 'row', gap: spacing.md, marginBottom: spacing.lg },
   catalogBtn: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.xl, alignItems: 'center' },
+  woodzyPreviewBtn: {
+    backgroundColor: '#0D0C0C',
+    borderRadius: 999,
+    paddingVertical: spacing.lg,
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  woodzyPreviewText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+  },
   footer: { alignItems: 'center', marginTop: spacing.xxxl },
 });

@@ -20,8 +20,8 @@ const POWERS: { key: ToolPower | ''; label: string }[] = [
   { key: '', label: 'Todas' }, { key: 'battery', label: '🔋 Batería' }, { key: 'corded', label: '🔌 Cable' }, { key: 'manual', label: '✋ Manual' },
 ];
 
-const tierColors = { basic: colors.success, mid: colors.warning, pro: colors.danger };
-const tierLabels = { basic: 'Básica', mid: 'Media', pro: 'Profesional' };
+const tierColors: Record<ToolTier, string> = { basic: colors.success, mid: colors.warning, pro: colors.danger };
+const tierLabels: Record<ToolTier, string> = { basic: 'Básica', mid: 'Media', pro: 'Profesional' };
 
 export default function ToolSearchScreen({ navigation }: Props) {
   const [query, setQuery] = useState('');
@@ -67,15 +67,23 @@ export default function ToolSearchScreen({ navigation }: Props) {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
         <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
-        {TOOL_CATEGORIES.map(c => <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />)}
+        {TOOL_CATEGORIES.map((c: { id: string; icon: string; name: string }) => (
+          <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />
+        ))}
       </ScrollView>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
-        {TIERS.map(t => <Chip key={t.key} label={t.label} active={tier === t.key} onPress={() => setTier(tier === t.key ? '' : t.key as ToolTier)} />)}
+        {TIERS.map((t: { key: ToolTier | ''; label: string }) => (
+          <Chip key={t.key || 'all'} label={t.label} active={tier === t.key} onPress={() => setTier(tier === t.key ? '' : t.key as ToolTier)} />
+        ))}
         <View style={styles.divider} />
-        {USES.map(u => <Chip key={u.key} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as ToolUse)} />)}
+        {USES.map((u: { key: ToolUse | ''; label: string }) => (
+          <Chip key={u.key || 'all'} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as ToolUse)} />
+        ))}
         <View style={styles.divider} />
-        {POWERS.map(p => <Chip key={p.key} label={p.label} active={power === p.key} onPress={() => setPower(power === p.key ? '' : p.key as ToolPower)} />)}
+        {POWERS.map((p: { key: ToolPower | ''; label: string }) => (
+          <Chip key={p.key || 'all'} label={p.label} active={power === p.key} onPress={() => setPower(power === p.key ? '' : p.key as ToolPower)} />
+        ))}
       </ScrollView>
 
       <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} herramienta{results.length !== 1 ? 's' : ''} en {sections.length} categoría{sections.length !== 1 ? 's' : ''}</Text>
@@ -92,7 +100,7 @@ export default function ToolSearchScreen({ navigation }: Props) {
             <Text style={typography.caption}>{section.data.length}</Text>
           </View>
         )}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: ToolProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
           >

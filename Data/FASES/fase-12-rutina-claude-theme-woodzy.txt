@@ -1,0 +1,195 @@
+FASE 12 — RUTINA CLAUDE — RECONSTRUCCIÓN DEL THEME WOODZY
+
+Quiero que actúes como un diseñador senior de producto digital + UI engineer + investigador visual. Tu trabajo no es inventar, sino reconstruir con la mayor fidelidad posible el theme “Woodzy – Woodworking & Carpentry App UI Design” de Zahra Mortazavi y convertirlo en una base reutilizable para una app real.
+
+CONTEXTO
+Tenemos como referencia principal un concept shot de Dribbble llamado “Woodzy – Woodworking & Carpentry App UI Design”. No está confirmada una demo pública navegable ni un Figma público completo, así que debes trabajar como si estuvieras reconstruyendo un sistema visual a partir de un shot, patrones repetidos de la autora y referencias muy cercanas.
+
+INFORMACIÓN YA OBTENIDA Y QUE DEBES TOMAR COMO BASE
+- El proyecto se presenta como una UI “modern and rustic”.
+- Está orientado a carpintería a medida, diseño de muebles y pedido de productos artesanales de madera.
+- La paleta detectada/oficial es:
+  - #EAE8E8
+  - #C1B1AE
+  - #0D0C0C
+  - #5B5B5C
+  - #AB130A
+  - #5D1810
+  - #9B8377
+  - #AD5F4A
+- El lenguaje visual general es:
+  - minimalista
+  - cálido
+  - premium
+  - artesanal
+  - limpio
+  - con rusticidad contenida
+- El theme NO debe parecer industrial duro, oscuro agresivo ni una app técnica de herramientas. Debe parecer carpintería bien presentada, catálogo premium, artesanía cuidada y mobiliario a medida.
+- En la composición se ha detectado:
+  - fondo exterior gris muy claro con textura de puntitos muy sutil
+  - mockups de iPhone superpuestos
+  - pantalla home/catálogo
+  - pantalla detalle de producto
+  - banner principal terracota con líneas curvas orgánicas tipo veta estilizada
+  - barra de búsqueda tipo pill
+  - tarjetas de categorías con iconos
+  - una categoría destacada en azul petróleo oscuro
+  - pantalla de detalle muy limpia, con mucho blanco, producto centrado, chips de atributos y CTA oscuro
+- La rusticidad debe entrar por color, producto, curvas, iconografía, materiales y tono visual. No por llenar la interfaz de texturas de madera.
+
+OBJETIVO PRINCIPAL
+Reconstruir este theme de forma usable para una app real y producir un sistema de diseño completo que pueda utilizarse en Figma, React Native o generación de pantallas con IA.
+
+TU TAREA
+Quiero que trabajes en este orden y no te saltes pasos.
+
+FASE 1 — ANÁLISIS DEL ADN VISUAL
+1. Resume el ADN del theme en 10-15 puntos muy concretos.
+2. Explica qué hace que se vea “modern and rustic” al mismo tiempo.
+3. Distingue qué elementos son puramente decorativos y cuáles forman parte del sistema reutilizable.
+4. Explica qué errores romperían la estética Woodzy.
+
+FASE 2 — DESIGN TOKENS
+Construye un sistema de tokens completo con nombres claros y reutilizables.
+Incluye:
+- colors.background
+- colors.surface
+- colors.surfaceSecondary
+- colors.textPrimary
+- colors.textSecondary
+- colors.accentPrimary
+- colors.accentPrimaryDark
+- colors.accentWarm
+- colors.border
+- colors.icon
+- colors.cta
+- colors.categorySelected
+- colors.categoryUnselected
+- colors.heroBackground
+- colors.heroPattern
+También define:
+- radios recomendados
+- spacing scale
+- tamaños de iconos
+- alturas de botones
+- tamaños de chips
+- sombras si procede
+- grosor de bordes
+
+Devuélvelo en formato JSON y luego en tabla legible.
+
+FASE 3 — TIPOGRAFÍA
+No inventes una fuente exacta si no está confirmada. En su lugar:
+1. Define el perfil tipográfico ideal para recrearlo.
+2. Propón 3 combinaciones reales de tipografías equivalentes.
+3. Recomienda cuál usar en app móvil.
+4. Define jerarquías:
+   - display
+   - title
+   - subtitle
+   - body
+   - caption
+   - button
+   - chip
+
+FASE 4 — COMPONENTES
+Reconstruye el sistema de componentes base.
+Para cada componente quiero:
+- nombre
+- propósito
+- anatomía
+- estados
+- padding
+- radio
+- colores
+- variantes
+- notas de implementación
+
+Incluye al menos:
+- Top bar
+- Search bar
+- Hero banner
+- Category card
+- Selected category pill/capsule
+- Product card
+- Product gallery/image container
+- Attribute chip
+- Primary CTA button
+- Secondary button
+- Bottom navigation
+- Section header
+- Info row
+- Quantity/action bar si encaja
+
+FASE 5 — PANTALLAS
+Reconstruye las pantallas mínimas necesarias para que esto funcione como producto real.
+Quiero estas pantallas:
+- Home
+- Categories
+- Product Detail
+- Search
+- Favorites
+- Cart o Request Quote, según lo que encaje mejor con el estilo Woodzy
+- Profile básico
+
+Para cada pantalla quiero:
+- objetivo
+- layout en bloques
+- componentes que usa
+- jerarquía visual
+- comportamiento
+- qué mantiene del shot original
+- qué hay que inventar para completarla sin traicionar el estilo
+
+FASE 6 — BLUEPRINT DE IMPLEMENTACIÓN
+Genera una especificación práctica para pasar a desarrollo.
+Incluye:
+- grid recomendado
+- márgenes laterales
+- separación vertical
+- altura de hero
+- tamaño de tarjetas
+- tamaño sugerido de imágenes
+- proporciones
+- reglas responsive
+- reglas para dark mode si la hubiera, y si no recomiendas dark mode, dilo claro
+
+FASE 7 — PROMPTS DE GENERACIÓN
+Genera 4 prompts distintos:
+1. Prompt para Figma AI
+2. Prompt para Claude
+3. Prompt para generar una pantalla en React Native con Tailwind/nativewind o estilos equivalentes
+4. Prompt para generación visual tipo image model o mockup UI
+
+FASE 8 — SALIDA FINAL EJECUTIVA
+Cierra con estas secciones:
+A. Resumen ejecutivo del theme
+B. Lo que sabemos seguro
+C. Lo que estamos infiriendo
+D. Nivel de fidelidad alcanzable
+E. Qué harías primero para clonarlo rápido
+F. Qué harías para convertirlo en un producto real
+
+REGLAS IMPORTANTES
+- No digas que existe una demo si no está confirmada.
+- No inventes pantallas supuestamente oficiales.
+- Separa siempre “dato observado” de “inferencia razonada”.
+- Prioriza utilidad real para diseñar y construir.
+- Mantén la estética cálida, minimalista y artesanal.
+- No conviertas el diseño en una app industrial o genérica de e-commerce.
+- El resultado debe ser extremadamente práctico.
+- Usa markdown limpio y muy bien estructurado.
+- Cuando tengas dudas, elige la opción más coherente con: premium + madera + artesanal + limpio + mobile-first.
+
+FORMATO DE RESPUESTA
+Quiero la respuesta en este orden exacto:
+1. ADN visual
+2. Datos observados vs inferencias
+3. Design tokens JSON
+4. Tabla de tokens
+5. Tipografía
+6. Componentes
+7. Pantallas
+8. Blueprint técnico
+9. Prompts derivados
+10. Resumen ejecutivo final

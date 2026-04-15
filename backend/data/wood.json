@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "lastUpdated": "2026-04-15",
   "categories": [
     {
@@ -771,7 +771,103 @@
       ],
       "bestFor": "Tarimas y terrazas exteriores, estructuras rurales, muebles de jardín, escaleras",
       "color": "Marrón claro cálido, veta pronunciada con ligero brillo"
+    },
+    {
+      "id": "w26",
+      "categoryId": "strips",
+      "name": "Machihembrado de pino",
+      "description": "Tabla machihembrada pino para suelos, techos y revestimientos de pared. Encaje macho-hembra sin clavos visibles.",
+      "use": "interior",
+      "hardness": "soft",
+      "priceLevel": "budget",
+      "priceRange": "12-22€/m²",
+      "commonSizes": [
+        "200×9.5cm",
+        "240×12.5cm"
+      ],
+      "thicknesses": [
+        14,
+        18,
+        22
+      ],
+      "pros": [
+        "Montaje rápido sin clavos vistos",
+        "Acabado cálido",
+        "Ligero",
+        "Fácil de cortar"
+      ],
+      "cons": [
+        "Necesita tratamiento contra humedad",
+        "Marca fácilmente"
+      ],
+      "bestFor": "Revestimientos de pared y techo, suelos rústicos",
+      "color": "Miel claro"
+    },
+    {
+      "id": "w27",
+      "categoryId": "strips",
+      "name": "Cuadradillo de haya",
+      "description": "Listón de sección cuadrada en haya maciza. Más duro y estable que el pino, ideal para patas y estructura.",
+      "use": "interior",
+      "hardness": "medium",
+      "priceLevel": "mid",
+      "priceRange": "6-14€/m",
+      "commonSizes": [
+        "100×2×2cm",
+        "200×3×3cm",
+        "200×4×4cm"
+      ],
+      "thicknesses": [
+        20,
+        30,
+        40
+      ],
+      "pros": [
+        "Mucho más duro que pino",
+        "Grano fino y uniforme",
+        "Buen acabado al barniz",
+        "Estable"
+      ],
+      "cons": [
+        "Más caro que pino",
+        "Pesado"
+      ],
+      "bestFor": "Patas de mesa, estructura de muebles, mangos",
+      "color": "Crema rosado"
+    },
+    {
+      "id": "w28",
+      "categoryId": "special",
+      "name": "Bambú laminado",
+      "description": "Tablero de bambú laminado en caliente. Alternativa sostenible muy dura, apta para encimeras y suelos.",
+      "use": "interior",
+      "hardness": "hard",
+      "priceLevel": "mid",
+      "priceRange": "35-70€/m²",
+      "commonSizes": [
+        "244×122cm",
+        "300×125cm"
+      ],
+      "thicknesses": [
+        15,
+        20,
+        30,
+        40
+      ],
+      "pros": [
+        "Sostenible (crecimiento rápido)",
+        "Muy duro (más que roble)",
+        "Aspecto moderno",
+        "Estable"
+      ],
+      "cons": [
+        "No todos los proveedores lo tienen",
+        "Sensible a humedad extrema",
+        "Más caro que pino"
+      ],
+      "bestFor": "Encimeras, suelos, muebles contemporáneos",
+      "color": "Miel dorado"
     }
   ],
-  "totalProducts": 25
+  "totalProducts": 28
 }
