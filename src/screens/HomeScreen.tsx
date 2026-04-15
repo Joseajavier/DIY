@@ -85,6 +85,13 @@ export default function HomeScreen({ navigation }: Props) {
       color: '#5A7D9A',
       onPress: () => navigation.navigate('Calculators'),
     },
+    {
+      key: 'deals',
+      icon: 'shop',
+      label: '🔥 Chollos',
+      color: colors.danger,
+      onPress: () => navigation.navigate('Deals'),
+    },
   ];
 
   return (

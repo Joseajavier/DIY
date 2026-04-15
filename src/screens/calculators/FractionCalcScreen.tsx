@@ -3,7 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // Suma / resta / multiplicación / división de dos fracciones.
 // Resultado siempre reducido a términos mínimos.
-// Muestra también el decimal equivalente.
+// Muestra también el decimal equivalente y lo sitúa sobre una
+// regla de madera con marcas cada 1/16".
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useMemo, useState } from 'react';
@@ -17,6 +18,17 @@ import {
   Pressable,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+
+// ── Paleta de madera (roble/nogal) ────────────────────────────
+const wood = {
+  deep: '#3D2817',
+  dark: '#5C3A1E',
+  medium: '#7A4E28',
+  main: '#9B6835',
+  light: '#B8844A',
+  highlight: '#D4A574',
+  back: '#2A1810',
+};
 
 type Op = '+' | '−' | '×' | '÷';
 
@@ -57,6 +69,26 @@ function compute(
   }
 }
 
+// Fracciones comunes de carpintería (sixteenths hasta 1")
+const COMMON_FRACTIONS: Array<{ label: string; value: number }> = [
+  { label: '1/16', value: 1 / 16 },
+  { label: '1/8', value: 1 / 8 },
+  { label: '3/16', value: 3 / 16 },
+  { label: '1/4', value: 1 / 4 },
+  { label: '5/16', value: 5 / 16 },
+  { label: '3/8', value: 3 / 8 },
+  { label: '7/16', value: 7 / 16 },
+  { label: '1/2', value: 1 / 2 },
+  { label: '9/16', value: 9 / 16 },
+  { label: '5/8', value: 5 / 8 },
+  { label: '11/16', value: 11 / 16 },
+  { label: '3/4', value: 3 / 4 },
+  { label: '13/16', value: 13 / 16 },
+  { label: '7/8', value: 7 / 8 },
+  { label: '15/16', value: 15 / 16 },
+  { label: '1', value: 1 },
+];
+
 export default function FractionCalcScreen() {
   const [a, setA] = useState('1');
   const [b, setB] = useState('2');
@@ -78,7 +110,16 @@ export default function FractionCalcScreen() {
   const valid = nb !== 0 && nd !== 0 && !(op === '÷' && nc === 0);
   const decimal = valid && result.d !== 0 ? result.n / result.d : NaN;
 
+  // Ruler ocupa [0..1"]. Clamp del valor para dibujar la marca.
+  const rulerClamped = !isNaN(decimal)
+    ? Math.max(0, Math.min(1, decimal - Math.floor(decimal)))
+    : 0;
+  const fullUnits = !isNaN(decimal) ? Math.floor(decimal) : 0;
+
   const ops: Op[] = ['+', '−', '×', '÷'];
+
+  // 16 marcas principales (cada 1/16) + borde 0 + borde 16.
+  const ticks = Array.from({ length: 17 }, (_, i) => i);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -123,17 +164,121 @@ export default function FractionCalcScreen() {
           </View>
         </View>
 
-        {/* Decimal */}
+        {/* Resultado grande: decimal + fracción */}
         <View style={[styles.card, styles.highlightCard]}>
-          <Text style={styles.label}>Equivalente decimal</Text>
-          <Text style={styles.bigResult}>
-            {valid && !isNaN(decimal) ? decimal.toFixed(4) : '—'}
-          </Text>
+          <Text style={styles.label}>Resultado</Text>
+          <View style={styles.resultRow}>
+            <View style={styles.resultCol}>
+              <Text style={styles.resultKind}>Decimal</Text>
+              <Text style={styles.bigResult}>
+                {valid && !isNaN(decimal) ? decimal.toFixed(4) : '—'}
+              </Text>
+            </View>
+            <View style={styles.resultDivider} />
+            <View style={styles.resultCol}>
+              <Text style={styles.resultKind}>Fracción</Text>
+              <Text style={styles.bigResult}>
+                {valid && !isNaN(result.n)
+                  ? result.d === 1
+                    ? `${result.n}`
+                    : `${result.n}/${result.d}`
+                  : '—'}
+              </Text>
+            </View>
+          </View>
           {!valid && (
             <Text style={styles.errorText}>
               División entre cero. Revisa los denominadores.
             </Text>
           )}
+        </View>
+
+        {/* Regla de madera con marca */}
+        {valid && !isNaN(decimal) && (
+          <View style={styles.card}>
+            <Text style={styles.label}>Regla de 1&quot; (marcas cada 1/16&quot;)</Text>
+            <View style={styles.rulerWrap}>
+              <View style={styles.rulerBody}>
+                <View style={styles.rulerTop} />
+                <View style={styles.rulerFace}>
+                  {ticks.map((i) => {
+                    const isMajor = i === 0 || i === 16;
+                    const isHalf = i === 8;
+                    const isQuarter = i === 4 || i === 12;
+                    const isEighth = i === 2 || i === 6 || i === 10 || i === 14;
+                    let height = 10;
+                    if (isMajor) height = 32;
+                    else if (isHalf) height = 26;
+                    else if (isQuarter) height = 20;
+                    else if (isEighth) height = 14;
+                    return (
+                      <View
+                        key={i}
+                        style={[
+                          styles.tick,
+                          {
+                            left: `${(i / 16) * 100}%`,
+                            height,
+                          },
+                        ]}
+                      />
+                    );
+                  })}
+                  {/* Números 0..1 */}
+                  <Text style={[styles.rulerNum, { left: '0%' }]}>0</Text>
+                  <Text style={[styles.rulerNum, { left: '100%', marginLeft: -10 }]}>1</Text>
+
+                  {/* Marcador rojo del valor actual */}
+                  <View
+                    style={[
+                      styles.marker,
+                      { left: `${rulerClamped * 100}%` },
+                    ]}
+                  >
+                    <View style={styles.markerLine} />
+                    <View style={styles.markerHead}>
+                      <Text style={styles.markerText}>
+                        {rulerClamped.toFixed(3)}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.rulerBottom} />
+              </View>
+            </View>
+            <Text style={styles.rulerCaption}>
+              {fullUnits > 0
+                ? `${fullUnits}" enteras + ${rulerClamped.toFixed(4)}" en la regla`
+                : `${rulerClamped.toFixed(4)}" dentro de 1 pulgada`}
+            </Text>
+          </View>
+        )}
+
+        {/* Strip de fracciones comunes */}
+        <View style={styles.card}>
+          <Text style={styles.label}>Fracciones comunes</Text>
+          <View style={styles.chipsWrap}>
+            {COMMON_FRACTIONS.map((f) => {
+              const active =
+                !isNaN(decimal) &&
+                Math.abs(rulerClamped - f.value) < 1 / 64;
+              return (
+                <View
+                  key={f.label}
+                  style={[styles.chip, active && styles.chipActive]}
+                >
+                  <Text
+                    style={[
+                      styles.chipText,
+                      active && styles.chipTextActive,
+                    ]}
+                  >
+                    {f.label}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
 
         <View style={styles.infoBox}>
@@ -297,8 +442,27 @@ const styles = StyleSheet.create({
   },
   opBtnText: { fontSize: 20, fontWeight: '700', color: colors.text },
   opBtnTextActive: { color: colors.textOnPrimary },
+  resultRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.xs,
+  },
+  resultCol: { flex: 1, alignItems: 'center' },
+  resultDivider: {
+    width: 1,
+    alignSelf: 'stretch',
+    backgroundColor: colors.border,
+    marginHorizontal: spacing.sm,
+  },
+  resultKind: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginBottom: 2,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
   bigResult: {
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: '800',
     color: colors.text,
     letterSpacing: -1,
@@ -307,6 +471,126 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.danger,
     marginTop: spacing.sm,
+    textAlign: 'center',
+  },
+  // ── Regla de madera ──────────────────────────────────────────
+  rulerWrap: {
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.md,
+  },
+  rulerBody: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  rulerTop: {
+    height: 6,
+    backgroundColor: wood.light,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    borderTopWidth: 1,
+    borderTopColor: wood.highlight,
+  },
+  rulerFace: {
+    height: 56,
+    backgroundColor: wood.main,
+    position: 'relative',
+    borderTopWidth: 1,
+    borderTopColor: wood.highlight,
+    borderBottomWidth: 1,
+    borderBottomColor: wood.deep,
+    paddingHorizontal: 12,
+  },
+  rulerBottom: {
+    height: 6,
+    backgroundColor: wood.dark,
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    borderBottomWidth: 2,
+    borderBottomColor: wood.deep,
+  },
+  tick: {
+    position: 'absolute',
+    top: 0,
+    width: 1.5,
+    backgroundColor: wood.deep,
+    marginLeft: 12,
+  },
+  rulerNum: {
+    position: 'absolute',
+    bottom: 2,
+    fontSize: 11,
+    fontWeight: '700',
+    color: wood.deep,
+    marginLeft: 12,
+  },
+  marker: {
+    position: 'absolute',
+    top: -8,
+    bottom: -8,
+    width: 0,
+    marginLeft: 12,
+    alignItems: 'center',
+    zIndex: 5,
+  },
+  markerLine: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 2,
+    backgroundColor: '#C0392B',
+  },
+  markerHead: {
+    position: 'absolute',
+    top: -22,
+    backgroundColor: '#C0392B',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    minWidth: 48,
+    alignItems: 'center',
+  },
+  markerText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  rulerCaption: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    fontSize: 11,
+  },
+  // ── Chips ────────────────────────────────────────────────────
+  chipsWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  chip: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderRadius: radius.full,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surfaceLight,
+  },
+  chipActive: {
+    backgroundColor: wood.main,
+    borderColor: wood.deep,
+  },
+  chipText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.textSecondary,
+  },
+  chipTextActive: {
+    color: '#FFFFFF',
   },
   infoBox: {
     backgroundColor: colors.surfaceLight,

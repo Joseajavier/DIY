@@ -10,6 +10,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { IconName } from '../components/Icon';
+import { AMAZON_AFFILIATE_TAG } from '../config/affiliates';
 
 export type RetailerKind = 'marketplace' | 'diy' | 'pro' | 'generalist';
 
@@ -36,7 +37,7 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
-    urlTemplate: 'https://www.amazon.es/s?k={q}',
+    urlTemplate: `https://www.amazon.es/s?k={q}&tag=${AMAZON_AFFILIATE_TAG}`,
   },
   {
     id: 'leroy_es',
@@ -83,6 +84,7 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
+    // TODO: añadir tag cuando se registre afiliado en amazon.de
     urlTemplate: 'https://www.amazon.de/s?k={q}',
   },
   {
@@ -121,6 +123,7 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
+    // TODO: añadir tag cuando se registre afiliado en amazon.fr
     urlTemplate: 'https://www.amazon.fr/s?k={q}',
   },
   {
@@ -159,6 +162,7 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
+    // TODO: añadir tag cuando se registre afiliado en amazon.co.uk
     urlTemplate: 'https://www.amazon.co.uk/s?k={q}',
   },
   {
@@ -197,6 +201,7 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
+    // TODO: añadir tag cuando se registre afiliado en amazon.it
     urlTemplate: 'https://www.amazon.it/s?k={q}',
   },
   {
@@ -235,7 +240,8 @@ export const RETAILERS: Retailer[] = [
     kind: 'marketplace',
     color: '#FF9900',
     icon: 'shop',
-    urlTemplate: 'https://www.amazon.es/s?k={q}',
+    // Apunta a amazon.es (no hay amazon.pt), reutiliza el tag ES.
+    urlTemplate: `https://www.amazon.es/s?k={q}&tag=${AMAZON_AFFILIATE_TAG}`,
   },
   {
     id: 'leroy_pt',

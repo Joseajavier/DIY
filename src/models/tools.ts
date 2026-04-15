@@ -34,6 +34,7 @@ export interface ToolProduct {
   description: string;
   features: string[];
   bestFor: string;
+  /** URL absoluta a imagen del producto (fabricante, Amazon, tienda oficial). Optional. */
   imageUrl?: string;
 }
 

@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking, Image, SectionList } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SectionList, Linking } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -11,6 +11,11 @@ import { fetchToolCatalog } from '../services/catalogApiClient';
 import Icon, { IconName } from '../components/Icon';
 import RetailerSheet from '../components/RetailerSheet';
 import { categoryIcon, categoryColor } from '../utils/categoryIcons';
+import CatalogImage from '../components/CatalogImage';
+import { getToolImageUrl } from '../utils/catalogImages';
+import { Deal } from '../models/deal';
+import { getDeals, scoreDealMatch } from '../services/dealsService';
+import { getCurrentCountry } from '../services/locationService';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ToolSearch'>;
@@ -47,6 +52,19 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   const [use, setUse] = useState<ToolUse | ''>('');
   const [power, setPower] = useState<ToolPower | ''>('');
   const [sheetProduct, setSheetProduct] = useState<ToolProduct | null>(null);
+  const [deals, setDeals] = useState<Deal[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const country = getCurrentCountry();
+      const res = await getDeals(country, false);
+      if (active) setDeals(res.deals);
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filter: ToolFilter = {
     query: query || undefined,
@@ -57,6 +75,20 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   };
 
   const results = useMemo(() => searchTools(filter), [query, categoryId, tier, use, power]);
+
+  const dealMatchByProduct = useMemo(() => {
+    const map = new Map<string, { score: number; deal: Deal }>();
+    for (const p of results) {
+      const brand = getToolBrandName(p.brandId);
+      let best: { score: number; deal: Deal } | null = null;
+      for (const d of deals) {
+        const s = scoreDealMatch(d.title, brand, p.model);
+        if (s >= 0.5 && (!best || s > best.score)) best = { score: s, deal: d };
+      }
+      if (best) map.set(p.id, best);
+    }
+    return map;
+  }, [results, deals]);
 
   // Group results by type for sections
   const sections = useMemo(() => {
@@ -118,7 +150,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     <View style={styles.container}>
       <TextInput style={styles.search} placeholder="Buscar herramienta..." placeholderTextColor={colors.textMuted} value={query} onChangeText={setQuery} />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
         <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
         {TOOL_CATEGORIES.map((c: { id: string; name: string }) => (
           <Chip
@@ -131,7 +163,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         ))}
       </ScrollView>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
         {TIERS.map((t) => (
           <Chip
             key={t.key || 'all'}
@@ -195,31 +227,30 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
               {(() => {
                 const catId =
                   TOOL_TYPES.find((t) => t.id === item.typeId)?.categoryId ?? '';
-                const powerIcon: IconName =
-                  item.power === 'battery'
-                    ? 'battery'
-                    : item.power === 'corded'
-                    ? 'plug'
-                    : 'hand';
+                const cColor = categoryColor(catId);
                 return (
-                  <View
-                    style={[
-                      styles.cardImagePlaceholder,
-                      { backgroundColor: categoryColor(catId) + '1F' },
-                    ]}
-                  >
-                    <Icon
-                      name={categoryIcon(catId)}
-                      size={30}
-                      color={categoryColor(catId)}
-                    />
-                    <Icon name={powerIcon} size={12} color={colors.textMuted} />
-                  </View>
+                  <CatalogImage
+                    uri={getToolImageUrl(item)}
+                    accentColor={cColor}
+                    icon={categoryIcon(catId)}
+                    badgeText={getToolBrandName(item.brandId)}
+                  />
                 );
               })()}
               <View style={{ flex: 1 }}>
                 <View style={styles.cardHeader}>
                   <Text style={[typography.h3, { flex: 1 }]}>{getToolBrandName(item.brandId)}</Text>
+                  {dealMatchByProduct.has(item.id) && (
+                    <TouchableOpacity
+                      style={styles.dealBadge}
+                      onPress={() => {
+                        const m = dealMatchByProduct.get(item.id);
+                        if (m) Linking.openURL(m.deal.link);
+                      }}
+                    >
+                      <Text style={styles.dealBadgeText}>🔥 Chollo</Text>
+                    </TouchableOpacity>
+                  )}
                   <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
                     <Text style={[typography.caption, { color: tierColors[item.tier] }]}>{tierLabels[item.tier]}</Text>
                   </View>
@@ -285,6 +316,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
             ? `${getToolBrandName(sheetProduct.brandId)} · ${sheetProduct.model}`
             : undefined
         }
+        priceMin={sheetProduct?.priceMin}
+        priceMax={sheetProduct?.priceMax}
       />
     </View>
   );
@@ -293,15 +326,16 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   search: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, margin: spacing.xl, marginBottom: spacing.sm },
-  chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.sm, maxHeight: 40 },
+  chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.md },
+  chipScrollContent: { alignItems: 'center', paddingVertical: 2 },
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
+    height: 34,
     backgroundColor: colors.surface,
     borderRadius: radius.full,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
     marginRight: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
@@ -313,10 +347,23 @@ const styles = StyleSheet.create({
   sectionIconBox: { width: 32, height: 32, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
   cardRow: { flexDirection: 'row', gap: spacing.md },
-  cardImage: { width: 72, height: 72, borderRadius: radius.md, backgroundColor: colors.bgAlt },
-  cardImagePlaceholder: { width: 72, height: 72, borderRadius: radius.md, backgroundColor: colors.bgAlt, justifyContent: 'center', alignItems: 'center' },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   tierBadge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
+  dealBadge: {
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    marginRight: spacing.xs,
+    backgroundColor: colors.danger + '22',
+    borderWidth: 1,
+    borderColor: colors.danger + '55',
+    justifyContent: 'center',
+  },
+  dealBadgeText: {
+    ...typography.caption,
+    color: colors.danger,
+    fontWeight: '700',
+  },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.md },
   tags: { flexDirection: 'row', gap: spacing.sm },
   amazonBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primaryMuted, borderRadius: radius.md, paddingVertical: spacing.sm, marginTop: spacing.md, borderWidth: 1, borderColor: colors.primary + '33' },

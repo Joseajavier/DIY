@@ -43,6 +43,8 @@ export function categoryColor(categoryId: string): string {
 }
 
 export const WOOD_CATEGORY_ICON: Record<string, IconName> = {
+  solid: 'tree',
+  plywood: 'board',
   hardwood: 'wood',
   softwood: 'tree',
   board: 'board',

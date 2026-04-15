@@ -1,15 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
-// RETAILER SHEET — modal "Comprar en..." con tiendas por país.
+// RETAILER SHEET — modal "Comprar en..." con tiendas del país actual.
 // ───────────────────────────────────────────────────────────────
 // Se le pasa un `query` (ej. "Makita DHP483") y muestra todas las
-// tiendas del país actual con urlTemplate aplicado. Al tocar una,
-// abre el resultado de búsqueda en el navegador del sistema.
+// tiendas del país YA seleccionado globalmente (locationService),
+// con urlTemplate aplicado. Al tocar una, abre el resultado de
+// búsqueda en el navegador del sistema.
 //
-// Incluye un selector horizontal de país en la cabecera para
-// cambiar rápido entre mercados.
+// NOTA: el país se gestiona fuera (selector global). Este sheet
+// NO muestra selector — solo usa el país actual de la sesión.
 // ═══════════════════════════════════════════════════════════════
 
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -22,15 +23,8 @@ import {
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../theme';
 import Icon from './Icon';
-import {
-  retailersForCountry,
-  buildSearchUrl,
-  SUPPORTED_COUNTRIES,
-} from '../data/retailers';
-import {
-  getCurrentCountry,
-  setUserCountry,
-} from '../services/locationService';
+import { retailersForCountry } from '../data/retailers';
+import { getCurrentCountry } from '../services/locationService';
 
 type Props = {
   visible: boolean;
@@ -38,6 +32,9 @@ type Props = {
   query: string;
   /** Label opcional del producto para mostrar en cabecera. */
   productLabel?: string;
+  /** Rango de precio del producto (opcional, en euros). */
+  priceMin?: number;
+  priceMax?: number;
 };
 
 export default function RetailerSheet({
@@ -45,18 +42,19 @@ export default function RetailerSheet({
   onClose,
   query,
   productLabel,
+  priceMin,
+  priceMax,
 }: Props) {
-  const [country, setCountry] = useState<string>(getCurrentCountry());
-  const retailers = useMemo(() => retailersForCountry(country), [country]);
+  // País tomado del estado global. No se muestra selector aquí:
+  // si el usuario quiere cambiar de país, lo hace en Ajustes o en
+  // la pantalla de Chollos.
+  const country = getCurrentCountry();
+  const retailers = retailersForCountry(country);
+  const hasPrices = priceMin !== undefined && priceMax !== undefined;
 
   const handlePick = (urlTemplate: string) => {
     const url = urlTemplate.replace('{q}', encodeURIComponent(query));
     Linking.openURL(url).catch(() => {});
-  };
-
-  const handleCountry = (c: string) => {
-    setCountry(c);
-    setUserCountry(c);
   };
 
   return (
@@ -86,42 +84,21 @@ export default function RetailerSheet({
             </TouchableOpacity>
           </View>
 
-          {/* Selector de país */}
-          <Text style={styles.sectionLabel}>País</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.countryScroll}
-            contentContainerStyle={{ paddingRight: spacing.xl }}
-          >
-            {SUPPORTED_COUNTRIES.map((c) => (
-              <TouchableOpacity
-                key={c.code}
-                style={[
-                  styles.countryChip,
-                  country === c.code && styles.countryChipActive,
-                ]}
-                onPress={() => handleCountry(c.code)}
-              >
-                <Text
-                  style={[
-                    styles.countryCode,
-                    country === c.code && styles.countryCodeActive,
-                  ]}
-                >
-                  {c.code}
+          {/* Banner de rango de precio */}
+          {hasPrices && (
+            <View style={styles.priceBanner}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.priceBannerLabel}>Rango de mercado</Text>
+                <Text style={styles.priceBannerRange}>
+                  {priceMin}€ – {priceMax}€
                 </Text>
-                <Text
-                  style={[
-                    styles.countryName,
-                    country === c.code && styles.countryNameActive,
-                  ]}
-                >
-                  {c.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+              </View>
+              <View style={styles.priceBannerBadge}>
+                <Icon name="info" size={12} color={colors.textMuted} />
+                <Text style={styles.priceBannerBadgeText}>estimado</Text>
+              </View>
+            </View>
+          )}
 
           {/* Lista de tiendas */}
           <Text style={styles.sectionLabel}>Tiendas disponibles</Text>
@@ -150,12 +127,20 @@ export default function RetailerSheet({
                   />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.retailerName}>{r.name}</Text>
+                  <Text style={styles.retailerName} numberOfLines={1}>
+                    {r.name}
+                  </Text>
                   <Text style={styles.retailerKind}>{kindLabel(r.kind)}</Text>
                 </View>
                 <Icon name="forward" size={18} color={colors.textMuted} />
               </TouchableOpacity>
             ))}
+
+            <Text style={styles.disclaimer}>
+              Los precios cambian continuamente. Tocar una tienda abre su
+              buscador con el modelo exacto para ver el precio real y
+              disponibilidad en directo.
+            </Text>
           </ScrollView>
         </Pressable>
       </Pressable>
@@ -229,39 +214,6 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
     marginBottom: spacing.sm,
   },
-  countryScroll: {
-    flexGrow: 0,
-    marginBottom: spacing.sm,
-  },
-  countryChip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.md,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    marginRight: spacing.sm,
-    alignItems: 'center',
-    minWidth: 72,
-  },
-  countryChipActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  countryCode: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: colors.text,
-    letterSpacing: 0.5,
-  },
-  countryCodeActive: { color: colors.textOnPrimary },
-  countryName: {
-    ...typography.caption,
-    color: colors.textMuted,
-    marginTop: 2,
-    fontSize: 10,
-  },
-  countryNameActive: { color: colors.textOnPrimary + 'cc' },
   list: {
     marginTop: spacing.xs,
   },
@@ -286,10 +238,58 @@ const styles = StyleSheet.create({
   retailerName: {
     ...typography.h3,
     color: colors.text,
+    flexShrink: 1,
   },
   retailerKind: {
     ...typography.caption,
     color: colors.textMuted,
     marginTop: 2,
+  },
+  priceBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.primary + '33',
+    padding: spacing.md,
+    marginTop: spacing.sm,
+  },
+  priceBannerLabel: {
+    ...typography.caption,
+    color: colors.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    fontSize: 10,
+  },
+  priceBannerRange: {
+    ...typography.h2,
+    color: colors.primary,
+    fontWeight: '800',
+    marginTop: 2,
+  },
+  priceBannerBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: colors.surface,
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+  },
+  priceBannerBadgeText: {
+    ...typography.caption,
+    color: colors.textMuted,
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  disclaimer: {
+    ...typography.caption,
+    color: colors.textMuted,
+    fontSize: 11,
+    marginTop: spacing.md,
+    textAlign: 'center',
+    paddingHorizontal: spacing.sm,
   },
 });

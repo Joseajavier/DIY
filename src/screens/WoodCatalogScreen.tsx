@@ -8,6 +8,17 @@ import { WoodFilter, WoodUse, WoodHardness, WoodPrice, WoodProduct } from '../mo
 import { searchWood } from '../services/woodSearchService';
 import { WOOD_CATEGORIES } from '../data/woodData';
 import { fetchWoodCatalog } from '../services/catalogApiClient';
+import CatalogImage from '../components/CatalogImage';
+import { getWoodImageUrl } from '../utils/catalogImages';
+import { woodIcon } from '../utils/categoryIcons';
+
+const WOOD_CATEGORY_COLORS: Record<string, string> = {
+  board: '#C4804A',
+  solid: '#8B5A3C',
+  plywood: '#B38B59',
+  strips: '#7A8A6A',
+  special: '#5A7D9A',
+};
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCatalog'>;
@@ -76,14 +87,14 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
     <View style={styles.container}>
       <TextInput style={styles.search} placeholder="Buscar madera o tablero..." placeholderTextColor={colors.textMuted} value={query} onChangeText={setQuery} />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
         <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
         {WOOD_CATEGORIES.map((c: { id: string; icon: string; name: string }) => (
           <Chip key={c.id} label={`${c.icon} ${c.name}`} active={categoryId === c.id} onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)} />
         ))}
       </ScrollView>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
         {USES.map((u: { key: WoodUse | ''; label: string }) => (
           <Chip key={u.key || 'all'} label={u.label} active={use === u.key} onPress={() => setUse(use === u.key ? '' : u.key as WoodUse)} />
         ))}
@@ -112,23 +123,33 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(item.name + ' madera')}`)}
           >
-            <View style={styles.cardHeader}>
-              <Text style={[typography.h3, { flex: 1 }]}>{item.name}</Text>
-              <View style={[styles.badge, { backgroundColor: hardnessColors[item.hardness] + '22' }]}>
-                <Text style={[typography.caption, { color: hardnessColors[item.hardness] }]}>{hardnessLabels[item.hardness]}</Text>
+            <View style={styles.cardTopRow}>
+              <CatalogImage
+                uri={getWoodImageUrl(item)}
+                accentColor={WOOD_CATEGORY_COLORS[item.categoryId] ?? colors.primary}
+                icon={woodIcon(item.categoryId)}
+                badgeText={item.name}
+              />
+              <View style={{ flex: 1 }}>
+                <View style={styles.cardHeader}>
+                  <Text style={[typography.h3, { flex: 1 }]}>{item.name}</Text>
+                  <View style={[styles.badge, { backgroundColor: hardnessColors[item.hardness] + '22' }]}>
+                    <Text style={[typography.caption, { color: hardnessColors[item.hardness] }]}>{hardnessLabels[item.hardness]}</Text>
+                  </View>
+                </View>
+
+                <Text style={[typography.bodySmall, { marginTop: spacing.sm }]}>{item.description}</Text>
+
+                <View style={styles.metaRow}>
+                  <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{item.priceRange}</Text>
+                  <Text style={typography.caption}>{useLabels[item.use]}</Text>
+                </View>
+
+                {item.commonSizes.length > 0 && (
+                  <Text style={[typography.caption, { marginTop: spacing.xs }]}>Medidas: {item.commonSizes.join(', ')}</Text>
+                )}
               </View>
             </View>
-
-            <Text style={[typography.bodySmall, { marginTop: spacing.sm }]}>{item.description}</Text>
-
-            <View style={styles.metaRow}>
-              <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{item.priceRange}</Text>
-              <Text style={typography.caption}>{useLabels[item.use]}</Text>
-            </View>
-
-            {item.commonSizes.length > 0 && (
-              <Text style={[typography.caption, { marginTop: spacing.xs }]}>Medidas: {item.commonSizes.join(', ')}</Text>
-            )}
 
             <View style={styles.prosConsRow}>
               <View style={{ flex: 1 }}>
@@ -151,11 +172,13 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   search: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, margin: spacing.xl, marginBottom: spacing.sm },
-  chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.sm, maxHeight: 40 },
-  chip: { backgroundColor: colors.surface, borderRadius: radius.full, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, marginRight: spacing.sm, borderWidth: 1, borderColor: colors.border },
+  chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.md },
+  chipScrollContent: { alignItems: 'center', paddingVertical: 2 },
+  chip: { height: 34, flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radius.full, paddingHorizontal: spacing.md, marginRight: spacing.sm, borderWidth: 1, borderColor: colors.border },
   chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
+  cardTopRow: { flexDirection: 'row', gap: spacing.md },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   badge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
   metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.md },

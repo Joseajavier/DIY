@@ -72,6 +72,37 @@ export const TOOL_BRANDS: ToolBrand[] = [
   { id: 'stanley', name: 'Stanley', tiers: ['basic', 'mid'] },
   { id: 'mafell', name: 'Mafell', tiers: ['pro'] },
   { id: 'silverline', name: 'Silverline', tiers: ['basic'] },
+  { id: 'evolution', name: 'Evolution', tiers: ['basic', 'mid'] },
+  { id: 'enjoywood', name: 'Enjoywood', tiers: ['basic'] },
+  { id: 'erbauer', name: 'Erbauer', tiers: ['mid'] },
+  { id: 'titan', name: 'Titan', tiers: ['basic'] },
+  { id: 'katsu', name: 'Katsu', tiers: ['basic'] },
+  { id: 'holzmann', name: 'Holzmann', tiers: ['mid', 'pro'] },
+  { id: 'proxxon', name: 'Proxxon', tiers: ['mid'] },
+  { id: 'fein', name: 'Fein', tiers: ['pro'] },
+  { id: 'flex', name: 'Flex', tiers: ['mid', 'pro'] },
+  { id: 'trend', name: 'Trend', tiers: ['mid'] },
+  { id: 'rockwell', name: 'Rockwell', tiers: ['mid'] },
+  { id: 'skil', name: 'Skil', tiers: ['basic', 'mid'] },
+  { id: 'craftsman', name: 'Craftsman', tiers: ['basic', 'mid'] },
+  { id: 'incra', name: 'Incra', tiers: ['pro'] },
+  { id: 'wen', name: 'WEN', tiers: ['basic', 'mid'] },
+  { id: 'jet', name: 'Jet', tiers: ['pro'] },
+  { id: 'grizzly', name: 'Grizzly', tiers: ['mid', 'pro'] },
+  { id: 'laguna', name: 'Laguna', tiers: ['pro'] },
+  { id: 'sawstop', name: 'SawStop', tiers: ['pro'] },
+  { id: 'lamello', name: 'Lamello', tiers: ['pro'] },
+  { id: 'bessey', name: 'Bessey', tiers: ['mid', 'pro'] },
+  { id: 'irwin', name: 'Irwin', tiers: ['mid'] },
+  { id: 'mitutoyo', name: 'Mitutoyo', tiers: ['pro'] },
+  { id: 'wagner', name: 'Wagner', tiers: ['basic', 'mid'] },
+  { id: 'keter', name: 'Keter', tiers: ['basic', 'mid'] },
+  { id: 'sjobergs', name: 'Sjöbergs', tiers: ['pro'] },
+  { id: 'graco', name: 'Graco', tiers: ['pro'] },
+  { id: 'fuji', name: 'Fuji Spray', tiers: ['pro'] },
+  { id: 'steinel', name: 'Steinel', tiers: ['mid', 'pro'] },
+  { id: 'karcher', name: 'Kärcher', tiers: ['basic', 'mid'] },
+  { id: 'leica', name: 'Leica', tiers: ['pro'] },
 ];
 
 export const TOOL_PRODUCTS: ToolProduct[] = [
@@ -200,4 +231,211 @@ export const TOOL_PRODUCTS: ToolProduct[] = [
   { id: 'sv01', typeId: 'shop_vac', brandId: 'einhell', model: 'TE-VC 2025 SACL', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 80, priceMax: 110, description: '25L. Enchufe sincronizado.', features: ['1250W', '25L', 'Sincronizado'], bestFor: 'Aspirar viruta' },
   { id: 'sv02', typeId: 'shop_vac', brandId: 'bosch_blue', model: 'GAS 35 M AFC', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 350, priceMax: 430, description: 'Clase M. Autolimpieza filtro.', features: ['1380W', '35L', 'Clase M'], bestFor: 'Aspiración profesional' },
   { id: 'sv03', typeId: 'shop_vac', brandId: 'festool', model: 'CTL 26 E', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 500, priceMax: 620, description: 'Plug-it. Autoclean. Systainer.', features: ['1200W', '26L', 'Plug-it'], bestFor: 'Sistema Festool' },
+
+  // ═══ SIERRA INGLETADORA (ampliación) ═══
+  { id: 'ms05', typeId: 'miter_saw', brandId: 'parkside', model: 'PKS 1500 A1', tier: 'basic', use: ['home'], power: 'corded', priceMin: 60, priceMax: 90, description: '1500W. Disco 210mm. Inglete ±45°.', features: ['1500W', '210mm', '±45°'], bestFor: 'Bricolaje ocasional' },
+  { id: 'ms06', typeId: 'miter_saw', brandId: 'evolution', model: 'R210CMS', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 110, priceMax: 150, description: '1200W. Disco multi-material 210mm.', features: ['1200W', '210mm', 'Multi-material'], bestFor: 'Corta madera, acero y aluminio' },
+  { id: 'ms07', typeId: 'miter_saw', brandId: 'evolution', model: 'R255SMS+', tier: 'mid', use: ['workshop', 'construction'], power: 'corded', priceMin: 220, priceMax: 290, description: 'Telescópica 255mm multi-material.', features: ['2000W', '255mm', 'Telescópica', 'Multi-material'], bestFor: 'Multi-material versátil' },
+  { id: 'ms08', typeId: 'miter_saw', brandId: 'bosch_green', model: 'PCM 8 S', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 180, priceMax: 230, description: '1200W. Telescópica 216mm.', features: ['1200W', '216mm', 'Telescópica'], bestFor: 'Bricolaje avanzado' },
+  { id: 'ms09', typeId: 'miter_saw', brandId: 'bosch_blue', model: 'GCM 8 SJL', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 450, priceMax: 560, description: '1600W. 216mm. Sistema deslizante patentado.', features: ['1600W', '216mm', 'Axial glide'], bestFor: 'Carpintería profesional' },
+  { id: 'ms10', typeId: 'miter_saw', brandId: 'festool', model: 'Kapex KS 60 E', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1100, priceMax: 1350, description: 'La ingletadora de referencia. Sistema de aspiración.', features: ['1200W', '216mm', 'Plug-it'], bestFor: 'Ebanistería premium' },
+  { id: 'ms11', typeId: 'miter_saw', brandId: 'makita', model: 'DLS714NZ', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 400, priceMax: 520, description: '18Vx2 LXT brushless. 190mm.', features: ['36V', '190mm', 'Brushless'], bestFor: 'Profesional sin cable' },
+  { id: 'ms12', typeId: 'miter_saw', brandId: 'metabo', model: 'KGS 254 M', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 360, description: '2000W. Telescópica 254mm.', features: ['2000W', '254mm', 'Telescópica'], bestFor: 'Taller de carpintería' },
+
+  // ═══ SIERRA DE MESA (ampliación) ═══
+  { id: 'ts04', typeId: 'table_saw', brandId: 'parkside', model: 'PTK 2000 F5', tier: 'basic', use: ['home'], power: 'corded', priceMin: 120, priceMax: 160, description: '2000W. Disco 254mm.', features: ['2000W', '254mm'], bestFor: 'Bricolaje ocasional' },
+  { id: 'ts05', typeId: 'table_saw', brandId: 'scheppach', model: 'HS100S', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 160, priceMax: 220, description: '2000W. Mesa ensanchable lateral.', features: ['2000W', '254mm', 'Ensanchable'], bestFor: 'Pequeños talleres' },
+  { id: 'ts06', typeId: 'table_saw', brandId: 'evolution', model: 'RAGE 5-S', tier: 'mid', use: ['workshop', 'construction'], power: 'corded', priceMin: 350, priceMax: 450, description: 'Multi-material 255mm.', features: ['1500W', '255mm', 'Multi-material'], bestFor: 'Obra con materiales mixtos' },
+  { id: 'ts07', typeId: 'table_saw', brandId: 'makita', model: 'MLT100N', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 400, priceMax: 520, description: '1500W. Disco 260mm. Guía paralela.', features: ['1500W', '260mm', 'Guía paralela'], bestFor: 'Taller de carpintería' },
+  { id: 'ts08', typeId: 'table_saw', brandId: 'metabo', model: 'TS 254', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 380, priceMax: 480, description: '2000W. Portátil. Extensión trasera.', features: ['2000W', '254mm', 'Portátil'], bestFor: 'Taller y obra' },
+  { id: 'ts09', typeId: 'table_saw', brandId: 'festool', model: 'TKS 80 EBS', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1800, priceMax: 2200, description: 'SawStop tecnología SawStop. 254mm.', features: ['2200W', '254mm', 'SawStop'], bestFor: 'Ebanistería premium segura' },
+  { id: 'ts10', typeId: 'table_saw', brandId: 'sawstop', model: 'JSS-120A60', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1600, priceMax: 2000, description: 'Jobsite Saw Pro con flesh-detect.', features: ['1800W', '254mm', 'Flesh-detect'], bestFor: 'Máxima seguridad profesional' },
+  { id: 'ts11', typeId: 'table_saw', brandId: 'holzmann', model: 'TS250F', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 450, priceMax: 600, description: 'Estacionaria 250mm con extensión.', features: ['1800W', '250mm', 'Estacionaria'], bestFor: 'Taller estacionario' },
+
+  // ═══ SIERRA DE CINTA (ampliación) ═══
+  { id: 'bs03', typeId: 'band_saw', brandId: 'einhell', model: 'TC-SB 200/1', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 140, priceMax: 190, description: '250W. Garganta 200mm.', features: ['250W', '200mm garganta'], bestFor: 'Cortes curvos caseros' },
+  { id: 'bs04', typeId: 'band_saw', brandId: 'proxxon', model: 'MBS 240/E', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 200, priceMax: 260, description: 'Micro sierra de cinta. Precisión.', features: ['100W', '240mm', 'Variable'], bestFor: 'Modelismo y piezas pequeñas' },
+  { id: 'bs05', typeId: 'band_saw', brandId: 'holzmann', model: 'HBS 400', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: 'Garganta 395mm. Estacionaria.', features: ['750W', '395mm', 'Guía magnética'], bestFor: 'Carpintería seria' },
+  { id: 'bs06', typeId: 'band_saw', brandId: 'jet', model: 'JWBS-14SFX', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1100, priceMax: 1400, description: 'Referencia americana 14".', features: ['1100W', '14"', 'Guías cerámicas'], bestFor: 'Taller profesional americano' },
+  { id: 'bs07', typeId: 'band_saw', brandId: 'laguna', model: '14|12', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1800, priceMax: 2300, description: '14" con 12" de altura. Guías cerámicas.', features: ['1800W', '14"', '12" alto'], bestFor: 'Ebanistería alta gama' },
+  { id: 'bs08', typeId: 'band_saw', brandId: 'grizzly', model: 'G0555LX', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: '14" Deluxe con freno.', features: ['1HP', '14"', 'Freno'], bestFor: 'Taller avanzado' },
+
+  // ═══ SIERRA DE SABLE (ampliación) ═══
+  { id: 'rs03', typeId: 'reciprocating_saw', brandId: 'parkside', model: 'PFS 710 B2', tier: 'basic', use: ['home'], power: 'corded', priceMin: 30, priceMax: 45, description: '710W. Pendular.', features: ['710W', 'Pendular'], bestFor: 'Poda y demolición ligera' },
+  { id: 'rs04', typeId: 'reciprocating_saw', brandId: 'bosch_green', model: 'PSA 700 E', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 70, priceMax: 95, description: '710W. SDS cambio rápido.', features: ['710W', 'SDS'], bestFor: 'Bricolaje' },
+  { id: 'rs05', typeId: 'reciprocating_saw', brandId: 'dewalt', model: 'DCS367N', tier: 'pro', use: ['construction'], power: 'battery', priceMin: 160, priceMax: 210, description: '18V XR brushless compacta.', features: ['18V', 'Brushless', 'Compacta'], bestFor: 'Obra en espacios reducidos' },
+  { id: 'rs06', typeId: 'reciprocating_saw', brandId: 'milwaukee', model: 'M18 FSZ', tier: 'pro', use: ['construction'], power: 'battery', priceMin: 280, priceMax: 360, description: 'M18 FUEL SAWZALL.', features: ['18V FUEL', 'Brushless', 'One-Key'], bestFor: 'Demolición intensiva' },
+  { id: 'rs07', typeId: 'reciprocating_saw', brandId: 'hikoki', model: 'CR18DBL', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 200, priceMax: 260, description: '18V Multivolt brushless.', features: ['18V', 'Brushless', 'AHB'], bestFor: 'Profesional versátil' },
+
+  // ═══ MULTIHERRAMIENTA OSCILANTE (ampliación) ═══
+  { id: 'mt04', typeId: 'multi_tool', brandId: 'fein', model: 'MultiMaster AFMM 14', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 350, priceMax: 450, description: 'El inventor del sistema. 350W.', features: ['350W', 'Starlock Max', '3D oscillation'], bestFor: 'Uso profesional intensivo' },
+  { id: 'mt05', typeId: 'multi_tool', brandId: 'fein', model: 'FMM 350 QSL', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 360, description: 'QuickIn cambio útil. 350W.', features: ['350W', 'QuickIn', 'Starlock Max'], bestFor: 'Renovación profesional' },
+  { id: 'mt06', typeId: 'multi_tool', brandId: 'dewalt', model: 'DCS355N', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 150, priceMax: 200, description: '18V XR brushless. Cambio rápido.', features: ['18V', 'Brushless', 'Quick change'], bestFor: 'Profesional sin cable' },
+  { id: 'mt07', typeId: 'multi_tool', brandId: 'bosch_blue', model: 'GOP 55-36', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 300, priceMax: 380, description: '550W. Starlock Max.', features: ['550W', 'Starlock Max', 'Electrónica'], bestFor: 'Profesional con cable' },
+  { id: 'mt08', typeId: 'multi_tool', brandId: 'einhell', model: 'TE-MG 300 CE', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 70, priceMax: 95, description: '300W. Velocidad variable.', features: ['300W', 'Variable', 'Cambio rápido'], bestFor: 'Bricolaje avanzado' },
+
+  // ═══ TALADRO DE COLUMNA (ampliación) ═══
+  { id: 'dp03', typeId: 'drill_press', brandId: 'parkside', model: 'PTBM 500 G4', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 90, priceMax: 130, description: '500W. Láser y LED.', features: ['500W', 'Láser', 'LED'], bestFor: 'Bricolaje casero' },
+  { id: 'dp04', typeId: 'drill_press', brandId: 'proxxon', model: 'TBM 220', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 220, priceMax: 290, description: 'Taladro de mesa de precisión.', features: ['100W', 'Precisión', 'MK1'], bestFor: 'Modelismo y relojería' },
+  { id: 'dp05', typeId: 'drill_press', brandId: 'metabo', model: 'B 32/3', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 380, priceMax: 480, description: '710W. Portabrocas 32mm.', features: ['710W', '32mm', '12 velocidades'], bestFor: 'Taller profesional' },
+  { id: 'dp06', typeId: 'drill_press', brandId: 'holzmann', model: 'SB 4116H', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 500, priceMax: 650, description: 'Estacionaria industrial 16mm.', features: ['750W', '16mm', 'Estacionaria'], bestFor: 'Taller industrial' },
+  { id: 'dp07', typeId: 'drill_press', brandId: 'wen', model: '4208T', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 140, priceMax: 190, description: '8" 5 velocidades.', features: ['1/3HP', '8"', '5 vel.'], bestFor: 'Taller doméstico' },
+  { id: 'dp08', typeId: 'drill_press', brandId: 'jet', model: 'JDP-17', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 900, priceMax: 1200, description: '17" profesional.', features: ['3/4HP', '17"', 'Variable'], bestFor: 'Taller americano premium' },
+
+  // ═══ POCKET HOLE (ampliación) ═══
+  { id: 'ph03', typeId: 'pocket_hole', brandId: 'kreg', model: 'K4', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 80, priceMax: 110, description: 'Sistema intermedio con base.', features: ['Base', '19-38mm'], bestFor: 'Aficionado avanzado' },
+  { id: 'ph04', typeId: 'pocket_hole', brandId: 'kreg', model: 'Pocket-Hole Jig 520 Pro', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 80, priceMax: 110, description: 'Portátil con ajuste automático.', features: ['Portátil', 'Auto-ajuste'], bestFor: 'Proyectos variados' },
+  { id: 'ph05', typeId: 'pocket_hole', brandId: 'katsu', model: 'Jig clon Kreg', tier: 'basic', use: ['home'], power: 'manual', priceMin: 20, priceMax: 35, description: 'Clon económico estilo Kreg.', features: ['Económico', '3 taladros'], bestFor: 'Probar el sistema' },
+  { id: 'ph06', typeId: 'pocket_hole', brandId: 'triton', model: 'TWPHJ', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 60, priceMax: 85, description: 'Sistema pocket hole con tope.', features: ['Tope profundidad', 'Compacto'], bestFor: 'Alternativa a Kreg' },
+  { id: 'ph07', typeId: 'pocket_hole', brandId: 'kreg', model: 'Foreman DB210', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 350, priceMax: 450, description: 'Máquina de pocket holes eléctrica.', features: ['Eléctrica', 'Producción'], bestFor: 'Producción en serie' },
+
+  // ═══ FRESADORA ESPIGAS (ampliación) ═══
+  { id: 'dj02', typeId: 'domino_joiner', brandId: 'festool', model: 'DF 700 EQ-Plus', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1400, priceMax: 1700, description: 'Domino XL para ebanistería pesada.', features: ['720W', 'Espigas 8-14mm', 'XL'], bestFor: 'Muebles grandes y puertas' },
+  { id: 'dj03', typeId: 'domino_joiner', brandId: 'triton', model: 'TDJ600', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 380, description: 'Alternativa económica al Domino.', features: ['710W', '6/8/10mm'], bestFor: 'Uniones sin Festool' },
+
+  // ═══ ENGALLETADORA ═══
+  { id: 'bj01', typeId: 'biscuit_joiner', brandId: 'einhell', model: 'TC-BJ 900', tier: 'basic', use: ['home', 'workshop'], power: 'corded', priceMin: 90, priceMax: 130, description: '860W. Galletas 0/10/20.', features: ['860W', '0/10/20'], bestFor: 'Uniones rápidas tablero' },
+  { id: 'bj02', typeId: 'biscuit_joiner', brandId: 'makita', model: 'PJ7000', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 250, priceMax: 320, description: '700W. Ajuste preciso.', features: ['700W', '6 posiciones'], bestFor: 'Taller de carpintería' },
+  { id: 'bj03', typeId: 'biscuit_joiner', brandId: 'dewalt', model: 'DW682K', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 360, description: '600W. Referencia profesional.', features: ['600W', 'Profundidad ajustable'], bestFor: 'Uso profesional' },
+  { id: 'bj04', typeId: 'biscuit_joiner', brandId: 'triton', model: 'TBJ001', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 130, priceMax: 180, description: '760W. Ángulo 0-135°.', features: ['760W', '0-135°'], bestFor: 'Aficionado avanzado' },
+  { id: 'bj05', typeId: 'biscuit_joiner', brandId: 'lamello', model: 'Classic X', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 900, priceMax: 1200, description: 'El inventor del sistema de galletas.', features: ['800W', 'Suizo', 'Precisión'], bestFor: 'Ebanistería premium' },
+
+  // ═══ LIJADORA ORBITAL (ampliación) ═══
+  { id: 'os04', typeId: 'orbital_sander', brandId: 'makita', model: 'BO5041', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 130, priceMax: 170, description: '300W. 125mm. Variable.', features: ['300W', '125mm', 'Variable'], bestFor: 'Taller de carpintería' },
+  { id: 'os05', typeId: 'orbital_sander', brandId: 'festool', model: 'ETS EC 125/3 EQ', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 380, priceMax: 480, description: 'Brushless. Órbita 3mm ultra-fina.', features: ['250W', 'Brushless', '3mm'], bestFor: 'Acabado premium' },
+  { id: 'os06', typeId: 'orbital_sander', brandId: 'festool', model: 'ETS EC 150/5 EQ', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 450, priceMax: 560, description: '150mm brushless. Acabado fino.', features: ['400W', '150mm', 'Brushless'], bestFor: 'Ebanistería profesional' },
+  { id: 'os07', typeId: 'orbital_sander', brandId: 'flex', model: 'ORE 150-3', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 360, description: 'Orbital 150mm. Alemana.', features: ['350W', '150mm', '3mm órbita'], bestFor: 'Alternativa profesional' },
+  { id: 'os08', typeId: 'orbital_sander', brandId: 'bosch_blue', model: 'GEX 125-150 AVE', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 240, priceMax: 310, description: '400W. Platos 125/150mm.', features: ['400W', '125/150mm'], bestFor: 'Profesional versátil' },
+
+  // ═══ LIJADORA DE BANDA (ampliación) ═══
+  { id: 'bls03', typeId: 'belt_sander', brandId: 'bosch_green', model: 'PBS 75 A', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 85, priceMax: 115, description: '710W. Banda 75×533mm.', features: ['710W', '75×533mm'], bestFor: 'Desbastar tableros' },
+  { id: 'bls04', typeId: 'belt_sander', brandId: 'bosch_blue', model: 'GBS 75 AE', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 260, priceMax: 330, description: '750W. Banda 75×533mm.', features: ['750W', '75×533mm', 'Variable'], bestFor: 'Profesional taller' },
+  { id: 'bls05', typeId: 'belt_sander', brandId: 'metabo', model: 'BAE 75', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 250, priceMax: 320, description: '1010W. Ancha y estable.', features: ['1010W', '75×533mm'], bestFor: 'Desbaste intensivo' },
+  { id: 'bls06', typeId: 'belt_sander', brandId: 'triton', model: 'T41200BS', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 100, priceMax: 140, description: '1200W. Banda 76×533mm.', features: ['1200W', '76×533mm'], bestFor: 'Desbaste potente económico' },
+
+  // ═══ LIJADORA DE DETALLE ═══
+  { id: 'ds01', typeId: 'detail_sander', brandId: 'blackdecker', model: 'KA161BC', tier: 'basic', use: ['home'], power: 'corded', priceMin: 25, priceMax: 40, description: 'Mouse. 55W. Esquinas.', features: ['55W', 'Triangular'], bestFor: 'Esquinas y detalles' },
+  { id: 'ds02', typeId: 'detail_sander', brandId: 'bosch_green', model: 'PSM 200 AES', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 60, priceMax: 85, description: '200W. Plato delta intercambiable.', features: ['200W', 'Delta', 'Cambio fácil'], bestFor: 'Muebles y molduras' },
+  { id: 'ds03', typeId: 'detail_sander', brandId: 'makita', model: 'BO4565', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 90, priceMax: 120, description: '200W. Delta robusta.', features: ['200W', 'Delta'], bestFor: 'Taller profesional' },
+  { id: 'ds04', typeId: 'detail_sander', brandId: 'einhell', model: 'TE-OS 18/150', tier: 'basic', use: ['home'], power: 'battery', priceMin: 45, priceMax: 65, description: '18V PXC. Delta.', features: ['18V', 'Delta'], bestFor: 'Bricolaje sin cable' },
+  { id: 'ds05', typeId: 'detail_sander', brandId: 'fein', model: 'FMM 350 QSL', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 300, priceMax: 380, description: 'MultiMaster con accesorio delta.', features: ['350W', 'Starlock', 'Multi'], bestFor: 'Profesional versátil' },
+
+  // ═══ FRESADORA SUPERFICIE (ampliación) ═══
+  { id: 'rt05', typeId: 'router', brandId: 'makita', model: 'RP2301FCXJ', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 380, priceMax: 480, description: '2100W. Pinza 12mm. Inmersión.', features: ['2100W', '12mm', 'Inmersión'], bestFor: 'Fresado pesado taller' },
+  { id: 'rt06', typeId: 'router', brandId: 'triton', model: 'TRA001', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 260, priceMax: 340, description: '2400W. Ideal para mesa.', features: ['2400W', '12mm', 'Para mesa'], bestFor: 'Montaje en mesa' },
+  { id: 'rt07', typeId: 'router', brandId: 'bosch_blue', model: 'GOF 1600 CE', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 450, priceMax: 560, description: '1600W. Constant Electronic.', features: ['1600W', '12mm', 'CE'], bestFor: 'Profesional versátil' },
+  { id: 'rt08', typeId: 'router', brandId: 'dewalt', model: 'DW625EK', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 320, priceMax: 420, description: '2000W. Clásica profesional.', features: ['2000W', '12mm', 'Electrónica'], bestFor: 'Ebanistería tradicional' },
+  { id: 'rt09', typeId: 'router', brandId: 'hikoki', model: 'M12VE', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 300, priceMax: 400, description: '2000W. Japonesa robusta.', features: ['2000W', '12mm'], bestFor: 'Profesional japonés' },
+
+  // ═══ FRESADORA DE CANTOS (ampliación) ═══
+  { id: 'tr03', typeId: 'trim_router', brandId: 'katsu', model: '103690 palm router', tier: 'basic', use: ['home'], power: 'corded', priceMin: 30, priceMax: 50, description: 'Palm router clon económico.', features: ['530W', '6/8mm'], bestFor: 'Probar el fresado' },
+  { id: 'tr04', typeId: 'trim_router', brandId: 'bosch_green', model: 'POF 1200 AE', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 110, priceMax: 150, description: '1200W. Compacta.', features: ['1200W', '6/8mm'], bestFor: 'Bricolaje avanzado' },
+  { id: 'tr05', typeId: 'trim_router', brandId: 'bosch_blue', model: 'GKF 600', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 180, priceMax: 240, description: '600W. Canteadora profesional.', features: ['600W', '8mm'], bestFor: 'Canteado profesional' },
+  { id: 'tr06', typeId: 'trim_router', brandId: 'festool', model: 'MFK 700 EQ', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 550, priceMax: 680, description: '720W. Base 0° y 1.5°.', features: ['720W', '8mm', 'Doble base'], bestFor: 'Canteado premium' },
+  { id: 'tr07', typeId: 'trim_router', brandId: 'makita', model: 'DRT50Z', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 230, priceMax: 300, description: '18V brushless compacta.', features: ['18V', 'Brushless', '6/8mm'], bestFor: 'Canteado sin cable' },
+
+  // ═══ CEPILLO ELÉCTRICO (ampliación) ═══
+  { id: 'ep05', typeId: 'electric_planer', brandId: 'parkside', model: 'PEH 30 C3', tier: 'basic', use: ['home'], power: 'corded', priceMin: 30, priceMax: 45, description: '750W. 82mm.', features: ['750W', '82mm', '3mm prof.'], bestFor: 'Ajustar puertas ocasional' },
+  { id: 'ep06', typeId: 'electric_planer', brandId: 'bosch_blue', model: 'GHO 40-82 C', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 280, priceMax: 360, description: '850W. 4mm profundidad.', features: ['850W', '82mm', '4mm prof.'], bestFor: 'Carpintería de obra' },
+  { id: 'ep07', typeId: 'electric_planer', brandId: 'dewalt', model: 'DCP580N', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 230, priceMax: 300, description: '18V XR brushless.', features: ['18V', '82mm', 'Brushless'], bestFor: 'Cepillado profesional móvil' },
+
+  // ═══ REGRUESADORA (ampliación) ═══
+  { id: 'bp04', typeId: 'benchtop_planer', brandId: 'scheppach', model: 'HMS1070', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 350, priceMax: 450, description: '254mm. Combinada.', features: ['1500W', '254mm'], bestFor: 'Taller de carpintería' },
+  { id: 'bp05', typeId: 'benchtop_planer', brandId: 'wen', model: 'PL1326', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 300, priceMax: 400, description: '13" con 3 cuchillas.', features: ['15A', '13"', '3 cuchillas'], bestFor: 'Taller americano' },
+  { id: 'bp06', typeId: 'benchtop_planer', brandId: 'makita', model: '2012NB', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 550, priceMax: 700, description: '304mm portátil japonesa.', features: ['1650W', '304mm', 'Silenciosa'], bestFor: 'Taller profesional' },
+  { id: 'bp07', typeId: 'benchtop_planer', brandId: 'holzmann', model: 'HOB305PRO', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: '305mm con cabezal helicoidal.', features: ['1500W', '305mm', 'Helicoidal'], bestFor: 'Taller semi-industrial' },
+
+  // ═══ CEPILLADORA-REGRUESADORA ═══
+  { id: 'jp01', typeId: 'jointer_planer', brandId: 'scheppach', model: 'HMC3200', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 900, priceMax: 1200, description: 'Combinada 260mm.', features: ['1900W', '260mm', 'Combo'], bestFor: 'Taller completo' },
+  { id: 'jp02', typeId: 'jointer_planer', brandId: 'holzmann', model: 'HOB260ECO', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 1100, priceMax: 1500, description: '260mm combinada europea.', features: ['2200W', '260mm', '2-en-1'], bestFor: 'Taller intermedio' },
+  { id: 'jp03', typeId: 'jointer_planer', brandId: 'jet', model: 'JPT-310', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 2000, priceMax: 2600, description: '310mm profesional.', features: ['2500W', '310mm', 'Helicoidal'], bestFor: 'Taller profesional' },
+  { id: 'jp04', typeId: 'jointer_planer', brandId: 'metabo', model: 'HC 260 C', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 1200, priceMax: 1600, description: '260mm profesional alemana.', features: ['2800W', '260mm'], bestFor: 'Profesional europeo' },
+
+  // ═══ METRO LÁSER (ampliación) ═══
+  { id: 'lm04', typeId: 'laser_measure', brandId: 'bosch_green', model: 'Zamo IV', tier: 'basic', use: ['home'], power: 'battery', priceMin: 35, priceMax: 55, description: '20m. Compacto.', features: ['20m', 'Simple'], bestFor: 'Bricolaje básico' },
+  { id: 'lm05', typeId: 'laser_measure', brandId: 'stanley', model: 'TLM99', tier: 'basic', use: ['home'], power: 'battery', priceMin: 30, priceMax: 50, description: '30m. Robusto.', features: ['30m', 'IP54'], bestFor: 'Bricolaje general' },
+  { id: 'lm06', typeId: 'laser_measure', brandId: 'leica', model: 'Disto D2', tier: 'mid', use: ['construction'], power: 'battery', priceMin: 120, priceMax: 170, description: 'Suizo. 100m. Bluetooth.', features: ['100m', 'Bluetooth', 'Suizo'], bestFor: 'Construcción profesional' },
+
+  // ═══ NIVEL LÁSER ═══
+  { id: 'll01', typeId: 'laser_level', brandId: 'parkside', model: 'PKLL 7 C4', tier: 'basic', use: ['home'], power: 'battery', priceMin: 25, priceMax: 40, description: 'Cruz. Horizontal+vertical.', features: ['Cruz', '10m'], bestFor: 'Colgar cuadros' },
+  { id: 'll02', typeId: 'laser_level', brandId: 'bosch_green', model: 'Quigo', tier: 'basic', use: ['home'], power: 'battery', priceMin: 40, priceMax: 65, description: 'Láser de línea autonivelante.', features: ['Cruz', 'Autonivel', '10m'], bestFor: 'Bricolaje doméstico' },
+  { id: 'll03', typeId: 'laser_level', brandId: 'bosch_blue', model: 'GLL 3-80 CG', tier: 'pro', use: ['construction'], power: 'battery', priceMin: 450, priceMax: 580, description: 'Multilínea verde. 360°.', features: ['3 líneas 360°', 'Verde', 'Bluetooth'], bestFor: 'Obra profesional' },
+  { id: 'll04', typeId: 'laser_level', brandId: 'dewalt', model: 'DW088CG', tier: 'mid', use: ['workshop', 'construction'], power: 'battery', priceMin: 140, priceMax: 190, description: 'Cruz verde. Autonivel.', features: ['Cruz verde', '15m'], bestFor: 'Reformas' },
+  { id: 'll05', typeId: 'laser_level', brandId: 'makita', model: 'SK105GDZ', tier: 'pro', use: ['construction'], power: 'battery', priceMin: 350, priceMax: 450, description: '12V CXT láser verde.', features: ['12V', 'Verde', '5 líneas'], bestFor: 'Obra Makita' },
+
+  // ═══ CALIBRE DIGITAL ═══
+  { id: 'dc01', typeId: 'digital_caliper', brandId: 'parkside', model: 'PDMS 150 A1', tier: 'basic', use: ['home', 'workshop'], power: 'battery', priceMin: 10, priceMax: 20, description: '150mm. LCD.', features: ['150mm', 'Digital'], bestFor: 'Medidas caseras precisas' },
+  { id: 'dc02', typeId: 'digital_caliper', brandId: 'stanley', model: 'STHT0-77364', tier: 'mid', use: ['workshop'], power: 'battery', priceMin: 25, priceMax: 40, description: '150mm. mm/pulgadas.', features: ['150mm', 'Dual'], bestFor: 'Taller general' },
+  { id: 'dc03', typeId: 'digital_caliper', brandId: 'mitutoyo', model: '500-196-30', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 130, priceMax: 180, description: 'Calidad japonesa. Precisión 0.01mm.', features: ['150mm', '0.01mm', 'Japonés'], bestFor: 'Taller de precisión' },
+  { id: 'dc04', typeId: 'digital_caliper', brandId: 'proxxon', model: '28114', tier: 'mid', use: ['workshop'], power: 'battery', priceMin: 50, priceMax: 75, description: 'Digital 150mm. Alemán.', features: ['150mm', '0.01mm'], bestFor: 'Modelismo' },
+
+  // ═══ MEDIDOR DE HUMEDAD ═══
+  { id: 'mm01', typeId: 'moisture_meter', brandId: 'parkside', model: 'PMSS A1', tier: 'basic', use: ['home'], power: 'battery', priceMin: 10, priceMax: 20, description: 'Medidor pinchos madera.', features: ['Pinchos', 'Madera'], bestFor: 'Verificar leña' },
+  { id: 'mm02', typeId: 'moisture_meter', brandId: 'bosch_blue', model: 'GMH 3300', tier: 'pro', use: ['construction'], power: 'battery', priceMin: 180, priceMax: 240, description: 'Profesional madera y materiales.', features: ['Multimaterial', 'Pro'], bestFor: 'Inspección profesional' },
+  { id: 'mm03', typeId: 'moisture_meter', brandId: 'stanley', model: '0-77-030', tier: 'mid', use: ['workshop', 'construction'], power: 'battery', priceMin: 40, priceMax: 60, description: 'Pinchos. Madera y materiales.', features: ['Pinchos', 'LCD'], bestFor: 'Reformas' },
+  { id: 'mm04', typeId: 'moisture_meter', brandId: 'wagner', model: 'MMC220', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 300, priceMax: 400, description: 'Pinless profesional.', features: ['Sin pinchos', 'Pro'], bestFor: 'Ebanistería profesional' },
+
+  // ═══ SARGENTOS F (ampliación) ═══
+  { id: 'cl04', typeId: 'f_clamps', brandId: 'bessey', model: 'TGK 300', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 25, priceMax: 40, description: 'Sargento F alemán clásico.', features: ['300mm', '5000N'], bestFor: 'Taller profesional' },
+  { id: 'cl05', typeId: 'f_clamps', brandId: 'bessey', model: 'GZ600', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 30, priceMax: 50, description: 'Sargento F 600mm.', features: ['600mm', '6000N'], bestFor: 'Encolados largos' },
+  { id: 'cl06', typeId: 'f_clamps', brandId: 'irwin', model: 'Pro 600mm', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 25, priceMax: 40, description: 'Sargento F robusto.', features: ['600mm'], bestFor: 'Encolados' },
+  { id: 'cl07', typeId: 'f_clamps', brandId: 'silverline', model: 'Pack 4×200mm', tier: 'basic', use: ['home'], power: 'manual', priceMin: 12, priceMax: 20, description: 'Pack económico.', features: ['200mm', 'Pack 4'], bestFor: 'Bricolaje casero' },
+  { id: 'cl08', typeId: 'f_clamps', brandId: 'vevor', model: 'Pack 6×400mm', tier: 'basic', use: ['home', 'workshop'], power: 'manual', priceMin: 25, priceMax: 40, description: 'Pack económico 6 uds.', features: ['400mm', 'Pack 6'], bestFor: 'Comenzar un taller' },
+
+  // ═══ SARGENTOS RÁPIDOS (ampliación) ═══
+  { id: 'cl09', typeId: 'quick_clamps', brandId: 'bessey', model: 'EZS 300', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 20, priceMax: 30, description: 'Bessey rápido a una mano.', features: ['300mm', 'Una mano'], bestFor: 'Sujeción rápida' },
+  { id: 'cl10', typeId: 'quick_clamps', brandId: 'irwin', model: 'Quick-Grip 300mm', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 20, priceMax: 30, description: 'Clásico Quick-Grip.', features: ['300mm', 'Una mano'], bestFor: 'Uso diario' },
+  { id: 'cl11', typeId: 'quick_clamps', brandId: 'stanley', model: 'FatMax XL', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 15, priceMax: 25, description: 'Sargento rápido XL.', features: ['450mm'], bestFor: 'Pegados medianos' },
+
+  // ═══ SARGENTOS DE ESQUINA (ampliación) ═══
+  { id: 'cl12', typeId: 'corner_clamps', brandId: 'bessey', model: 'WS3', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 35, priceMax: 55, description: 'Sargento de esquina Bessey.', features: ['90°', 'Ajustable'], bestFor: 'Marcos profesionales' },
+  { id: 'cl13', typeId: 'corner_clamps', brandId: 'kreg', model: 'KHC-90DCC', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 25, priceMax: 40, description: 'Automaxx 90°.', features: ['Automaxx', '90°'], bestFor: 'Carpintería' },
+
+  // ═══ TORNILLO DE BANCO ═══
+  { id: 'bv01', typeId: 'bench_vise', brandId: 'vevor', model: 'Tornillo 5"', tier: 'basic', use: ['home', 'workshop'], power: 'manual', priceMin: 35, priceMax: 55, description: '5" fundición. Giratorio.', features: ['125mm', 'Giratorio'], bestFor: 'Taller doméstico' },
+  { id: 'bv02', typeId: 'bench_vise', brandId: 'irwin', model: 'Record 6"', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 150, priceMax: 220, description: 'Record 6" clásico.', features: ['150mm', 'Record'], bestFor: 'Taller serio' },
+  { id: 'bv03', typeId: 'bench_vise', brandId: 'stanley', model: 'Maxsteel 4"', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 50, priceMax: 80, description: '4" con yunque.', features: ['100mm', 'Yunque'], bestFor: 'Bricolaje general' },
+  { id: 'bv04', typeId: 'bench_vise', brandId: 'rockwell', model: 'JawHorse RK9003', tier: 'mid', use: ['workshop', 'construction'], power: 'manual', priceMin: 180, priceMax: 240, description: 'Caballete-mordaza portátil.', features: ['Portátil', '1ton presión'], bestFor: 'Sujeción grande portátil' },
+
+  // ═══ BANCO DE TRABAJO (ampliación) ═══
+  { id: 'wb02', typeId: 'workbench', brandId: 'blackdecker', model: 'Workmate WM550', tier: 'basic', use: ['home'], power: 'manual', priceMin: 60, priceMax: 90, description: 'Workmate clásica plegable.', features: ['Plegable', 'Mordaza'], bestFor: 'Bricolaje ocasional' },
+  { id: 'wb03', typeId: 'workbench', brandId: 'keter', model: 'Master Pro', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 90, priceMax: 130, description: 'Banco plegable robusto.', features: ['Plegable', 'Cajones'], bestFor: 'Garaje doméstico' },
+  { id: 'wb04', typeId: 'workbench', brandId: 'sjobergs', model: 'Elite 1500', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 700, priceMax: 900, description: 'Banco ebanisteria sueco.', features: ['Madera maciza', '2 mordazas'], bestFor: 'Ebanisteria' },
+  { id: 'wb05', typeId: 'workbench', brandId: 'festool', model: 'MFT/3', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 600, priceMax: 750, description: 'Multifunction Table sistema Festool.', features: ['Sistema', 'Agujeros', 'Modular'], bestFor: 'Sistema Festool' },
+  { id: 'wb06', typeId: 'workbench', brandId: 'triton', model: 'Superjaws SJA200E', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 250, priceMax: 340, description: 'Mordaza de pie con pedal.', features: ['Pedal', '1ton'], bestFor: 'Sujeción grande portátil' },
+
+  // ═══ PISTOLA HVLP ═══
+  { id: 'sg01', typeId: 'spray_gun', brandId: 'wagner', model: 'W100', tier: 'basic', use: ['home'], power: 'corded', priceMin: 50, priceMax: 80, description: '280W. Pintura acuosa.', features: ['280W', 'HVLP'], bestFor: 'Pintar muebles' },
+  { id: 'sg02', typeId: 'spray_gun', brandId: 'wagner', model: 'FLEXiO 590', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 130, priceMax: 180, description: 'X-Boost turbina. Múltiples pinturas.', features: ['630W', 'X-Boost'], bestFor: 'Pintar paredes y muebles' },
+  { id: 'sg03', typeId: 'spray_gun', brandId: 'bosch_green', model: 'PFS 5000 E', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 180, priceMax: 240, description: '1200W. Sistema ALLPaint.', features: ['1200W', 'ALLPaint'], bestFor: 'Pintado profesional casero' },
+  { id: 'sg04', typeId: 'spray_gun', brandId: 'graco', model: 'Magnum X5', tier: 'pro', use: ['construction'], power: 'corded', priceMin: 350, priceMax: 480, description: 'Airless profesional portátil.', features: ['Airless', '100L/min'], bestFor: 'Obra profesional' },
+  { id: 'sg05', typeId: 'spray_gun', brandId: 'fuji', model: 'Mini-Mite 4 PLATINUM', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: 'HVLP premium. Acabados finos.', features: ['HVLP', '4 etapas'], bestFor: 'Ebanistería de acabados' },
+
+  // ═══ CLAVADORA (ampliación) ═══
+  { id: 'ng04', typeId: 'nail_gun', brandId: 'makita', model: 'DBN500Z', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 320, priceMax: 420, description: '18V LXT. Clavos 18GA 15-50mm.', features: ['18V', '18GA', '15-50mm'], bestFor: 'Acabados sin compresor' },
+  { id: 'ng05', typeId: 'nail_gun', brandId: 'bosch_blue', model: 'GSK 18V-LI', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 300, priceMax: 400, description: '18V. Clavos 18GA.', features: ['18V', '18GA'], bestFor: 'Carpintería acabado' },
+  { id: 'ng06', typeId: 'nail_gun', brandId: 'parkside', model: 'PDT 40 D5', tier: 'basic', use: ['home'], power: 'battery', priceMin: 30, priceMax: 50, description: '40V. Grapadora/clavadora.', features: ['40V', '6-14mm'], bestFor: 'Tapicería y molduras' },
+  { id: 'ng07', typeId: 'nail_gun', brandId: 'ryobi', model: 'R18N18G-0', tier: 'mid', use: ['home', 'workshop'], power: 'battery', priceMin: 180, priceMax: 240, description: '18V ONE+ 18GA.', features: ['18V', '18GA', '15-50mm'], bestFor: 'Bricolaje avanzado' },
+
+  // ═══ PISTOLA DE CALOR (ampliación) ═══
+  { id: 'hg03', typeId: 'heat_gun', brandId: 'bosch_blue', model: 'GHG 20-63', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 130, priceMax: 180, description: '2000W. LCD. 50-630°.', features: ['2000W', 'LCD', '50-630°'], bestFor: 'Profesional' },
+  { id: 'hg04', typeId: 'heat_gun', brandId: 'makita', model: 'HG6531CK', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 100, priceMax: 140, description: '2000W. Pantalla digital.', features: ['2000W', 'Digital'], bestFor: 'Taller profesional' },
+  { id: 'hg05', typeId: 'heat_gun', brandId: 'steinel', model: 'HL 2020 E', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 140, priceMax: 190, description: 'Alemana. 2200W LCD.', features: ['2200W', 'LCD', 'Alemana'], bestFor: 'Profesional exigente' },
+
+  // ═══ ASPIRADOR TALLER (ampliación) ═══
+  { id: 'sv04', typeId: 'shop_vac', brandId: 'parkside', model: 'PNTS 1500 C4', tier: 'basic', use: ['home'], power: 'corded', priceMin: 50, priceMax: 80, description: '1500W. 30L.', features: ['1500W', '30L'], bestFor: 'Limpieza taller doméstico' },
+  { id: 'sv05', typeId: 'shop_vac', brandId: 'karcher', model: 'WD 6 P', tier: 'mid', use: ['home', 'workshop'], power: 'corded', priceMin: 160, priceMax: 220, description: '1300W. 30L. Enchufe.', features: ['1300W', '30L', 'Enchufe'], bestFor: 'Taller y casa' },
+  { id: 'sv06', typeId: 'shop_vac', brandId: 'makita', model: 'VC3012L', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 260, priceMax: 340, description: '1000W. 30L. Clase L.', features: ['1000W', '30L', 'Clase L'], bestFor: 'Obra profesional' },
+  { id: 'sv07', typeId: 'shop_vac', brandId: 'metabo', model: 'ASR 35 M ACP', tier: 'pro', use: ['workshop', 'construction'], power: 'corded', priceMin: 400, priceMax: 520, description: 'Clase M. 35L. Autolimpieza.', features: ['1400W', '35L', 'Clase M'], bestFor: 'Profesional con polvo fino' },
+
+  // ═══ SISTEMA ASPIRACIÓN ═══
+  { id: 'dcol01', typeId: 'dust_collector', brandId: 'einhell', model: 'TE-VE 550/2 A', tier: 'basic', use: ['workshop'], power: 'corded', priceMin: 150, priceMax: 200, description: '550W. Colector 65L.', features: ['550W', '65L'], bestFor: 'Taller pequeño' },
+  { id: 'dcol02', typeId: 'dust_collector', brandId: 'scheppach', model: 'HA1000', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 200, priceMax: 280, description: '550W. 75L. Móvil.', features: ['550W', '75L'], bestFor: 'Taller de carpintería' },
+  { id: 'dcol03', typeId: 'dust_collector', brandId: 'holzmann', model: 'ABS1080', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 250, priceMax: 340, description: '550W. 1080 m³/h.', features: ['550W', '1080m³/h'], bestFor: 'Taller europeo' },
+  { id: 'dcol04', typeId: 'dust_collector', brandId: 'jet', model: 'DC-1100VX', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: '1.5HP ciclónico.', features: ['1.5HP', '1100 CFM'], bestFor: 'Taller americano' },
+  { id: 'dcol05', typeId: 'dust_collector', brandId: 'laguna', model: 'P|Flux 1', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 900, priceMax: 1200, description: 'Ciclónico premium.', features: ['1HP', 'Ciclónico'], bestFor: 'Ebanistería premium' },
+  { id: 'dcol06', typeId: 'dust_collector', brandId: 'festool', model: 'CT 36 AC', tier: 'pro', use: ['workshop'], power: 'corded', priceMin: 700, priceMax: 900, description: 'Autoclean 36L. Plug-it.', features: ['1200W', '36L', 'Autoclean'], bestFor: 'Sistema Festool completo' },
+
+  // ═══ FESTOOL ADICIONAL ═══
+  { id: 'dd06', typeId: 'drill_driver', brandId: 'festool', model: 'CXS 18', tier: 'pro', use: ['workshop'], power: 'battery', priceMin: 350, priceMax: 450, description: 'Taladro compacto premium.', features: ['18V', 'Compacto', 'Brushless'], bestFor: 'Ebanistería precisa' },
 ];

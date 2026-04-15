@@ -25,6 +25,8 @@ import WoodCategoriesScreen from '../screens/WoodCategoriesScreen';
 import WoodzyHomeScreen from '../screens/WoodzyHomeScreen';
 import CalculatorsScreen from '../screens/CalculatorsScreen';
 import DealsScreen from '../screens/DealsScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
+import ProjectIdeasScreen from '../screens/ProjectIdeasScreen';
 import GoldenRatioScreen from '../screens/calculators/GoldenRatioScreen';
 import WainscotCalcScreen from '../screens/calculators/WainscotCalcScreen';
 import ShelfCalcScreen from '../screens/calculators/ShelfCalcScreen';
@@ -45,6 +47,8 @@ export type RootStackParamList = {
   WoodzyHome: undefined;
   Calculators: undefined;
   Deals: undefined;
+  Favorites: undefined;
+  ProjectIdeas: undefined;
   GoldenRatio: undefined;
   WainscotCalc: undefined;
   ShelfCalc: undefined;
@@ -96,6 +100,8 @@ export default function AppNavigator() {
       <Stack.Screen name="WoodzyHome" component={WoodzyHomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Calculators" component={CalculatorsScreen} options={{ title: '🧮 Calculadoras' }} />
       <Stack.Screen name="Deals" component={DealsScreen} options={{ title: '🔥 Chollos' }} />
+      <Stack.Screen name="Favorites" component={FavoritesScreen} options={{ title: '❤️ Favoritos' }} />
+      <Stack.Screen name="ProjectIdeas" component={ProjectIdeasScreen} options={{ title: '💡 Ideas de proyectos' }} />
       <Stack.Screen name="GoldenRatio" component={GoldenRatioScreen} options={{ title: 'φ Proporción áurea' }} />
       <Stack.Screen name="WainscotCalc" component={WainscotCalcScreen} options={{ title: '🪟 Wainscot' }} />
       <Stack.Screen name="ShelfCalc" component={ShelfCalcScreen} options={{ title: '📚 Baldas' }} />
