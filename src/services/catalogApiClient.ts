@@ -7,6 +7,8 @@ const BASE_URL: string =
 // In-memory cache
 let toolsCache: any = null;
 let toolsCacheTime = 0;
+let woodCache: any = null;
+let woodCacheTime = 0;
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
 
 export interface CatalogResponse {
@@ -15,6 +17,14 @@ export interface CatalogResponse {
   categories: any[];
   types: any[];
   brands: any[];
+  products: any[];
+  totalProducts: number;
+}
+
+export interface WoodCatalogResponse {
+  version: number;
+  lastUpdated: string;
+  categories: any[];
   products: any[];
   totalProducts: number;
 }
@@ -72,6 +82,65 @@ export async function fetchToolCatalog(params?: {
 export async function checkCatalogVersion(): Promise<{ available: boolean; version: number } | null> {
   try {
     const res = await fetch(`${BASE_URL}/catalog/tools/stats`, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return { available: true, version: data.version };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch wood catalog from backend.
+ * Uses in-memory cache (24h TTL).
+ * Falls back to null if backend unavailable.
+ */
+export async function fetchWoodCatalog(params?: {
+  category?: string;
+  hardness?: string;
+  priceLevel?: string;
+  use?: string;
+  q?: string;
+}): Promise<WoodCatalogResponse | null> {
+  // If no params and cache is fresh, use cache
+  if (!params && woodCache && Date.now() - woodCacheTime < CACHE_TTL) {
+    return woodCache;
+  }
+
+  try {
+    const queryParams = new URLSearchParams();
+    if (params?.category) queryParams.set('category', params.category);
+    if (params?.hardness) queryParams.set('hardness', params.hardness);
+    if (params?.priceLevel) queryParams.set('priceLevel', params.priceLevel);
+    if (params?.use) queryParams.set('use', params.use);
+    if (params?.q) queryParams.set('q', params.q);
+
+    const qs = queryParams.toString();
+    const url = `${BASE_URL}/catalog/wood${qs ? `?${qs}` : ''}`;
+
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    // Cache only full (unfiltered) responses
+    if (!params) {
+      woodCache = data;
+      woodCacheTime = Date.now();
+    }
+
+    return data;
+  } catch {
+    return null; // Backend not available, use local data
+  }
+}
+
+/**
+ * Check if backend wood catalog is available
+ */
+export async function checkWoodCatalogVersion(): Promise<{ available: boolean; version: number } | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/catalog/wood/stats`, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) return null;
     const data = await res.json();
     return { available: true, version: data.version };

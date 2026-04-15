@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
-import { WoodFilter, WoodUse, WoodHardness, WoodPrice } from '../models/wood';
+import { WoodFilter, WoodUse, WoodHardness, WoodPrice, WoodProduct } from '../models/wood';
 import { searchWood } from '../services/woodSearchService';
 import { WOOD_CATEGORIES } from '../data/woodData';
+import { fetchWoodCatalog } from '../services/catalogApiClient';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCatalog'> };
 
@@ -29,6 +30,23 @@ export default function WoodCatalogScreen({ navigation }: Props) {
   const [use, setUse] = useState<WoodUse | ''>('');
   const [hardness, setHardness] = useState<WoodHardness | ''>('');
   const [priceLevel, setPriceLevel] = useState<WoodPrice | ''>('');
+  const [remoteProducts, setRemoteProducts] = useState<WoodProduct[] | null>(null);
+  const [source, setSource] = useState<'loading' | 'online' | 'offline'>('loading');
+
+  // Intenta cargar el catalogo remoto al montar. Si falla, usa el local (fallback).
+  useEffect(() => {
+    let cancelled = false;
+    fetchWoodCatalog().then((res) => {
+      if (cancelled) return;
+      if (res && Array.isArray(res.products) && res.products.length > 0) {
+        setRemoteProducts(res.products as WoodProduct[]);
+        setSource('online');
+      } else {
+        setSource('offline');
+      }
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   const filter: WoodFilter = {
     query: query || undefined,
@@ -38,7 +56,10 @@ export default function WoodCatalogScreen({ navigation }: Props) {
     priceLevel: priceLevel || undefined,
   };
 
-  const results = useMemo(() => searchWood(filter), [query, categoryId, use, hardness, priceLevel]);
+  const results = useMemo(
+    () => searchWood(filter, remoteProducts ?? undefined),
+    [query, categoryId, use, hardness, priceLevel, remoteProducts]
+  );
 
   const Chip = ({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) => (
     <TouchableOpacity style={[styles.chip, active && styles.chipActive]} onPress={onPress}>
@@ -63,7 +84,12 @@ export default function WoodCatalogScreen({ navigation }: Props) {
         {PRICES.map(p => <Chip key={p.key} label={p.label} active={priceLevel === p.key} onPress={() => setPriceLevel(priceLevel === p.key ? '' : p.key as WoodPrice)} />)}
       </ScrollView>
 
-      <Text style={[typography.caption, { marginHorizontal: spacing.xl, marginBottom: spacing.sm }]}>{results.length} resultado{results.length !== 1 ? 's' : ''}</Text>
+      <View style={styles.resultRow}>
+        <Text style={typography.caption}>{results.length} resultado{results.length !== 1 ? 's' : ''}</Text>
+        <Text style={[typography.caption, { color: source === 'online' ? colors.success : source === 'offline' ? colors.textMuted : colors.textMuted }]}>
+          {source === 'online' ? '🟢 datos actualizados' : source === 'offline' ? '⚪ offline' : '⏳ cargando...'}
+        </Text>
+      </View>
 
       <FlatList
         data={results}
@@ -121,4 +147,5 @@ const styles = StyleSheet.create({
   badge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
   metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.md },
   prosConsRow: { flexDirection: 'row', marginTop: spacing.sm, gap: spacing.md },
+  resultRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: spacing.xl, marginBottom: spacing.sm },
 });
