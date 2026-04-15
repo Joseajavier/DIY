@@ -7,6 +7,7 @@ import { generateDIYProject } from '../services/diyGenerator';
 import { generateDIYWithAI } from '../services/apiClient';
 import { createProject } from '../storage/projectRepository';
 import { createMaterials } from '../storage/materialRepository';
+import { createSteps } from '../storage/stepRepository';
 import { setLastProjectId } from '../storage/settingsStorage';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { DIYResult } from '../models';
@@ -36,11 +37,16 @@ export default function DIYInputScreen({ navigation }: Props) {
       result = generateDIYProject(projectName.trim(), description.trim());
       if (useAI) Alert.alert('IA no disponible', 'Usando generacion local.');
     }
-    const pid = await createProject(projectName.trim(), 'diy', description.trim());
+    const pid = await createProject(projectName.trim(), 'diy', description.trim(), {
+      difficulty: result.difficulty,
+      estimatedTime: result.estimatedTime,
+      summary: result.summary,
+    });
     await createMaterials(pid, result.materials);
+    await createSteps(pid, result.steps);
     setLastProjectId(pid);
     setLoading(false);
-    navigation.navigate('DIYSteps', { result });
+    navigation.navigate('DIYSteps', { result, projectId: pid });
   };
 
   return (

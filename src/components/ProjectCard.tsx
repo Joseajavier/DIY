@@ -9,12 +9,30 @@ type Props = {
   onDelete?: () => void;
 };
 
+const STATUS_LABELS: Record<string, string> = {
+  pending: '⏳ Sin empezar',
+  in_progress: '🔨 En curso',
+  completed: '✅ Terminado',
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: colors.textMuted,
+  in_progress: colors.warning,
+  completed: colors.success,
+};
+
 export default function ProjectCard({ project, onPress, onDelete }: Props) {
   const accentColor = project.mode === 'diy' ? colors.primary : colors.accent;
   const formatDate = (iso?: string) => {
     if (!iso) return '';
     return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
   };
+
+  const total = project.totalSteps ?? 0;
+  const completed = project.completedSteps ?? 0;
+  const progressPct = total === 0 ? 0 : Math.round((completed / total) * 100);
+  const status = project.status ?? 'pending';
+  const statusColor = STATUS_COLORS[status] ?? colors.textMuted;
 
   return (
     <TouchableOpacity style={[styles.card, shadows.sm]} onPress={onPress} activeOpacity={0.8}>
@@ -29,6 +47,13 @@ export default function ProjectCard({ project, onPress, onDelete }: Props) {
                   {project.mode.toUpperCase()}
                 </Text>
               </View>
+              {total > 0 && (
+                <View style={[styles.tag, { backgroundColor: statusColor + '1A' }]}>
+                  <Text style={[typography.caption, { color: statusColor }]}>
+                    {STATUS_LABELS[status]}
+                  </Text>
+                </View>
+              )}
               {project.createdAt && (
                 <Text style={typography.caption}>{formatDate(project.createdAt)}</Text>
               )}
@@ -45,6 +70,26 @@ export default function ProjectCard({ project, onPress, onDelete }: Props) {
             {project.description}
           </Text>
         ) : null}
+
+        {total > 0 && (
+          <View style={styles.progressWrap}>
+            <View style={styles.progressBarBg}>
+              <View
+                style={[
+                  styles.progressBarFill,
+                  {
+                    width: `${progressPct}%`,
+                    backgroundColor:
+                      status === 'completed' ? colors.success : accentColor,
+                  },
+                ]}
+              />
+            </View>
+            <Text style={styles.progressLabel}>
+              {completed} / {total} pasos · {progressPct}%
+            </Text>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -84,4 +129,23 @@ const styles = StyleSheet.create({
   },
   deleteBtn: { padding: spacing.sm },
   deleteTxt: { color: colors.danger, fontSize: 14, fontWeight: 'bold' },
+  progressWrap: {
+    marginTop: spacing.md,
+  },
+  progressBarBg: {
+    height: 6,
+    backgroundColor: colors.bg,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 6,
+    borderRadius: 3,
+  },
+  progressLabel: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: 4,
+    fontSize: 11,
+  },
 });

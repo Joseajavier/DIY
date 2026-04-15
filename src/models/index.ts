@@ -72,6 +72,32 @@ export interface OptimizationResult {
   createdAt?: string;
 }
 
+// ── Project Step (persisted, with completion state) ──
+export interface ProjectStep {
+  id?: string;
+  projectId?: string;
+  number: number;
+  title: string;
+  description: string;
+  completed: boolean;
+  completedAt?: string;
+  notes?: string;
+}
+
+export interface ProjectStepRow {
+  id: string;
+  project_id: string;
+  step_number: number;
+  title: string;
+  description: string;
+  completed: number; // SQLite 0/1
+  completed_at: string | null;
+  notes: string;
+  created_at: string;
+}
+
+export type ProjectStatus = 'pending' | 'in_progress' | 'completed';
+
 // ── Project ──
 export interface Project {
   id: string;
@@ -81,6 +107,14 @@ export interface Project {
   pieces: Piece[];
   createdAt?: string;
   updatedAt?: string;
+  // V2 — DIY metadata persistente
+  difficulty?: ProjectDifficulty;
+  estimatedTime?: string;
+  summary?: string;
+  // Derivado de project_steps (no almacenado directo)
+  status?: ProjectStatus;
+  totalSteps?: number;
+  completedSteps?: number;
 }
 
 // ── DB row types (flat, no nested objects) ──
@@ -91,6 +125,10 @@ export interface ProjectRow {
   description: string;
   created_at: string;
   updated_at: string;
+  // V2 — añadidos via ALTER TABLE (pueden ser NULL en filas antiguas)
+  difficulty: string | null;
+  estimated_time: string | null;
+  summary: string | null;
 }
 
 export interface PieceRow {

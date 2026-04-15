@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 const MIGRATION_V1 = `
   CREATE TABLE IF NOT EXISTS projects (
@@ -56,6 +56,29 @@ const MIGRATION_V1 = `
   CREATE INDEX IF NOT EXISTS idx_shop_options_project ON shop_options(project_id);
 `;
 
+// V2 — Persistencia real de proyectos DIY:
+// - tabla project_steps con checkboxes
+// - columnas difficulty / estimated_time / summary en projects
+const MIGRATION_V2 = `
+  CREATE TABLE IF NOT EXISTS project_steps (
+    id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    step_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    completed INTEGER NOT NULL DEFAULT 0,
+    completed_at TEXT,
+    notes TEXT DEFAULT '',
+    created_at TEXT NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_project_steps_project ON project_steps(project_id);
+
+  ALTER TABLE projects ADD COLUMN difficulty TEXT;
+  ALTER TABLE projects ADD COLUMN estimated_time TEXT;
+  ALTER TABLE projects ADD COLUMN summary TEXT;
+`;
+
 export async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
   // Check current version
   const result = await db.getFirstAsync<{ user_version: number }>(
@@ -65,9 +88,11 @@ export async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
 
   if (currentVersion < 1) {
     await db.execAsync(MIGRATION_V1);
-    await db.execAsync(`PRAGMA user_version = ${SCHEMA_VERSION}`);
+    await db.execAsync(`PRAGMA user_version = 1`);
   }
 
-  // Future migrations go here:
-  // if (currentVersion < 2) { ... await db.execAsync(`PRAGMA user_version = 2`); }
+  if (currentVersion < 2) {
+    await db.execAsync(MIGRATION_V2);
+    await db.execAsync(`PRAGMA user_version = 2`);
+  }
 }

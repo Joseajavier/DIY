@@ -4,12 +4,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { Project, Piece, Material, StoreOption, OptimizationRow } from '../models';
+import { Project, Piece, Material, StoreOption, OptimizationRow, ProjectStep } from '../models';
 import { getProjectById } from '../storage/projectRepository';
 import { getPiecesByProject } from '../storage/pieceRepository';
 import { getMaterialsByProject } from '../storage/materialRepository';
 import { getOptimizationByProject } from '../storage/optimizationRepository';
 import { getShopOptionsByProject } from '../storage/shopRepository';
+import { getStepsByProject, toggleStep as toggleStepDb } from '../storage/stepRepository';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { Card, EfficiencyGauge } from '../components';
 import { useProjects } from '../hooks/useProjects';
@@ -28,6 +29,7 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [optimization, setOptimization] = useState<OptimizationRow | null>(null);
   const [shops, setShops] = useState<StoreOption[]>([]);
+  const [steps, setSteps] = useState<ProjectStep[]>([]);
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState('');
 
@@ -40,8 +42,28 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
       setMaterials(await getMaterialsByProject(projectId));
       setOptimization(await getOptimizationByProject(projectId));
       setShops(await getShopOptionsByProject(projectId));
+      setSteps(await getStepsByProject(projectId));
     })();
   }, [projectId]));
+
+  const handleToggleStep = async (step: ProjectStep) => {
+    if (!step.id) return;
+    // Optimistic update
+    setSteps((prev) =>
+      prev.map((s) => (s.id === step.id ? { ...s, completed: !s.completed } : s)),
+    );
+    try {
+      await toggleStepDb(step.id);
+      // Refrescar project para que el % suba
+      const p = await getProjectById(projectId);
+      if (p) setProject(p);
+    } catch {
+      // Revertir
+      setSteps((prev) =>
+        prev.map((s) => (s.id === step.id ? { ...s, completed: !s.completed } : s)),
+      );
+    }
+  };
 
   const handleRename = async () => {
     if (editName.trim() && editName !== project?.name) {
@@ -96,15 +118,96 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
         <View style={[styles.tag, { backgroundColor: accentColor + '22' }]}>
           <Text style={[typography.caption, { color: accentColor }]}>{project.mode.toUpperCase()}</Text>
         </View>
+        {project.difficulty && (
+          <View style={[styles.tag, { backgroundColor: colors.warning + '22' }]}>
+            <Text style={[typography.caption, { color: colors.warning }]}>
+              {project.difficulty === 'easy' ? '🟢 Facil' : project.difficulty === 'medium' ? '🟡 Media' : '🔴 Dificil'}
+            </Text>
+          </View>
+        )}
+        {project.estimatedTime && (
+          <View style={styles.tag}>
+            <Text style={typography.caption}>⏱ {project.estimatedTime}</Text>
+          </View>
+        )}
         {project.createdAt && <Text style={typography.caption}>{new Date(project.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}</Text>}
       </View>
+      {project.summary ? <Text style={[typography.bodySmall, { marginBottom: spacing.sm, fontStyle: 'italic', color: colors.textSecondary }]}>{project.summary}</Text> : null}
       {project.description ? <Text style={[typography.bodySmall, { marginBottom: spacing.lg }]}>{project.description}</Text> : null}
+
+      {/* Progreso de pasos (si hay) */}
+      {(project.totalSteps ?? 0) > 0 && (
+        <View style={styles.progressCard}>
+          <View style={styles.progressHeader}>
+            <Text style={[typography.label, { color: colors.text }]}>Progreso</Text>
+            <Text style={[typography.caption, { color: colors.textSecondary }]}>
+              {project.completedSteps ?? 0} / {project.totalSteps} pasos
+            </Text>
+          </View>
+          <View style={styles.progressBarBg}>
+            <View
+              style={[
+                styles.progressBarFill,
+                {
+                  width: `${Math.round(((project.completedSteps ?? 0) / (project.totalSteps || 1)) * 100)}%`,
+                  backgroundColor:
+                    project.status === 'completed' ? colors.success : accentColor,
+                },
+              ]}
+            />
+          </View>
+          {project.status === 'completed' && (
+            <Text style={styles.completedLabel}>🎉 ¡Proyecto terminado!</Text>
+          )}
+        </View>
+      )}
 
       <View style={styles.actions}>
         <TouchableOpacity style={styles.actionBtn} onPress={handleDuplicate}><Text style={[typography.caption, { color: colors.textSecondary }]}>📋 Duplicar</Text></TouchableOpacity>
         <TouchableOpacity style={styles.actionBtn} onPress={handleShare}><Text style={[typography.caption, { color: colors.textSecondary }]}>📤 Compartir</Text></TouchableOpacity>
         <TouchableOpacity style={[styles.actionBtn, { borderColor: colors.danger + '44' }]} onPress={handleDelete}><Text style={[typography.caption, { color: colors.danger }]}>🗑 Borrar</Text></TouchableOpacity>
       </View>
+
+      {steps.length > 0 && (
+        <>
+          <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.md }]}>
+            Pasos ({steps.filter(s => s.completed).length} / {steps.length})
+          </Text>
+          {steps.map((step) => (
+            <TouchableOpacity
+              key={step.id ?? step.number}
+              style={[styles.stepRow, step.completed && styles.stepRowDone]}
+              onPress={() => handleToggleStep(step)}
+              activeOpacity={0.7}
+            >
+              <View style={[styles.stepCheckbox, step.completed && styles.stepCheckboxDone]}>
+                {step.completed && <Text style={styles.stepCheckboxIcon}>✓</Text>}
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={[
+                    typography.body,
+                    { fontWeight: '700' },
+                    step.completed && { textDecorationLine: 'line-through', color: colors.textMuted },
+                  ]}
+                >
+                  {step.number}. {step.title}
+                </Text>
+                <Text
+                  style={[
+                    typography.bodySmall,
+                    { marginTop: 2 },
+                    step.completed && { color: colors.textMuted },
+                  ]}
+                  numberOfLines={3}
+                >
+                  {step.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </>
+      )}
 
       {pieces.length > 0 && (
         <>
@@ -169,4 +272,70 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, marginBottom: spacing.sm },
   optCard: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.xl },
   mainBtn: { paddingVertical: 18, borderRadius: radius.lg, alignItems: 'center', marginTop: spacing.xxl },
+  // Progreso
+  progressCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  progressBarBg: {
+    height: 8,
+    backgroundColor: colors.bg,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 8,
+    borderRadius: 4,
+  },
+  completedLabel: {
+    ...typography.caption,
+    color: colors.success,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
+  // Steps con checkboxes
+  stepRow: {
+    flexDirection: 'row',
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginBottom: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    gap: spacing.md,
+  },
+  stepRowDone: {
+    backgroundColor: colors.success + '11',
+    borderColor: colors.success + '44',
+  },
+  stepCheckbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  stepCheckboxDone: {
+    backgroundColor: colors.success,
+    borderColor: colors.success,
+  },
+  stepCheckboxIcon: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
 });
