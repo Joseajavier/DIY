@@ -11,12 +11,20 @@ type Props = {
   route: RouteProp<RootStackParamList, 'DIYSteps'>;
 };
 
-const diffColors = { easy: colors.success, medium: colors.warning, hard: colors.danger };
-const diffLabels = { easy: '🟢 Facil', medium: '🟡 Media', hard: '🔴 Dificil' };
+type Difficulty = 'easy' | 'medium' | 'hard';
+const diffColors: Record<Difficulty, string> = { easy: colors.success, medium: colors.warning, hard: colors.danger };
+const diffLabels: Record<Difficulty, string> = { easy: '🟢 Facil', medium: '🟡 Media', hard: '🔴 Dificil' };
 
 export default function DIYStepsScreen({ navigation, route }: Props) {
   const { t } = useTranslation();
   const { result } = route.params;
+
+  // Fallback a 'easy' si difficulty viene con valor inesperado desde la IA
+  const difficulty: Difficulty = (['easy', 'medium', 'hard'] as const).includes(result.difficulty as Difficulty)
+    ? (result.difficulty as Difficulty)
+    : 'easy';
+  const diffColor = diffColors[difficulty];
+  const diffLabel = diffLabels[difficulty];
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -24,8 +32,8 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
       {result.summary && <Text style={[typography.bodySmall, { marginTop: spacing.sm, marginBottom: spacing.lg }]}>{result.summary}</Text>}
 
       <View style={styles.metaRow}>
-        <View style={[styles.chip, { backgroundColor: diffColors[result.difficulty] + '22' }]}>
-          <Text style={[typography.caption, { color: diffColors[result.difficulty] }]}>{diffLabels[result.difficulty]}</Text>
+        <View style={[styles.chip, { backgroundColor: diffColor + '22' }]}>
+          <Text style={[typography.caption, { color: diffColor }]}>{diffLabel}</Text>
         </View>
         <View style={styles.chip}>
           <Text style={typography.caption}>⏱ {result.estimatedTime}</Text>

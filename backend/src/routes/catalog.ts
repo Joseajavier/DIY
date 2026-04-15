@@ -5,6 +5,7 @@ import path from 'path';
 const router = Router();
 
 const TOOLS_PATH = path.join(__dirname, '../../data/tools.json');
+const WOOD_PATH = path.join(__dirname, '../../data/wood.json');
 
 function readTools() {
   const raw = fs.readFileSync(TOOLS_PATH, 'utf-8');
@@ -13,6 +14,15 @@ function readTools() {
 
 function writeTools(data: any) {
   fs.writeFileSync(TOOLS_PATH, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+function readWood() {
+  const raw = fs.readFileSync(WOOD_PATH, 'utf-8');
+  return JSON.parse(raw);
+}
+
+function writeWood(data: any) {
+  fs.writeFileSync(WOOD_PATH, JSON.stringify(data, null, 2), 'utf-8');
 }
 
 // GET /catalog/tools — devuelve todo el catálogo con filtros opcionales
@@ -158,6 +168,154 @@ router.delete('/tools/product/:id', (req: Request, res: Response) => {
   data.lastUpdated = new Date().toISOString().split('T')[0];
 
   writeTools(data);
+
+  res.json({ ok: true, deleted: req.params.id });
+});
+
+// ════════════════════════════════════════════════════════════
+// WOOD CATALOG — paralelo al de tools
+// ════════════════════════════════════════════════════════════
+
+// GET /catalog/wood — devuelve el catalogo de maderas con filtros opcionales
+router.get('/wood', (req: Request, res: Response) => {
+  const data = readWood();
+  let products = data.products || [];
+
+  const { category, hardness, priceLevel, use, q } = req.query;
+
+  if (category) products = products.filter((p: any) => p.categoryId === category);
+  if (hardness) products = products.filter((p: any) => p.hardness === hardness);
+  if (priceLevel) products = products.filter((p: any) => p.priceLevel === priceLevel);
+  if (use) products = products.filter((p: any) => p.use === use || p.use === 'both');
+  if (q) {
+    const query = String(q).toLowerCase();
+    products = products.filter((p: any) =>
+      p.name?.toLowerCase().includes(query) ||
+      p.description?.toLowerCase().includes(query) ||
+      p.bestFor?.toLowerCase().includes(query)
+    );
+  }
+
+  res.json({
+    version: data.version,
+    lastUpdated: data.lastUpdated,
+    categories: data.categories,
+    products,
+    totalProducts: products.length,
+  });
+});
+
+// GET /catalog/wood/stats — estadisticas del catalogo de maderas
+router.get('/wood/stats', (_req: Request, res: Response) => {
+  const data = readWood();
+  const products = data.products || [];
+
+  res.json({
+    version: data.version,
+    lastUpdated: data.lastUpdated,
+    totalProducts: products.length,
+    totalCategories: data.categories?.length || 0,
+    byHardness: {
+      soft: products.filter((p: any) => p.hardness === 'soft').length,
+      medium: products.filter((p: any) => p.hardness === 'medium').length,
+      hard: products.filter((p: any) => p.hardness === 'hard').length,
+      very_hard: products.filter((p: any) => p.hardness === 'very_hard').length,
+    },
+    byPriceLevel: {
+      budget: products.filter((p: any) => p.priceLevel === 'budget').length,
+      mid: products.filter((p: any) => p.priceLevel === 'mid').length,
+      premium: products.filter((p: any) => p.priceLevel === 'premium').length,
+    },
+    byUse: {
+      interior: products.filter((p: any) => p.use === 'interior').length,
+      exterior: products.filter((p: any) => p.use === 'exterior').length,
+      both: products.filter((p: any) => p.use === 'both').length,
+    },
+  });
+});
+
+// POST /catalog/wood/product — añadir una madera (admin)
+router.post('/wood/product', (req: Request, res: Response) => {
+  const data = readWood();
+  const product = req.body;
+
+  if (!product.id || !product.categoryId || !product.name) {
+    res.status(400).json({ error: 'Faltan campos: id, categoryId, name' });
+    return;
+  }
+
+  if (!data.products) data.products = [];
+  const exists = data.products.find((p: any) => p.id === product.id);
+  if (exists) {
+    res.status(409).json({ error: `La madera ${product.id} ya existe` });
+    return;
+  }
+
+  const newProduct = {
+    id: product.id,
+    categoryId: product.categoryId,
+    name: product.name,
+    description: product.description || '',
+    use: product.use || 'interior',
+    hardness: product.hardness || 'medium',
+    priceLevel: product.priceLevel || 'mid',
+    priceRange: product.priceRange || '',
+    commonSizes: product.commonSizes || [],
+    thicknesses: product.thicknesses || undefined,
+    pros: product.pros || [],
+    cons: product.cons || [],
+    bestFor: product.bestFor || '',
+    color: product.color || '',
+  };
+
+  data.products.push(newProduct);
+  data.version = (data.version || 0) + 1;
+  data.lastUpdated = new Date().toISOString().split('T')[0];
+  data.totalProducts = data.products.length;
+
+  writeWood(data);
+
+  res.json({ ok: true, product: newProduct, totalProducts: data.products.length });
+});
+
+// PUT /catalog/wood/product/:id — actualizar una madera
+router.put('/wood/product/:id', (req: Request, res: Response) => {
+  const data = readWood();
+  if (!data.products) data.products = [];
+
+  const idx = data.products.findIndex((p: any) => p.id === req.params.id);
+  if (idx === -1) {
+    res.status(404).json({ error: `Madera ${req.params.id} no encontrada` });
+    return;
+  }
+
+  data.products[idx] = { ...data.products[idx], ...req.body, id: req.params.id };
+  data.version = (data.version || 0) + 1;
+  data.lastUpdated = new Date().toISOString().split('T')[0];
+
+  writeWood(data);
+
+  res.json({ ok: true, product: data.products[idx] });
+});
+
+// DELETE /catalog/wood/product/:id — eliminar una madera
+router.delete('/wood/product/:id', (req: Request, res: Response) => {
+  const data = readWood();
+  if (!data.products) data.products = [];
+
+  const before = data.products.length;
+  data.products = data.products.filter((p: any) => p.id !== req.params.id);
+
+  if (data.products.length === before) {
+    res.status(404).json({ error: `Madera ${req.params.id} no encontrada` });
+    return;
+  }
+
+  data.version = (data.version || 0) + 1;
+  data.lastUpdated = new Date().toISOString().split('T')[0];
+  data.totalProducts = data.products.length;
+
+  writeWood(data);
 
   res.json({ ok: true, deleted: req.params.id });
 });
