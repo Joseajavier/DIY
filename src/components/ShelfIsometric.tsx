@@ -22,6 +22,14 @@ interface Props {
   thickness: number;   // mm — grosor tablero
   hasBack: boolean;
   displaySize?: number; // px — lado máximo del canvas (default 300)
+  /**
+   * Panels frontales opcionales: convierte la estantería visualmente
+   * en armario (N puertas verticales) o cajonera (N cajones horizontales).
+   */
+  frontPanels?: {
+    type: 'door' | 'drawer';
+    count: number;
+  };
 }
 
 // Paleta madera
@@ -37,6 +45,10 @@ const ISO_ANGLE = 30; // grados
 const COS = Math.cos((ISO_ANGLE * Math.PI) / 180); // ≈ 0.866
 const SIN = Math.sin((ISO_ANGLE * Math.PI) / 180); // ≈ 0.5
 
+// Paleta adicional para panels frontales
+const PANEL_FILL = '#B8935A';
+const PANEL_HANDLE = '#3B2817';
+
 export default function ShelfIsometric({
   width,
   height,
@@ -45,6 +57,7 @@ export default function ShelfIsometric({
   thickness,
   hasBack,
   displaySize = 300,
+  frontPanels,
 }: Props) {
   // ── Validaciones tempranas ──────────────────────────────────
   if (width <= 0 || height <= 0 || depth <= 0) {
@@ -231,6 +244,104 @@ export default function ShelfIsometric({
             />
           </G>
         )}
+
+        {/* ── Panels frontales (puertas o cajones) ── */}
+        {frontPanels && frontPanels.count > 0 && (() => {
+          const { type, count } = frontPanels;
+          const GAP = 0.3; // cm — hueco entre paneles y carcasa
+          const panels: React.ReactNode[] = [];
+
+          if (type === 'door') {
+            // Puertas: N paneles verticales full-height
+            const totalGap = (count + 1) * GAP;
+            const panelW = (width - totalGap) / count;
+            const panelH = height - 2 * GAP;
+            for (let i = 0; i < count; i++) {
+              const x0 = GAP + i * (panelW + GAP);
+              const x1 = x0 + panelW;
+              const y0 = GAP;
+              const y1 = y0 + panelH;
+              panels.push(
+                <Polygon
+                  key={`door-${i}`}
+                  points={pt([
+                    p(x0, y0, 0),
+                    p(x1, y0, 0),
+                    p(x1, y1, 0),
+                    p(x0, y1, 0),
+                  ])}
+                  fill={PANEL_FILL}
+                  stroke={OUTLINE}
+                  strokeWidth={1}
+                  strokeLinejoin="round"
+                />
+              );
+              // Tirador: pequeño círculo cerca del borde interior (hacia el centro)
+              const isLeftDoor = count === 2 && i === 0;
+              const handleX = isLeftDoor
+                ? x1 - 2.5
+                : count === 2 && i === 1
+                ? x0 + 2.5
+                : x0 + panelW / 2; // 1 puerta: centrado
+              const handleY = (y0 + y1) / 2;
+              const [hx, hy] = p(handleX, handleY, 0);
+              panels.push(
+                <Polygon
+                  key={`door-handle-${i}`}
+                  points={`${hx - 2},${hy - 0.5} ${hx + 2},${hy - 0.5} ${hx + 2},${hy + 0.5} ${hx - 2},${hy + 0.5}`}
+                  fill={PANEL_HANDLE}
+                />
+              );
+            }
+          } else {
+            // Cajones: N paneles horizontales full-width
+            const totalGap = (count + 1) * GAP;
+            const panelH = (height - totalGap) / count;
+            const panelW = width - 2 * GAP;
+            for (let i = 0; i < count; i++) {
+              // El cajón 0 es el de ARRIBA visualmente, así que calculamos y desde arriba
+              const y1 = height - GAP - i * (panelH + GAP);
+              const y0 = y1 - panelH;
+              const x0 = GAP;
+              const x1 = x0 + panelW;
+              panels.push(
+                <Polygon
+                  key={`drawer-${i}`}
+                  points={pt([
+                    p(x0, y0, 0),
+                    p(x1, y0, 0),
+                    p(x1, y1, 0),
+                    p(x0, y1, 0),
+                  ])}
+                  fill={PANEL_FILL}
+                  stroke={OUTLINE}
+                  strokeWidth={1}
+                  strokeLinejoin="round"
+                />
+              );
+              // Tirador centrado
+              const handleCx = x0 + panelW / 2;
+              const handleCy = (y0 + y1) / 2;
+              const handleHalf = Math.min(panelW * 0.15, 4);
+              const [hx1, hy1] = p(handleCx - handleHalf, handleCy, 0);
+              const [hx2, hy2] = p(handleCx + handleHalf, handleCy, 0);
+              panels.push(
+                <Line
+                  key={`drawer-handle-${i}`}
+                  x1={hx1}
+                  y1={hy1}
+                  x2={hx2}
+                  y2={hy2}
+                  stroke={PANEL_HANDLE}
+                  strokeWidth={2.2}
+                  strokeLinecap="round"
+                />
+              );
+            }
+          }
+
+          return <G>{panels}</G>;
+        })()}
       </Svg>
     </View>
   );

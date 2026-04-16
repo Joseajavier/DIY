@@ -102,6 +102,7 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
           thickness={numericParams.t}
           hasBack={true}
           displaySize={previewSize}
+          frontPanels={{ type: 'door', count: numDoors }}
         />
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.w}×{numericParams.h}×{numericParams.d}cm ·

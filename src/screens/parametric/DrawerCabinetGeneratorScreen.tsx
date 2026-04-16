@@ -105,10 +105,11 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
           width={numericParams.w}
           height={numericParams.h}
           depth={numericParams.d}
-          numShelves={Math.max(0, numericParams.n - 1)}
+          numShelves={0}
           thickness={numericParams.t}
           hasBack={true}
           displaySize={previewSize}
+          frontPanels={{ type: 'drawer', count: numericParams.n }}
         />
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D aprox. · {numericParams.w}×{numericParams.h}×{numericParams.d}cm
