@@ -93,9 +93,9 @@ export default function WoodCatalogScreen({ navigation }: Props) {
 
       <FlatList
         data={results}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: WoodProduct) => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: WoodProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(item.name + ' madera')}`)}
           >

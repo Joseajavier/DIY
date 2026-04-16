@@ -82,17 +82,17 @@ export default function ToolSearchScreen({ navigation }: Props) {
 
       <SectionList
         sections={sections}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: ToolProduct) => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section }) => (
+        renderSectionHeader={({ section }: { section: { typeId: string; title: string; icon: string; data: ToolProduct[] } }) => (
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionIcon}>{section.icon}</Text>
             <Text style={[typography.h2, { flex: 1 }]}>{section.title}</Text>
             <Text style={typography.caption}>{section.data.length}</Text>
           </View>
         )}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: ToolProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(getToolBrandName(item.brandId) + ' ' + item.model)}`)}
           >
