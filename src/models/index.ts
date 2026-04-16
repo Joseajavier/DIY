@@ -2,10 +2,22 @@
 export interface Piece {
   id?: string;
   projectId?: string;
+  name?: string;
   width: number;
   height: number;
   quantity: number;
   thickness?: number;
+}
+
+// ── PlacedPiece — pieza con posición X,Y en el tablero ──
+export interface PlacedPiece {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  label?: string;
+  rotated?: boolean;
+  colorIndex?: number;
 }
 
 // ── Material ──
@@ -56,7 +68,7 @@ export interface DIYResult {
 // ── Cutting Optimization ──
 export interface CutResult {
   boardIndex: number;
-  pieces: { width: number; height: number }[];
+  pieces: PlacedPiece[];
   wastePercentage: number;
 }
 
