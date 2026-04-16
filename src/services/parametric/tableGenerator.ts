@@ -19,6 +19,7 @@ import {
   LumberPiece,
   ParametricOutput,
   TableGeneratorParams,
+  HardwareItem,
 } from '../../models';
 
 export const TABLE_DEFAULTS: TableGeneratorParams = {
@@ -161,9 +162,48 @@ export function generateTable(params: TableGeneratorParams): ParametricOutput {
     `Ratio largo/ancho: ${(length / width).toFixed(2)} · Una mesa estándar ronda 1.8-2.2`
   );
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Escuadras metálicas en las 4 esquinas (unir patas al tablero)
+  hardware.push({
+    name: 'Escuadra metálica reforzada 80×80mm',
+    spec: '80×80mm zincada',
+    quantity: 4,
+    category: 'bracket',
+    notes: 'Atornillar bajo el tablero, una en cada esquina',
+  });
+  // Tornillos para las escuadras (3 por escuadra × 2 caras = 6, ×4 esquinas)
+  hardware.push({
+    name: 'Tornillo rosca madera 4×30mm',
+    spec: '4×30mm',
+    quantity: 24,
+    category: 'screw',
+    notes: 'Fijación de escuadras al tablero y a las patas',
+  });
+  // Faldón
+  if (hasApron) {
+    hardware.push({
+      name: 'Tirafondo 6×80mm',
+      spec: '6×80mm',
+      quantity: 8,
+      category: 'screw',
+      notes: 'Unir faldón con patas (2 por esquina)',
+    });
+  }
+  // Balda inferior entre patas
+  if (hasLowerShelf) {
+    hardware.push({
+      name: 'Tornillo rosca madera 4×40mm',
+      spec: '4×40mm',
+      quantity: 16,
+      category: 'screw',
+      notes: 'Sujetar balda inferior a las patas (4 por pata)',
+    });
+  }
+
   const totalBoardPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const totalLumberPieces = lumberPieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Mesa ${length}×${width}×${height}cm · ${totalBoardPieces} tablero${totalBoardPieces === 1 ? '' : 's'} + ${totalLumberPieces} pata${totalLumberPieces === 1 ? '' : 's'}`;
 
-  return { pieces, lumberPieces, summary, notes, warnings };
+  return { pieces, lumberPieces, hardware, summary, notes, warnings };
 }

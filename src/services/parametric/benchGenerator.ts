@@ -15,6 +15,7 @@ import {
   LumberPiece,
   ParametricOutput,
   BenchGeneratorParams,
+  HardwareItem,
 } from '../../models';
 
 export const BENCH_DEFAULTS: BenchGeneratorParams = {
@@ -150,9 +151,38 @@ export function generateBench(
     );
   }
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Escuadras metálicas para unir asiento a patas (1 por pata)
+  hardware.push({
+    name: 'Escuadra metálica reforzada 60×60mm',
+    spec: '60×60mm zincada',
+    quantity: 4,
+    category: 'bracket',
+    notes: 'Unir asiento a cada pata, por dentro',
+  });
+  // Tornillos para escuadras
+  hardware.push({
+    name: 'Tornillo rosca madera 4×30mm',
+    spec: '4×30mm',
+    quantity: 24,
+    category: 'screw',
+    notes: '3 tornillos por cara × 2 caras × 4 escuadras',
+  });
+  // Respaldo
+  if (hasBackrest) {
+    hardware.push({
+      name: 'Tirafondo 6×60mm',
+      spec: '6×60mm',
+      quantity: 4,
+      category: 'screw',
+      notes: 'Fijar respaldo a los montantes traseros (2 por montante)',
+    });
+  }
+
   const totalBoardPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const totalLumberPieces = lumberPieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Banco ${length}×${width}×${height}cm${hasBackrest ? ` + respaldo ${backrestHeight}cm` : ''} · ${totalBoardPieces} tablero${totalBoardPieces === 1 ? '' : 's'} + ${totalLumberPieces} patas`;
 
-  return { pieces, lumberPieces, summary, notes, warnings };
+  return { pieces, lumberPieces, hardware, summary, notes, warnings };
 }

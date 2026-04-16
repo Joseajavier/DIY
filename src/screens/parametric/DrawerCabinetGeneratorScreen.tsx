@@ -24,6 +24,7 @@ import {
   DRAWER_CABINET_DEFAULTS,
 } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
+import HardwareCard from '../../components/HardwareCard';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -209,6 +210,9 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
           </View>
         ))}
       </View>
+
+      {/* Herrajes */}
+      <HardwareCard items={output.hardware ?? []} />
 
       {/* Notas */}
       {output.notes.length > 0 && (

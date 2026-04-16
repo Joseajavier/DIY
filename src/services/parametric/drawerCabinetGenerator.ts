@@ -11,6 +11,7 @@ import {
   Piece,
   ParametricOutput,
   DrawerCabinetParams,
+  HardwareItem,
 } from '../../models';
 
 export const DRAWER_CABINET_DEFAULTS: DrawerCabinetParams = {
@@ -168,8 +169,61 @@ export function generateDrawerCabinet(
     `Necesitarás ${numDrawers} par${numDrawers === 1 ? '' : 'es'} de guías metálicas (hardware, no madera)`
   );
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Carcasa (techo/base con laterales): 12 tornillos
+  hardware.push({
+    name: 'Tornillo aglomerado 4×50mm',
+    spec: '4×50mm',
+    quantity: 12,
+    category: 'screw',
+    notes: 'Unir techo/base con laterales',
+  });
+  // Trasero clavado
+  const backPerimeter = 2 * (width + height);
+  hardware.push({
+    name: 'Puntilla cabeza perdida 3×20mm',
+    spec: '3×20mm',
+    quantity: Math.ceil(backPerimeter / 10),
+    category: 'nail',
+    notes: 'Fijar trasero perimetralmente',
+  });
+  // Guías telescópicas (un par por cajón)
+  const drawerRunnerLen = Math.round(depth - 2);
+  hardware.push({
+    name: `Guía telescópica ${drawerRunnerLen}cm`,
+    spec: `${drawerRunnerLen}cm par`,
+    quantity: numDrawers,
+    category: 'drawer_runner',
+    notes: '1 par por cajón (contiene 2 raíles, izq+der)',
+  });
+  // Tornillos para las guías (8 por par)
+  hardware.push({
+    name: 'Tornillo cabeza plana 3.5×16mm',
+    spec: '3.5×16mm',
+    quantity: numDrawers * 8,
+    category: 'screw',
+    notes: 'Fijación de guías (4 a carcasa + 4 al cajón por lado)',
+  });
+  // Caja del cajón: 8 tornillos por cajón
+  hardware.push({
+    name: 'Tornillo aglomerado 4×35mm',
+    spec: '4×35mm',
+    quantity: numDrawers * 8,
+    category: 'screw',
+    notes: 'Montaje de cada cajón (frontal + trasero + laterales)',
+  });
+  // Tirador por cajón
+  hardware.push({
+    name: 'Tirador metálico',
+    spec: '96-128mm',
+    quantity: numDrawers,
+    category: 'handle',
+    notes: '1 tirador por frontal de cajón',
+  });
+
   const totalPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Cajonera ${width}×${height}×${depth}cm · ${numDrawers} cajón${numDrawers === 1 ? '' : 'es'} · ${totalPieces} piezas`;
 
-  return { pieces, summary, notes, warnings };
+  return { pieces, hardware, summary, notes, warnings };
 }

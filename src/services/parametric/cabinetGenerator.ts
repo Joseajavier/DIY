@@ -10,6 +10,7 @@ import {
   LumberPiece,
   ParametricOutput,
   CabinetGeneratorParams,
+  HardwareItem,
 } from '../../models';
 
 export const CABINET_DEFAULTS: CabinetGeneratorParams = {
@@ -141,12 +142,77 @@ export function generateCabinet(
     `Necesitarás ${numDoors * 2} bisagras de cazoleta tipo cazoleta 35mm (2 por puerta)`
   );
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Carcasa
+  hardware.push({
+    name: 'Tornillo aglomerado 4×50mm',
+    spec: '4×50mm',
+    quantity: 12,
+    category: 'screw',
+    notes: 'Unir techo/base con laterales',
+  });
+  // Trasero
+  const backPerimeter = 2 * (width + height);
+  hardware.push({
+    name: 'Puntilla cabeza perdida 3×20mm',
+    spec: '3×20mm',
+    quantity: Math.ceil(backPerimeter / 10),
+    category: 'nail',
+    notes: 'Fijar trasero perimetralmente',
+  });
+  // Bisagras cazoleta (2 por puerta)
+  hardware.push({
+    name: 'Bisagra cazoleta 35mm',
+    spec: '35mm recta',
+    quantity: numDoors * 2,
+    category: 'hinge',
+    notes: '2 bisagras por puerta — requiere fresa Ø35mm para la cazoleta',
+  });
+  // Tornillos bisagras (8 por bisagra: 4 cazoleta + 4 brazo)
+  hardware.push({
+    name: 'Tornillo cabeza plana 3.5×16mm',
+    spec: '3.5×16mm',
+    quantity: numDoors * 2 * 8,
+    category: 'screw',
+    notes: 'Fijación de bisagras cazoleta',
+  });
+  // Tirador por puerta
+  hardware.push({
+    name: 'Tirador metálico',
+    spec: '96-128mm',
+    quantity: numDoors,
+    category: 'handle',
+    notes: '1 tirador por puerta',
+  });
+  // Pernos de balda (4 por balda regulable)
+  if (numShelves > 0) {
+    hardware.push({
+      name: 'Perno balda 5mm (pernete)',
+      spec: 'Ø5mm níquel',
+      quantity: numShelves * 4,
+      category: 'shelf_pin',
+      notes: 'Taladrar agujeros Ø5mm en laterales',
+    });
+  }
+  // Barra de colgar
+  if (hasHangingRod) {
+    hardware.push({
+      name: 'Soporte barra cromada',
+      spec: 'Para tubo Ø25mm',
+      quantity: 2,
+      category: 'bracket',
+      notes: 'Uno en cada lateral, a la altura deseada',
+    });
+  }
+
   const totalBoardPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Armario ${width}×${height}×${depth}cm · ${numDoors} puerta${numDoors === 1 ? '' : 's'} · ${numShelves} balda${numShelves === 1 ? '' : 's'} · ${totalBoardPieces} piezas`;
 
   return {
     pieces,
     lumberPieces: lumberPieces.length > 0 ? lumberPieces : undefined,
+    hardware,
     summary,
     notes,
     warnings,

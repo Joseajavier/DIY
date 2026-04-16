@@ -233,9 +233,34 @@ export interface LumberPiece {
   quantity: number;
 }
 
+// Herrajes y ferretería que requiere el montaje (tornillos, bisagras,
+// guías, tiradores, pernos…). Calculado por cada generador según su
+// tipo de unión y configuración. Se muestra al usuario como "lista de
+// la compra de ferretería".
+export type HardwareCategory =
+  | 'screw'          // tornillo de rosca
+  | 'nail'           // clavo / puntilla
+  | 'dowel'          // espiga de madera
+  | 'hinge'          // bisagra
+  | 'drawer_runner'  // guía de cajón (par)
+  | 'handle'         // tirador / pomo
+  | 'shelf_pin'      // perno/pernete de balda
+  | 'bracket'        // escuadra metálica
+  | 'rod'            // barra para colgar
+  | 'other';
+
+export interface HardwareItem {
+  name: string;                 // "Tornillo aglomerado 4×50mm"
+  spec: string;                 // "4×50mm" | "35mm cazoleta" | "40cm telescópica"
+  quantity: number;             // unidades
+  category: HardwareCategory;
+  notes?: string;               // pista de montaje
+}
+
 export interface ParametricOutput {
   pieces: Piece[];                 // tableros → optimizador 2D
   lumberPieces?: LumberPiece[];    // listones macizos → compra lineal
+  hardware?: HardwareItem[];       // ferretería → lista de la compra
   summary: string;
   notes: string[];
   warnings: string[];

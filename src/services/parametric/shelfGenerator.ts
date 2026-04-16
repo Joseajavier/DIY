@@ -10,7 +10,12 @@
 // Salida: Piece[] compatible con el optimizador de cortes existente.
 // ═══════════════════════════════════════════════════════════════
 
-import { Piece, ParametricOutput, ShelfGeneratorParams } from '../../models';
+import {
+  Piece,
+  ParametricOutput,
+  ShelfGeneratorParams,
+  HardwareItem,
+} from '../../models';
 
 export const SHELF_DEFAULTS: ShelfGeneratorParams = {
   width: 80,
@@ -154,8 +159,41 @@ export function generateShelf(params: ShelfGeneratorParams): ParametricOutput {
     notes.push(`Espacio útil entre baldas: ${shelfSpacing.toFixed(1)}cm`);
   }
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Carcasa atornillada: 3 tornillos por esquina × 4 esquinas = 12
+  hardware.push({
+    name: 'Tornillo aglomerado 4×50mm',
+    spec: '4×50mm',
+    quantity: 12,
+    category: 'screw',
+    notes: 'Unión techo/base con laterales',
+  });
+  // Baldas regulables: 4 pernos por balda
+  if (numShelves > 0) {
+    hardware.push({
+      name: 'Perno balda 5mm (pernete)',
+      spec: 'Ø5mm níquel',
+      quantity: numShelves * 4,
+      category: 'shelf_pin',
+      notes: 'Taladrar agujeros Ø5mm cada 32mm en los laterales',
+    });
+  }
+  // Trasero clavado
+  if (hasBack) {
+    const perimeter = 2 * (width + height);
+    const nails = Math.ceil(perimeter / 10); // uno cada 10cm
+    hardware.push({
+      name: 'Puntilla cabeza perdida 3×20mm',
+      spec: '3×20mm',
+      quantity: nails,
+      category: 'nail',
+      notes: 'Clavar trasero perimetralmente cada 10cm',
+    });
+  }
+
   const totalPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Estantería ${width}×${height}×${depth}cm · ${numShelves} balda${numShelves === 1 ? '' : 's'} · ${totalPieces} pieza${totalPieces === 1 ? '' : 's'}`;
 
-  return { pieces, summary, notes, warnings };
+  return { pieces, hardware, summary, notes, warnings };
 }

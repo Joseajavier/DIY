@@ -10,7 +10,12 @@
 //   • Tapa opcional: ancho × profundidad completos (apoya encima).
 // ═══════════════════════════════════════════════════════════════
 
-import { Piece, ParametricOutput, BoxGeneratorParams } from '../../models';
+import {
+  Piece,
+  ParametricOutput,
+  BoxGeneratorParams,
+  HardwareItem,
+} from '../../models';
 
 export const BOX_DEFAULTS: BoxGeneratorParams = {
   length: 40,
@@ -106,8 +111,46 @@ export function generateBox(params: BoxGeneratorParams): ParametricOutput {
     notes.push('Sin fondo — ideal para bandejas o boxes abiertos');
   }
 
+  // ── Herrajes ────────────────────────────────────────────────
+  const hardware: HardwareItem[] = [];
+  // Uniones de los 4 laterales entre sí (4 esquinas verticales)
+  hardware.push({
+    name: 'Tornillo aglomerado 3.5×30mm',
+    spec: '3.5×30mm',
+    quantity: 12,
+    category: 'screw',
+    notes: 'Unir los 4 laterales por las esquinas',
+  });
+  if (hasBottom) {
+    const perimeter = 2 * (length + width);
+    const fixings = Math.max(8, Math.ceil(perimeter / 12));
+    hardware.push({
+      name: 'Tornillo avellanado 3×20mm',
+      spec: '3×20mm',
+      quantity: fixings,
+      category: 'screw',
+      notes: 'Fijar fondo al perímetro de los laterales',
+    });
+  }
+  if (hasLid) {
+    hardware.push({
+      name: 'Bisagra plana latonada 40mm',
+      spec: '40mm',
+      quantity: 2,
+      category: 'hinge',
+      notes: 'Unir tapa al lateral trasero',
+    });
+    hardware.push({
+      name: 'Tornillo avellanado 3×15mm',
+      spec: '3×15mm',
+      quantity: 16,
+      category: 'screw',
+      notes: 'Fijación de bisagras',
+    });
+  }
+
   const totalPieces = pieces.reduce((s, p) => s + p.quantity, 0);
   const summary = `Caja ${length}×${width}×${height}cm · ${totalPieces} pieza${totalPieces === 1 ? '' : 's'}`;
 
-  return { pieces, summary, notes, warnings };
+  return { pieces, hardware, summary, notes, warnings };
 }

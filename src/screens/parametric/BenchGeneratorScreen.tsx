@@ -23,6 +23,7 @@ import {
   BENCH_DEFAULTS,
 } from '../../services/parametric';
 import { TableIsometric } from '../../components';
+import HardwareCard from '../../components/HardwareCard';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -229,6 +230,9 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
           </View>
         </>
       )}
+
+      {/* Herrajes */}
+      <HardwareCard items={output.hardware ?? []} />
 
       {/* Notas */}
       {output.notes.length > 0 && (

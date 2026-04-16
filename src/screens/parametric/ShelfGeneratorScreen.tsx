@@ -21,6 +21,7 @@ import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
+import HardwareCard from '../../components/HardwareCard';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -59,11 +60,17 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
-  const { saveOnly, saveAndOptimize, saving } = useSaveAndOptimize();
+  const { saveOnly, saveAndOptimize, exportPdf, saving } = useSaveAndOptimize();
   const projectName = `Estantería ${width}×${height}×${depth}`;
+  const pdfDims = {
+    length: numericParams.w,
+    width: numericParams.d,
+    height: numericParams.h,
+  };
   const handleSave = () => saveOnly(projectName, output);
   const handleOptimize = () =>
     saveAndOptimize(projectName, output, 244, 122);
+  const handleExportPdf = () => exportPdf(projectName, pdfDims, output);
 
   return (
     <ScrollView
@@ -185,6 +192,9 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
         ))}
       </View>
 
+      {/* Herrajes */}
+      <HardwareCard items={output.hardware ?? []} />
+
       {/* Notas */}
       {output.notes.length > 0 && (
         <View style={styles.notesCard}>
@@ -230,6 +240,26 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        style={styles.pdfLink}
+        onPress={handleExportPdf}
+        disabled={!canProceed || saving}
+        activeOpacity={0.7}
+      >
+        <Text
+          style={[
+            typography.body,
+            {
+              color: colors.accent,
+              textAlign: 'center',
+              opacity: !canProceed || saving ? 0.4 : 1,
+            },
+          ]}
+        >
+          📄 Exportar PDF del despiece
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -399,5 +429,9 @@ const styles = StyleSheet.create({
     borderColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pdfLink: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.sm,
   },
 });

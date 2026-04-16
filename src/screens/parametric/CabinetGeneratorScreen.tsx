@@ -23,6 +23,7 @@ import {
   CABINET_DEFAULTS,
 } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
+import HardwareCard from '../../components/HardwareCard';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -263,6 +264,9 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
           </View>
         </>
       )}
+
+      {/* Herrajes */}
+      <HardwareCard items={output.hardware ?? []} />
 
       {/* Notas */}
       {output.notes.length > 0 && (
