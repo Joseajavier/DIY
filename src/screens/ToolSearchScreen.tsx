@@ -7,7 +7,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { ToolFilter, ToolTier, ToolUse, ToolPower, ToolProduct } from '../models/tools';
 import { searchTools, getToolBrandName, getToolTypeName } from '../services/toolSearchService';
-import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../data/toolData';
+import { TOOL_TYPES, TOOL_PRODUCTS, TOOL_BRANDS } from '../data/toolData';
 import { fetchToolCatalog } from '../services/catalogApiClient';
 import Icon, { IconName } from '../components/Icon';
 import RetailerSheet from '../components/RetailerSheet';
@@ -57,7 +57,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   const initialCategoryId = route.params?.categoryId ?? '';
   const initialQuery = route.params?.query ?? '';
   const [query, setQuery] = useState(initialQuery);
-  const [categoryId, setCategoryId] = useState(initialCategoryId);
+  const [categoryId] = useState(initialCategoryId); // conservado para nav compat
+  const [selectedBrand, setSelectedBrand] = useState('');
   const [tier, setTier] = useState<ToolTier | ''>('');
   const [use, setUse] = useState<ToolUse | ''>('');
   const [power, setPower] = useState<ToolPower | ''>('');
@@ -106,11 +107,19 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   };
 
   const productPool = remoteProducts ?? TOOL_PRODUCTS;
-  const results = useMemo(
-    () => searchTools(filter, productPool),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, categoryId, tier, use, power, productPool],
-  );
+
+  // Marcas que realmente tienen productos en el pool actual
+  const brandsInPool = useMemo(() => {
+    const ids = new Set(productPool.map(p => p.brandId));
+    return TOOL_BRANDS.filter(b => ids.has(b.id));
+  }, [productPool]);
+
+  const results = useMemo(() => {
+    let res = searchTools(filter, productPool);
+    if (selectedBrand) res = res.filter(p => p.brandId === selectedBrand);
+    return res;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, categoryId, tier, use, power, productPool, selectedBrand]);
 
   const dealMatchByProduct = useMemo(() => {
     const map = new Map<string, { score: number; deal: Deal }>();
@@ -126,7 +135,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     return map;
   }, [results, deals]);
 
-  const showBrands = groupByBrand || !!categoryId;
+  // Agrupar por marca solo si toggle activo Y no hay marca concreta seleccionada
+  const showBrands = groupByBrand && !selectedBrand;
 
   // Agrupa por MARCA si toggle activo o hay categoría; por TIPO en vista general
   const sections = useMemo<ToolSection[]>(() => {
@@ -208,16 +218,22 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
       <TextInput style={styles.search} placeholder="Buscar herramienta..." placeholderTextColor={colors.textMuted} value={query} onChangeText={setQuery} />
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
-        <Chip label="Todas" active={!categoryId} onPress={() => setCategoryId('')} />
-        {TOOL_CATEGORIES.map((c: { id: string; name: string }) => (
-          <Chip
-            key={c.id}
-            label={c.name}
-            leftIcon={categoryIcon(c.id)}
-            active={categoryId === c.id}
-            onPress={() => setCategoryId(categoryId === c.id ? '' : c.id)}
-          />
-        ))}
+        <Chip label="Todas" active={!selectedBrand} onPress={() => setSelectedBrand('')} />
+        {brandsInPool.map(b => {
+          const logo = getBrandLogo(b.id);
+          return (
+            <TouchableOpacity
+              key={b.id}
+              style={[styles.chip, selectedBrand === b.id && styles.chipActive]}
+              onPress={() => setSelectedBrand(selectedBrand === b.id ? '' : b.id)}
+            >
+              {logo
+                ? <Image source={logo} style={{ width: 40, height: 16 }} resizeMode="contain" />
+                : <Text style={[typography.caption, { color: selectedBrand === b.id ? colors.primary : colors.textMuted }]}>{b.name}</Text>
+              }
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
@@ -362,9 +378,6 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                 <Text style={[typography.caption, { marginTop: 2 }]}>{getToolTypeName(item.typeId)}</Text>
                 <Text style={[typography.bodySmall, { marginTop: spacing.xs }]} numberOfLines={2}>{item.description}</Text>
                 <View style={styles.cardFooter}>
-                  <Text style={[typography.h3, { color: colors.primary }]}>
-                    {item.priceMin}-{item.priceMax}€
-                  </Text>
                   <View style={styles.tags}>
                     {item.power === 'battery' && (
                       <Icon name="battery" size={14} color={colors.textMuted} />
