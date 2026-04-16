@@ -68,7 +68,10 @@ export type IconName =
   | 'shelf'
   | 'fraction'
   | 'screw'
-  | 'info';
+  | 'info'
+  | 'table'
+  | 'cube'
+  | 'joint';
 
 type IonName = React.ComponentProps<typeof Ionicons>['name'];
 type MciName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -145,6 +148,9 @@ const MAP: Record<IconName, Mapping> = {
   fraction: { pack: 'mci', name: 'fraction-one-half' },
   screw: { pack: 'mci', name: 'screw-flat-top' },
   info: { pack: 'ion', name: 'information-circle' },
+  table: { pack: 'mci', name: 'table' },
+  cube: { pack: 'mci', name: 'cube-outline' },
+  joint: { pack: 'mci', name: 'vector-intersection' },
 };
 
 type Props = {

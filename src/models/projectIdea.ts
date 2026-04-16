@@ -39,4 +39,12 @@ export type ProjectIdea = {
   emoji?: string;
   /** Optional tags for search. */
   tags: string[];
+  /** URL to downloadable PDF plan. */
+  planUrl?: string;
+  /** YouTube video URL. */
+  videoUrl?: string;
+  /** Preview image URL. */
+  imageUrl?: string;
+  /** Source / author of the plan. */
+  source?: string;
 };

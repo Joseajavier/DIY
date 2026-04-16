@@ -31,6 +31,11 @@ import GoldenRatioScreen from '../screens/calculators/GoldenRatioScreen';
 import WainscotCalcScreen from '../screens/calculators/WainscotCalcScreen';
 import ShelfCalcScreen from '../screens/calculators/ShelfCalcScreen';
 import FractionCalcScreen from '../screens/calculators/FractionCalcScreen';
+import NominalActualScreen from '../screens/calculators/NominalActualScreen';
+import BoardFootCalcScreen from '../screens/calculators/BoardFootCalcScreen';
+import JointTypesScreen from '../screens/calculators/JointTypesScreen';
+import WoodGuideScreen from '../screens/calculators/WoodGuideScreen';
+import ScrewGuideScreen from '../screens/calculators/ScrewGuideScreen';
 import ScrewSelectorScreen from '../screens/ScrewSelectorScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
@@ -55,6 +60,11 @@ export type RootStackParamList = {
   ShelfCalc: undefined;
   FractionCalc: undefined;
   ScrewSelector: undefined;
+  NominalActual: undefined;
+  BoardFootCalc: undefined;
+  JointTypes: undefined;
+  WoodGuide: undefined;
+  ScrewGuide: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult; projectId?: string };
@@ -109,6 +119,11 @@ export default function AppNavigator() {
       <Stack.Screen name="ShelfCalc" component={ShelfCalcScreen} options={{ title: '📚 Baldas' }} />
       <Stack.Screen name="FractionCalc" component={FractionCalcScreen} options={{ title: '½ Fracciones' }} />
       <Stack.Screen name="ScrewSelector" component={ScrewSelectorScreen} options={{ title: '🔩 Selector de tornillos' }} />
+      <Stack.Screen name="NominalActual" component={NominalActualScreen} options={{ title: '📏 Nominal → Real' }} />
+      <Stack.Screen name="BoardFootCalc" component={BoardFootCalcScreen} options={{ title: '🪵 Volumen de madera' }} />
+      <Stack.Screen name="JointTypes" component={JointTypesScreen} options={{ title: '🤝 Uniones de carpintería' }} />
+      <Stack.Screen name="WoodGuide" component={WoodGuideScreen} options={{ title: '🌳 Guía de maderas' }} />
+      <Stack.Screen name="ScrewGuide" component={ScrewGuideScreen} options={{ title: '🔩 Enciclopedia de tornillos' }} />
     </Stack.Navigator>
   );
 }

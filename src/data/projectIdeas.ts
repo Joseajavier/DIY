@@ -743,6 +743,156 @@ export const PROJECT_IDEAS: ProjectIdea[] = [
     emoji: '🚪',
     tags: ['puerta', 'cepillar', 'reparar', 'rozar'],
   },
+
+  // ══════════════════════════════════════════════════════════════
+  // PROYECTOS CON PLANOS PDF — recursos externos verificados
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 'banco-trabajo-kd',
+    title: 'Banco de trabajo knock-down',
+    tagline: 'Banco desmontable inspirado en el Nicholson clásico',
+    description:
+      'Un banco robusto que se desmonta en piezas planas para guardar o transportar. ' +
+      'Usa pernos de 3/8" y madera de construcción. Ideal como primer banco serio. ' +
+      'Plano PDF gratuito de Lost Art Press.',
+    category: 'workshop',
+    difficulty: 'medium',
+    timeHours: 16,
+    costMinEur: 80,
+    costMaxEur: 150,
+    toolTypeIds: ['miter_saw', 'drill_driver', 'f_clamps'],
+    materials: ['Madera de construcción', 'Tablas gruesas para tapa', 'Pernos 3/8"', 'Arandelas'],
+    emoji: '🪑',
+    tags: ['banco', 'taller', 'desmontable', 'knock-down', 'nicholson'],
+    planUrl: 'https://blog.lostartpress.com/wp-content/uploads/2014/09/kd-nicholson-bench-lost-art-press.pdf',
+    videoUrl: 'https://www.youtube.com/watch?v=nWp1UkfJ2jA',
+    imageUrl: 'https://i0.wp.com/blog.lostartpress.com/wp-content/uploads/2014/09/kd-nicholson-bench-lost-art-press.jpg?resize=600%2C385&ssl=1',
+    source: 'Lost Art Press',
+  },
+  {
+    id: 'caballete-serrar',
+    title: 'Caballete de serrar',
+    tagline: 'Caballete sólido con listones 2x4 en una tarde',
+    description:
+      'Un caballete imprescindible en cualquier taller. Se construye con pocos listones 2x4 ' +
+      'y tornillos de 3". Fácil, rápido y extremadamente útil como apoyo de corte.',
+    category: 'workshop',
+    difficulty: 'easy',
+    timeHours: 2,
+    costMinEur: 10,
+    costMaxEur: 25,
+    toolTypeIds: ['miter_saw', 'drill_driver'],
+    materials: ['Listones 2x4', 'Tornillos de 3"'],
+    emoji: '🪵',
+    tags: ['caballete', 'sawhorse', 'taller', 'principiante'],
+    planUrl: 'https://www.construct101.com/sawhorse-plans/',
+    videoUrl: 'https://www.youtube.com/watch?v=5R5dRtlOcHA',
+    imageUrl: 'https://www.construct101.com/wp-content/uploads/2016/10/sawhorse-plans-diy-2x4-project-step-4-1024x1024.jpg',
+    source: 'Construct101',
+  },
+  {
+    id: 'mesa-fresadora',
+    title: 'Mesa de fresadora',
+    tagline: 'Mesa para montar tu fresadora boca abajo',
+    description:
+      'Convierte tu fresadora manual en una mesa estacionaria. Usa contrachapado o MDF, ' +
+      'una placa de inserción y una guía. Multiplica la precisión de la fresadora.',
+    category: 'workshop',
+    difficulty: 'medium',
+    timeHours: 12,
+    costMinEur: 50,
+    costMaxEur: 120,
+    toolTypeIds: ['router', 'jigsaw', 'drill_driver', 'orbital_sander'],
+    materials: ['Contrachapado o MDF', 'Placa de inserción', 'Guía/fence', 'Puerto de aspiración'],
+    emoji: '🔧',
+    tags: ['fresadora', 'router', 'mesa', 'taller', 'estacionaria'],
+    planUrl: 'https://media.popularwoodworking.com/app/uploads/2022/02/threeshop-builtroutertables.pdf',
+    videoUrl: 'https://www.youtube.com/watch?v=naMlbjHKh08',
+    imageUrl: 'https://media.popularwoodworking.com/app/uploads/how-to-build-a-router-table.jpg',
+    source: 'Popular Woodworking',
+  },
+  {
+    id: 'banco-lijado-downdraft',
+    title: 'Banco de lijado downdraft',
+    tagline: 'Mesa aspirante que atrapa el polvo mientras lijas',
+    description:
+      'Banco con tablero perforado y sistema de aspiración inferior (downdraft) que absorbe ' +
+      'el polvo de lijado. Conecta tu aspirador al puerto de 4". Imprescindible para la salud.',
+    category: 'workshop',
+    difficulty: 'medium',
+    timeHours: 8,
+    costMinEur: 40,
+    costMaxEur: 90,
+    toolTypeIds: ['jigsaw', 'drill_driver', 'orbital_sander'],
+    materials: ['Contrachapado', 'Rejilla o tablero perforado', 'Puerto aspiración 4"'],
+    emoji: '💨',
+    tags: ['lijado', 'downdraft', 'aspiración', 'polvo', 'taller'],
+    planUrl: 'https://2sand.com/downdraft-sanding-table-plans-pdf-download/',
+    videoUrl: 'https://www.youtube.com/watch?v=EeoOeDg4BPY',
+    source: '2SAND',
+  },
+  {
+    id: 'carro-flip-top',
+    title: 'Carro de herramientas flip-top',
+    tagline: 'Carro con plataforma giratoria para 2 máquinas',
+    description:
+      'Carro móvil con ruedas y plataforma giratoria que permite montar 2 herramientas ' +
+      '(ej. lijadora de banda + esmeril) en el mismo soporte. Gira 180° para cambiar de máquina.',
+    category: 'workshop',
+    difficulty: 'medium',
+    timeHours: 10,
+    costMinEur: 60,
+    costMaxEur: 130,
+    toolTypeIds: ['miter_saw', 'drill_driver', 'jigsaw'],
+    materials: ['Contrachapado 3/4"', 'Listones 1x2', 'Ruedas con freno', 'Eje de acero'],
+    emoji: '🔄',
+    tags: ['carro', 'flip-top', 'ruedas', 'taller', 'organización'],
+    planUrl: 'https://fixthisbuildthat.com/diy-flip-top-tool-stand-plans/',
+    videoUrl: 'https://www.youtube.com/watch?v=8V5utIoQLLk',
+    imageUrl: 'https://fixthisbuildthat.com/wp-content/uploads/2015/12/DIY-Flip-Top-Tool-Stand-40.jpg',
+    source: 'Fix This Build That',
+  },
+  {
+    id: 'estanteria-garaje',
+    title: 'Estantería de garaje 8 pies',
+    tagline: 'Estantería resistente con 2x4 para garaje o taller',
+    description:
+      'Estantería de 240 cm de ancho, robusta y económica. Solo necesitas listones 2x4, ' +
+      'tableros de contrachapado y tornillos. Soporta cargas pesadas (herramientas, cajas).',
+    category: 'storage',
+    difficulty: 'easy',
+    timeHours: 4,
+    costMinEur: 30,
+    costMaxEur: 60,
+    toolTypeIds: ['miter_saw', 'drill_driver'],
+    materials: ['Listones 2x4', 'Contrachapado 1/2"', 'Tornillos de 3"', 'Tornillos de 1-3/4"'],
+    emoji: '📦',
+    tags: ['estantería', 'garaje', 'almacenaje', 'principiante', 'resistente'],
+    planUrl: 'https://www.ana-white.com/woodworking-projects/free-8-foot-garage-shelving-plan-sturdy-affordable-and-easy-build',
+    videoUrl: 'https://www.youtube.com/watch?v=Z36aIPCB62k',
+    imageUrl: 'https://www.ana-white.com/sites/default/files/8ft%20free%20plans%20garage%20shelving%20.jpg',
+    source: 'Ana White',
+  },
+  {
+    id: 'cajon-cola-milano',
+    title: 'Cajón con cola de milano',
+    tagline: 'La unión más noble de la carpintería, paso a paso',
+    description:
+      'Proyecto avanzado para practicar la unión cola de milano a mano. ' +
+      'Usa madera maciza, sierras finas y formones. El resultado es un cajón con la unión ' +
+      'más valorada estéticamente en ebanistería.',
+    category: 'decor',
+    difficulty: 'hard',
+    timeHours: 8,
+    costMinEur: 20,
+    costMaxEur: 50,
+    toolTypeIds: ['hand_saw', 'chisel_set', 'f_clamps'],
+    materials: ['Madera maciza (frente, lados, trasera)', 'Fondo de cajón', 'Cola de carpintero'],
+    emoji: '🕊️',
+    tags: ['cajón', 'cola de milano', 'dovetail', 'avanzado', 'ebanistería'],
+    videoUrl: 'https://www.youtube.com/watch?v=Pno1cP5Mdv4',
+    source: "Woodworker's Journal",
+  },
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────

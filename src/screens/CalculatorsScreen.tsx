@@ -1,10 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
-// CALCULATORS HUB — 4 calculadoras prácticas de carpintería
+// CALCULATORS HUB — 10 herramientas prácticas de carpintería
 // ───────────────────────────────────────────────────────────────
-// 1. Proporción áurea (φ)
-// 2. Wainscot / paneles pared
-// 3. Distribución de baldas
-// 4. Calculadora de fracciones
+// 1. Proporción áurea (φ)          6. Nominal → Real (madera)
+// 2. Wainscot / paneles pared      7. Volumen de madera (board foot)
+// 3. Distribución de baldas        8. Guía de uniones (13 tipos)
+// 4. Calculadora de fracciones     9. Guía de maderas (20 especies)
+// 5. Selector de tornillos        10. Enciclopedia de tornillos
 // ═══════════════════════════════════════════════════════════════
 
 import React from 'react';
@@ -74,6 +75,46 @@ const ITEMS: CalcItem[] = [
     subtitle: '¿Qué tornillo uso? Elige materiales y te digo cuál',
     route: 'ScrewSelector',
     accent: '#5A7D9A',
+  },
+  {
+    id: 'nominal',
+    icon: 'table',
+    title: 'Nominal → Real',
+    subtitle: 'Medidas reales de madera: 2×4 no son 5×10 cm',
+    route: 'NominalActual',
+    accent: '#7A6E5A',
+  },
+  {
+    id: 'boardfoot',
+    icon: 'cube',
+    title: 'Volumen de madera',
+    subtitle: 'Calcula dm³ y board feet para comprar sin desperdiciar',
+    route: 'BoardFootCalc',
+    accent: '#3A6B5A',
+  },
+  {
+    id: 'joints',
+    icon: 'joint',
+    title: 'Uniones de carpintería',
+    subtitle: '13 tipos de unión con vídeos y diagramas',
+    route: 'JointTypes',
+    accent: '#AB130A',
+  },
+  {
+    id: 'woodguide',
+    icon: 'tree',
+    title: 'Guía de maderas',
+    subtitle: '20 especies con dureza Janka, origen y usos',
+    route: 'WoodGuide',
+    accent: '#6B4226',
+  },
+  {
+    id: 'screwguide',
+    icon: 'screw',
+    title: 'Enciclopedia de tornillos',
+    subtitle: '18 tipos · 10 errores comunes · 10 marcas en España',
+    route: 'ScrewGuide',
+    accent: '#5A6E8A',
   },
 ];
 

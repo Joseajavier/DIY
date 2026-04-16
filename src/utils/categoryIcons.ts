@@ -19,6 +19,12 @@ export const TOOL_CATEGORY_ICON: Record<string, IconName> = {
   extract: 'wrench',
   safety: 'safety',
   accessory: 'bolt',
+  join: 'bolt',
+  battery: 'battery',
+  storage: 'folder',
+  routing: 'drill',
+  machinery: 'saw',
+  accessories: 'bolt',
 };
 
 export const TOOL_CATEGORY_COLOR: Record<string, string> = {
@@ -32,6 +38,12 @@ export const TOOL_CATEGORY_COLOR: Record<string, string> = {
   extract: '#4A8BB2',
   safety: '#6B8E5A',
   accessory: '#8A6E5D',
+  join: '#7A5C9A',
+  battery: '#3A9A6B',
+  storage: '#6B7A8A',
+  routing: '#9A6B3A',
+  machinery: '#4A4A5A',
+  accessories: '#8A7A6A',
 };
 
 export function categoryIcon(categoryId: string): IconName {

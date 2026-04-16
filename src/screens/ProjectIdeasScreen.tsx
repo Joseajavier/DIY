@@ -13,7 +13,8 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
-  Alert,
+  Linking,
+  Image,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -81,6 +82,7 @@ function formatCost(min: number, max: number): string {
 export default function ProjectIdeasScreen({ navigation }: Props) {
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [difficulty, setDifficulty] = useState<DifficultyFilter>('all');
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return PROJECT_IDEAS.filter((idea) => {
@@ -90,48 +92,107 @@ export default function ProjectIdeasScreen({ navigation }: Props) {
     });
   }, [category, difficulty]);
 
-  const handlePressIdea = (idea: ProjectIdea) => {
-    Alert.alert(idea.title, idea.description);
-  };
+  const renderCard = ({ item }: { item: ProjectIdea }) => {
+    const open = expanded === item.id;
+    const hasLinks = item.planUrl || item.videoUrl || item.source;
 
-  const renderCard = ({ item }: { item: ProjectIdea }) => (
-    <TouchableOpacity
-      style={styles.card}
-      activeOpacity={0.8}
-      onPress={() => handlePressIdea(item)}
-    >
-      <View style={styles.emojiBox}>
-        <Text style={styles.emoji}>{item.emoji ?? '🪵'}</Text>
-      </View>
-      <View style={styles.cardBody}>
-        <Text style={styles.cardTitle} numberOfLines={2}>
-          {item.title}
-        </Text>
-        <Text style={styles.cardTagline} numberOfLines={2}>
-          {item.tagline}
-        </Text>
-        <View style={styles.metaRow}>
-          <View style={styles.metaItem}>
-            <View
-              style={[
-                styles.dot,
-                { backgroundColor: DIFFICULTY_COLOR[item.difficulty] },
-              ]}
-            />
-            <Text style={styles.metaText}>
-              {DIFFICULTY_LABEL[item.difficulty]}
-            </Text>
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        activeOpacity={0.8}
+        onPress={() => setExpanded(open ? null : item.id)}
+      >
+        {/* Imagen preview si existe y está expandido */}
+        {open && item.imageUrl && (
+          <Image
+            source={{ uri: item.imageUrl }}
+            style={styles.previewImg}
+            resizeMode="cover"
+          />
+        )}
+
+        <View style={styles.cardRow}>
+          <View style={styles.emojiBox}>
+            <Text style={styles.emoji}>{item.emoji ?? '🪵'}</Text>
           </View>
-          <Text style={styles.metaSeparator}>·</Text>
-          <Text style={styles.metaText}>{formatTime(item.timeHours)}</Text>
-          <Text style={styles.metaSeparator}>·</Text>
-          <Text style={styles.metaText}>
-            {formatCost(item.costMinEur, item.costMaxEur)}
-          </Text>
+          <View style={styles.cardBody}>
+            <Text style={styles.cardTitle} numberOfLines={open ? undefined : 2}>
+              {item.title}
+            </Text>
+            <Text style={styles.cardTagline} numberOfLines={open ? undefined : 2}>
+              {item.tagline}
+            </Text>
+            <View style={styles.metaRow}>
+              <View style={styles.metaItem}>
+                <View
+                  style={[
+                    styles.dot,
+                    { backgroundColor: DIFFICULTY_COLOR[item.difficulty] },
+                  ]}
+                />
+                <Text style={styles.metaText}>
+                  {DIFFICULTY_LABEL[item.difficulty]}
+                </Text>
+              </View>
+              <Text style={styles.metaSeparator}>·</Text>
+              <Text style={styles.metaText}>{formatTime(item.timeHours)}</Text>
+              <Text style={styles.metaSeparator}>·</Text>
+              <Text style={styles.metaText}>
+                {formatCost(item.costMinEur, item.costMaxEur)}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.chevron}>{open ? '▲' : '▼'}</Text>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+
+        {/* Contenido expandido */}
+        {open && (
+          <View style={styles.expandedSection}>
+            <Text style={styles.description}>{item.description}</Text>
+
+            {item.materials.length > 0 && (
+              <View style={styles.materialsBox}>
+                <Text style={styles.sectionLabel}>Materiales</Text>
+                <Text style={styles.materialsText}>
+                  {item.materials.join(' · ')}
+                </Text>
+              </View>
+            )}
+
+            {item.source && (
+              <Text style={styles.sourceText}>Fuente: {item.source}</Text>
+            )}
+
+            {/* Botones de enlace */}
+            {hasLinks && (
+              <View style={styles.linksRow}>
+                {item.planUrl && (
+                  <TouchableOpacity
+                    style={[styles.linkBtn, { backgroundColor: colors.primaryMuted }]}
+                    onPress={() => Linking.openURL(item.planUrl!)}
+                  >
+                    <Text style={[styles.linkText, { color: colors.primary }]}>
+                      📄 Ver plano PDF
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {item.videoUrl && (
+                  <TouchableOpacity
+                    style={[styles.linkBtn, { backgroundColor: '#FF000018' }]}
+                    onPress={() => Linking.openURL(item.videoUrl!)}
+                  >
+                    <Text style={[styles.linkText, { color: '#CC0000' }]}>
+                      ▶ Ver vídeo
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+          </View>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -269,12 +330,29 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   card: {
-    flexDirection: 'row',
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
     padding: spacing.md,
     marginBottom: spacing.md,
+    overflow: 'hidden',
     ...shadows.sm,
+  },
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  previewImg: {
+    width: '100%',
+    height: 160,
+    borderRadius: radius.md,
+    marginBottom: spacing.md,
+  },
+  chevron: {
+    ...typography.caption,
+    color: colors.textMuted,
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: spacing.sm,
   },
   emojiBox: {
     width: 72,
@@ -340,5 +418,57 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     textAlign: 'center',
     paddingHorizontal: spacing.xl,
+  },
+
+  // ── Expandido ─────────────────────────────────────────────
+  expandedSection: {
+    marginTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border + '66',
+    paddingTop: spacing.md,
+  },
+  description: {
+    ...typography.bodySmall,
+    color: colors.text,
+    lineHeight: 22,
+    marginBottom: spacing.md,
+  },
+  materialsBox: {
+    backgroundColor: colors.surfaceLight,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+  },
+  sectionLabel: {
+    ...typography.caption,
+    fontWeight: '700',
+    color: colors.text,
+    marginBottom: 4,
+  },
+  materialsText: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 20,
+  },
+  sourceText: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginBottom: spacing.sm,
+  },
+  linksRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+    flexWrap: 'wrap',
+  },
+  linkBtn: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.full,
+  },
+  linkText: {
+    ...typography.caption,
+    fontWeight: '700',
+    fontSize: 12,
   },
 });
