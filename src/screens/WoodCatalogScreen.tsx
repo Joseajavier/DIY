@@ -117,7 +117,7 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
 
       <FlatList
         data={results}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: WoodProduct) => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
         renderItem={({ item }: { item: WoodProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}

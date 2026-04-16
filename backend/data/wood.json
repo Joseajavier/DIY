@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "lastUpdated": "2026-04-16",
+  "version": 1,
+  "lastUpdated": "2026-04-15",
   "categories": [
     {
       "id": "board",
@@ -314,9 +314,7 @@
         "Necesita tratamiento para exterior"
       ],
       "bestFor": "Todo: estructura, muebles básicos, bricolaje general",
-      "color": "Claro amarillento, con nudos",
-      "species": "Pinus spp.",
-      "uses": ["muebles", "estanterías", "estructuras"]
+      "color": "Claro amarillento, con nudos"
     },
     {
       "id": "w10",
@@ -342,9 +340,7 @@
         "Se mueve con humedad"
       ],
       "bestFor": "Muebles de calidad, encimeras, tornería, sillas",
-      "color": "Rosado claro, veta fina",
-      "species": "Fagus sylvatica",
-      "uses": ["muebles", "encimeras", "sillas"]
+      "color": "Rosado claro, veta fina"
     },
     {
       "id": "w11",
@@ -371,9 +367,7 @@
         "Difícil de trabajar"
       ],
       "bestFor": "Muebles premium, suelos, marcos, exterior",
-      "color": "Marrón dorado, veta marcada",
-      "species": "Quercus robur / Quercus alba",
-      "uses": ["mesas", "muebles", "suelos"]
+      "color": "Marrón dorado, veta marcada"
     },
     {
       "id": "w12",
@@ -398,9 +392,7 @@
         "Difícil de encontrar en medidas grandes"
       ],
       "bestFor": "Ebanistería, muebles de lujo, detalles decorativos",
-      "color": "Marrón oscuro chocolate, muy decorativo",
-      "species": "Juglans regia / Juglans nigra",
-      "uses": ["ebanistería", "frentes", "mesas"]
+      "color": "Marrón oscuro chocolate, muy decorativo"
     },
     {
       "id": "w13",
@@ -427,9 +419,7 @@
         "Polvo irritante"
       ],
       "bestFor": "Terrazas, pérgolas, muebles de jardín, ventanas",
-      "color": "Marrón dorado, oscurece con el tiempo",
-      "species": "Milicia excelsa",
-      "uses": ["exterior", "baños", "encimeras"]
+      "color": "Marrón dorado, oscurece con el tiempo"
     },
     {
       "id": "w14",
@@ -455,9 +445,7 @@
         "Precio medio-alto"
       ],
       "bestFor": "Sillas, mangos, curvados, muebles de diseño",
-      "color": "Claro, veta pronunciada y decorativa",
-      "species": "Fraxinus excelsior / Fraxinus americana",
-      "uses": ["muebles", "escaleras", "mangos"]
+      "color": "Claro, veta pronunciada y decorativa"
     },
     {
       "id": "w15",
@@ -786,208 +774,104 @@
     },
     {
       "id": "w26",
-      "categoryId": "strips",
-      "name": "Machihembrado de pino",
-      "description": "Tabla machihembrada pino para suelos, techos y revestimientos de pared. Encaje macho-hembra sin clavos visibles.",
+      "categoryId": "plywood",
+      "name": "Contrachapado de álamo (poplar)",
+      "description": "Contrachapado de álamo europeo. El más ligero de los contrachapados, con buena estabilidad. Muy usado en embalaje y paneles de mueble.",
       "use": "interior",
       "hardness": "soft",
       "priceLevel": "budget",
-      "priceRange": "12-22€/m²",
+      "priceRange": "10-25€/m²",
       "commonSizes": [
-        "200×9.5cm",
-        "240×12.5cm"
+        "244×122cm",
+        "250×125cm"
       ],
       "thicknesses": [
-        14,
-        18,
-        22
+        4,
+        6,
+        9,
+        12,
+        15,
+        18
       ],
       "pros": [
-        "Montaje rápido sin clavos vistos",
-        "Acabado cálido",
-        "Ligero",
-        "Fácil de cortar"
+        "Muy ligero (el más liviano de los contrachapados)",
+        "Precio económico",
+        "Fácil de cortar y trabajar",
+        "Buena estabilidad dimensional"
       ],
       "cons": [
-        "Necesita tratamiento contra humedad",
-        "Marca fácilmente"
+        "Resistencia mecánica menor que abedul",
+        "Cara no siempre uniforme",
+        "Solo uso interior sin tratamiento"
       ],
-      "bestFor": "Revestimientos de pared y techo, suelos rústicos",
-      "color": "Miel claro"
+      "bestFor": "Paneles de mueble ligero, traseras, fondos de cajón, proyectos donde el peso es crítico",
+      "color": "Blanco amarillento, capas claras en el canto"
     },
     {
       "id": "w27",
       "categoryId": "strips",
-      "name": "Cuadradillo de haya",
-      "description": "Listón de sección cuadrada en haya maciza. Más duro y estable que el pino, ideal para patas y estructura.",
+      "name": "Listón de haya seco",
+      "description": "Listones de haya europea, madera dura de primera calidad. Superficie lisa y resistente. Ideal para patas y estructuras que requieren dureza.",
       "use": "interior",
-      "hardness": "medium",
+      "hardness": "hard",
       "priceLevel": "mid",
-      "priceRange": "6-14€/m",
+      "priceRange": "4-15€/m",
       "commonSizes": [
-        "100×2×2cm",
-        "200×3×3cm",
-        "200×4×4cm"
-      ],
-      "thicknesses": [
-        20,
-        30,
-        40
+        "3×3cm",
+        "4×4cm",
+        "5×5cm",
+        "6×6cm",
+        "2×4cm",
+        "3×5cm"
       ],
       "pros": [
-        "Mucho más duro que pino",
-        "Grano fino y uniforme",
-        "Buen acabado al barniz",
-        "Estable"
+        "Madera dura y resistente",
+        "Superficie muy lisa y uniforme",
+        "Excelente para tornear y fresar",
+        "Acepta bien barnices y aceites"
       ],
       "cons": [
-        "Más caro que pino",
-        "Pesado"
+        "Más cara que pino",
+        "No apta para exterior sin tratar",
+        "Más difícil de trabajar que maderas blandas"
       ],
-      "bestFor": "Patas de mesa, estructura de muebles, mangos",
-      "color": "Crema rosado"
+      "bestFor": "Patas de silla y mesa, mangos de herramienta, estructuras de mueble que requieren resistencia",
+      "color": "Rosado claro uniforme, veta fina"
     },
     {
       "id": "w28",
       "categoryId": "special",
-      "name": "Bambú laminado",
-      "description": "Tablero de bambú laminado en caliente. Alternativa sostenible muy dura, apta para encimeras y suelos.",
+      "name": "Bambú (planchas laminadas)",
+      "description": "Planchas de bambú laminado de alta densidad. Técnicamente una gramínea, con resistencia similar al roble. Muy sostenible y trendy.",
       "use": "interior",
       "hardness": "hard",
       "priceLevel": "mid",
-      "priceRange": "35-70€/m²",
+      "priceRange": "20-50€/m²",
       "commonSizes": [
-        "244×122cm",
-        "300×125cm"
+        "200×100cm",
+        "183×91cm"
       ],
       "thicknesses": [
-        15,
-        20,
-        30,
-        40
+        10,
+        14,
+        19,
+        25
       ],
       "pros": [
-        "Sostenible (crecimiento rápido)",
-        "Muy duro (más que roble)",
-        "Aspecto moderno",
-        "Estable"
+        "Muy ecológico y renovable (crece en 5 años)",
+        "Dureza comparable al roble",
+        "Aspecto moderno y diferenciador",
+        "Estable dimensionalmente"
       ],
       "cons": [
-        "No todos los proveedores lo tienen",
-        "Sensible a humedad extrema",
-        "Más caro que pino"
+        "No admite bien los tornillos en los bordes",
+        "Sensible a la humedad extrema",
+        "Precio medio-alto para un material alternativo"
       ],
-      "bestFor": "Encimeras, suelos, muebles contemporáneos",
-      "color": "Miel dorado"
-    },
-    {
-      "id": "w29",
-      "categoryId": "solid",
-      "name": "Cerezo",
-      "description": "Veta fina y tono cálido rojizo; encaja muy bien en muebles, frentes y decoración.",
-      "use": "interior",
-      "hardness": "hard",
-      "priceLevel": "premium",
-      "priceRange": "80-170€/m²",
-      "species": "Prunus avium / Prunus serotina",
-      "uses": ["muebles", "frentes", "decoración"],
-      "commonSizes": ["Tablas", "Tablones"],
-      "thicknesses": [30, 45, 65],
-      "pros": [
-        "Veta fina y decorativa",
-        "Tono rojizo cálido muy elegante",
-        "Buena estabilidad dimensional",
-        "Fácil de barnizar con resultados premium"
-      ],
-      "cons": [
-        "Precio elevado",
-        "Aclara con exposición solar",
-        "Menor disponibilidad que roble o haya"
-      ],
-      "bestFor": "Muebles de calidad, frentes de cocina, detalles decorativos",
-      "color": "Rojizo cálido, oscurece con el tiempo"
-    },
-    {
-      "id": "w30",
-      "categoryId": "special",
-      "name": "Sapelly",
-      "description": "Tropical rojiza, estable y decorativa, habitual en puertas, frentes y rechapados.",
-      "use": "interior",
-      "hardness": "hard",
-      "priceLevel": "mid",
-      "priceRange": "20-75€/m²",
-      "species": "Entandrophragma cylindricum",
-      "uses": ["puertas", "frentes", "rechapados"],
-      "commonSizes": ["Tablones", "Chapa rechapado"],
-      "thicknesses": [4, 11, 16, 19, 27],
-      "pros": [
-        "Veta entrelazada muy decorativa (efecto tornasol)",
-        "Buena estabilidad dimensional",
-        "Precio razonable para tropical",
-        "Fácil de barnizar y lacar"
-      ],
-      "cons": [
-        "Veta interlocked dificulta el cepillado",
-        "Puede contener sílice (desgasta herramientas)",
-        "Exigir certificado FSC/PEFC"
-      ],
-      "bestFor": "Puertas, frentes, rechapados, molduras decorativas",
-      "color": "Rojizo oscuro con efecto satinado tornasol"
-    },
-    {
-      "id": "w31",
-      "categoryId": "board",
-      "name": "MDF lacado",
-      "description": "MDF con acabado listo para vista, habitual en puertas, frentes y mobiliario moderno.",
-      "use": "interior",
-      "hardness": "medium",
-      "priceLevel": "mid",
-      "priceRange": "6-45€/m²",
-      "species": "MDF lacado una o dos caras",
-      "uses": ["frentes", "puertas", "muebles"],
-      "commonSizes": ["244×122cm"],
-      "thicknesses": [3, 5, 10, 16, 19],
-      "pros": [
-        "Acabado listo para montar sin pintar",
-        "Superficie perfectamente lisa",
-        "Amplia gama de colores (RAL)",
-        "Aspecto moderno y limpio"
-      ],
-      "cons": [
-        "Cantos vulnerables a golpes",
-        "Reparación visible si se astilla",
-        "No apto para ambientes húmedos"
-      ],
-      "bestFor": "Frentes de cajón y armario, puertas lacadas, muebles de cocina modernos",
-      "color": "Blanco, negro, gris o cualquier color RAL"
-    },
-    {
-      "id": "w32",
-      "categoryId": "solid",
-      "name": "Pino tea",
-      "description": "Pino resinoso y más denso, muy valorado en carpintería, mesas rústicas y revestimientos.",
-      "use": "both",
-      "hardness": "medium",
-      "priceLevel": "mid",
-      "priceRange": "40-75€/m²",
-      "species": "Pinus taeda",
-      "uses": ["carpintería interior", "mesas rústicas", "revestimientos"],
-      "commonSizes": ["Tablas", "Tablones", "Vigas decorativas"],
-      "thicknesses": [26, 27, 42, 52, 65],
-      "pros": [
-        "Más denso y resistente que pino común",
-        "Ricas resinas naturales conservantes",
-        "Aspecto rústico y cálido muy buscado",
-        "Acepta bien aceites y ceras"
-      ],
-      "cons": [
-        "Muy resinoso (dificulta la pintura directa)",
-        "Disponibilidad más limitada que pino escandinavo",
-        "Más caro que pino Suecia"
-      ],
-      "bestFor": "Mesas rústicas, vigas decorativas, suelos, revestimientos de pared",
-      "color": "Ámbar rojizo intenso, muy resinoso y vivo"
+      "bestFor": "Encimeras, suelos flotantes, muebles de estilo oriental/moderno, proyectos eco-friendly",
+      "color": "Amarillo miel o caramelizado según tratamiento"
     }
   ],
-  "totalProducts": 32
+  "lastUpdated": "2026-04-16",
+  "totalProducts": 28
 }

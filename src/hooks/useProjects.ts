@@ -23,12 +23,12 @@ export function useProjects() {
 
   const remove = useCallback(async (id: string) => {
     await deleteProject(id);
-    setProjects((prev) => prev.filter((p) => p.id !== id));
+    setProjects((prev: Project[]) => prev.filter((p: Project) => p.id !== id));
   }, []);
 
   const rename = useCallback(async (id: string, newName: string) => {
     await updateProject(id, { name: newName });
-    setProjects((prev) => prev.map((p) => (p.id === id ? { ...p, name: newName } : p)));
+    setProjects((prev: Project[]) => prev.map((p: Project) => (p.id === id ? { ...p, name: newName } : p)));
   }, []);
 
   const duplicate = useCallback(async (id: string): Promise<string | null> => {
