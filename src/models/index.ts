@@ -261,3 +261,12 @@ export interface TableGeneratorParams {
   apronHeight: number;    // cm — altura del faldón
   hasLowerShelf: boolean; // balda inferior entre patas
 }
+
+export interface BoxGeneratorParams {
+  length: number;      // cm — largo
+  width: number;       // cm — ancho (fondo)
+  height: number;      // cm — alto
+  thickness: number;   // mm — grosor tablero
+  hasLid: boolean;     // tapa superior
+  hasBottom: boolean;  // fondo (si no → caja sin base, ej. para servir)
+}

@@ -61,8 +61,10 @@ export default function ParametricHomeScreen({ navigation }: Props) {
       id: 'box',
       icon: '📦',
       name: 'Caja',
-      description: 'Caja rectangular con o sin tapa.',
-      available: false,
+      description:
+        'Caja rectangular simple — almacenaje, bandejas, cajas de regalo.',
+      available: true,
+      onPress: () => navigation.navigate('BoxGenerator'),
     },
     {
       id: 'cabinet',

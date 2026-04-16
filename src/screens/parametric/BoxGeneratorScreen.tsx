@@ -1,10 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// TABLE GENERATOR SCREEN — form de mesa paramétrica.
+// BOX GENERATOR SCREEN — caja rectangular paramétrica.
 // ───────────────────────────────────────────────────────────────
-// Diferencia clave con Shelf: la mesa genera DOS listas:
-//   • pieces[]       → tableros (van al optimizador 2D)
-//   • lumberPieces[] → patas (listones macizos, pedido lineal)
-// Ambas se muestran separadas y solo las boardPieces abren el optimizador.
+// Reutiliza ShelfIsometric con numShelves=0 para el preview 3D, ya
+// que geométricamente una caja cerrada es una estantería sin baldas.
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useMemo, useState } from 'react';
@@ -20,52 +18,47 @@ import {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
-import { generateTable, TABLE_DEFAULTS } from '../../services/parametric';
-import { TableIsometric } from '../../components';
+import { generateBox, BOX_DEFAULTS } from '../../services/parametric';
+import { ShelfIsometric } from '../../components';
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'TableGenerator'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'BoxGenerator'>;
 };
 
-export default function TableGeneratorScreen({ navigation }: Props) {
+export default function BoxGeneratorScreen({ navigation }: Props) {
   const { width: screenWidth } = useWindowDimensions();
-  const [length, setLength] = useState(String(TABLE_DEFAULTS.length));
-  const [width, setWidth] = useState(String(TABLE_DEFAULTS.width));
-  const [height, setHeight] = useState(String(TABLE_DEFAULTS.height));
-  const [legSection, setLegSection] = useState(String(TABLE_DEFAULTS.legSection));
-  const [topThickness, setTopThickness] = useState(String(TABLE_DEFAULTS.topThickness));
-  const [apronHeight, setApronHeight] = useState(String(TABLE_DEFAULTS.apronHeight));
-  const [hasApron, setHasApron] = useState(TABLE_DEFAULTS.hasApron);
-  const [hasLowerShelf, setHasLowerShelf] = useState(TABLE_DEFAULTS.hasLowerShelf);
+  const [length, setLength] = useState(String(BOX_DEFAULTS.length));
+  const [width, setWidth] = useState(String(BOX_DEFAULTS.width));
+  const [height, setHeight] = useState(String(BOX_DEFAULTS.height));
+  const [thickness, setThickness] = useState(String(BOX_DEFAULTS.thickness));
+  const [hasLid, setHasLid] = useState(BOX_DEFAULTS.hasLid);
+  const [hasBottom, setHasBottom] = useState(BOX_DEFAULTS.hasBottom);
 
-  const previewSize = Math.min(screenWidth - spacing.xl * 2, 320);
+  const previewSize = Math.min(screenWidth - spacing.xl * 2, 300);
+
   const numericParams = useMemo(() => ({
     len: parseFloat(length) || 0,
     w: parseFloat(width) || 0,
     h: parseFloat(height) || 0,
-    ls: parseFloat(legSection) || 0,
-    t: parseFloat(topThickness) || 25,
-    ah: parseFloat(apronHeight) || 10,
-  }), [length, width, height, legSection, topThickness, apronHeight]);
+    t: parseFloat(thickness) || 16,
+  }), [length, width, height, thickness]);
 
   const output = useMemo(() => {
-    return generateTable({
+    return generateBox({
       length: numericParams.len,
       width: numericParams.w,
       height: numericParams.h,
-      legSection: numericParams.ls,
-      topThickness: numericParams.t,
-      hasApron,
-      apronHeight: numericParams.ah,
-      hasLowerShelf,
+      thickness: numericParams.t,
+      hasLid,
+      hasBottom,
     });
-  }, [numericParams, hasApron, hasLowerShelf]);
+  }, [numericParams, hasLid, hasBottom]);
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
   const handleOptimize = () => {
     navigation.navigate('ProOptimization', {
-      projectName: `Mesa ${length}×${width}×${height}`,
+      projectName: `Caja ${length}×${width}×${height}`,
       pieces: output.pieces,
       boardWidth: 244,
       boardHeight: 122,
@@ -78,28 +71,26 @@ export default function TableGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[typography.h1, { color: colors.accent }]}>🪑 Mesa</Text>
+      <Text style={[typography.h1, { color: colors.accent }]}>📦 Caja</Text>
       <Text
         style={[
           typography.bodySmall,
           { marginBottom: spacing.lg, color: colors.textSecondary },
         ]}
       >
-        4 patas macizas + tablero + faldón opcional. Genera tableros
-        (cortes 2D) y listones (compra lineal) por separado.
+        Caja rectangular simple. Útil para almacenaje, bandejas, cajas de
+        regalo, boxes apilables.
       </Text>
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <TableIsometric
-          length={numericParams.len}
-          width={numericParams.w}
+        <ShelfIsometric
+          width={numericParams.len}
           height={numericParams.h}
-          legSection={numericParams.ls}
-          topThickness={numericParams.t}
-          hasApron={hasApron}
-          apronHeight={numericParams.ah}
-          hasLowerShelf={hasLowerShelf}
+          depth={numericParams.w}
+          numShelves={0}
+          thickness={numericParams.t}
+          hasBack={hasBottom}
           displaySize={previewSize}
         />
         <Text style={[typography.caption, styles.previewCaption]}>
@@ -107,64 +98,47 @@ export default function TableGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs medidas */}
+      {/* Inputs */}
       <View style={[styles.card, shadows.sm]}>
         <FormRow label="Largo" value={length} onChange={setLength} unit="cm" />
         <FormRow label="Ancho (fondo)" value={width} onChange={setWidth} unit="cm" />
-        <FormRow label="Alto total" value={height} onChange={setHeight} unit="cm" />
-        <FormRow
-          label="Sección de pata"
-          value={legSection}
-          onChange={setLegSection}
-          unit="cm"
-        />
+        <FormRow label="Alto" value={height} onChange={setHeight} unit="cm" />
         <FormRow
           label="Grosor tablero"
-          value={topThickness}
-          onChange={setTopThickness}
+          value={thickness}
+          onChange={setThickness}
           unit="mm"
         />
 
-        {/* Toggle faldón */}
         <TouchableOpacity
           style={styles.toggleRow}
-          onPress={() => setHasApron(!hasApron)}
+          onPress={() => setHasBottom(!hasBottom)}
           activeOpacity={0.7}
         >
           <View style={{ flex: 1 }}>
-            <Text style={typography.body}>Faldón de refuerzo</Text>
+            <Text style={typography.body}>Incluir fondo</Text>
             <Text style={[typography.caption, { color: colors.textMuted }]}>
-              Tablón bajo el tablero que une las patas
+              Sin fondo → caja abierta tipo bandeja
             </Text>
           </View>
-          <View style={[styles.toggle, hasApron && styles.toggleOn]}>
-            <View style={[styles.toggleBall, hasApron && styles.toggleBallOn]} />
+          <View style={[styles.toggle, hasBottom && styles.toggleOn]}>
+            <View style={[styles.toggleBall, hasBottom && styles.toggleBallOn]} />
           </View>
         </TouchableOpacity>
 
-        {hasApron && (
-          <FormRow
-            label="Altura faldón"
-            value={apronHeight}
-            onChange={setApronHeight}
-            unit="cm"
-          />
-        )}
-
-        {/* Toggle balda inferior */}
         <TouchableOpacity
           style={styles.toggleRow}
-          onPress={() => setHasLowerShelf(!hasLowerShelf)}
+          onPress={() => setHasLid(!hasLid)}
           activeOpacity={0.7}
         >
           <View style={{ flex: 1 }}>
-            <Text style={typography.body}>Balda inferior</Text>
+            <Text style={typography.body}>Incluir tapa</Text>
             <Text style={[typography.caption, { color: colors.textMuted }]}>
-              Tablero entre las patas (a ~15-20cm del suelo)
+              Tapa apoyada encima (sin bisagras)
             </Text>
           </View>
-          <View style={[styles.toggle, hasLowerShelf && styles.toggleOn]}>
-            <View style={[styles.toggleBall, hasLowerShelf && styles.toggleBallOn]} />
+          <View style={[styles.toggle, hasLid && styles.toggleOn]}>
+            <View style={[styles.toggleBall, hasLid && styles.toggleBallOn]} />
           </View>
         </TouchableOpacity>
       </View>
@@ -189,53 +163,36 @@ export default function TableGeneratorScreen({ navigation }: Props) {
         </View>
       )}
 
-      {/* Despiece tableros */}
-      {output.pieces.length > 0 && (
-        <>
-          <Text style={[typography.label, styles.sectionHeading]}>
-            🪵 TABLEROS (cortes 2D)
-          </Text>
-          <View style={[styles.card, shadows.sm]}>
-            {output.pieces.map((p, i) => (
-              <View key={i} style={styles.pieceRow}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.pieceName}>{p.name}</Text>
-                  <Text style={styles.pieceDims}>
-                    {p.width}×{p.height}cm · {p.thickness}mm
-                  </Text>
-                </View>
-                <Text style={styles.pieceQty}>×{p.quantity}</Text>
-              </View>
-            ))}
+      {/* Despiece */}
+      <Text
+        style={[
+          typography.label,
+          { marginTop: spacing.xl, marginBottom: spacing.md },
+        ]}
+      >
+        DESPIECE GENERADO
+      </Text>
+      <View style={[styles.card, shadows.sm]}>
+        <Text
+          style={[
+            typography.bodySmall,
+            { color: colors.textMuted, marginBottom: spacing.md },
+          ]}
+        >
+          {output.summary}
+        </Text>
+        {output.pieces.map((p, i) => (
+          <View key={i} style={styles.pieceRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.pieceName}>{p.name}</Text>
+              <Text style={styles.pieceDims}>
+                {p.width}×{p.height}cm · {p.thickness}mm
+              </Text>
+            </View>
+            <Text style={styles.pieceQty}>×{p.quantity}</Text>
           </View>
-        </>
-      )}
-
-      {/* Listones macizos */}
-      {output.lumberPieces && output.lumberPieces.length > 0 && (
-        <>
-          <Text style={[typography.label, styles.sectionHeading]}>
-            🪵 LISTONES MACIZOS (compra lineal)
-          </Text>
-          <View style={[styles.card, shadows.sm]}>
-            {output.lumberPieces.map((p, i) => (
-              <View key={i} style={styles.pieceRow}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.pieceName}>{p.name}</Text>
-                  <Text style={styles.pieceDims}>
-                    Sección {p.section} · Largo {p.length}cm
-                  </Text>
-                </View>
-                <Text style={styles.pieceQty}>×{p.quantity}</Text>
-              </View>
-            ))}
-            <Text style={styles.lumberNote}>
-              Los listones no entran al optimizador 2D — se compran a metros
-              en la sección de maderas macizas.
-            </Text>
-          </View>
-        </>
-      )}
+        ))}
+      </View>
 
       {/* Notas */}
       {output.notes.length > 0 && (
@@ -266,14 +223,14 @@ export default function TableGeneratorScreen({ navigation }: Props) {
         activeOpacity={0.85}
       >
         <Text style={[typography.button, { color: colors.textOnAccent }]}>
-          🪚 Optimizar cortes de tablero
+          🪚 Optimizar cortes
         </Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
 
-// ── Sub-componente FormRow ───────────────────────────────────
+// ── FormRow ──────────────────────────────────────────────────
 
 interface FormRowProps {
   label: string;
@@ -336,10 +293,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     padding: spacing.md,
     marginTop: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  sectionHeading: {
-    marginTop: spacing.lg,
     marginBottom: spacing.md,
   },
 
@@ -412,12 +365,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.accent,
     marginLeft: spacing.md,
-  },
-  lumberNote: {
-    ...typography.caption,
-    color: colors.textMuted,
-    marginTop: spacing.md,
-    fontStyle: 'italic',
   },
 
   button: {
