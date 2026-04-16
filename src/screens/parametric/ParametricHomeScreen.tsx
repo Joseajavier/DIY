@@ -54,8 +54,10 @@ export default function ParametricHomeScreen({ navigation }: Props) {
       id: 'drawer',
       icon: '🗄️',
       name: 'Cajonera',
-      description: 'N cajones con guías metálicas.',
-      available: false,
+      description:
+        'N cajones con guías metálicas extraíbles. Reserva holgura para hardware.',
+      available: true,
+      onPress: () => navigation.navigate('DrawerCabinetGenerator'),
     },
     {
       id: 'box',
@@ -70,15 +72,19 @@ export default function ParametricHomeScreen({ navigation }: Props) {
       id: 'cabinet',
       icon: '🚪',
       name: 'Armario',
-      description: 'Armario con puertas batientes.',
-      available: false,
+      description:
+        'Puertas batientes, baldas y barra de colgar opcional.',
+      available: true,
+      onPress: () => navigation.navigate('CabinetGenerator'),
     },
     {
       id: 'bench',
       icon: '🪵',
       name: 'Banco',
-      description: 'Banco con asiento y respaldo.',
-      available: false,
+      description:
+        '4 patas + asiento con respaldo opcional. Comedor, pie de cama, entrada.',
+      available: true,
+      onPress: () => navigation.navigate('BenchGenerator'),
     },
   ];
 

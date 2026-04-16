@@ -270,3 +270,33 @@ export interface BoxGeneratorParams {
   hasLid: boolean;     // tapa superior
   hasBottom: boolean;  // fondo (si no → caja sin base, ej. para servir)
 }
+
+export interface DrawerCabinetParams {
+  width: number;              // cm — ancho exterior
+  height: number;             // cm — alto exterior
+  depth: number;              // cm — fondo
+  numDrawers: number;         // nº de cajones
+  thickness: number;          // mm — grosor carcasa
+  drawerThickness: number;    // mm — grosor laterales/frontal cajón
+  drawerBottomThickness: number; // mm — fondo del cajón
+}
+
+export interface CabinetGeneratorParams {
+  width: number;        // cm — ancho exterior
+  height: number;       // cm — alto exterior
+  depth: number;        // cm — fondo
+  numDoors: 1 | 2;      // puertas batientes
+  numShelves: number;   // baldas interiores
+  thickness: number;    // mm — grosor carcasa y puertas
+  hasHangingRod: boolean; // barra para colgar ropa
+}
+
+export interface BenchGeneratorParams {
+  length: number;       // cm — largo
+  width: number;        // cm — ancho (profundidad del asiento)
+  height: number;       // cm — altura del asiento
+  legSection: number;   // cm — sección de pata
+  topThickness: number; // mm — grosor asiento
+  hasBackrest: boolean; // respaldo
+  backrestHeight: number; // cm — altura del respaldo desde el asiento
+}
