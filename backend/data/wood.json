@@ -771,7 +771,107 @@
       ],
       "bestFor": "Tarimas y terrazas exteriores, estructuras rurales, muebles de jardín, escaleras",
       "color": "Marrón claro cálido, veta pronunciada con ligero brillo"
+    },
+    {
+      "id": "w26",
+      "categoryId": "plywood",
+      "name": "Contrachapado de álamo (poplar)",
+      "description": "Contrachapado de álamo europeo. El más ligero de los contrachapados, con buena estabilidad. Muy usado en embalaje y paneles de mueble.",
+      "use": "interior",
+      "hardness": "soft",
+      "priceLevel": "budget",
+      "priceRange": "10-25€/m²",
+      "commonSizes": [
+        "244×122cm",
+        "250×125cm"
+      ],
+      "thicknesses": [
+        4,
+        6,
+        9,
+        12,
+        15,
+        18
+      ],
+      "pros": [
+        "Muy ligero (el más liviano de los contrachapados)",
+        "Precio económico",
+        "Fácil de cortar y trabajar",
+        "Buena estabilidad dimensional"
+      ],
+      "cons": [
+        "Resistencia mecánica menor que abedul",
+        "Cara no siempre uniforme",
+        "Solo uso interior sin tratamiento"
+      ],
+      "bestFor": "Paneles de mueble ligero, traseras, fondos de cajón, proyectos donde el peso es crítico",
+      "color": "Blanco amarillento, capas claras en el canto"
+    },
+    {
+      "id": "w27",
+      "categoryId": "strips",
+      "name": "Listón de haya seco",
+      "description": "Listones de haya europea, madera dura de primera calidad. Superficie lisa y resistente. Ideal para patas y estructuras que requieren dureza.",
+      "use": "interior",
+      "hardness": "hard",
+      "priceLevel": "mid",
+      "priceRange": "4-15€/m",
+      "commonSizes": [
+        "3×3cm",
+        "4×4cm",
+        "5×5cm",
+        "6×6cm",
+        "2×4cm",
+        "3×5cm"
+      ],
+      "pros": [
+        "Madera dura y resistente",
+        "Superficie muy lisa y uniforme",
+        "Excelente para tornear y fresar",
+        "Acepta bien barnices y aceites"
+      ],
+      "cons": [
+        "Más cara que pino",
+        "No apta para exterior sin tratar",
+        "Más difícil de trabajar que maderas blandas"
+      ],
+      "bestFor": "Patas de silla y mesa, mangos de herramienta, estructuras de mueble que requieren resistencia",
+      "color": "Rosado claro uniforme, veta fina"
+    },
+    {
+      "id": "w28",
+      "categoryId": "special",
+      "name": "Bambú (planchas laminadas)",
+      "description": "Planchas de bambú laminado de alta densidad. Técnicamente una gramínea, con resistencia similar al roble. Muy sostenible y trendy.",
+      "use": "interior",
+      "hardness": "hard",
+      "priceLevel": "mid",
+      "priceRange": "20-50€/m²",
+      "commonSizes": [
+        "200×100cm",
+        "183×91cm"
+      ],
+      "thicknesses": [
+        10,
+        14,
+        19,
+        25
+      ],
+      "pros": [
+        "Muy ecológico y renovable (crece en 5 años)",
+        "Dureza comparable al roble",
+        "Aspecto moderno y diferenciador",
+        "Estable dimensionalmente"
+      ],
+      "cons": [
+        "No admite bien los tornillos en los bordes",
+        "Sensible a la humedad extrema",
+        "Precio medio-alto para un material alternativo"
+      ],
+      "bestFor": "Encimeras, suelos flotantes, muebles de estilo oriental/moderno, proyectos eco-friendly",
+      "color": "Amarillo miel o caramelizado según tratamiento"
     }
   ],
-  "totalProducts": 25
+  "lastUpdated": "2026-04-16",
+  "totalProducts": 28
 }
