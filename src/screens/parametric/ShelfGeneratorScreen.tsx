@@ -21,6 +21,7 @@ import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
+import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ShelfGenerator'>;
@@ -58,14 +59,11 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
-  const handleOptimize = () => {
-    navigation.navigate('ProOptimization', {
-      projectName: `Estantería ${width}×${height}×${depth}`,
-      pieces: output.pieces,
-      boardWidth: 244,
-      boardHeight: 122,
-    });
-  };
+  const { saveOnly, saveAndOptimize, saving } = useSaveAndOptimize();
+  const projectName = `Estantería ${width}×${height}×${depth}`;
+  const handleSave = () => saveOnly(projectName, output);
+  const handleOptimize = () =>
+    saveAndOptimize(projectName, output, 244, 122);
 
   return (
     <ScrollView
@@ -204,21 +202,34 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
         </View>
       )}
 
-      {/* CTA */}
-      <TouchableOpacity
-        style={[
-          styles.button,
-          shadows.md,
-          !canProceed && styles.buttonDisabled,
-        ]}
-        onPress={handleOptimize}
-        disabled={!canProceed}
-        activeOpacity={0.85}
-      >
-        <Text style={[typography.button, { color: colors.textOnAccent }]}>
-          🪚 Optimizar cortes
-        </Text>
-      </TouchableOpacity>
+      {/* CTAs */}
+      <View style={styles.ctaRow}>
+        <TouchableOpacity
+          style={[styles.saveButton, (!canProceed || saving) && styles.buttonDisabled]}
+          onPress={handleSave}
+          disabled={!canProceed || saving}
+          activeOpacity={0.85}
+        >
+          <Text style={[typography.button, { color: colors.accent }]}>
+            💾 Guardar
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            shadows.md,
+            (!canProceed || saving) && styles.buttonDisabled,
+            { flex: 1, marginTop: 0 },
+          ]}
+          onPress={handleOptimize}
+          disabled={!canProceed || saving}
+          activeOpacity={0.85}
+        >
+          <Text style={[typography.button, { color: colors.textOnAccent }]}>
+            🪚 Optimizar cortes
+          </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -372,7 +383,21 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   buttonDisabled: {
-    backgroundColor: colors.textMuted,
     opacity: 0.5,
+  },
+  ctaRow: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.xl,
+  },
+  saveButton: {
+    backgroundColor: colors.surface,
+    paddingVertical: 18,
+    paddingHorizontal: spacing.lg,
+    borderRadius: radius.lg,
+    borderWidth: 2,
+    borderColor: colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
