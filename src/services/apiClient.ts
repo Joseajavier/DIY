@@ -5,33 +5,56 @@ const BASE_URL: string =
   (__DEV__ ? 'http://localhost:3001' : 'https://diy-backend.up.railway.app');
 
 const TIMEOUT_MS = 30000; // 30 seconds
+const MAX_RETRIES = 2;    // retry 2 veces tras fallo transitorio
+const BASE_DELAY_MS = 500; // backoff exponencial: 500ms, 1000ms
 
 async function request<T>(endpoint: string, body: any): Promise<T> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  let lastErr: unknown;
 
-  try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(error.error || `HTTP ${response.status}`);
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      await new Promise<void>((r) => setTimeout(r, BASE_DELAY_MS * 2 ** (attempt - 1)));
     }
 
-    return response.json();
-  } catch (err: any) {
-    if (err.name === 'AbortError') {
-      throw new Error('Timeout: la solicitud tardó demasiado');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const msg = errorBody.error || `HTTP ${response.status}`;
+        // Solo reintentar en errores de servidor (5xx)
+        if (response.status >= 500 && attempt < MAX_RETRIES) {
+          lastErr = new Error(msg);
+          continue;
+        }
+        throw new Error(msg);
+      }
+
+      return response.json();
+    } catch (err: any) {
+      if (err.name === 'AbortError') {
+        throw new Error('Timeout: la solicitud tardó demasiado');
+      }
+      // Reintentar en errores de red transitories
+      if (attempt < MAX_RETRIES) {
+        lastErr = err;
+        continue;
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeoutId);
     }
-    throw err;
-  } finally {
-    clearTimeout(timeoutId);
   }
+
+  throw lastErr ?? new Error('Request failed');
 }
 
 // ── DIY with AI ──
