@@ -16,6 +16,9 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 
 // ── Tipos ────────────────────────────────────────────────────────
@@ -276,6 +279,7 @@ export default function ScrewSelectorScreen() {
   const [topMat, setTopMat] = useState<MaterialId | null>(null);
   const [baseMat, setBaseMat] = useState<MaterialId | null>(null);
   const [ctx, setCtx] = useState<Context>('interior');
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const rec = useMemo<ScrewRec | null>(() => {
     if (!topMat || !baseMat) return null;
@@ -388,6 +392,17 @@ export default function ScrewSelectorScreen() {
                 <Text style={styles.extBadgeTxt}>☀️ Exterior: usa siempre Inox A2/A4 o galvanizado en caliente</Text>
               </View>
             )}
+
+            {/* Enlace a la enciclopedia completa */}
+            <TouchableOpacity
+              style={styles.encyclopediaBtn}
+              onPress={() => navigation.navigate('ScrewGuide')}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.encyclopediaBtnText}>
+                🔩 Ver enciclopedia completa de tornillos →
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.placeholder}>
@@ -558,6 +573,20 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   extBadgeTxt: { ...typography.caption, color: '#CC7000', fontWeight: '600' },
+
+  encyclopediaBtn: {
+    marginTop: spacing.md,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border + '66',
+    alignItems: 'center',
+  },
+  encyclopediaBtnText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '700',
+    fontSize: 13,
+  },
 
   // Placeholder
   placeholder: {
