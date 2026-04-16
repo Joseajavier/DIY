@@ -70,11 +70,13 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
-  const { saveOnly, saveAndOptimize, saving } = useSaveAndOptimize();
+  const { saveOnly, saveAndOptimize, exportPdf, saving } = useSaveAndOptimize();
   const projectName = `Cajonera ${width}×${height}×${depth}`;
+  const pdfDims = { length: numericParams.w, width: numericParams.d, height: numericParams.h };
   const handleSave = () => saveOnly(projectName, output);
   const handleOptimize = () =>
     saveAndOptimize(projectName, output, 244, 122);
+  const handleExportPdf = () => exportPdf(projectName, pdfDims, output);
 
   const adjustDrawers = (delta: number) => {
     const current = parseInt(numDrawers, 10) || 0;
@@ -253,6 +255,16 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        style={styles.pdfLink}
+        onPress={handleExportPdf}
+        disabled={!canProceed || saving}
+      >
+        <Text style={[typography.body, { color: colors.accent, textAlign: 'center', opacity: !canProceed || saving ? 0.4 : 1 }]}>
+          📄 Exportar PDF del despiece
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -412,5 +424,9 @@ const styles = StyleSheet.create({
     borderColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pdfLink: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.sm,
   },
 });

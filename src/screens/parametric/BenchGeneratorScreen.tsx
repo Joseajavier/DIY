@@ -66,11 +66,13 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
-  const { saveOnly, saveAndOptimize, saving } = useSaveAndOptimize();
+  const { saveOnly, saveAndOptimize, exportPdf, saving } = useSaveAndOptimize();
   const projectName = `Banco ${length}×${width}×${height}`;
+  const pdfDims = { length: numericParams.len, width: numericParams.w, height: numericParams.h };
   const handleSave = () => saveOnly(projectName, output);
   const handleOptimize = () =>
     saveAndOptimize(projectName, output, 244, 122);
+  const handleExportPdf = () => exportPdf(projectName, pdfDims, output);
 
   return (
     <ScrollView
@@ -273,6 +275,16 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        style={styles.pdfLink}
+        onPress={handleExportPdf}
+        disabled={!canProceed || saving}
+      >
+        <Text style={[typography.body, { color: colors.accent, textAlign: 'center', opacity: !canProceed || saving ? 0.4 : 1 }]}>
+          📄 Exportar PDF del despiece
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -431,5 +443,9 @@ const styles = StyleSheet.create({
     borderColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pdfLink: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.sm,
   },
 });
