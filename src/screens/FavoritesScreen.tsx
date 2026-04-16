@@ -7,7 +7,7 @@
 // mantener la coherencia visual del catálogo.
 // ═══════════════════════════════════════════════════════════════
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -28,6 +28,7 @@ import { useFavorites } from '../services/favoritesService';
 import FavoriteButton from '../components/FavoriteButton';
 import Icon from '../components/Icon';
 import CatalogImage from '../components/CatalogImage';
+import RetailerSheet from '../components/RetailerSheet';
 import { getToolImageUrl } from '../utils/catalogImages';
 import { categoryIcon, categoryColor } from '../utils/categoryIcons';
 
@@ -48,6 +49,7 @@ const tierLabels: Record<ToolTier, string> = {
 
 export default function FavoritesScreen({ navigation }: Props) {
   const favoriteIds = useFavorites();
+  const [sheetProduct, setSheetProduct] = useState<ToolProduct | null>(null);
 
   // Índice id → ToolProduct para resolución O(1) y filtrado de huérfanos.
   const productsById = useMemo(() => {
@@ -68,62 +70,35 @@ export default function FavoritesScreen({ navigation }: Props) {
   const count = favoriteProducts.length;
 
   const renderItem = ({ item }: { item: ToolProduct }) => {
-    const catId =
-      TOOL_TYPES.find((t) => t.id === item.typeId)?.categoryId ?? '';
+    const catId = TOOL_TYPES.find((t) => t.id === item.typeId)?.categoryId ?? '';
     const cColor = categoryColor(catId);
     return (
-      <View style={[styles.card, shadows.sm]}>
+      <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.85} onPress={() => setSheetProduct(item)}>
         <View style={styles.cardRow}>
-          <CatalogImage
-            uri={getToolImageUrl(item)}
-            accentColor={cColor}
-            icon={categoryIcon(catId)}
-            badgeText={getToolBrandName(item.brandId)}
-          />
+          <CatalogImage uri={getToolImageUrl(item)} accentColor={cColor} icon={categoryIcon(catId)} badgeText={getToolBrandName(item.brandId)} />
           <View style={{ flex: 1 }}>
             <View style={styles.cardHeader}>
-              <Text style={[typography.h3, { flex: 1 }]} numberOfLines={1}>
-                {getToolBrandName(item.brandId)}
-              </Text>
-              <View
-                style={[
-                  styles.tierBadge,
-                  { backgroundColor: tierColors[item.tier] + '22' },
-                ]}
-              >
-                <Text
-                  style={[typography.caption, { color: tierColors[item.tier] }]}
-                >
-                  {tierLabels[item.tier]}
-                </Text>
+              <Text style={[typography.h3, { flex: 1 }]} numberOfLines={1}>{getToolBrandName(item.brandId)}</Text>
+              <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
+                <Text style={[typography.caption, { color: tierColors[item.tier] }]}>{tierLabels[item.tier]}</Text>
               </View>
             </View>
-            <Text style={[typography.bodySmall, { fontWeight: '600' }]}>
-              {item.model}
-            </Text>
-            <Text style={[typography.caption, { marginTop: 2 }]}>
-              {getToolTypeName(item.typeId)}
-            </Text>
+            <Text style={[typography.bodySmall, { fontWeight: '600' }]}>{item.model}</Text>
+            <Text style={[typography.caption, { marginTop: 2 }]}>{getToolTypeName(item.typeId)}</Text>
             <View style={styles.cardFooter}>
-              <Text style={[typography.h3, { color: colors.primary }]}>
-                {item.priceMin}-{item.priceMax}€
-              </Text>
               <View style={styles.tags}>
-                {item.power === 'battery' && (
-                  <Icon name="battery" size={14} color={colors.textMuted} />
-                )}
-                {item.power === 'corded' && (
-                  <Icon name="plug" size={14} color={colors.textMuted} />
-                )}
-                {item.power === 'manual' && (
-                  <Icon name="hand" size={14} color={colors.textMuted} />
-                )}
+                {item.power === 'battery' && <Icon name="battery" size={14} color={colors.textMuted} />}
+                {item.power === 'corded' && <Icon name="plug" size={14} color={colors.textMuted} />}
+                {item.power === 'manual' && <Icon name="hand" size={14} color={colors.textMuted} />}
+                {item.use.includes('home') && <Icon name="home" size={14} color={colors.textMuted} />}
+                {item.use.includes('workshop') && <Icon name="wrench" size={14} color={colors.textMuted} />}
               </View>
+              <Icon name="shop" size={14} color={colors.primary} />
             </View>
           </View>
           <FavoriteButton productId={item.id} style={styles.favBtn} />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -179,6 +154,15 @@ export default function FavoritesScreen({ navigation }: Props) {
           showsVerticalScrollIndicator={false}
         />
       )}
+
+      <RetailerSheet
+        visible={sheetProduct !== null}
+        onClose={() => setSheetProduct(null)}
+        query={sheetProduct ? `${getToolBrandName(sheetProduct.brandId)} ${sheetProduct.model}` : ''}
+        productLabel={sheetProduct ? `${getToolBrandName(sheetProduct.brandId)} · ${sheetProduct.model}` : undefined}
+        priceMin={sheetProduct?.priceMin}
+        priceMax={sheetProduct?.priceMax}
+      />
     </View>
   );
 }
