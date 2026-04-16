@@ -1,7 +1,7 @@
 # PLAN MAESTRO DIY APP v2
 
-**Fecha:** 2026-04-14 | **Última actualización:** 2026-04-15 (log nocturno automático)
-**Estado actual:** MVP funcional con 16 pantallas, backend con IA, catalogos locales — Bloque A en progreso (98 herramientas · 25 maderas en main)
+**Fecha:** 2026-04-14 | **Última actualización:** 2026-04-16 (log nocturno automático)
+**Estado actual:** MVP funcional con 16+ pantallas, backend con IA, catalogos conectados al backend — Bloque A en progreso (107 herramientas · 28 maderas en main)
 
 ---
 
@@ -37,10 +37,10 @@
 
 #### A1 — Catalogo completo de herramientas
 **Antes:** Fases 13 + 16 (duplicadas)
-**Estado:** 🟡 EN PROGRESO — **98 / 150 productos** (65%) — actualizado 2026-04-15
+**Estado:** 🟡 EN PROGRESO — **107 / 150 productos** (71%) — actualizado 2026-04-16
 **Que hacer:**
-- ~~Ampliar de 76~~ → ya en 98 (+22 desde base). Faltan ~52 para llegar a 150
-- Marcas faltantes: Tacklife, Hychika, AEG, Ridgid, Fein, Virutex, Powermatic, Jet, Laguna, SawStop
+- ~~Ampliar de 76~~ → ya en 107 (+31 desde base, +9 esta noche). Faltan ~43 para llegar a 150
+- Marcas faltantes: Tacklife, Hychika, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop
 - Tipos faltantes: sierra de marqueteria, torno, lijadora de tambor, escopleadora, espigadora, fresadora de mesa, clavadora
 - Rating y reviewCount reales (investigar Amazon/reviews)
 - Mejorar diseño de tarjeta (mas info visible, mejor layout)
@@ -49,27 +49,27 @@
 
 #### A2 — Catalogo completo de maderas
 **Antes:** Fase 14 (parcialmente hecha)
-**Estado:** 🟡 EN PROGRESO — **25 / 40 maderas** (62%) en `src/data/woodData.ts` — actualizado 2026-04-15
-⚠️ **Sin wood.json en backend** — datos solo en frontend (PENDIENTE crear endpoint)
+**Estado:** 🟡 EN PROGRESO — **28 / 40 maderas** (70%) en `backend/data/wood.json` — actualizado 2026-04-16
+✅ **`backend/data/wood.json` CREADO** — endpoint GET /catalog/wood activo
 **Que hacer:**
-- ~~Ampliar de 20~~ → ya en 25 (+5 esta noche; w21–w25). Faltan ~15 para llegar a 40
+- ~~Ampliar de 20~~ → ya en 28 (+8 total, +3 esta noche). Faltan ~12 para llegar a 40
 - Completar precios reales mercado español 2024-2026
 - Añadir variantes de tamaño con precios por cada madera
-- **Crear `backend/data/wood.json`** y CRUD como herramientas
-- Endpoint GET /catalog/wood con filtros
+- ~~Crear `backend/data/wood.json`~~ ✅ HECHO (2026-04-16)
+- ~~Endpoint GET /catalog/wood~~ ✅ HECHO (2026-04-16)
 **Dependencias:** Ninguna
-**Esfuerzo:** 2-3 horas (restante ~1.5h)
+**Esfuerzo:** 2-3 horas (restante ~1h)
 
 #### A3 — Conectar app con backend para catalogos
 **Antes:** Parte de Fase 15
-**Estado:** ⏳ PENDIENTE — sin commits relacionados a fecha 2026-04-15
+**Estado:** 🟢 EN PROGRESO — **85%** — actualizado 2026-04-16
 **Que hacer:**
-- ToolSearchScreen: intentar GET /catalog/tools primero, fallback a datos locales
-- WoodCatalogScreen: intentar GET /catalog/wood primero, fallback a datos locales
-- Cache en memoria 24h (ya existe catalogApiClient.ts base)
-- Indicador de "datos actualizados" vs "datos offline"
-**Dependencias:** A1, A2
-**Esfuerzo:** 1-2 horas
+- ~~ToolSearchScreen: intentar GET /catalog/tools primero, fallback a datos locales~~ ✅ HECHO (bd4b7e7)
+- ~~WoodCatalogScreen: intentar GET /catalog/wood primero, fallback a datos locales~~ ✅ HECHO
+- ~~Cache en memoria 24h (ya existe catalogApiClient.ts base)~~ ✅ HECHO
+- Indicador de "datos actualizados" vs "datos offline" — pendiente
+**Dependencias:** A1, A2 (ambas en progreso)
+**Esfuerzo:** restante ~0.5h
 
 ---
 
@@ -269,3 +269,68 @@ CUANDO TENGA CREDENCIALES AMAZON:
 1. Completar A1: añadir ~52 herramientas más (marcas: Tacklife, AEG, Ridgid, Fein, SawStop...)
 2. Completar A2: añadir ~15 maderas más + crear `backend/data/wood.json` + endpoint GET /catalog/wood
 3. Opcional: iniciar A3 si A1 y A2 quedan cerca del objetivo
+
+---
+
+## LOG NOCTURNO 2026-04-16
+
+### Commits integrados (13 commits nocturnos ✅)
+
+| # | SHA | Mensaje |
+|---|-----|---------|
+| 1 | `6f3bf10` | feat(projects): persistencia real de pasos DIY con checkboxes interactivos |
+| 2 | `34d0153` | feat(catalog): wire Favorites, ProjectIdeas y Deals al navigator + fix 0 errores TS |
+| 3 | `8e8f61b` | feat(tools): selector de tornillos por material y contexto |
+| 4 | `bd165c2` | data(wood): enriquecer catálogo con 4 nuevas maderas + species/uses |
+| 5 | `bd4b7e7` | feat(tools): wire ToolSearch al backend + agrupar por marca en categoría |
+| 6 | `e9a7b2a` | feat(brands): logos + marcas Fase 20 + nuevos tipos de herramienta |
+| 7 | `e580cb6` | feat(catalog): productos Fase 20 — 20 productos para 11 marcas nuevas |
+| 8 | `eb1fca5` | feat(catalog): +5 tools +3 wood (adaptive 2026-04-16) |
+| 9 | `b09e032` | fix(D0): aplicar 3 fixes del QA (2026-04-16) |
+| 10 | `30003bf` | feat: avance feature #1 (DIY-IA) (2026-04-16) |
+| 11 | `2339424` | chore(qa): informe diario 2026-04-16 (delta: -490 errores TS) |
+| 12 | `5b91fa0` | fix(ts): -14 errores TS (sweeper 2026-04-16) |
+| 13 | `d7492b8` | merge: integrar commits nocturnos de agentes (catalog +5 tools +3 wood, -14 TS errors) |
+
+### Productos en catalogos (medidos en main)
+
+- Herramientas (`backend/data/tools.json`): **107 productos** (de 98 → +9 esta noche)
+- Maderas (`backend/data/wood.json`): **28 maderas** (de 25 → +3; backend JSON creado esta noche)
+
+### Bloque A — progreso acumulado
+
+- A1 (tools): **107/150 → 71%** (+6pp vs ayer 65%)
+- A2 (wood): **28/40 → 70%** (+8pp vs ayer 62%), backend JSON + endpoint ✅ RESUELTO
+- A3 (conectar): **85%** (de 0% → conectado ToolSearch + WoodCatalog al backend)
+
+### Errores TypeScript (medidos con npx tsc --noEmit)
+
+| Scope | Errores |
+|-------|---------|
+| Frontend (raíz) | **296** (de 663 baseline → -367 en la noche) |
+| Backend (`backend/`) | **1** (de 7 → -6 en la noche) |
+| **TOTAL** | **297** |
+
+### Fixes aplicados (BUG_FIXER + TS_SWEEPER)
+
+Fuente: `Data/FASES/BUG_FIXER_2026-04-16.md` + commit `5b91fa0`
+
+| Fix | Archivo | Delta |
+|-----|---------|-------|
+| tsconfig.json — jsx+lib+moduleResolution+exclude backend | `tsconfig.json` | -474 |
+| renderItem tipado | `src/screens/ToolSearchScreen.tsx` | -6 |
+| renderItem tipado | `src/screens/WoodCatalogScreen.tsx` | -10 |
+| TS Sweeper (callbacks useProjects + DIYSteps + Materials) | varios | -14 |
+| **Total fixes nocturnos** | | **-504 errores TS** |
+
+### Feature avanzada (feature builder)
+
+- `30003bf` — **DIY-IA**: `apiClient.ts` rediseñado con retry exponencial (2s→4s→8s→16s), timeouts, error handling robusto. App ya llama al backend real en lugar de siempre fallback local.
+
+### Tareas para proxima noche
+
+1. Completar A1: añadir ~43 herramientas más (marcas: Tacklife, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop)
+2. Completar A2: añadir ~12 maderas más para llegar a 40
+3. Completar A3: añadir indicador "datos actualizados" vs "datos offline" (~0.5h)
+4. Fix TS2591: `process.env` en `app.config.ts` y `require` en `settingsStorage.ts` (4 errores lógicos reales)
+5. Fix TS2322: `key` prop en Chips y `HomeScreen.tsx:133` (9 errores lógicos reales)
