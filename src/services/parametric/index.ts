@@ -12,3 +12,4 @@ export { generateDrawerCabinet, DRAWER_CABINET_DEFAULTS } from './drawerCabinetG
 export { generateCabinet, CABINET_DEFAULTS } from './cabinetGenerator';
 export { generateBench, BENCH_DEFAULTS } from './benchGenerator';
 export { saveParametricProject } from './saveParametricProject';
+export { exportParametricPdf } from './exportParametricPdf';

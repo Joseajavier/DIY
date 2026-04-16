@@ -15,8 +15,17 @@ import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParametricOutput } from '../models';
-import { saveParametricProject } from '../services/parametric';
+import {
+  saveParametricProject,
+  exportParametricPdf,
+} from '../services/parametric';
 import { RootStackParamList } from '../navigation/AppNavigator';
+
+interface Dims {
+  length: number;
+  width: number;
+  height: number;
+}
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -74,5 +83,17 @@ export function useSaveAndOptimize() {
     [navigation]
   );
 
-  return { saveOnly, saveAndOptimize, saving };
+  const exportPdf = useCallback(
+    async (name: string, dims: Dims, output: ParametricOutput) => {
+      setSaving(true);
+      const uri = await exportParametricPdf(name, dims, output);
+      setSaving(false);
+      if (!uri) {
+        Alert.alert('Error', 'No se pudo generar el PDF');
+      }
+    },
+    []
+  );
+
+  return { saveOnly, saveAndOptimize, exportPdf, saving };
 }
