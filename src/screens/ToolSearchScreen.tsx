@@ -61,6 +61,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
   const [use, setUse] = useState<ToolUse | ''>('');
   const [power, setPower] = useState<ToolPower | ''>('');
   const [sheetProduct, setSheetProduct] = useState<ToolProduct | null>(null);
+  const [groupByBrand, setGroupByBrand] = useState(false);
   const [deals, setDeals] = useState<Deal[]>([]);
   const [remoteProducts, setRemoteProducts] = useState<ToolProduct[] | null>(null);
   const [source, setSource] = useState<'loading' | 'online' | 'offline'>('loading');
@@ -124,9 +125,11 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     return map;
   }, [results, deals]);
 
-  // Agrupa por MARCA si hay categoría activa; por TIPO si no hay filtro
+  const showBrands = groupByBrand || !!categoryId;
+
+  // Agrupa por MARCA si toggle activo o hay categoría; por TIPO en vista general
   const sections = useMemo<ToolSection[]>(() => {
-    if (categoryId) {
+    if (showBrands) {
       // ── Vista por marca ────────────────────────────────────────
       const grouped: Record<string, ToolProduct[]> = {};
       for (const p of results) {
@@ -134,16 +137,16 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         grouped[p.brandId].push(p);
       }
       return Object.entries(grouped)
-        .sort((a, b) => b[1].length - a[1].length) // más productos primero
+        .sort((a, b) => b[1].length - a[1].length)
         .map(([brandId, data]) => ({
           typeId: brandId,
           title: getToolBrandName(brandId),
-          categoryId,
+          categoryId: categoryId || '',
           data,
           isBrandGroup: true,
         }));
     }
-    // ── Vista por tipo (sin filtro de categoría) ───────────────
+    // ── Vista por tipo ─────────────────────────────────────────
     const grouped: Record<string, ToolProduct[]> = {};
     for (const p of results) {
       if (!grouped[p.typeId]) grouped[p.typeId] = [];
@@ -159,7 +162,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         isBrandGroup: false,
       };
     });
-  }, [results, categoryId]);
+  }, [results, showBrands, categoryId]);
 
   const Chip = ({
     label,
@@ -248,12 +251,26 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
       </ScrollView>
 
       <View style={styles.resultBar}>
-        <Text style={typography.caption}>
+        <Text style={[typography.caption, { flex: 1 }]}>
           {results.length} herramienta{results.length !== 1 ? 's' : ''}{' '}
-          · {sections.length} {categoryId ? 'marca' : 'tipo'}{sections.length !== 1 ? 's' : ''}
+          · {sections.length} {showBrands ? 'marca' : 'tipo'}{sections.length !== 1 ? 's' : ''}
         </Text>
         {source === 'online' && <Text style={styles.sourceBadge}>🌐</Text>}
         {source === 'offline' && <Text style={[styles.sourceBadge, { color: colors.textMuted }]}>📦</Text>}
+        <View style={styles.groupToggle}>
+          <TouchableOpacity
+            style={[styles.groupBtn, !showBrands && styles.groupBtnActive]}
+            onPress={() => setGroupByBrand(false)}
+          >
+            <Text style={[typography.caption, { color: !showBrands ? colors.primary : colors.textMuted }]}>Tipos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.groupBtn, showBrands && styles.groupBtnActive]}
+            onPress={() => setGroupByBrand(true)}
+          >
+            <Text style={[typography.caption, { color: showBrands ? colors.primary : colors.textMuted }]}>Marcas</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <SectionList
@@ -428,8 +445,11 @@ const styles = StyleSheet.create({
   chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   chipDot: { width: 8, height: 8, borderRadius: 4 },
   divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
-  resultBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: spacing.xl, marginBottom: spacing.sm },
+  resultBar: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginHorizontal: spacing.xl, marginBottom: spacing.sm },
   sourceBadge: { ...typography.caption, color: colors.primary },
+  groupToggle: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.full, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
+  groupBtn: { paddingHorizontal: spacing.md, paddingVertical: 4 },
+  groupBtnActive: { backgroundColor: colors.primaryMuted },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xl, marginBottom: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border },
   sectionIconBox: { width: 32, height: 32, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   brandLogo: { width: 64, height: 28, marginRight: spacing.sm },
