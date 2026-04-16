@@ -212,3 +212,31 @@ export interface UserSettings {
   userUnits: 'cm' | 'mm' | 'in';
   hasSeenOnboarding: boolean;
 }
+
+// ── Parametric Generator ──
+// Plantillas paramétricas: el usuario introduce medidas → se genera
+// despiece (Piece[]) listo para el optimizador de cortes.
+export type ParametricTemplateId =
+  | 'shelf'
+  | 'table'
+  | 'drawer'
+  | 'cabinet'
+  | 'bench'
+  | 'box';
+
+export interface ParametricOutput {
+  pieces: Piece[];
+  summary: string;
+  notes: string[];
+  warnings: string[];
+}
+
+export interface ShelfGeneratorParams {
+  width: number;          // cm — ancho exterior
+  height: number;         // cm — alto exterior
+  depth: number;          // cm — fondo
+  numShelves: number;     // baldas interiores (sin contar techo ni base)
+  thickness: number;      // mm — grosor tablero principal (16/19/25)
+  hasBack: boolean;
+  backThickness: number;  // mm — grosor trasero (normalmente 4)
+}

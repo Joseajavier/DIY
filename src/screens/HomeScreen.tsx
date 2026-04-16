@@ -92,6 +92,13 @@ export default function HomeScreen({ navigation }: Props) {
       color: colors.danger,
       onPress: () => navigation.navigate('Deals'),
     },
+    {
+      key: 'parametric',
+      icon: 'cube',
+      label: '🔨 Generador',
+      color: '#A0522D',
+      onPress: () => navigation.navigate('ParametricHome'),
+    },
   ];
 
   return (

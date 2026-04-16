@@ -37,6 +37,8 @@ import JointTypesScreen from '../screens/calculators/JointTypesScreen';
 import WoodGuideScreen from '../screens/calculators/WoodGuideScreen';
 import ScrewGuideScreen from '../screens/calculators/ScrewGuideScreen';
 import ScrewSelectorScreen from '../screens/ScrewSelectorScreen';
+import ParametricHomeScreen from '../screens/parametric/ParametricHomeScreen';
+import ShelfGeneratorScreen from '../screens/parametric/ShelfGeneratorScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -65,6 +67,8 @@ export type RootStackParamList = {
   JointTypes: undefined;
   WoodGuide: undefined;
   ScrewGuide: undefined;
+  ParametricHome: undefined;
+  ShelfGenerator: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult; projectId?: string };
@@ -124,6 +128,8 @@ export default function AppNavigator() {
       <Stack.Screen name="JointTypes" component={JointTypesScreen} options={{ title: '🤝 Uniones de carpintería' }} />
       <Stack.Screen name="WoodGuide" component={WoodGuideScreen} options={{ title: '🌳 Guía de maderas' }} />
       <Stack.Screen name="ScrewGuide" component={ScrewGuideScreen} options={{ title: '🔩 Enciclopedia de tornillos' }} />
+      <Stack.Screen name="ParametricHome" component={ParametricHomeScreen} options={{ title: '🔨 Generador' }} />
+      <Stack.Screen name="ShelfGenerator" component={ShelfGeneratorScreen} options={{ title: '📚 Estantería' }} />
     </Stack.Navigator>
   );
 }

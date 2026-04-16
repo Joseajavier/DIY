@@ -1,0 +1,344 @@
+// ═══════════════════════════════════════════════════════════════
+// SHELF GENERATOR SCREEN — form de estantería paramétrica.
+// ───────────────────────────────────────────────────────────────
+// Usuario ajusta medidas, ve el despiece generado en vivo, y al pulsar
+// "Optimizar cortes" navega al optimizador existente (ProOptimization)
+// con las piezas generadas.
+// ═══════════════════════════════════════════════════════════════
+
+import React, { useMemo, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
+
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'ShelfGenerator'>;
+};
+
+export default function ShelfGeneratorScreen({ navigation }: Props) {
+  const [width, setWidth] = useState(String(SHELF_DEFAULTS.width));
+  const [height, setHeight] = useState(String(SHELF_DEFAULTS.height));
+  const [depth, setDepth] = useState(String(SHELF_DEFAULTS.depth));
+  const [numShelves, setNumShelves] = useState(String(SHELF_DEFAULTS.numShelves));
+  const [thickness, setThickness] = useState(String(SHELF_DEFAULTS.thickness));
+  const [hasBack, setHasBack] = useState(SHELF_DEFAULTS.hasBack);
+
+  const output = useMemo(() => {
+    const w = parseFloat(width) || 0;
+    const h = parseFloat(height) || 0;
+    const d = parseFloat(depth) || 0;
+    const n = parseInt(numShelves, 10);
+    const t = parseFloat(thickness) || 16;
+    return generateShelf({
+      width: w,
+      height: h,
+      depth: d,
+      numShelves: Number.isNaN(n) ? 0 : n,
+      thickness: t,
+      hasBack,
+      backThickness: SHELF_DEFAULTS.backThickness,
+    });
+  }, [width, height, depth, numShelves, thickness, hasBack]);
+
+  const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
+
+  const handleOptimize = () => {
+    navigation.navigate('ProOptimization', {
+      projectName: `Estantería ${width}×${height}×${depth}`,
+      pieces: output.pieces,
+      boardWidth: 244,
+      boardHeight: 122,
+    });
+  };
+
+  return (
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
+    >
+      <Text style={[typography.h1, { color: colors.accent }]}>
+        📚 Estantería
+      </Text>
+      <Text
+        style={[
+          typography.bodySmall,
+          { marginBottom: spacing.xl, color: colors.textSecondary },
+        ]}
+      >
+        Ajusta las medidas y obtén despiece + plan de cortes optimizado.
+      </Text>
+
+      {/* Inputs */}
+      <View style={[styles.card, shadows.sm]}>
+        <FormRow label="Ancho exterior" value={width} onChange={setWidth} unit="cm" />
+        <FormRow label="Alto exterior" value={height} onChange={setHeight} unit="cm" />
+        <FormRow label="Fondo" value={depth} onChange={setDepth} unit="cm" />
+        <FormRow
+          label="Número de baldas"
+          value={numShelves}
+          onChange={setNumShelves}
+          unit="ud"
+        />
+        <FormRow
+          label="Grosor tablero"
+          value={thickness}
+          onChange={setThickness}
+          unit="mm"
+        />
+
+        <TouchableOpacity
+          style={styles.toggleRow}
+          onPress={() => setHasBack(!hasBack)}
+          activeOpacity={0.7}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={typography.body}>Incluir trasero</Text>
+            <Text style={[typography.caption, { color: colors.textMuted }]}>
+              DM/contrachapado de {SHELF_DEFAULTS.backThickness}mm
+            </Text>
+          </View>
+          <View style={[styles.toggle, hasBack && styles.toggleOn]}>
+            <View style={[styles.toggleBall, hasBack && styles.toggleBallOn]} />
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      {/* Warnings */}
+      {output.warnings.length > 0 && (
+        <View style={[styles.warningCard, shadows.sm]}>
+          <Text style={[typography.label, { color: colors.warning }]}>
+            ⚠️ Atención
+          </Text>
+          {output.warnings.map((w, i) => (
+            <Text
+              key={i}
+              style={[
+                typography.bodySmall,
+                { color: colors.warning, marginTop: 4 },
+              ]}
+            >
+              • {w}
+            </Text>
+          ))}
+        </View>
+      )}
+
+      {/* Preview piezas */}
+      <Text
+        style={[
+          typography.label,
+          { marginTop: spacing.xl, marginBottom: spacing.md },
+        ]}
+      >
+        DESPIECE GENERADO
+      </Text>
+      <View style={[styles.card, shadows.sm]}>
+        <Text
+          style={[
+            typography.bodySmall,
+            { color: colors.textMuted, marginBottom: spacing.md },
+          ]}
+        >
+          {output.summary}
+        </Text>
+        {output.pieces.map((p, i) => (
+          <View key={i} style={styles.pieceRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.pieceName}>{p.name}</Text>
+              <Text style={styles.pieceDims}>
+                {p.width}×{p.height}cm · {p.thickness}mm
+              </Text>
+            </View>
+            <Text style={styles.pieceQty}>×{p.quantity}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Notas */}
+      {output.notes.length > 0 && (
+        <View style={styles.notesCard}>
+          {output.notes.map((n, i) => (
+            <Text
+              key={i}
+              style={[
+                typography.caption,
+                { color: colors.textSecondary, marginBottom: 4 },
+              ]}
+            >
+              • {n}
+            </Text>
+          ))}
+        </View>
+      )}
+
+      {/* CTA */}
+      <TouchableOpacity
+        style={[
+          styles.button,
+          shadows.md,
+          !canProceed && styles.buttonDisabled,
+        ]}
+        onPress={handleOptimize}
+        disabled={!canProceed}
+        activeOpacity={0.85}
+      >
+        <Text style={[typography.button, { color: colors.textOnAccent }]}>
+          🪚 Optimizar cortes
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
+
+// ── Sub-componente FormRow ───────────────────────────────────
+
+interface FormRowProps {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  unit: string;
+}
+
+function FormRow({ label, value, onChange, unit }: FormRowProps) {
+  return (
+    <View style={styles.formRow}>
+      <Text style={styles.formLabel}>{label}</Text>
+      <View style={styles.inputWrap}>
+        <TextInput
+          style={styles.input}
+          value={value}
+          onChangeText={onChange}
+          keyboardType="numeric"
+          selectTextOnFocus
+        />
+        <Text style={styles.unit}>{unit}</Text>
+      </View>
+    </View>
+  );
+}
+
+// ── Estilos ──────────────────────────────────────────────────
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.bg },
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
+
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  warningCard: {
+    backgroundColor: colors.warning + '15',
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.warning,
+  },
+  notesCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginTop: spacing.sm,
+    marginBottom: spacing.md,
+  },
+
+  // Inputs
+  formRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.md,
+  },
+  formLabel: { ...typography.body, flex: 1 },
+  inputWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.md,
+    width: 120,
+    backgroundColor: colors.bg,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: spacing.sm,
+    color: colors.text,
+    textAlign: 'right',
+    fontSize: 16,
+  },
+  unit: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginLeft: 4,
+  },
+
+  // Toggle
+  toggleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+    paddingVertical: spacing.sm,
+  },
+  toggle: {
+    width: 46,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: colors.border,
+    padding: 2,
+    justifyContent: 'center',
+  },
+  toggleOn: { backgroundColor: colors.accent },
+  toggleBall: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#fff',
+  },
+  toggleBallOn: { transform: [{ translateX: 20 }] },
+
+  // Piezas
+  pieceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  pieceName: { ...typography.body, fontWeight: '600' },
+  pieceDims: { ...typography.caption, color: colors.textMuted, marginTop: 2 },
+  pieceQty: {
+    ...typography.body,
+    fontWeight: '700',
+    color: colors.accent,
+    marginLeft: spacing.md,
+  },
+
+  // Botón
+  button: {
+    backgroundColor: colors.accent,
+    paddingVertical: 18,
+    borderRadius: radius.lg,
+    alignItems: 'center',
+    marginTop: spacing.xl,
+  },
+  buttonDisabled: {
+    backgroundColor: colors.textMuted,
+    opacity: 0.5,
+  },
+});
