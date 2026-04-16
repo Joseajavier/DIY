@@ -16,6 +16,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
+  Image,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
 import {
@@ -169,6 +170,17 @@ function ScrewCard({
       {/* Expandido */}
       {open && (
         <View style={styles.expandedSection}>
+          {/* Imagen del tornillo */}
+          {screw.imagenURL ? (
+            <Image
+              source={{ uri: screw.imagenURL }}
+              style={styles.screwImage}
+              resizeMode="contain"
+            />
+          ) : null}
+
+          <Text style={styles.porQueBox}>{screw.porQueEsMejor}</Text>
+
           <Text style={styles.description}>{screw.descripcion}</Text>
 
           <View style={styles.infoGrid}>
@@ -199,14 +211,24 @@ function ScrewCard({
             </Text>
           </View>
 
-          {screw.videoYT ? (
-            <TouchableOpacity
-              style={styles.videoBtn}
-              onPress={() => Linking.openURL(screw.videoYT)}
-            >
-              <Text style={styles.videoBtnText}>▶ Ver vídeo</Text>
-            </TouchableOpacity>
-          ) : null}
+          <View style={styles.linksRow}>
+            {screw.videoYT ? (
+              <TouchableOpacity
+                style={styles.videoBtn}
+                onPress={() => Linking.openURL(screw.videoYT)}
+              >
+                <Text style={styles.videoBtnText}>▶ Ver vídeo</Text>
+              </TouchableOpacity>
+            ) : null}
+            {screw.diagramaURL ? (
+              <TouchableOpacity
+                style={styles.diagramBtn}
+                onPress={() => Linking.openURL(screw.diagramaURL)}
+              >
+                <Text style={styles.diagramBtnText}>📖 Diagrama</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
       )}
     </TouchableOpacity>
@@ -514,8 +536,30 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     lineHeight: 20,
   },
-  videoBtn: {
+  screwImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: radius.md,
+    backgroundColor: colors.surfaceLight,
+    marginBottom: spacing.md,
+  },
+  porQueBox: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '600',
+    lineHeight: 20,
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  linksRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
     marginTop: spacing.sm,
+    flexWrap: 'wrap',
+  },
+  videoBtn: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.full,
@@ -527,6 +571,21 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 12,
     color: '#CC0000',
+  },
+  diagramBtn: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.full,
+    backgroundColor: colors.surfaceLight,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignSelf: 'flex-start',
+  },
+  diagramBtnText: {
+    ...typography.caption,
+    fontWeight: '700',
+    fontSize: 12,
+    color: colors.textSecondary,
   },
 
   // Errores
