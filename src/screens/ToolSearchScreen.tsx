@@ -175,95 +175,25 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
     });
   }, [results, showBrands, categoryId]);
 
-  const Chip = ({
-    label,
-    active,
-    onPress,
-    leftDot,
-    leftIcon,
-  }: {
-    label: string;
-    active: boolean;
-    onPress: () => void;
-    leftDot?: string;
-    leftIcon?: IconName;
-  }) => (
-    <TouchableOpacity
-      style={[styles.chip, active && styles.chipActive]}
-      onPress={onPress}
-    >
-      {leftDot && (
-        <View style={[styles.chipDot, { backgroundColor: leftDot }]} />
-      )}
-      {leftIcon && (
-        <Icon
-          name={leftIcon}
-          size={14}
-          color={active ? colors.primary : colors.textMuted}
-        />
-      )}
-      <Text
-        style={[
-          typography.caption,
-          { color: active ? colors.primary : colors.textMuted },
-        ]}
-      >
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={styles.container}>
       <TextInput style={styles.search} placeholder="Buscar herramienta..." placeholderTextColor={colors.textMuted} value={query} onChangeText={setQuery} />
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
-        <Chip label="Todas" active={!selectedBrand} onPress={() => setSelectedBrand('')} />
-        {brandsInPool.map(b => {
-          const logo = getBrandLogo(b.id);
-          return (
-            <TouchableOpacity
-              key={b.id}
-              style={[styles.chip, selectedBrand === b.id && styles.chipActive]}
-              onPress={() => setSelectedBrand(selectedBrand === b.id ? '' : b.id)}
-            >
-              {logo
-                ? <Image source={logo} style={{ width: 40, height: 16 }} resizeMode="contain" />
-                : <Text style={[typography.caption, { color: selectedBrand === b.id ? colors.primary : colors.textMuted }]}>{b.name}</Text>
-              }
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
-
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll} contentContainerStyle={styles.chipScrollContent}>
-        {TIERS.map((t) => (
-          <Chip
-            key={t.key || 'all'}
-            label={t.label}
-            leftDot={t.dot}
-            active={tier === t.key}
-            onPress={() => setTier(tier === t.key ? '' : (t.key as ToolTier))}
-          />
-        ))}
-        <View style={styles.divider} />
-        {USES.map((u) => (
-          <Chip
-            key={u.key || 'all'}
-            label={u.label}
-            active={use === u.key}
-            onPress={() => setUse(use === u.key ? '' : (u.key as ToolUse))}
-          />
-        ))}
-        <View style={styles.divider} />
-        {POWERS.map((p) => (
-          <Chip
-            key={p.key || 'all'}
-            label={p.label}
-            leftIcon={p.icon}
-            active={power === p.key}
-            onPress={() => setPower(power === p.key ? '' : (p.key as ToolPower))}
-          />
+        <TouchableOpacity
+          style={[styles.brandChip, !selectedBrand && styles.brandChipActive]}
+          onPress={() => setSelectedBrand('')}
+        >
+          <Text style={[styles.brandChipText, !selectedBrand && styles.brandChipTextActive]}>Todas</Text>
+        </TouchableOpacity>
+        {brandsInPool.map(b => (
+          <TouchableOpacity
+            key={b.id}
+            style={[styles.brandChip, selectedBrand === b.id && styles.brandChipActive]}
+            onPress={() => setSelectedBrand(selectedBrand === b.id ? '' : b.id)}
+          >
+            <Text style={[styles.brandChipText, selectedBrand === b.id && styles.brandChipTextActive]}>{b.name}</Text>
+          </TouchableOpacity>
         ))}
       </ScrollView>
 
@@ -443,22 +373,31 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   search: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, margin: spacing.xl, marginBottom: spacing.sm },
   chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.md },
-  chipScrollContent: { alignItems: 'center', paddingVertical: 2 },
-  chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
-    height: 34,
+  chipScrollContent: { alignItems: 'center', paddingVertical: 4 },
+  brandChip: {
+    height: 36,
     backgroundColor: colors.surface,
     borderRadius: radius.full,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.lg,
     marginRight: spacing.sm,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  chipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
-  chipDot: { width: 8, height: 8, borderRadius: 4 },
-  divider: { width: 1, backgroundColor: colors.border, marginHorizontal: spacing.sm },
+  brandChipActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  brandChipText: {
+    ...typography.caption,
+    color: colors.textMuted,
+    fontWeight: '500',
+  },
+  brandChipTextActive: {
+    color: '#fff',
+    fontWeight: '700',
+  },
   resultBar: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginHorizontal: spacing.xl, marginBottom: spacing.sm },
   sourceBadge: { ...typography.caption, color: colors.primary },
   groupToggle: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.full, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
