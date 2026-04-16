@@ -39,6 +39,7 @@ import ScrewGuideScreen from '../screens/calculators/ScrewGuideScreen';
 import ScrewSelectorScreen from '../screens/ScrewSelectorScreen';
 import ParametricHomeScreen from '../screens/parametric/ParametricHomeScreen';
 import ShelfGeneratorScreen from '../screens/parametric/ShelfGeneratorScreen';
+import TableGeneratorScreen from '../screens/parametric/TableGeneratorScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -69,6 +70,7 @@ export type RootStackParamList = {
   ScrewGuide: undefined;
   ParametricHome: undefined;
   ShelfGenerator: undefined;
+  TableGenerator: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult; projectId?: string };
@@ -130,6 +132,7 @@ export default function AppNavigator() {
       <Stack.Screen name="ScrewGuide" component={ScrewGuideScreen} options={{ title: '🔩 Enciclopedia de tornillos' }} />
       <Stack.Screen name="ParametricHome" component={ParametricHomeScreen} options={{ title: '🔨 Generador' }} />
       <Stack.Screen name="ShelfGenerator" component={ShelfGeneratorScreen} options={{ title: '📚 Estantería' }} />
+      <Stack.Screen name="TableGenerator" component={TableGeneratorScreen} options={{ title: '🪑 Mesa' }} />
     </Stack.Navigator>
   );
 }

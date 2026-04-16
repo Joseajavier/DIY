@@ -45,8 +45,10 @@ export default function ParametricHomeScreen({ navigation }: Props) {
       id: 'table',
       icon: '🪑',
       name: 'Mesa',
-      description: 'Mesa con 4 patas y tablero superior.',
-      available: false,
+      description:
+        'Mesa con 4 patas macizas y tablero superior. Faldón y balda inferior opcionales.',
+      available: true,
+      onPress: () => navigation.navigate('TableGenerator'),
     },
     {
       id: 'drawer',

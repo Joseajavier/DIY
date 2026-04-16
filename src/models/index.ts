@@ -224,8 +224,18 @@ export type ParametricTemplateId =
   | 'bench'
   | 'box';
 
+// Piezas de madera maciza (listones / tacos) que no van al optimizador
+// de cortes 2D sino al pedido de material lineal.
+export interface LumberPiece {
+  name: string;
+  section: string;   // ej. "6×6cm" o "4×8cm"
+  length: number;    // cm
+  quantity: number;
+}
+
 export interface ParametricOutput {
-  pieces: Piece[];
+  pieces: Piece[];                 // tableros → optimizador 2D
+  lumberPieces?: LumberPiece[];    // listones macizos → compra lineal
   summary: string;
   notes: string[];
   warnings: string[];
@@ -239,4 +249,15 @@ export interface ShelfGeneratorParams {
   thickness: number;      // mm — grosor tablero principal (16/19/25)
   hasBack: boolean;
   backThickness: number;  // mm — grosor trasero (normalmente 4)
+}
+
+export interface TableGeneratorParams {
+  length: number;         // cm — largo de la mesa
+  width: number;          // cm — ancho (fondo)
+  height: number;         // cm — alto total
+  legSection: number;     // cm — sección cuadrada de pata (ej 6 = 6×6cm)
+  topThickness: number;   // mm — grosor tablero superior
+  hasApron: boolean;      // faldón de refuerzo bajo el tablero
+  apronHeight: number;    // cm — altura del faldón
+  hasLowerShelf: boolean; // balda inferior entre patas
 }

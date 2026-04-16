@@ -6,3 +6,4 @@
 // ═══════════════════════════════════════════════════════════════
 
 export { generateShelf, SHELF_DEFAULTS } from './shelfGenerator';
+export { generateTable, TABLE_DEFAULTS } from './tableGenerator';
