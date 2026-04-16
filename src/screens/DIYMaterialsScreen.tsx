@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { Material, Tool } from '../models';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 
 type Props = {
@@ -18,7 +19,7 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={[typography.h1, { color: colors.primary, marginBottom: spacing.xl }]}>{t('materials.title')}</Text>
-      {result.materials.map((mat, i) => (
+      {result.materials.map((mat: Material, i: number) => (
         <View key={i} style={styles.row}>
           <Text style={typography.body}>{mat.name}</Text>
           <Text style={[typography.body, { color: colors.primary, fontWeight: '600' }]}>{mat.quantity} {mat.unit || 'ud'}</Text>
@@ -26,7 +27,7 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
       ))}
 
       <Text style={[typography.h1, { color: colors.primary, marginTop: spacing.xxl, marginBottom: spacing.xl }]}>{t('materials.tools')}</Text>
-      {result.tools.map((tool, i) => (
+      {result.tools.map((tool: Tool, i: number) => (
         <View key={i} style={styles.row}>
           <Text style={typography.body}>{tool.name}</Text>
           {tool.optional && <Text style={[typography.caption, { fontStyle: 'italic' }]}>{t('materials.optional')}</Text>}

@@ -128,7 +128,7 @@ export default function HomeScreen({ navigation }: Props) {
       {recentProjects.length > 0 && (
         <>
           <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>Proyectos recientes</Text>
-          {recentProjects.map((p) => (
+          {recentProjects.map((p: Project) => (
             <ProjectCard
               key={p.id}
               project={p}

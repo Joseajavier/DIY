@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { DIYStep } from '../models';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 
 type Props = {
@@ -41,7 +42,7 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
       </View>
 
       <Text style={[typography.label, { marginBottom: spacing.lg }]}>{t('diy.steps')}</Text>
-      {result.steps.map((step) => (
+      {result.steps.map((step: DIYStep) => (
         <View key={step.number} style={[styles.stepCard, shadows.sm]}>
           <View style={styles.stepNum}>
             <Text style={styles.stepNumText}>{step.number}</Text>

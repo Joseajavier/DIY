@@ -19,13 +19,13 @@ export default function ProjectsScreen({ navigation }: Props) {
   useFocusEffect(useCallback(() => { getProjects().then(setProjects); }, []));
 
   const filtered = search.trim()
-    ? projects.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+    ? projects.filter((p: Project) => p.name.toLowerCase().includes(search.toLowerCase()))
     : projects;
 
   const handleDelete = (id: string, name: string) => {
     Alert.alert(t('projects.delete'), t('projects.deleteConfirm', { name }), [
       { text: t('projects.cancel'), style: 'cancel' },
-      { text: t('projects.deleteBtn'), style: 'destructive', onPress: async () => { await deleteProject(id); setProjects(p => p.filter(x => x.id !== id)); } },
+      { text: t('projects.deleteBtn'), style: 'destructive', onPress: async () => { await deleteProject(id); setProjects((p: Project[]) => p.filter((x: Project) => x.id !== id)); } },
     ]);
   };
 
@@ -41,7 +41,7 @@ export default function ProjectsScreen({ navigation }: Props) {
         <TextInput style={styles.search} placeholder="Buscar proyecto..." placeholderTextColor={colors.textMuted} value={search} onChangeText={setSearch} />
       }
       data={filtered}
-      keyExtractor={item => item.id}
+      keyExtractor={(item: Project) => item.id}
       renderItem={({ item }) => (
         <ProjectCard
           project={item}
