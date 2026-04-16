@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   Linking,
   Image,
+  TextInput,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -82,15 +83,27 @@ function formatCost(min: number, max: number): string {
 export default function ProjectIdeasScreen({ navigation }: Props) {
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [difficulty, setDifficulty] = useState<DifficultyFilter>('all');
+  const [query, setQuery] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
     return PROJECT_IDEAS.filter((idea) => {
       if (category !== 'all' && idea.category !== category) return false;
       if (difficulty !== 'all' && idea.difficulty !== difficulty) return false;
+      if (q) {
+        const hay = [
+          idea.title,
+          idea.tagline,
+          idea.description,
+          ...(idea.tags ?? []),
+          ...(idea.materials ?? []),
+        ].join(' ').toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
       return true;
     });
-  }, [category, difficulty]);
+  }, [category, difficulty, query]);
 
   const renderCard = ({ item }: { item: ProjectIdea }) => {
     const open = expanded === item.id;
@@ -197,6 +210,17 @@ export default function ProjectIdeasScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.filters}>
+        {/* Buscador */}
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar proyecto..."
+          placeholderTextColor={colors.textMuted}
+          value={query}
+          onChangeText={setQuery}
+          clearButtonMode="while-editing"
+          returnKeyType="search"
+        />
+
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -260,6 +284,7 @@ export default function ProjectIdeasScreen({ navigation }: Props) {
         ListHeaderComponent={
           <Text style={styles.resultsLabel}>
             {filtered.length} idea{filtered.length === 1 ? '' : 's'}
+            {query.trim() ? ` para "${query.trim()}"` : ''}
           </Text>
         }
         ListEmptyComponent={
@@ -287,6 +312,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderLight,
+  },
+  searchInput: {
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.xs,
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    ...typography.body,
+    color: colors.text,
   },
   chipsRow: {
     paddingHorizontal: spacing.lg,
