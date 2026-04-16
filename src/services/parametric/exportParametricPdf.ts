@@ -10,8 +10,10 @@
 // Y tablas de despiece (tableros + listones) listas para comprar.
 // ═══════════════════════════════════════════════════════════════
 
-import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
+// expo-print y expo-sharing se cargan en tiempo de ejecución (lazy)
+// para evitar el crash "Cannot find native module 'ExpoPrint'" en Expo Go.
+// En Expo Go el PDF no está disponible; en un dev-build/release sí funciona.
+import { Alert } from 'react-native';
 import { ParametricOutput } from '../../models';
 
 interface Dims {
@@ -316,6 +318,12 @@ export async function exportParametricPdf(
   output: ParametricOutput
 ): Promise<string | null> {
   try {
+    // Lazy import — falla silenciosamente en Expo Go y funciona en dev-build
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const Print = require('expo-print') as typeof import('expo-print');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const Sharing = require('expo-sharing') as typeof import('expo-sharing');
+
     const html = buildHtml(title, dims, output);
     const { uri } = await Print.printToFileAsync({ html, base64: false });
 
@@ -329,6 +337,14 @@ export async function exportParametricPdf(
     }
     return uri;
   } catch (e) {
+    const msg = String(e);
+    if (msg.includes('native module') || msg.includes('ExpoPrint')) {
+      Alert.alert(
+        '📄 PDF no disponible en Expo Go',
+        'El export de PDF requiere un Development Build de la app.\n\nEjecuta: npx expo run:ios (o run:android)',
+        [{ text: 'Entendido' }]
+      );
+    }
     return null;
   }
 }
