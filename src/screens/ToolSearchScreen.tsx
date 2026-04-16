@@ -55,7 +55,8 @@ const tierLabels: Record<ToolTier, string> = { basic: 'Básica', mid: 'Media', p
 
 export default function ToolSearchScreen({ navigation, route }: Props) {
   const initialCategoryId = route.params?.categoryId ?? '';
-  const [query, setQuery] = useState('');
+  const initialQuery = route.params?.query ?? '';
+  const [query, setQuery] = useState(initialQuery);
   const [categoryId, setCategoryId] = useState(initialCategoryId);
   const [tier, setTier] = useState<ToolTier | ''>('');
   const [use, setUse] = useState<ToolUse | ''>('');

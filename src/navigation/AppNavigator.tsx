@@ -42,7 +42,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Feedback: undefined;
   ToolCategories: undefined;
-  ToolSearch: { categoryId?: string } | undefined;
+  ToolSearch: { categoryId?: string; query?: string } | undefined;
   WoodCategories: undefined;
   WoodCatalog: { categoryId?: string } | undefined;
   WoodzyHome: undefined;
