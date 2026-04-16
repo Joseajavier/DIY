@@ -14,17 +14,20 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  useWindowDimensions,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
+import { ShelfIsometric } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ShelfGenerator'>;
 };
 
 export default function ShelfGeneratorScreen({ navigation }: Props) {
+  const { width: screenWidth } = useWindowDimensions();
   const [width, setWidth] = useState(String(SHELF_DEFAULTS.width));
   const [height, setHeight] = useState(String(SHELF_DEFAULTS.height));
   const [depth, setDepth] = useState(String(SHELF_DEFAULTS.depth));
@@ -32,22 +35,26 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
   const [thickness, setThickness] = useState(String(SHELF_DEFAULTS.thickness));
   const [hasBack, setHasBack] = useState(SHELF_DEFAULTS.hasBack);
 
+  const previewSize = Math.min(screenWidth - spacing.xl * 2, 320);
+  const numericParams = useMemo(() => ({
+    w: parseFloat(width) || 0,
+    h: parseFloat(height) || 0,
+    d: parseFloat(depth) || 0,
+    n: Number.isNaN(parseInt(numShelves, 10)) ? 0 : parseInt(numShelves, 10),
+    t: parseFloat(thickness) || 16,
+  }), [width, height, depth, numShelves, thickness]);
+
   const output = useMemo(() => {
-    const w = parseFloat(width) || 0;
-    const h = parseFloat(height) || 0;
-    const d = parseFloat(depth) || 0;
-    const n = parseInt(numShelves, 10);
-    const t = parseFloat(thickness) || 16;
     return generateShelf({
-      width: w,
-      height: h,
-      depth: d,
-      numShelves: Number.isNaN(n) ? 0 : n,
-      thickness: t,
+      width: numericParams.w,
+      height: numericParams.h,
+      depth: numericParams.d,
+      numShelves: numericParams.n,
+      thickness: numericParams.t,
       hasBack,
       backThickness: SHELF_DEFAULTS.backThickness,
     });
-  }, [width, height, depth, numShelves, thickness, hasBack]);
+  }, [numericParams, hasBack]);
 
   const canProceed = output.pieces.length > 0 && output.warnings.length === 0;
 
@@ -72,11 +79,27 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
       <Text
         style={[
           typography.bodySmall,
-          { marginBottom: spacing.xl, color: colors.textSecondary },
+          { marginBottom: spacing.lg, color: colors.textSecondary },
         ]}
       >
         Ajusta las medidas y obtén despiece + plan de cortes optimizado.
       </Text>
+
+      {/* Preview 3D isométrico */}
+      <View style={[styles.previewCard, shadows.sm]}>
+        <ShelfIsometric
+          width={numericParams.w}
+          height={numericParams.h}
+          depth={numericParams.d}
+          numShelves={numericParams.n}
+          thickness={numericParams.t}
+          hasBack={hasBack}
+          displaySize={previewSize}
+        />
+        <Text style={[typography.caption, styles.previewCaption]}>
+          Vista 3D · {numericParams.w}×{numericParams.h}×{numericParams.d}cm
+        </Text>
+      </View>
 
       {/* Inputs */}
       <View style={[styles.card, shadows.sm]}>
@@ -238,6 +261,17 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     padding: spacing.lg,
     marginBottom: spacing.md,
+  },
+  previewCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+    alignItems: 'center',
+  },
+  previewCaption: {
+    color: colors.textMuted,
+    marginTop: spacing.sm,
   },
   warningCard: {
     backgroundColor: colors.warning + '15',
