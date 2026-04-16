@@ -186,15 +186,22 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         >
           <Text style={[styles.brandChipText, !selectedBrand && styles.brandChipTextActive]}>Todas</Text>
         </TouchableOpacity>
-        {brandsInPool.map(b => (
-          <TouchableOpacity
-            key={b.id}
-            style={[styles.brandChip, selectedBrand === b.id && styles.brandChipActive]}
-            onPress={() => setSelectedBrand(selectedBrand === b.id ? '' : b.id)}
-          >
-            <Text style={[styles.brandChipText, selectedBrand === b.id && styles.brandChipTextActive]}>{b.name}</Text>
-          </TouchableOpacity>
-        ))}
+        {brandsInPool.map(b => {
+          const logo = getBrandLogo(b.id);
+          const active = selectedBrand === b.id;
+          return (
+            <TouchableOpacity
+              key={b.id}
+              style={[styles.brandChip, active && styles.brandChipActive]}
+              onPress={() => setSelectedBrand(active ? '' : b.id)}
+            >
+              {logo
+                ? <Image source={logo} style={styles.brandChipLogo} resizeMode="contain" />
+                : <Text style={[styles.brandChipText, active && styles.brandChipTextActive]}>{b.name}</Text>
+              }
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
       <View style={styles.resultBar}>
@@ -375,10 +382,11 @@ const styles = StyleSheet.create({
   chipScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.md },
   chipScrollContent: { alignItems: 'center', paddingVertical: 4 },
   brandChip: {
-    height: 36,
+    height: 44,
+    minWidth: 72,
     backgroundColor: colors.surface,
-    borderRadius: radius.full,
-    paddingHorizontal: spacing.lg,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
     marginRight: spacing.sm,
     borderWidth: 1.5,
     borderColor: colors.border,
@@ -386,16 +394,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   brandChipActive: {
-    backgroundColor: colors.primary,
     borderColor: colors.primary,
+    borderWidth: 2,
+    backgroundColor: colors.primaryMuted,
+  },
+  brandChipLogo: {
+    width: 56,
+    height: 24,
   },
   brandChipText: {
     ...typography.caption,
     color: colors.textMuted,
-    fontWeight: '500',
+    fontWeight: '600',
+    textAlign: 'center',
   },
   brandChipTextActive: {
-    color: '#fff',
+    color: colors.primary,
     fontWeight: '700',
   },
   resultBar: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginHorizontal: spacing.xl, marginBottom: spacing.sm },
