@@ -6,8 +6,9 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { WoodFilter, WoodUse, WoodHardness, WoodPrice, WoodProduct } from '../models/wood';
 import { searchWood } from '../services/woodSearchService';
-import { WOOD_CATEGORIES } from '../data/woodData';
+import { WOOD_CATEGORIES, WOOD_PRODUCTS } from '../data/woodData';
 import { fetchWoodCatalog } from '../services/catalogApiClient';
+import ErrorState from '../components/ErrorState';
 import CatalogImage from '../components/CatalogImage';
 import { getWoodImageUrl } from '../utils/catalogImages';
 import { woodIcon } from '../utils/categoryIcons';
@@ -48,21 +49,36 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
   const [priceLevel, setPriceLevel] = useState<WoodPrice | ''>('');
   const [remoteProducts, setRemoteProducts] = useState<WoodProduct[] | null>(null);
   const [source, setSource] = useState<'loading' | 'online' | 'offline'>('loading');
+  const [fetchError, setFetchError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
-  // Intenta cargar el catalogo remoto al montar. Si falla, usa el local (fallback).
   useEffect(() => {
     let cancelled = false;
+    setSource('loading');
+    setFetchError(false);
     fetchWoodCatalog().then((res) => {
       if (cancelled) return;
       if (res && Array.isArray(res.products) && res.products.length > 0) {
         setRemoteProducts(res.products as WoodProduct[]);
         setSource('online');
       } else {
+        setFetchError(true);
         setSource('offline');
       }
     });
     return () => { cancelled = true; };
-  }, []);
+  }, [retryCount]);
+
+  const handleRetry = () => setRetryCount((c: number) => c + 1);
+
+  if (fetchError && WOOD_PRODUCTS.length === 0) {
+    return (
+      <ErrorState
+        message="No se pudo cargar el catálogo de maderas y no hay datos locales disponibles."
+        onRetry={handleRetry}
+      />
+    );
+  }
 
   const filter: WoodFilter = {
     query: query || undefined,
