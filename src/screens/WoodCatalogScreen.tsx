@@ -77,7 +77,7 @@ export default function WoodCatalogScreen({ navigation, route }: Props) {
     [query, categoryId, use, hardness, priceLevel, remoteProducts]
   );
 
-  const Chip = ({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) => (
+  const Chip = ({ label, active, onPress }: { label: string; active: boolean; onPress: () => void; key?: string | number }) => (
     <TouchableOpacity style={[styles.chip, active && styles.chipActive]} onPress={onPress}>
       <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted }]}>{label}</Text>
     </TouchableOpacity>

@@ -83,9 +83,9 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
   const diffLabel = diffLabels[difficulty];
 
   // Si hay steps en DB, los usamos; si no, fallback al result en memoria
-  const renderableSteps =
+  const renderableSteps: ProjectStep[] =
     steps ??
-    result.steps.map<ProjectStep>((s) => ({
+    result.steps.map<ProjectStep>((s: any) => ({
       number: s.number,
       title: s.title,
       description: s.description,
@@ -99,9 +99,9 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
   const handleToggle = async (step: ProjectStep) => {
     if (!projectId || !step.id) return; // Modo preview, no se persiste
     // Optimistic update
-    setSteps((prev) =>
+    setSteps((prev: ProjectStep[] | null) =>
       prev
-        ? prev.map((s) =>
+        ? prev.map((s: ProjectStep) =>
             s.id === step.id ? { ...s, completed: !s.completed } : s,
           )
         : prev,
@@ -110,9 +110,9 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
       await toggleStepDb(step.id);
     } catch {
       // Revertir si falla
-      setSteps((prev) =>
+      setSteps((prev: ProjectStep[] | null) =>
         prev
-          ? prev.map((s) =>
+          ? prev.map((s: ProjectStep) =>
               s.id === step.id ? { ...s, completed: !s.completed } : s,
             )
           : prev,

@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../theme';
-import { ToolFilter, ToolTier, ToolUse, ToolPower, ToolProduct } from '../models/tools';
+import { ToolFilter, ToolTier, ToolUse, ToolPower, ToolProduct, ToolBrand } from '../models/tools';
 import { searchTools, getToolBrandName, getToolTypeName } from '../services/toolSearchService';
 import { TOOL_TYPES, TOOL_PRODUCTS, TOOL_BRANDS } from '../data/toolData';
 import { fetchToolCatalog } from '../services/catalogApiClient';
@@ -110,8 +110,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
 
   // Marcas que realmente tienen productos en el pool actual
   const brandsInPool = useMemo(() => {
-    const ids = new Set(productPool.map(p => p.brandId));
-    return TOOL_BRANDS.filter(b => ids.has(b.id));
+    const ids = new Set(productPool.map((p: ToolProduct) => p.brandId));
+    return TOOL_BRANDS.filter((b: ToolBrand) => ids.has(b.id));
   }, [productPool]);
 
   const results = useMemo(() => {
@@ -186,7 +186,7 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         >
           <Text style={[styles.brandChipText, !selectedBrand && styles.brandChipTextActive]}>Todas</Text>
         </TouchableOpacity>
-        {brandsInPool.map(b => {
+        {brandsInPool.map((b: ToolBrand) => {
           const logo = getBrandLogo(b.id);
           const active = selectedBrand === b.id;
           return (
@@ -229,10 +229,10 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
 
       <SectionList
         sections={sections}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: ToolProduct) => item.id}
         contentContainerStyle={{ padding: spacing.xl, paddingTop: 0 }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section }) => {
+        renderSectionHeader={({ section }: { section: ToolSection }) => {
           if (section.isBrandGroup) {
             // ── Cabecera de marca ──────────────────────────────
             const tiers = [...new Set(section.data.map((p: ToolProduct) => p.tier))];
