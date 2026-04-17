@@ -11,8 +11,18 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Svg, { Polygon, Line, G } from 'react-native-svg';
+import Constants from 'expo-constants';
 import { colors } from '../theme';
+
+// Lazy require — evita crash en Expo Go donde react-native-svg no está disponible
+const IS_EXPO_GO = Constants.appOwnership === 'expo';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let Svg: any, Polygon: any, Line: any, G: any;
+if (!IS_EXPO_GO) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const r = require('react-native-svg');
+  Svg = r.default; Polygon = r.Polygon; Line = r.Line; G = r.G;
+}
 
 interface Props {
   width: number;       // cm — ancho exterior
@@ -59,6 +69,7 @@ export default function ShelfIsometric({
   displaySize = 300,
   frontPanels,
 }: Props) {
+  if (IS_EXPO_GO) return null;
   // ── Validaciones tempranas ──────────────────────────────────
   if (width <= 0 || height <= 0 || depth <= 0) {
     return <View style={[styles.placeholder, { width: displaySize, height: displaySize }]} />;

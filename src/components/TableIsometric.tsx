@@ -15,8 +15,18 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Svg, { Polygon } from 'react-native-svg';
+import Constants from 'expo-constants';
 import { colors } from '../theme';
+
+// Lazy require — evita crash en Expo Go donde react-native-svg no está disponible
+const IS_EXPO_GO = Constants.appOwnership === 'expo';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let Svg: any, Polygon: any;
+if (!IS_EXPO_GO) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const r = require('react-native-svg');
+  Svg = r.default; Polygon = r.Polygon;
+}
 
 interface Props {
   length: number;       // cm — largo (eje X)
@@ -51,6 +61,7 @@ export default function TableIsometric({
   hasLowerShelf,
   displaySize = 300,
 }: Props) {
+  if (IS_EXPO_GO) return null;
   if (length <= 0 || width <= 0 || height <= 0 || legSection <= 0) {
     return (
       <View
