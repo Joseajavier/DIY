@@ -365,7 +365,7 @@ export default function OnboardingScreen({ navigation }: Props) {
         <Text style={styles.subtitle}>{item.desc}</Text>
 
         <View style={styles.bullets}>
-          {item.bullets.map((b, i) => (
+          {item.bullets.map((b: { icon: string; text: string }, i: number) => (
             <View key={i} style={styles.bullet}>
               <View style={styles.bulletIconWrap}>
                 <Text style={styles.bulletIcon}>{b.icon}</Text>
@@ -396,7 +396,7 @@ export default function OnboardingScreen({ navigation }: Props) {
       <FlatList
         ref={listRef}
         data={slides}
-        keyExtractor={(s) => s.key}
+        keyExtractor={(s: Slide) => s.key}
         renderItem={renderItem}
         horizontal
         pagingEnabled

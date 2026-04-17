@@ -88,7 +88,7 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
   const [checked, setChecked] = useState<Set<number>>(new Set());
 
   const toggle = (i: number) =>
-    setChecked(prev => { const s = new Set(prev); s.has(i) ? s.delete(i) : s.add(i); return s; });
+    setChecked((prev: Set<number>) => { const s = new Set(prev); s.has(i) ? s.delete(i) : s.add(i); return s; });
 
   // Coste total estimado
   const totalEst = useMemo(() => {

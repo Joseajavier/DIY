@@ -20,6 +20,7 @@ import {
   ScrollView,
   Linking,
   TouchableOpacity,
+  GestureResponderEvent,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../theme';
 import Icon from './Icon';
@@ -65,7 +66,7 @@ export default function RetailerSheet({
       onRequestClose={onClose}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
-        <Pressable style={styles.sheet} onPress={(e) => e.stopPropagation()}>
+        <Pressable style={styles.sheet} onPress={(e: GestureResponderEvent) => e.stopPropagation()}>
           {/* Handle */}
           <View style={styles.handle} />
 

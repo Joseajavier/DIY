@@ -237,7 +237,7 @@ export default function DealsScreen({ navigation }: Props) {
       ) : (
         <FlatList
           data={deals}
-          keyExtractor={(d) => d.id}
+          keyExtractor={(d: Deal) => d.id}
           renderItem={renderItem}
           contentContainerStyle={styles.list}
           refreshControl={

@@ -148,7 +148,7 @@ export default function FavoritesScreen({ navigation }: Props) {
       ) : (
         <FlatList
           data={favoriteProducts}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: ToolProduct) => item.id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
