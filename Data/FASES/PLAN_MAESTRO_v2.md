@@ -1,7 +1,7 @@
 # PLAN MAESTRO DIY APP v2
 
-**Fecha:** 2026-04-14 | **Última actualización:** 2026-04-16 (log nocturno automático)
-**Estado actual:** MVP funcional con 16+ pantallas, backend con IA, catalogos conectados al backend — Bloque A en progreso (107 herramientas · 28 maderas en main)
+**Fecha:** 2026-04-14 | **Última actualización:** 2026-04-17 (log nocturno automático)
+**Estado actual:** MVP funcional con 16+ pantallas + 8 pantallas paramétricas nuevas, backend con IA, catalogos conectados al backend — Bloque A en progreso (112 herramientas · 31 maderas en main)
 
 ---
 
@@ -37,9 +37,9 @@
 
 #### A1 — Catalogo completo de herramientas
 **Antes:** Fases 13 + 16 (duplicadas)
-**Estado:** 🟡 EN PROGRESO — **107 / 150 productos** (71%) — actualizado 2026-04-16
+**Estado:** 🟡 EN PROGRESO — **112 / 150 productos** (74.7%) — actualizado 2026-04-17
 **Que hacer:**
-- ~~Ampliar de 76~~ → ya en 107 (+31 desde base, +9 esta noche). Faltan ~43 para llegar a 150
+- ~~Ampliar de 76~~ → ya en 112 (+36 desde base, +14 en dos noches). Faltan ~38 para llegar a 150
 - Marcas faltantes: Tacklife, Hychika, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop
 - Tipos faltantes: sierra de marqueteria, torno, lijadora de tambor, escopleadora, espigadora, fresadora de mesa, clavadora
 - Rating y reviewCount reales (investigar Amazon/reviews)
@@ -49,10 +49,10 @@
 
 #### A2 — Catalogo completo de maderas
 **Antes:** Fase 14 (parcialmente hecha)
-**Estado:** 🟡 EN PROGRESO — **28 / 40 maderas** (70%) en `backend/data/wood.json` — actualizado 2026-04-16
+**Estado:** 🟡 EN PROGRESO — **31 / 40 maderas** (77.5%) en `backend/data/wood.json` — actualizado 2026-04-17
 ✅ **`backend/data/wood.json` CREADO** — endpoint GET /catalog/wood activo
 **Que hacer:**
-- ~~Ampliar de 20~~ → ya en 28 (+8 total, +3 esta noche). Faltan ~12 para llegar a 40
+- ~~Ampliar de 20~~ → ya en 31 (+11 total, +3 esta noche). Faltan ~9 para llegar a 40
 - Completar precios reales mercado español 2024-2026
 - Añadir variantes de tamaño con precios por cada madera
 - ~~Crear `backend/data/wood.json`~~ ✅ HECHO (2026-04-16)
@@ -329,8 +329,82 @@ Fuente: `Data/FASES/BUG_FIXER_2026-04-16.md` + commit `5b91fa0`
 
 ### Tareas para proxima noche
 
-1. Completar A1: añadir ~43 herramientas más (marcas: Tacklife, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop)
-2. Completar A2: añadir ~12 maderas más para llegar a 40
+1. Completar A1: añadir ~38 herramientas más (marcas: Tacklife, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop)
+2. Completar A2: añadir ~9 maderas más para llegar a 40
 3. Completar A3: añadir indicador "datos actualizados" vs "datos offline" (~0.5h)
-4. Fix TS2591: `process.env` en `app.config.ts` y `require` en `settingsStorage.ts` (4 errores lógicos reales)
-5. Fix TS2322: `key` prop en Chips y `HomeScreen.tsx:133` (9 errores lógicos reales)
+4. **URGENTE:** `npm install` / `npx expo install @types/react @types/react-native` — elimina ~320 de 399 errores TS de un golpe
+5. Fix TS lógicos: CompareSheet children? + SectionTitle React.ReactNode + ProjectDetailScreen callbacks
+
+---
+
+## LOG NOCTURNO 2026-04-17
+
+### Commits integrados (16 commits nocturnos ✅)
+
+| # | SHA | Mensaje |
+|---|-----|---------|
+| 1 | `61bc642` | feat(parametric): generador paramétrico de muebles — plantilla estantería (Fase 0) |
+| 2 | `49c2a18` | feat(parametric): vista 3D isométrica de la estantería (Fase 1) |
+| 3 | `c52317e` | feat(parametric): plantilla mesa con patas macizas (Fase 2) |
+| 4 | `b649319` | feat(parametric): vista 3D mesa + plantilla caja (Fase 3) |
+| 5 | `7336de7` | feat(parametric): 3 plantillas nuevas — cajonera, armario, banco (Fase 4) |
+| 6 | `bec9139` | feat(parametric): guardar muebles paramétricos como proyecto (Fase 5) |
+| 7 | `c13e60b` | feat(parametric): preview 3D con puertas y cajones reales |
+| 8 | `837af00` | feat(parametric): añadir exportar PDF del despiece a Cajonera/Armario/Banco (Fase 6) |
+| 9 | `cebe57b` | feat(parametric): lista automática de herrajes por plantilla (Fase 22.2) |
+| 10 | `ea3a563` | chore(parametric): completar wiring de Fase 6 (export PDF) |
+| 11 | `67a2937` | fix(pdf): lazy load expo-print para evitar crash en Expo Go |
+| 12 | `67e316d` | feat(catalog): +5 tools +3 wood (adaptive 2026-04-17) |
+| 13 | `00ebd20` | fix(D0): aplicar 3 fixes de tipado del QA (2026-04-17) |
+| 14 | `1790886` | feat: avance feature #2 (WoodCatalogScreen error state + retry) |
+| 15 | `20b854d` | chore(qa): informe diario 2026-04-17 (delta: +233 errores) |
+| 16 | `50912d0` | fix(ts): -7 errores TS (sweeper 2026-04-17) |
+
+### Productos en catalogos
+
+- Herramientas (`backend/data/tools.json`): **112 productos** (de 107 → +5 esta noche)
+- Maderas (`backend/data/wood.json`): **31 maderas** (de 28 → +3 esta noche)
+
+### Bloque A — progreso acumulado
+
+- A1 (tools): **112/150 → 74.7%** (+3.7pp vs ayer 71%)
+- A2 (wood): **31/40 → 77.5%** (+7.5pp vs ayer 70%)
+- A3 (conectar): **85%** — sin cambios; pendiente indicador online/offline
+
+### Errores TypeScript (medidos con npx tsc --noEmit)
+
+| Scope | Ayer | Hoy | Delta |
+|-------|------|-----|-------|
+| Frontend (raíz) | 296 | **399** | **+103 ⚠️ PEOR** |
+| Backend (`backend/`) | 1 | **1** | = |
+| **TOTAL** | **297** | **400** | **+103** |
+
+**Causa:** Feature Builder añadió 8 pantallas paramétricas nuevas sin `@types/react` instalado (~200 errores nuevos). Bug Fixer (-15) + TS Sweeper (-7) compensaron parcialmente. El 80% de los 399 errores son infraestructura (resuelven con `npm install`).
+
+### Fixes aplicados
+
+| Fix | Archivo | Delta |
+|-----|---------|-------|
+| Chip key prop | `src/screens/WoodCatalogScreen.tsx` | -4 |
+| setState callbacks tipados | `src/screens/DIYStepsScreen.tsx` | -7 |
+| callbacks + ToolBrand import | `src/screens/ToolSearchScreen.tsx` | -4 |
+| TS Sweeper (-7) | varios | -7 |
+| **Total** | | **-22 errores TS** |
+
+### Feature principal esta noche (Feature Builder)
+
+**Generador paramétrico de muebles — Fases 0–6 (Fase 22 del roadmap)**
+- 8 nuevas pantallas: ShelfGenerator, TableGenerator, CabinetGenerator, BenchGenerator, DrawerCabinetGenerator, BoxGenerator, ParametricHome + exportParametricPdf
+- Preview 3D isométrico con puertas y cajones reales
+- Exportar PDF del despiece (expo-print con lazy load para Expo Go)
+- Guardar muebles paramétricos como proyectos en SQLite
+- Lista automática de herrajes por plantilla
+- CompareSheet nuevo (comparativa visual de herramientas)
+
+### Tareas para proxima noche (2026-04-18)
+
+1. **PRIORIDAD ABSOLUTA:** Ejecutar `npx expo install @types/react @types/react-native typescript` → elimina ~320/399 errores TS de un golpe
+2. Bug Fixer: Top 5 bugs del QA (CompareSheet, SectionTitle, ProjectDetailScreen, exportParametricPdf, pantallas paramétricas ×6)
+3. Completar A1: ~38 herramientas más (marcas: Tacklife, Ridgid, Fein, Powermatic, Jet, Laguna, SawStop)
+4. Completar A2: ~9 maderas más (bambú, abeto Douglas, cedro rojo, sapele, meranti, pino silvestre macizo)
+5. Completar A3: indicador "datos actualizados" vs "datos offline"
