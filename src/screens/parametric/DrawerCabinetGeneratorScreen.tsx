@@ -25,6 +25,7 @@ import {
 } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -104,7 +105,7 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D — aproximado con ShelfIsometric */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <ShelfIsometric
+        <IsometricWrapper><ShelfIsometric
           width={numericParams.w}
           height={numericParams.h}
           depth={numericParams.d}
@@ -114,6 +115,7 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
           displaySize={previewSize}
           frontPanels={{ type: 'drawer', count: numericParams.n }}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D aprox. · {numericParams.w}×{numericParams.h}×{numericParams.d}cm
         </Text>

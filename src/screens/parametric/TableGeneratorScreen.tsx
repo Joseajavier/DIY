@@ -23,6 +23,7 @@ import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateTable, TABLE_DEFAULTS } from '../../services/parametric';
 import { TableIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -96,7 +97,7 @@ export default function TableGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <TableIsometric
+        <IsometricWrapper><TableIsometric
           length={numericParams.len}
           width={numericParams.w}
           height={numericParams.h}
@@ -107,6 +108,7 @@ export default function TableGeneratorScreen({ navigation }: Props) {
           hasLowerShelf={hasLowerShelf}
           displaySize={previewSize}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.len}×{numericParams.w}×{numericParams.h}cm
         </Text>

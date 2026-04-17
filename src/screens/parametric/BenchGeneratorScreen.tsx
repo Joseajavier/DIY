@@ -24,6 +24,7 @@ import {
 } from '../../services/parametric';
 import { TableIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -94,7 +95,7 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D — reusa TableIsometric sin faldón */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <TableIsometric
+        <IsometricWrapper><TableIsometric
           length={numericParams.len}
           width={numericParams.w}
           height={numericParams.h}
@@ -105,6 +106,7 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
           hasLowerShelf={false}
           displaySize={previewSize}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.len}×{numericParams.w}×{numericParams.h}cm
           {hasBackrest ? ` + respaldo ${numericParams.bh}cm` : ''}

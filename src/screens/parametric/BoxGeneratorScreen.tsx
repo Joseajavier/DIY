@@ -21,6 +21,7 @@ import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateBox, BOX_DEFAULTS } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -89,7 +90,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <ShelfIsometric
+        <IsometricWrapper><ShelfIsometric
           width={numericParams.len}
           height={numericParams.h}
           depth={numericParams.w}
@@ -98,6 +99,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
           hasBack={hasBottom}
           displaySize={previewSize}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.len}×{numericParams.w}×{numericParams.h}cm
         </Text>

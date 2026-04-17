@@ -22,6 +22,7 @@ import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -92,7 +93,7 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D isométrico */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <ShelfIsometric
+        <IsometricWrapper><ShelfIsometric
           width={numericParams.w}
           height={numericParams.h}
           depth={numericParams.d}
@@ -101,6 +102,7 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
           hasBack={hasBack}
           displaySize={previewSize}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.w}×{numericParams.h}×{numericParams.d}cm
         </Text>

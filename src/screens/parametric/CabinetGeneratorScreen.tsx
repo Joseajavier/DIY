@@ -24,6 +24,7 @@ import {
 } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
+import IsometricWrapper from '../../components/IsometricWrapper';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -97,7 +98,7 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
-        <ShelfIsometric
+        <IsometricWrapper><ShelfIsometric
           width={numericParams.w}
           height={numericParams.h}
           depth={numericParams.d}
@@ -107,6 +108,7 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
           displaySize={previewSize}
           frontPanels={{ type: 'door', count: numDoors }}
         />
+        </IsometricWrapper>
         <Text style={[typography.caption, styles.previewCaption]}>
           Vista 3D · {numericParams.w}×{numericParams.h}×{numericParams.d}cm ·
           {' '}{numDoors} puerta{numDoors === 1 ? '' : 's'}
