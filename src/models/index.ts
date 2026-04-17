@@ -222,7 +222,19 @@ export type ParametricTemplateId =
   | 'drawer'
   | 'cabinet'
   | 'bench'
-  | 'box';
+  | 'box'
+  | 'desk';
+
+export interface DeskGeneratorParams {
+  length: number;       // cm — largo del tablero
+  width: number;        // cm — fondo del tablero
+  height: number;       // cm — altura total
+  legSection: number;   // cm — sección de pata cuadrada
+  topThickness: number; // mm — grosor tablero
+  hasDrawer: boolean;   // cajón lateral bajo el tablero
+  hasShelf: boolean;    // balda inferior entre patas
+  numLegs: 4 | 6;       // 4 patas estándar o 6 para escritorios largos
+}
 
 // Piezas de madera maciza (listones / tacos) que no van al optimizador
 // de cortes 2D sino al pedido de material lineal.

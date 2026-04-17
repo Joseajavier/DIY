@@ -86,6 +86,15 @@ export default function ParametricHomeScreen({ navigation }: Props) {
       available: true,
       onPress: () => navigation.navigate('BenchGenerator'),
     },
+    {
+      id: 'desk',
+      icon: '🖥️',
+      name: 'Escritorio',
+      description:
+        'Tablero + patas macizas + faldones de rigidez. Cajón y balda opcionales.',
+      available: true,
+      onPress: () => navigation.navigate('DeskGenerator'),
+    },
   ];
 
   return (

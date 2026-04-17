@@ -44,6 +44,7 @@ import BoxGeneratorScreen from '../screens/parametric/BoxGeneratorScreen';
 import DrawerCabinetGeneratorScreen from '../screens/parametric/DrawerCabinetGeneratorScreen';
 import CabinetGeneratorScreen from '../screens/parametric/CabinetGeneratorScreen';
 import BenchGeneratorScreen from '../screens/parametric/BenchGeneratorScreen';
+import DeskGeneratorScreen from '../screens/parametric/DeskGeneratorScreen';
 import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
@@ -79,6 +80,7 @@ export type RootStackParamList = {
   DrawerCabinetGenerator: undefined;
   CabinetGenerator: undefined;
   BenchGenerator: undefined;
+  DeskGenerator: undefined;
   ModeSelection: undefined;
   DIYInput: undefined;
   DIYSteps: { result: DIYResult; projectId?: string };
@@ -145,6 +147,7 @@ export default function AppNavigator() {
       <Stack.Screen name="DrawerCabinetGenerator" component={DrawerCabinetGeneratorScreen} options={{ title: '🗄️ Cajonera' }} />
       <Stack.Screen name="CabinetGenerator" component={CabinetGeneratorScreen} options={{ title: '🚪 Armario' }} />
       <Stack.Screen name="BenchGenerator" component={BenchGeneratorScreen} options={{ title: '🪵 Banco' }} />
+      <Stack.Screen name="DeskGenerator" component={DeskGeneratorScreen} options={{ title: '🖥️ Escritorio' }} />
     </Stack.Navigator>
   );
 }
