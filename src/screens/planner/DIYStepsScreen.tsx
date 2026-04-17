@@ -19,13 +19,13 @@ import {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { ProjectStep } from '../models';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { ProjectStep } from '../../models';
 import {
   getStepsByProject,
   toggleStep as toggleStepDb,
-} from '../storage/stepRepository';
-import { colors, spacing, radius, typography, shadows } from '../theme';
+} from '../../storage/stepRepository';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DIYSteps'>;

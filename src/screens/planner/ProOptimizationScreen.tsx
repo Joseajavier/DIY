@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensio
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { optimizeCuts } from '../services/cuttingOptimizer';
-import { generateMaterials } from '../services/materialsGenerator';
-import { saveOptimization } from '../storage/optimizationRepository';
-import { createMaterials } from '../storage/materialRepository';
-import { getLastProjectId } from '../storage/settingsStorage';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { MetricCard, BoardDiagram } from '../components';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { optimizeCuts } from '../../services/cuttingOptimizer';
+import { generateMaterials } from '../../services/materialsGenerator';
+import { saveOptimization } from '../../storage/optimizationRepository';
+import { createMaterials } from '../../storage/materialRepository';
+import { getLastProjectId } from '../../storage/settingsStorage';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { MetricCard, BoardDiagram } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ProOptimization'>;

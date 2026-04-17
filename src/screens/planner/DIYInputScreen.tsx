@@ -5,15 +5,15 @@ import {
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { generateDIYProject } from '../services/diyGenerator';
-import { generateDIYWithAI } from '../services/apiClient';
-import { createProject } from '../storage/projectRepository';
-import { createMaterials } from '../storage/materialRepository';
-import { createSteps } from '../storage/stepRepository';
-import { setLastProjectId } from '../storage/settingsStorage';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { DIYResult } from '../models';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { generateDIYProject } from '../../services/diyGenerator';
+import { generateDIYWithAI } from '../../services/apiClient';
+import { createProject } from '../../storage/projectRepository';
+import { createMaterials } from '../../storage/materialRepository';
+import { createSteps } from '../../storage/stepRepository';
+import { setLastProjectId } from '../../storage/settingsStorage';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { DIYResult } from '../../models';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'DIYInput'> };
 

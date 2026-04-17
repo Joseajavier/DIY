@@ -3,17 +3,17 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share, Alert, Tex
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { Project, Piece, Material, StoreOption, OptimizationRow, ProjectStep } from '../models';
-import { getProjectById } from '../storage/projectRepository';
-import { getPiecesByProject } from '../storage/pieceRepository';
-import { getMaterialsByProject } from '../storage/materialRepository';
-import { getOptimizationByProject } from '../storage/optimizationRepository';
-import { getShopOptionsByProject } from '../storage/shopRepository';
-import { getStepsByProject, toggleStep as toggleStepDb } from '../storage/stepRepository';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { Card, EfficiencyGauge } from '../components';
-import { useProjects } from '../hooks/useProjects';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { Project, Piece, Material, StoreOption, OptimizationRow, ProjectStep } from '../../models';
+import { getProjectById } from '../../storage/projectRepository';
+import { getPiecesByProject } from '../../storage/pieceRepository';
+import { getMaterialsByProject } from '../../storage/materialRepository';
+import { getOptimizationByProject } from '../../storage/optimizationRepository';
+import { getShopOptionsByProject } from '../../storage/shopRepository';
+import { getStepsByProject, toggleStep as toggleStepDb } from '../../storage/stepRepository';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { Card, EfficiencyGauge } from '../../components';
+import { useProjects } from '../../hooks/useProjects';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ProjectDetail'>;

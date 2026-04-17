@@ -1,11 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // TOOL CATEGORIES SCREEN — grid de subcategorías de herramientas.
 // ───────────────────────────────────────────────────────────────
-// TEMA CLARO unificado con el resto de la app (antes era oscuro
-// estilo Parkside; se cambió para no mezclar temas).
-//
-// Estructura: grid de tarjetas con icono vectorial + nombre +
-// contador de productos. Tap → ToolSearch filtrado por categoryId.
+// Refactorizado a CategoryCard + SectionHeader (fase 13).
+// Quitado el contador redundante de "tipos" (ruido informativo).
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useEffect, useState } from 'react';
@@ -18,12 +15,13 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../data/toolData';
-import { fetchToolCatalog } from '../services/catalogApiClient';
-import Icon from '../components/Icon';
-import { categoryIcon, categoryColor } from '../utils/categoryIcons';
+import { useTranslation } from 'react-i18next';
+import { RootStackParamList } from '../../../navigation/AppNavigator';
+import { colors, spacing, radius, typography } from '../../../theme';
+import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../../../data/toolData';
+import { fetchToolCatalog } from '../../../services/catalogApiClient';
+import { CategoryCard, SectionHeader, Icon } from '../../../components';
+import { categoryIcon, categoryColor } from '../../../utils/categoryIcons';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ToolCategories'>;
@@ -32,11 +30,11 @@ type Props = {
 type CategoryCount = {
   id: string;
   name: string;
-  typeCount: number;
   productCount: number;
 };
 
 export default function ToolCategoriesScreen({ navigation }: Props) {
+  const { t } = useTranslation();
   const [counts, setCounts] = useState<CategoryCount[]>([]);
   const [total, setTotal] = useState(0);
 
@@ -45,9 +43,9 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
 
     const computeFromLocal = () => {
       const typesByCategory: Record<string, string[]> = {};
-      for (const t of TOOL_TYPES) {
-        if (!typesByCategory[t.categoryId]) typesByCategory[t.categoryId] = [];
-        typesByCategory[t.categoryId].push(t.id);
+      for (const tt of TOOL_TYPES) {
+        if (!typesByCategory[tt.categoryId]) typesByCategory[tt.categoryId] = [];
+        typesByCategory[tt.categoryId].push(tt.id);
       }
       const productsByType: Record<string, number> = {};
       for (const p of TOOL_PRODUCTS) {
@@ -59,12 +57,7 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           (acc, tid) => acc + (productsByType[tid] || 0),
           0,
         );
-        return {
-          id: c.id,
-          name: c.name,
-          typeCount: typeIds.length,
-          productCount,
-        };
+        return { id: c.id, name: c.name, productCount };
       });
     };
 
@@ -73,12 +66,12 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
         if (cancelled) return;
         if (res && Array.isArray(res.products) && res.products.length > 0) {
           const typesByCategory: Record<string, string[]> = {};
-          for (const t of (res.types || TOOL_TYPES) as Array<{
+          for (const tt of (res.types || TOOL_TYPES) as Array<{
             id: string;
             categoryId: string;
           }>) {
-            if (!typesByCategory[t.categoryId]) typesByCategory[t.categoryId] = [];
-            typesByCategory[t.categoryId].push(t.id);
+            if (!typesByCategory[tt.categoryId]) typesByCategory[tt.categoryId] = [];
+            typesByCategory[tt.categoryId].push(tt.id);
           }
           const productsByType: Record<string, number> = {};
           for (const p of res.products as Array<{ typeId: string }>) {
@@ -95,25 +88,18 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
                 (acc, tid) => acc + (productsByType[tid] || 0),
                 0,
               );
-              return {
-                id: c.id,
-                name: c.name,
-                typeCount: typeIds.length,
-                productCount,
-              };
+              return { id: c.id, name: c.name, productCount };
             }),
           );
           setTotal(res.products.length);
         } else {
-          const local = computeFromLocal();
-          setCounts(local);
+          setCounts(computeFromLocal());
           setTotal(TOOL_PRODUCTS.length);
         }
       })
       .catch(() => {
         if (cancelled) return;
-        const local = computeFromLocal();
-        setCounts(local);
+        setCounts(computeFromLocal());
         setTotal(TOOL_PRODUCTS.length);
       });
 
@@ -122,6 +108,9 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
     };
   }, []);
 
+  const pluralProduct = (n: number) =>
+    `${n} ${n === 1 ? t('catalog.product') : t('catalog.products')}`;
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
@@ -129,62 +118,46 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Herramientas{'\n'}por tipo</Text>
         <Text style={styles.subtitle}>
-          {total} productos en {counts.length} subcategorías
+          {t('catalog.totalCount', { total, cats: counts.length })}
         </Text>
 
-        <View style={styles.grid}>
-          {counts.map((c) => {
-            const color = categoryColor(c.id);
-            return (
-              <Pressable
-                key={c.id}
-                style={({ pressed }) => [
-                  styles.card,
-                  shadows.sm,
-                  pressed && styles.cardPressed,
-                ]}
-                onPress={() =>
-                  navigation.navigate('ToolSearch', { categoryId: c.id })
-                }
-                accessibilityRole="button"
-                accessibilityLabel={`${c.name}, ${c.productCount} productos`}
-              >
-                <View
-                  style={[styles.cardIconBox, { backgroundColor: color + '1A' }]}
-                >
-                  <Icon name={categoryIcon(c.id)} size={36} color={color} />
-                </View>
-                <View style={styles.cardTextCol}>
-                  <Text style={styles.cardName} numberOfLines={1}>
-                    {c.name}
-                  </Text>
-                  <Text style={styles.cardMeta}>
-                    {c.productCount} producto
-                    {c.productCount !== 1 ? 's' : ''}
-                    {c.typeCount > 0
-                      ? ` · ${c.typeCount} tipo${c.typeCount !== 1 ? 's' : ''}`
-                      : ''}
-                  </Text>
-                </View>
-                <Icon name="forward" size={20} color={colors.textMuted} />
-              </Pressable>
-            );
-          })}
-        </View>
+        {counts.map((c) => (
+          <CategoryCard
+            key={c.id}
+            icon={categoryIcon(c.id)}
+            title={c.name}
+            subtitle={pluralProduct(c.productCount)}
+            accent={categoryColor(c.id)}
+            onPress={() => navigation.navigate('ToolSearch', { categoryId: c.id })}
+          />
+        ))}
+
+        <SectionHeader>{t('catalog.screwsAndFixings')}</SectionHeader>
+        <CategoryCard
+          icon="screw"
+          title={t('nav.screwSelector')}
+          subtitle={t('catalog.screwSelectorSub')}
+          accent={colors.category.utilities}
+          onPress={() => navigation.navigate('ScrewSelector')}
+        />
+        <CategoryCard
+          icon="screw"
+          title={t('nav.screwGuide')}
+          subtitle={t('catalog.screwGuideSub')}
+          accent={colors.category.guide}
+          onPress={() => navigation.navigate('ScrewGuide')}
+        />
 
         <Pressable
           style={({ pressed }) => [
             styles.allBtn,
             pressed && { opacity: 0.85 },
           ]}
-          onPress={() =>
-            navigation.navigate('ToolSearch', { categoryId: undefined })
-          }
+          onPress={() => navigation.navigate('ToolSearch', { categoryId: undefined })}
         >
           <Icon name="search" size={18} color={colors.primary} />
-          <Text style={styles.allBtnText}>Ver todas las herramientas</Text>
+          <Text style={styles.allBtnText}>{t('catalog.allTools')}</Text>
           <Icon name="forward" size={18} color={colors.primary} />
         </Pressable>
       </ScrollView>
@@ -200,54 +173,10 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xl,
     paddingBottom: spacing.xxxl,
   },
-  title: {
-    ...typography.hero,
-    color: colors.text,
-    marginTop: spacing.md,
-    marginBottom: spacing.xs,
-  },
   subtitle: {
     ...typography.bodySmall,
     color: colors.textSecondary,
     marginBottom: spacing.xl,
-  },
-  grid: {
-    gap: spacing.md,
-  },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.lg,
-    backgroundColor: colors.surface,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-    minHeight: 96,
-  },
-  cardPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.985 }],
-  },
-  cardIconBox: {
-    width: 64,
-    height: 64,
-    borderRadius: radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardTextCol: {
-    flex: 1,
-  },
-  cardName: {
-    ...typography.h3,
-    color: colors.text,
-    fontWeight: '700',
-  },
-  cardMeta: {
-    ...typography.caption,
-    color: colors.textMuted,
-    marginTop: 4,
   },
   allBtn: {
     flexDirection: 'row',

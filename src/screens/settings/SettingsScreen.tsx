@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, spacing, radius, typography } from '../theme';
-import { getUserUnits, setUserUnits, getSelectedMode, setSelectedMode } from '../storage/settingsStorage';
-import Icon from '../components/Icon';
-import AmazonDisclaimer from '../components/AmazonDisclaimer';
+import { colors, spacing, radius, typography } from '../../theme';
+import { getUserUnits, setUserUnits, getSelectedMode, setSelectedMode } from '../../storage/settingsStorage';
+import Icon from '../../components/Icon';
+import AmazonDisclaimer from '../../components/AmazonDisclaimer';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();

@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensio
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { EfficiencyGauge, BoardDiagram } from '../components';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { EfficiencyGauge, BoardDiagram, Icon } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ProResults'>;
@@ -104,6 +104,18 @@ export default function ProResultsScreen({ navigation, route }: Props) {
           {t('shop.whereToBuy')}
         </Text>
       </TouchableOpacity>
+
+      {/* Escape hatch: guardar y volver al inicio */}
+      <TouchableOpacity
+        style={styles.homeLink}
+        onPress={() => navigation.popToTop()}
+        activeOpacity={0.7}
+      >
+        <Icon name="check" size={14} color={colors.accent} />
+        <Text style={[typography.caption, { color: colors.accent, marginLeft: 6, fontWeight: '600' }]}>
+          {t('actions.saveAndClose')}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -154,5 +166,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     alignItems: 'center',
     marginTop: spacing.xxl,
+  },
+  homeLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.lg,
+    marginTop: spacing.md,
   },
 });

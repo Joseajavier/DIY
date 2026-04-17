@@ -1,13 +1,20 @@
 // ═══════════════════════════════════════════════════════════════
-// HOME SCREEN — reestructurado (fase 12.1)
+// HOME SCREEN — rediseño UX (fase 14).
 // ───────────────────────────────────────────────────────────────
-// Cambios clave:
-// • Iconos vectoriales (MaterialCommunityIcons) en lugar de emojis
-//   → arreglan los cuadrados `[?]` que aparecían en el simulador.
-// • Layout más limpio: hero compacto, CTA, grid 2×2 de accesos,
-//   modos, recientes, footer.
-// • "Herramientas" ahora navega a ToolCategories (grid Parkside),
-//   no directamente a ToolSearch.
+// Jerarquía simplificada a 3 secciones visibles:
+//   1. Top bar (idioma + settings)
+//   2. Hero compacto (logo + nombre)
+//   3. CREAR PROYECTO — DIY, PRO (ModeCards grandes) + Diseñador
+//      (CategoryCard) como tercera vía de creación.
+//   4. CONTINUAR — último proyecto + recientes (condicional).
+//   5. EXPLORAR — catálogos (Herramientas, Maderas), calculadoras
+//      y compras (Chollos, Favoritos) en una sola sección.
+//   6. Footer minimalista (feedback + versión).
+//
+// Eliminado en esta fase: la sección "Herramientas y guías" — sus
+// items se han redistribuido a Crear y Explorar para reducir
+// fricción. El usuario ve menos títulos y todo cuelga del mismo
+// mapa mental.
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useCallback, useState } from 'react';
@@ -22,23 +29,21 @@ import {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import { ModeCard, ProjectCard, Icon, IconName } from '../components';
-import { Project } from '../models';
-import { getProjects } from '../storage/projectRepository';
-import { getLastProjectId } from '../storage/settingsStorage';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import {
+  ModeCard,
+  ProjectCard,
+  Icon,
+  CategoryCard,
+  SectionHeader,
+} from '../../components';
+import { Project } from '../../models';
+import { getProjects } from '../../storage/projectRepository';
+import { getLastProjectId } from '../../storage/settingsStorage';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
-};
-
-type QuickAction = {
-  key: string;
-  icon: IconName;
-  label: string;
-  color: string;
-  onPress: () => void;
 };
 
 export default function HomeScreen({ navigation }: Props) {
@@ -55,51 +60,6 @@ export default function HomeScreen({ navigation }: Props) {
 
   const toggleLang = () =>
     i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
-
-  const quickActions: QuickAction[] = [
-    {
-      key: 'projects',
-      icon: 'projects',
-      label: t('home.myProjects'),
-      color: colors.primary,
-      onPress: () => navigation.navigate('Projects'),
-    },
-    {
-      key: 'tools',
-      icon: 'tools',
-      label: 'Herramientas',
-      color: '#C4804A',
-      onPress: () => navigation.navigate('ToolCategories'),
-    },
-    {
-      key: 'wood',
-      icon: 'wood',
-      label: 'Maderas',
-      color: '#6B8E5A',
-      onPress: () => navigation.navigate('WoodCategories'),
-    },
-    {
-      key: 'calculators',
-      icon: 'calculator',
-      label: 'Calculadoras',
-      color: '#5A7D9A',
-      onPress: () => navigation.navigate('Calculators'),
-    },
-    {
-      key: 'deals',
-      icon: 'shop',
-      label: '🔥 Chollos',
-      color: colors.danger,
-      onPress: () => navigation.navigate('Deals'),
-    },
-    {
-      key: 'parametric',
-      icon: 'cube',
-      label: '🔨 Generador',
-      color: '#A0522D',
-      onPress: () => navigation.navigate('ParametricHome'),
-    },
-  ];
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -133,66 +93,8 @@ export default function HomeScreen({ navigation }: Props) {
           <Text style={styles.heroSubtitle}>{t('app.subtitle')}</Text>
         </View>
 
-        {/* CTA principal */}
-        <TouchableOpacity
-          style={[styles.ctaButton, shadows.md]}
-          onPress={() => navigation.navigate('ModeSelection')}
-          activeOpacity={0.85}
-        >
-          <Text
-            style={[typography.button, { color: colors.textOnPrimary }]}
-          >
-            {t('home.start')}
-          </Text>
-          <Icon name="forward" size={20} color={colors.textOnPrimary} />
-        </TouchableOpacity>
-
-        {/* Continuar último proyecto */}
-        {lastProjectId && (
-          <TouchableOpacity
-            style={styles.continueBtn}
-            onPress={() =>
-              navigation.navigate('ProjectDetail', { projectId: lastProjectId })
-            }
-            activeOpacity={0.85}
-          >
-            <Icon name="back" size={16} color={colors.accent} />
-            <Text
-              style={[
-                typography.buttonSmall,
-                { color: colors.accent, marginLeft: spacing.sm },
-              ]}
-            >
-              Continuar último proyecto
-            </Text>
-          </TouchableOpacity>
-        )}
-
-        {/* Accesos rápidos 2×2 */}
-        <Text style={styles.sectionLabel}>Accesos rápidos</Text>
-        <View style={styles.grid}>
-          {quickActions.map((a) => (
-            <TouchableOpacity
-              key={a.key}
-              style={[styles.quickCard, shadows.sm]}
-              onPress={a.onPress}
-              activeOpacity={0.85}
-            >
-              <View
-                style={[
-                  styles.quickIconBox,
-                  { backgroundColor: a.color + '1A' },
-                ]}
-              >
-                <Icon name={a.icon} size={28} color={a.color} />
-              </View>
-              <Text style={styles.quickLabel}>{a.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Modos */}
-        <Text style={styles.sectionLabel}>{t('home.availableModes')}</Text>
+        {/* ─── 1. CREAR PROYECTO ─── */}
+        <SectionHeader first>{t('homeSections.newProject')}</SectionHeader>
         <ModeCard
           icon="hammer"
           title={t('modes.diy')}
@@ -209,11 +111,39 @@ export default function HomeScreen({ navigation }: Props) {
           variant="pro"
           onPress={() => navigation.navigate('ProInput')}
         />
+        <CategoryCard
+          icon="cube"
+          title={t('nav.designer')}
+          subtitle={t('designer.intro')}
+          accent={colors.category.designer}
+          onPress={() => navigation.navigate('ParametricHome')}
+        />
 
-        {/* Recientes */}
-        {recentProjects.length > 0 && (
+        {/* ─── 2. CONTINUAR ─── */}
+        {(lastProjectId || recentProjects.length > 0) && (
           <>
-            <Text style={styles.sectionLabel}>Proyectos recientes</Text>
+            <SectionHeader>{t('homeSections.continue')}</SectionHeader>
+            {lastProjectId && (
+              <TouchableOpacity
+                style={styles.continueBtn}
+                onPress={() =>
+                  navigation.navigate('ProjectDetail', {
+                    projectId: lastProjectId,
+                  })
+                }
+                activeOpacity={0.85}
+              >
+                <Icon name="back" size={16} color={colors.accent} />
+                <Text
+                  style={[
+                    typography.buttonSmall,
+                    { color: colors.accent, marginLeft: spacing.sm },
+                  ]}
+                >
+                  {t('homeSections.lastProject')}
+                </Text>
+              </TouchableOpacity>
+            )}
             {recentProjects.map((p: Project) => (
               <ProjectCard
                 key={p.id}
@@ -223,8 +153,49 @@ export default function HomeScreen({ navigation }: Props) {
                 }
               />
             ))}
+            <TouchableOpacity
+              style={styles.linkRow}
+              onPress={() => navigation.navigate('Projects')}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.linkText}>{t('home.myProjects')}</Text>
+              <Icon name="forward" size={14} color={colors.primary} />
+            </TouchableOpacity>
           </>
         )}
+
+        {/* ─── 3. EXPLORAR ─── */}
+        <SectionHeader>{t('homeSections.explore')}</SectionHeader>
+        <CategoryCard
+          icon="tools"
+          title={t('nav.tools')}
+          accent={colors.category.tools}
+          onPress={() => navigation.navigate('ToolCategories')}
+        />
+        <CategoryCard
+          icon="wood"
+          title={t('nav.wood')}
+          accent={colors.category.wood}
+          onPress={() => navigation.navigate('WoodCategories')}
+        />
+        <CategoryCard
+          icon="calculator"
+          title={t('nav.utilities')}
+          accent={colors.category.utilities}
+          onPress={() => navigation.navigate('Calculators')}
+        />
+        <CategoryCard
+          icon="shop"
+          title={t('nav.deals')}
+          accent={colors.category.deals}
+          onPress={() => navigation.navigate('Deals')}
+        />
+        <CategoryCard
+          icon="heart"
+          title={t('nav.favorites')}
+          accent={colors.category.guide}
+          onPress={() => navigation.navigate('Favorites')}
+        />
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -239,22 +210,7 @@ export default function HomeScreen({ navigation }: Props) {
                 { color: colors.primary, marginLeft: spacing.xs },
               ]}
             >
-              Enviar feedback
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.footerLink}
-            onPress={() => navigation.navigate('WoodzyHome')}
-          >
-            <Icon name="theme" size={14} color={colors.textMuted} />
-            <Text
-              style={[
-                typography.caption,
-                { color: colors.textMuted, marginLeft: spacing.xs },
-              ]}
-            >
-              Preview theme Woodzy
+              {t('actions.sendFeedback')}
             </Text>
           </TouchableOpacity>
 
@@ -270,10 +226,7 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   container: { flex: 1 },
-  content: {
-    padding: spacing.xl,
-    paddingBottom: spacing.xxxl,
-  },
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -310,16 +263,6 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: spacing.xs,
   },
-  ctaButton: {
-    backgroundColor: colors.primary,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: spacing.sm,
-    paddingVertical: 18,
-    borderRadius: radius.lg,
-    marginBottom: spacing.md,
-  },
   continueBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -329,44 +272,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accentMuted,
     borderWidth: 1,
     borderColor: colors.accent,
-    marginBottom: spacing.lg,
-  },
-  sectionLabel: {
-    ...typography.label,
-    color: colors.textSecondary,
-    marginTop: spacing.xl,
     marginBottom: spacing.md,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
   },
-  grid: {
+  linkRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  quickCard: {
-    width: '48%',
-    backgroundColor: colors.surface,
-    borderRadius: radius.lg,
-    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    justifyContent: 'flex-end',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
   },
-  quickIconBox: {
-    width: 56,
-    height: 56,
-    borderRadius: radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
-  },
-  quickLabel: {
+  linkText: {
     ...typography.bodySmall,
-    fontWeight: '700',
-    color: colors.text,
-    textAlign: 'center',
+    color: colors.primary,
+    fontWeight: '600',
   },
   footer: {
     alignItems: 'center',

@@ -4,10 +4,11 @@ import {
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { Material, Tool } from '../models';
-import { colors, spacing, radius, typography, shadows } from '../theme';
-import Icon from '../components/Icon';
+import { useTranslation } from 'react-i18next';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { Material, Tool } from '../../models';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
+import Icon from '../../components/Icon';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DIYMaterials'>;
@@ -84,6 +85,7 @@ function ToolRow({
 }
 
 export default function DIYMaterialsScreen({ navigation, route }: Props) {
+  const { t } = useTranslation();
   const { result } = route.params;
   const [checked, setChecked] = useState<Set<number>>(new Set());
 
@@ -166,23 +168,41 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
         />
       ))}
 
-      {/* Acciones */}
+      {/* Acciones primarias */}
       <View style={styles.actions}>
         <TouchableOpacity
           style={[styles.btn, styles.btnSecondary]}
           onPress={() => navigation.navigate('WoodCatalog', {})}
           activeOpacity={0.85}
         >
-          <Text style={[typography.buttonSmall, { color: colors.primary }]}>🪵 Ver maderas</Text>
+          <Icon name="wood" size={16} color={colors.primary} />
+          <Text style={[typography.buttonSmall, { color: colors.primary, marginLeft: 6 }]}>
+            {t('nav.wood')}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.btn, styles.btnPrimary, shadows.sm]}
           onPress={() => navigation.navigate('Shop', { materials: result.materials, mode: 'diy' })}
           activeOpacity={0.85}
         >
-          <Text style={[typography.buttonSmall, { color: colors.textOnPrimary }]}>🛒 ¿Dónde comprar?</Text>
+          <Icon name="shop" size={16} color={colors.textOnPrimary} />
+          <Text style={[typography.buttonSmall, { color: colors.textOnPrimary, marginLeft: 6 }]}>
+            {t('actions.goToShop')}
+          </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Escape hatch: guardar y volver */}
+      <TouchableOpacity
+        style={styles.homeLink}
+        onPress={() => navigation.popToTop()}
+        activeOpacity={0.7}
+      >
+        <Icon name="check" size={14} color={colors.accent} />
+        <Text style={[typography.caption, { color: colors.accent, marginLeft: 6, fontWeight: '600' }]}>
+          {t('actions.saveAndClose')}
+        </Text>
+      </TouchableOpacity>
 
     </ScrollView>
   );
@@ -206,7 +226,8 @@ const styles = StyleSheet.create({
   findBtn:        { padding: spacing.xs },
   toolRow:        { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm },
   actions:        { flexDirection: 'row', gap: spacing.md, marginTop: spacing.xxl },
-  btn:            { flex: 1, paddingVertical: 14, borderRadius: radius.lg, alignItems: 'center' },
+  btn:            { flex: 1, flexDirection: 'row', paddingVertical: 14, borderRadius: radius.lg, alignItems: 'center', justifyContent: 'center' },
   btnPrimary:     { backgroundColor: colors.primary },
   btnSecondary:   { backgroundColor: colors.primaryMuted, borderWidth: 1, borderColor: colors.primary + '44' },
+  homeLink:       { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: spacing.lg, marginTop: spacing.md },
 });

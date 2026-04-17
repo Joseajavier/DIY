@@ -12,9 +12,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { setHasSeenOnboarding } from '../storage/settingsStorage';
-import { colors, spacing, radius, typography } from '../theme';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { setHasSeenOnboarding } from '../../storage/settingsStorage';
+import { colors, spacing, radius, typography } from '../../theme';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'Onboarding'> };
 

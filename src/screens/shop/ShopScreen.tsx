@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { getStoreRecommendations } from '../services/storeRecommender';
-import { comparePrices } from '../services/priceComparator';
-import { saveShopOptions } from '../storage/shopRepository';
-import { getLastProjectId } from '../storage/settingsStorage';
-import { colors, spacing, radius, typography, shadows } from '../theme';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { getStoreRecommendations } from '../../services/storeRecommender';
+import { comparePrices } from '../../services/priceComparator';
+import { saveShopOptions } from '../../storage/shopRepository';
+import { getLastProjectId } from '../../storage/settingsStorage';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Shop'>;

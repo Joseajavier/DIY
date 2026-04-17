@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Switch, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { Piece } from '../models';
-import { createProject } from '../storage/projectRepository';
-import { createPieces } from '../storage/pieceRepository';
-import { setLastProjectId } from '../storage/settingsStorage';
-import { optimizeCuts } from '../services/cuttingOptimizer';
-import { generateMaterials } from '../services/materialsGenerator';
-import { generateProPlanWithAI } from '../services/apiClient';
-import { colors, spacing, radius, typography, shadows } from '../theme';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { Piece } from '../../models';
+import { createProject } from '../../storage/projectRepository';
+import { createPieces } from '../../storage/pieceRepository';
+import { setLastProjectId } from '../../storage/settingsStorage';
+import { optimizeCuts } from '../../services/cuttingOptimizer';
+import { generateMaterials } from '../../services/materialsGenerator';
+import { generateProPlanWithAI } from '../../services/apiClient';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'ProInput'> };
 

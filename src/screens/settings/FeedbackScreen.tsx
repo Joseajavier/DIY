@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { sendFeedback } from '../services/feedback/feedbackService';
-import { trackEvent } from '../services/analytics/events';
-import { colors, spacing, radius, typography, shadows } from '../theme';
+import { sendFeedback } from '../../services/feedback/feedbackService';
+import { trackEvent } from '../../services/analytics/events';
+import { colors, spacing, radius, typography, shadows } from '../../theme';
 
 const TYPES = [
   { key: 'bug' as const, label: '🐛 Bug' },
