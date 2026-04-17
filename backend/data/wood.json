@@ -870,8 +870,102 @@
       ],
       "bestFor": "Encimeras, suelos flotantes, muebles de estilo oriental/moderno, proyectos eco-friendly",
       "color": "Amarillo miel o caramelizado según tratamiento"
+    },
+    {
+      "id": "w29",
+      "categoryId": "plywood",
+      "name": "Contrachapado de pino estructural",
+      "description": "Tablero multicapa de pino radiata encolado con resina fenólica o UF. El contrachapado más económico para construcción y bricolaje resistente. Muy habitual en ferreterías y madererías españolas.",
+      "use": "both",
+      "hardness": "medium",
+      "priceLevel": "budget",
+      "priceRange": "12-25€/m²",
+      "commonSizes": [
+        "244×122cm",
+        "250×125cm"
+      ],
+      "thicknesses": [
+        9,
+        12,
+        15,
+        18,
+        21,
+        24
+      ],
+      "pros": [
+        "Muy resistente y estable",
+        "Precio económico, amplia disponibilidad",
+        "Apto interior y exterior con tratamiento",
+        "Buena resistencia al corte y al atornillado"
+      ],
+      "cons": [
+        "Aspecto rústico, no decorativo",
+        "Requiere sellado en cantos y tratamiento para exterior",
+        "Menor uniformidad de cara que abedul"
+      ],
+      "bestFor": "Estructuras de mueble, encofrado, suelos, estanterías de almacén, traseras resistentes",
+      "color": "Pino natural claro-amarillento, cara con ligeras imperfecciones visibles"
+    },
+    {
+      "id": "w30",
+      "categoryId": "strips",
+      "name": "Listón de sapelly",
+      "description": "Listones de sapelly (Entandrophragma cylindricum), madera tropical africana de tonos rojizos con veta entrelazada muy decorativa. Clásico en carpintería española de interiores.",
+      "use": "interior",
+      "hardness": "hard",
+      "priceLevel": "mid",
+      "priceRange": "5-18€/m",
+      "commonSizes": [
+        "2×1cm",
+        "3×2cm",
+        "4×2cm",
+        "5×3cm",
+        "6×4cm",
+        "7×3cm"
+      ],
+      "pros": [
+        "Veta entrelazada decorativa con efecto nacarado",
+        "Madera dura y resistente",
+        "Acepta muy bien barnices y lacas",
+        "Amplia disponibilidad en madererías españolas"
+      ],
+      "cons": [
+        "No apta para exterior sin tratamiento intensivo",
+        "La veta entrelazada dificulta el cepillado a contraveta",
+        "Precio medio-alto para madera tropical"
+      ],
+      "bestFor": "Molduras y tapetas de puertas, marcos de ventana, muebles de calidad, tarimas interiores",
+      "color": "Rojo caoba oscuro con reflejos nacarados y plateados según el ángulo de la luz"
+    },
+    {
+      "id": "w31",
+      "categoryId": "special",
+      "name": "Madera de cedro",
+      "description": "Cedro rojo occidental (Thuja plicata) y cedro del Líbano. Madera aromática ligera con resistencia natural a insectos y humedad. Muy apreciada en forro de armarios, saunas y exteriores.",
+      "use": "both",
+      "hardness": "soft",
+      "priceLevel": "mid",
+      "priceRange": "20-50€/m lineal",
+      "commonSizes": [
+        "Tablas 10-30cm ancho",
+        "Tablones",
+        "Revestimiento exterior"
+      ],
+      "pros": [
+        "Aroma natural repelente de polillas e insectos",
+        "Muy ligera y estable dimensionalmente",
+        "Resistencia natural a humedad y pudrición sin tratar",
+        "Aspecto decorativo con veta suave y color cálido"
+      ],
+      "cons": [
+        "Madera blanda: se marca con facilidad",
+        "Precio elevado para una madera de baja densidad",
+        "Disponibilidad limitada en España (madererías especializadas)"
+      ],
+      "bestFor": "Forro interior de armarios (repele polillas), revestimientos exteriores, pérgolas, sauna",
+      "color": "Rojizo rosado claro; en exterior envejece a gris plateado sin tratamiento"
     }
   ],
-  "lastUpdated": "2026-04-16",
-  "totalProducts": 28
+  "lastUpdated": "2026-04-17",
+  "totalProducts": 31
 }
