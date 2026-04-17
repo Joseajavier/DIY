@@ -71,7 +71,8 @@ export type IconName =
   | 'info'
   | 'table'
   | 'cube'
-  | 'joint';
+  | 'joint'
+  | 'heart';
 
 type IonName = React.ComponentProps<typeof Ionicons>['name'];
 type MciName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -151,6 +152,7 @@ const MAP: Record<IconName, Mapping> = {
   table: { pack: 'mci', name: 'table' },
   cube: { pack: 'mci', name: 'cube-outline' },
   joint: { pack: 'mci', name: 'vector-intersection' },
+  heart: { pack: 'ion', name: 'heart' },
 };
 
 type Props = {

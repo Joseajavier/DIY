@@ -13,5 +13,7 @@ export { default as Icon } from './Icon';
 export type { IconName } from './Icon';
 export { default as RetailerSheet } from './RetailerSheet';
 export { default as BoardDiagram } from './BoardDiagram';
+export { default as CategoryCard } from './CategoryCard';
+export { default as SectionHeader } from './SectionHeader';
 export { default as ShelfIsometric } from './ShelfIsometric';
 export { default as TableIsometric } from './TableIsometric';

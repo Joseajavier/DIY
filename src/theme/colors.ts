@@ -40,6 +40,18 @@ export const colors = {
   overlay: 'rgba(44, 30, 20, 0.5)',
   cardShadow: 'rgba(139, 90, 43, 0.12)',
 
+  // Category accents — used only as tints for card icons.
+  // Keep this list small and ownership-unambiguous.
+  category: {
+    projects: '#B8763C',   // copper — maps to primary
+    tools: '#C4804A',      // warm amber
+    wood: '#6B8E5A',       // sage
+    utilities: '#5A7D9A',  // muted blue
+    designer: '#A0522D',   // sienna
+    deals: '#C25D4A',      // danger/ember
+    guide: '#C8A14B',      // ochre (references)
+  },
+
   // Backwards compatibility aliases
   card: '#FFFFFF',
   accentPro: '#5B8A5B',

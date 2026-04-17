@@ -30,7 +30,20 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-localization"
-    ]
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "DIY usa tu ubicación solo para mostrar chollos de tu país."
+        }
+      ]
+    ],
+    "extra": {
+      "appVariant": "production",
+      "apiUrl": "https://diy-backend.up.railway.app",
+      "eas": {
+        "projectId": "851473ea-4f89-472a-acaa-b21ad6ec3dc3"
+      }
+    }
   }
 }

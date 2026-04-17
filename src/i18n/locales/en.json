@@ -108,7 +108,51 @@
     "optimization": "Optimization",
     "results": "Results",
     "shops": "Shops",
-    "myProjects": "My projects"
+    "myProjects": "My projects",
+    "settings": "Settings",
+    "feedback": "Feedback",
+    "tools": "Tools",
+    "catalog": "Catalog",
+    "wood": "Wood",
+    "utilities": "Utilities",
+    "deals": "Deals",
+    "favorites": "Favorites",
+    "designer": "Furniture designer",
+    "ideas": "Project ideas",
+    "goldenRatio": "Golden ratio",
+    "wainscot": "Wainscot",
+    "shelfCalc": "Shelves",
+    "fractionCalc": "Fractions",
+    "screwSelector": "Screw selector",
+    "nominalActual": "Nominal → Actual",
+    "boardFoot": "Wood volume",
+    "joints": "Joints",
+    "woodGuide": "Wood guide",
+    "screwGuide": "Screw guide",
+    "shelfGen": "Shelving",
+    "tableGen": "Table",
+    "boxGen": "Box",
+    "drawerGen": "Drawer unit",
+    "cabinetGen": "Cabinet",
+    "benchGen": "Bench",
+    "deskGen": "Desk",
+    "project": "Project"
+  },
+  "homeSections": {
+    "newProject": "New project",
+    "continue": "Continue",
+    "lastProject": "Last project",
+    "recents": "Recent",
+    "explore": "Explore",
+    "toolsAndGuides": "Tools & guides"
+  },
+  "actions": {
+    "save": "Save",
+    "saveAndClose": "Save & close",
+    "goToShop": "Go to shop",
+    "newProject": "New project",
+    "backHome": "Back to home",
+    "sendFeedback": "Send feedback"
   },
   "errors": {
     "noName": "Enter a project name",
@@ -120,5 +164,42 @@
     "language": "Language",
     "spanish": "Español",
     "english": "English"
+  },
+  "catalog": {
+    "product": "product",
+    "products": "products",
+    "totalCount": "{{total}} products in {{cats}} subcategories",
+    "allTools": "View all tools",
+    "allWood": "View all wood",
+    "screwsAndFixings": "Screws & fixings",
+    "screwSelectorSub": "Which screw? Pick materials and I'll tell you",
+    "screwGuideSub": "18 types · 10 common mistakes · 10 brands",
+    "woodGuides": "Wood guides",
+    "woodGuideSub": "20 species · Janka hardness · origin · uses",
+    "nominalSub": "A 2×4 is not 2\" × 4\""
+  },
+  "util": {
+    "section": {
+      "calc": "Calculators",
+      "ref": "References"
+    },
+    "offline": "All utilities work offline. Results update instantly as you type.",
+    "golden":   { "t": "Golden ratio",         "s": "Split a length into 61.8% / 38.2%" },
+    "wainscot": { "t": "Wainscot / panels",    "s": "Lay out N equal frames on a wall" },
+    "shelf":    { "t": "Shelf spacing",        "s": "Equal gaps between N shelves" },
+    "fraction": { "t": "Fraction calculator",  "s": "Add, subtract, multiply, divide fractions" },
+    "board":    { "t": "Wood volume",          "s": "Compute dm³ and board feet" },
+    "nominal":  { "t": "Nominal → Actual",     "s": "A 2×4 is not 2\" × 4\"" },
+    "joints":   { "t": "Joinery types",        "s": "13 joints with diagrams" }
+  },
+  "designer": {
+    "intro": "Pick a template, tweak measurements, get the cut list + optimized plan.",
+    "shelf":   { "t": "Shelving", "s": "Adjust size and number of shelves" },
+    "table":   { "t": "Table",    "s": "4 solid legs + top, optional apron" },
+    "drawer":  { "t": "Drawer unit", "s": "N drawers with metal slides" },
+    "box":     { "t": "Box",      "s": "Simple rectangular box — storage or gift" },
+    "cabinet": { "t": "Cabinet",  "s": "Swing doors + shelves + optional rod" },
+    "bench":   { "t": "Bench",    "s": "4 legs + seat with optional backrest" },
+    "desk":    { "t": "Desk",     "s": "Top + legs + stiffening aprons" }
   }
 }

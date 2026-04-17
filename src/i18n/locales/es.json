@@ -108,7 +108,51 @@
     "optimization": "Optimización",
     "results": "Resultados",
     "shops": "Tiendas",
-    "myProjects": "Mis proyectos"
+    "myProjects": "Mis proyectos",
+    "settings": "Ajustes",
+    "feedback": "Feedback",
+    "tools": "Herramientas",
+    "catalog": "Catálogo",
+    "wood": "Maderas",
+    "utilities": "Utilidades",
+    "deals": "Ofertas",
+    "favorites": "Favoritos",
+    "designer": "Diseñador de muebles",
+    "ideas": "Ideas de proyectos",
+    "goldenRatio": "Proporción áurea",
+    "wainscot": "Wainscot",
+    "shelfCalc": "Baldas",
+    "fractionCalc": "Fracciones",
+    "screwSelector": "Selector de tornillos",
+    "nominalActual": "Nominal → Real",
+    "boardFoot": "Volumen de madera",
+    "joints": "Uniones",
+    "woodGuide": "Guía de maderas",
+    "screwGuide": "Guía de tornillos",
+    "shelfGen": "Estantería",
+    "tableGen": "Mesa",
+    "boxGen": "Caja",
+    "drawerGen": "Cajonera",
+    "cabinetGen": "Armario",
+    "benchGen": "Banco",
+    "deskGen": "Escritorio",
+    "project": "Proyecto"
+  },
+  "homeSections": {
+    "newProject": "Crear proyecto",
+    "continue": "Continuar",
+    "lastProject": "Último proyecto",
+    "recents": "Recientes",
+    "explore": "Explorar",
+    "toolsAndGuides": "Herramientas y guías"
+  },
+  "actions": {
+    "save": "Guardar",
+    "saveAndClose": "Guardar y cerrar",
+    "goToShop": "Ir a la tienda",
+    "newProject": "Nuevo proyecto",
+    "backHome": "Volver al inicio",
+    "sendFeedback": "Enviar feedback"
   },
   "errors": {
     "noName": "Introduce un nombre para el proyecto",
@@ -120,5 +164,42 @@
     "language": "Idioma",
     "spanish": "Español",
     "english": "English"
+  },
+  "catalog": {
+    "product": "producto",
+    "products": "productos",
+    "totalCount": "{{total}} productos en {{cats}} subcategorías",
+    "allTools": "Ver todas las herramientas",
+    "allWood": "Ver todas las maderas",
+    "screwsAndFixings": "Tornillería y fijación",
+    "screwSelectorSub": "¿Qué tornillo uso? Elige materiales y te lo digo",
+    "screwGuideSub": "18 tipos · 10 errores comunes · 10 marcas",
+    "woodGuides": "Guías de madera",
+    "woodGuideSub": "20 especies · dureza Janka · origen · usos",
+    "nominalSub": "Un 2×4 no son 5×10 cm"
+  },
+  "util": {
+    "section": {
+      "calc": "Calculadoras",
+      "ref": "Referencias"
+    },
+    "offline": "Todas las utilidades funcionan sin conexión. Los resultados se actualizan al instante.",
+    "golden":   { "t": "Proporción áurea",        "s": "Divide una medida en 61.8% / 38.2%" },
+    "wainscot": { "t": "Wainscot / paneles",       "s": "Reparte N marcos iguales en una pared" },
+    "shelf":    { "t": "Distribución de baldas",   "s": "Huecos idénticos entre N estantes" },
+    "fraction": { "t": "Calculadora de fracciones","s": "Suma, resta, multiplica y divide fracciones" },
+    "board":    { "t": "Volumen de madera",        "s": "Calcula dm³ y board feet" },
+    "nominal":  { "t": "Nominal → Real",           "s": "Un 2×4 no son 5×10 cm" },
+    "joints":   { "t": "Uniones de carpintería",   "s": "13 tipos con diagramas" }
+  },
+  "designer": {
+    "intro": "Elige una plantilla, ajusta medidas y obtén el despiece + plan de cortes.",
+    "shelf":   { "t": "Estantería", "s": "Ajusta medidas y nº de baldas" },
+    "table":   { "t": "Mesa",       "s": "4 patas macizas + tablero, faldón opcional" },
+    "drawer":  { "t": "Cajonera",   "s": "N cajones con guías metálicas" },
+    "box":     { "t": "Caja",       "s": "Rectangular simple — almacenaje o regalo" },
+    "cabinet": { "t": "Armario",    "s": "Puertas batientes + baldas + barra opcional" },
+    "bench":   { "t": "Banco",      "s": "4 patas + asiento con respaldo opcional" },
+    "desk":    { "t": "Escritorio", "s": "Tablero + patas + faldones de rigidez" }
   }
 }
