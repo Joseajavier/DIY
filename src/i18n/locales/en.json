@@ -6,6 +6,25 @@
     "footer": "Made with wood and code",
     "version": "v1.0"
   },
+  "onboarding": {
+    "slide1_title": "Clear ideas from minute one",
+    "slide1_body": "Find projects, measurements and materials without wasting time going in circles.",
+    "slide2_title": "Measure twice, cut once",
+    "slide2_body": "Plan pieces, boards and hardware properly so you buy smarter and mess up less.",
+    "slide3_title": "Keep what actually matters",
+    "slide3_body": "Your projects, favourites and references at hand, so you never start from scratch.",
+    "slide4_title": "Less faff, more workshop",
+    "slide4_body": "Ideas, calculators, catalogues and deals — all in one place, ready to use.",
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Get started"
+  },
+  "tabs": {
+    "home": "Home",
+    "create": "Create",
+    "library": "Library",
+    "deals": "Deals"
+  },
   "home": {
     "start": "Start a project",
     "myProjects": "My projects",
@@ -20,7 +39,45 @@
       "materialsDesc": "Everything you need to buy",
       "shop": "Where to buy",
       "shopDesc": "Compare prices and stores"
-    }
+    },
+    "greeting_morning": "Morning, let's get to work",
+    "greeting_afternoon": "Hey, what are we building today",
+    "greeting_evening": "Evening, picking up where you left off",
+    "recent_projects": "Recent projects",
+    "no_recent_projects": "What you worked on last will show up here.",
+    "quick_actions": "Quick actions",
+    "suggestion_of_the_day": "Idea of the day"
+  },
+  "create_hub": {
+    "title": "Create",
+    "subtitle": "Pick how you want to start.",
+    "diy_title": "DIY Mode",
+    "diy_description": "Build something quick with step-by-step guidance, no fuss.",
+    "pro_title": "Pro Mode",
+    "pro_description": "Fine-tune measurements, optimize cuts and leave less room for error.",
+    "designer_title": "Designer",
+    "designer_description": "Try parametric furniture and pieces before you start cutting."
+  },
+  "library_hub": {
+    "title": "Library",
+    "my_projects": "My projects",
+    "tools_catalog": "Tools catalogue",
+    "wood_catalog": "Wood catalogue",
+    "calculators": "Calculators"
+  },
+  "empty_states": {
+    "no_projects_title": "No projects yet",
+    "no_projects_body": "When you save one, it'll land here ready to pick up anytime.",
+    "no_projects_cta": "Create project",
+    "no_favorites_title": "No favourites yet",
+    "no_favorites_body": "Save tools, wood or ideas and you'll find them all here.",
+    "no_favorites_cta": "Explore",
+    "no_deals_title": "No deals right now",
+    "no_deals_body": "Try again later or change your area to see other options.",
+    "no_results_search": "Nothing matches that search.",
+    "offline_title": "Offline",
+    "offline_body": "No network right now. Some things may not load.",
+    "offline_retry": "Retry"
   },
   "modes": {
     "select": "Choose your mode",
@@ -158,7 +215,21 @@
     "noName": "Enter a project name",
     "noDescription": "Describe what you want to build",
     "noPieces": "Add at least one piece with valid dimensions",
-    "error": "Error"
+    "error": "Error",
+    "generic": "Something didn't go as planned.",
+    "network": "Couldn't connect.",
+    "location_denied": "Without location we can't show what's nearby.",
+    "location_unavailable": "Couldn't get your location."
+  },
+  "common": {
+    "loading": "Loading",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "share": "Share",
+    "back": "Back",
+    "close": "Close"
   },
   "settings": {
     "language": "Language",
