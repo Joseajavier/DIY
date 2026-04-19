@@ -186,6 +186,7 @@
     "joints": "Joints",
     "woodGuide": "Wood guide",
     "screwGuide": "Screw guide",
+    "varnishGuide": "Varnish guide",
     "shelfGen": "Shelving",
     "tableGen": "Table",
     "boxGen": "Box",
@@ -245,6 +246,7 @@
     "screwsAndFixings": "Screws & fixings",
     "screwSelectorSub": "Which screw? Pick materials and I'll tell you",
     "screwGuideSub": "18 types · 10 common mistakes · 10 brands",
+    "varnishGuideSub": "18 types · 10 common mistakes · 14 brands",
     "woodGuides": "Wood guides",
     "woodGuideSub": "20 species · Janka hardness · origin · uses",
     "nominalSub": "A 2×4 is not 2\" × 4\""

@@ -38,6 +38,7 @@ import JointTypesScreen from '../screens/tools/JointTypesScreen';
 import WoodGuideScreen from '../screens/tools/WoodGuideScreen';
 import ScrewGuideScreen from '../screens/tools/ScrewGuideScreen';
 import ScrewSelectorScreen from '../screens/tools/ScrewSelectorScreen';
+import VarnishGuideScreen from '../screens/tools/VarnishGuideScreen';
 
 // ── Diseñador paramétrico ──────────────────────────────────────
 import GeneratorHomeScreen from '../screens/generator/GeneratorHomeScreen';
@@ -84,6 +85,7 @@ export type RootStackParamList = {
   JointTypes: undefined;
   WoodGuide: undefined;
   ScrewGuide: undefined;
+  VarnishGuide: undefined;
   ParametricHome: undefined;
   ShelfGenerator: undefined;
   TableGenerator: undefined;
@@ -157,6 +159,7 @@ export default function AppNavigator() {
       <Stack.Screen name="JointTypes" component={JointTypesScreen} options={{ title: t('nav.joints') }} />
       <Stack.Screen name="WoodGuide" component={WoodGuideScreen} options={{ title: t('nav.woodGuide') }} />
       <Stack.Screen name="ScrewGuide" component={ScrewGuideScreen} options={{ title: t('nav.screwGuide') }} />
+      <Stack.Screen name="VarnishGuide" component={VarnishGuideScreen} options={{ title: t('nav.varnishGuide') }} />
 
       {/* Diseñador */}
       <Stack.Screen name="ParametricHome" component={GeneratorHomeScreen} options={{ title: t('nav.designer') }} />

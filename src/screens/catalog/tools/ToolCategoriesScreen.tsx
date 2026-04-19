@@ -148,6 +148,13 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           accent={colors.category.guide}
           onPress={() => navigation.navigate('ScrewGuide')}
         />
+        <CategoryCard
+          icon="paint"
+          title={t('nav.varnishGuide')}
+          subtitle={t('catalog.varnishGuideSub')}
+          accent={colors.category.guide}
+          onPress={() => navigation.navigate('VarnishGuide')}
+        />
 
         <Pressable
           style={({ pressed }) => [
