@@ -43,7 +43,7 @@ import { getProjects } from '../../storage/projectRepository';
 import { getLastProjectId } from '../../storage/settingsStorage';
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 };
 
 export default function HomeScreen({ navigation }: Props) {

@@ -5,8 +5,8 @@ import { DIYResult, Material, OptimizationResult, Piece } from '../models';
 import { colors } from '../theme';
 
 // ── Home ───────────────────────────────────────────────────────
-import HomeScreen from '../screens/home/HomeScreen';
 import OnboardingScreen from '../screens/home/OnboardingScreen';
+import AppTabs from './AppTabs';
 
 // ── Projects ───────────────────────────────────────────────────
 import ProjectsScreen from '../screens/projects/ProjectsScreen';
@@ -63,7 +63,7 @@ import { getHasSeenOnboarding } from '../storage/settingsStorage';
 
 export type RootStackParamList = {
   Onboarding: undefined;
-  Home: undefined;
+  MainTabs: undefined;
   Projects: undefined;
   ProjectDetail: { projectId: string };
   Settings: undefined;
@@ -118,9 +118,9 @@ export default function AppNavigator() {
   const hasSeenOnboarding = getHasSeenOnboarding();
 
   return (
-    <Stack.Navigator screenOptions={screenOptions} initialRouteName={hasSeenOnboarding ? 'Home' : 'Onboarding'}>
+    <Stack.Navigator screenOptions={screenOptions} initialRouteName={hasSeenOnboarding ? 'MainTabs' : 'Onboarding'}>
       <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="MainTabs" component={AppTabs} options={{ headerShown: false }} />
 
       {/* Projects */}
       <Stack.Screen name="Projects" component={ProjectsScreen} options={{ title: t('nav.myProjects') }} />

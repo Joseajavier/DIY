@@ -335,7 +335,7 @@ export default function OnboardingScreen({ navigation }: Props) {
 
   const handleFinish = () => {
     setHasSeenOnboarding(true);
-    navigation.replace('Home');
+    navigation.replace('MainTabs');
   };
 
   const handleNext = () => {
