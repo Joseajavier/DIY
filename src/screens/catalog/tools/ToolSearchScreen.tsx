@@ -268,8 +268,26 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
           {results.length} herramienta{results.length !== 1 ? 's' : ''}{' '}
           · {sections.length} {showBrands ? 'marca' : 'tipo'}{sections.length !== 1 ? 's' : ''}
         </Text>
-        {source === 'online' && <Icon name="check" size={14} color={colors.success} />}
-        {source === 'offline' && <Icon name="folder" size={14} color={colors.textMuted} />}
+        <View style={styles.sourceBadge}>
+          {source === 'online' && (
+            <>
+              <Icon name="check" size={12} color={colors.success} />
+              <Text style={[typography.caption, { color: colors.success, marginLeft: 4 }]}>Actualizado</Text>
+            </>
+          )}
+          {source === 'offline' && (
+            <>
+              <Icon name="folder" size={12} color={colors.textMuted} />
+              <Text style={[typography.caption, { color: colors.textMuted, marginLeft: 4 }]}>Offline</Text>
+            </>
+          )}
+          {source === 'loading' && (
+            <>
+              <Icon name="time" size={12} color={colors.textMuted} />
+              <Text style={[typography.caption, { color: colors.textMuted, marginLeft: 4 }]}>Cargando…</Text>
+            </>
+          )}
+        </View>
         <View style={styles.groupToggle}>
           <TouchableOpacity
             style={[styles.groupBtn, !showBrands && styles.groupBtnActive]}
@@ -490,6 +508,7 @@ const styles = StyleSheet.create({
   filterChipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   filterDivider: { width: 1, height: 20, backgroundColor: colors.border, marginHorizontal: spacing.sm, alignSelf: 'center' },
   resultBar: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginHorizontal: spacing.xl, marginBottom: spacing.sm },
+  sourceBadge: { flexDirection: 'row', alignItems: 'center' },
   groupToggle: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.full, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   groupBtn: { paddingHorizontal: spacing.md, paddingVertical: 4 },
   groupBtnActive: { backgroundColor: colors.primaryMuted },
