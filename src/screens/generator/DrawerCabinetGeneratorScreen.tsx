@@ -27,6 +27,9 @@ import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -93,16 +96,12 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[typography.h1, { color: colors.accent }]}>🗄️ Cajonera</Text>
-      <Text
-        style={[
-          typography.bodySmall,
-          { marginBottom: spacing.lg, color: colors.textSecondary },
-        ]}
-      >
-        Carcasa + N cajones con guías metálicas extraíbles. Reserva 1.3cm
-        por lado para las guías (hardware, no madera).
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="Generador"
+        title="Cajonera"
+        subtitle="Carcasa + N cajones con guías metálicas extraíbles. Reserva 1.3cm por lado para las guías (hardware, no madera)."
+      />
 
       {/* Preview 3D — aproximado con ShelfIsometric */}
       <View style={[styles.previewCard, shadows.sm]}>
@@ -173,9 +172,12 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
       {/* Warnings */}
       {output.warnings.length > 0 && (
         <View style={[styles.warningCard, shadows.sm]}>
-          <Text style={[typography.label, { color: colors.warning }]}>
-            ⚠️ Atención
-          </Text>
+          <View style={styles.warningHeader}>
+            <Icon name="info" size={16} color={colors.warning} />
+            <Text style={[typography.label, { color: colors.warning }]}>
+              Atención
+            </Text>
+          </View>
           {output.warnings.map((w, i) => (
             <Text
               key={i}
@@ -191,9 +193,7 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
       )}
 
       {/* Despiece */}
-      <Text style={[typography.label, styles.sectionHeading]}>
-        PLAN DE CORTES
-      </Text>
+      <SectionHeader>Plan de cortes</SectionHeader>
       <View style={[styles.card, shadows.sm]}>
         <Text
           style={[
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
     marginBottom: spacing.md,
   },
-  sectionHeading: { marginTop: spacing.lg, marginBottom: spacing.md },
+  warningHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xs },
 
   formRow: {
     flexDirection: 'row',

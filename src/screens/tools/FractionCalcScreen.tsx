@@ -18,6 +18,8 @@ import {
   Pressable,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 // ── Paleta de madera (roble/nogal) ────────────────────────────
 const wood = {
@@ -124,10 +126,14 @@ export default function FractionCalcScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Calculadora de fracciones</Text>
-        <Text style={styles.subtitle}>
-          Suma, resta, multiplica o divide dos fracciones
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Calculadora"
+          title="Fracciones"
+          subtitle="Suma, resta, multiplica o divide dos fracciones. El resultado se reduce a términos mínimos."
+        />
+
+        <SectionHeader first>Ecuación</SectionHeader>
 
         {/* Ecuación */}
         <View style={styles.card}>
@@ -361,12 +367,6 @@ function ResultFraction({
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,

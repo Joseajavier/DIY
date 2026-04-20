@@ -19,6 +19,8 @@ import {
   Pressable,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 // ── Paleta de madera ──────────────────────────────────────────
 const wood = {
@@ -112,14 +114,17 @@ export default function GoldenRatioScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Proporción áurea</Text>
-        <Text style={styles.subtitle}>
-          Divide con ratio φ ≈ 1.618 para proporciones de mueble
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Calculadora"
+          title="Proporción áurea"
+          subtitle="Divide con ratio φ ≈ 1.618 para proporciones de mueble."
+        />
+
+        <SectionHeader first>Modo</SectionHeader>
 
         {/* Modo */}
         <View style={styles.card}>
-          <Text style={styles.label}>Modo</Text>
           <View style={styles.modeRow}>
             {modes.map((m) => (
               <Pressable
@@ -343,16 +348,6 @@ function GoldenVisual() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  title: {
-    ...typography.hero,
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,

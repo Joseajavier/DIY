@@ -9,6 +9,8 @@ import { RootStackParamList } from '../../navigation/AppNavigator';
 import { Material, Tool } from '../../models';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import Icon from '../../components/Icon';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DIYMaterials'>;
@@ -109,21 +111,25 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
 
-      {/* Cabecera resumen */}
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text style={typography.h2}>{result.projectName ?? 'Lista de materiales'}</Text>
-          <Text style={[typography.caption, { color: colors.textMuted, marginTop: 2 }]}>
-            {result.difficulty} · {result.estimatedTime}
-          </Text>
-        </View>
-        {totalEst !== null && (
-          <View style={styles.costBadge}>
+      {/* Hero + resumen */}
+      <HeroBanner
+        variant="accent"
+        eyebrow={t('diy.materials')}
+        title={result.projectName ?? 'Lista de materiales'}
+        subtitle={`${result.difficulty} · ${result.estimatedTime}`}
+      />
+
+      {totalEst !== null && (
+        <View style={styles.costBadge}>
+          <View>
+            <Text style={[typography.caption, { color: colors.textMuted }]}>
+              {t('diy.estimatedCost', { defaultValue: 'Coste estimado' })}
+            </Text>
             <Text style={styles.costLabel}>~{Math.round(totalEst)} €</Text>
-            <Text style={[typography.caption, { color: colors.textMuted }]}>estimado</Text>
           </View>
-        )}
-      </View>
+          <Icon name="calculator" size={22} color={colors.primary} />
+        </View>
+      )}
 
       {/* Progreso materiales */}
       <View style={styles.progressBar}>
@@ -135,12 +141,16 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
       </Text>
 
       {/* Lista materiales */}
-      <View style={styles.sectionHeader}>
-        <Text style={typography.h3}>🪵 Materiales</Text>
-        <TouchableOpacity onPress={() => setChecked(allChecked ? new Set() : new Set(result.materials.map((_: Material, i: number) => i)))}>
-          <Text style={[typography.caption, { color: colors.primary }]}>{allChecked ? 'Desmarcar todo' : 'Marcar todo'}</Text>
-        </TouchableOpacity>
-      </View>
+      <SectionHeader
+        first
+        action={
+          <TouchableOpacity onPress={() => setChecked(allChecked ? new Set() : new Set(result.materials.map((_: Material, i: number) => i)))}>
+            <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{allChecked ? 'Desmarcar todo' : 'Marcar todo'}</Text>
+          </TouchableOpacity>
+        }
+      >
+        Materiales
+      </SectionHeader>
 
       {result.materials.map((mat: Material, i: number) => (
         <MaterialRow
@@ -153,12 +163,19 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
       ))}
 
       {/* Lista herramientas */}
-      <View style={[styles.sectionHeader, { marginTop: spacing.xxl }]}>
-        <Text style={typography.h3}>🔧 Herramientas</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('ToolSearch', {})}>
-          <Text style={[typography.caption, { color: colors.primary }]}>Ver catálogo →</Text>
-        </TouchableOpacity>
-      </View>
+      <SectionHeader
+        action={
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ToolSearch', {})}
+            style={styles.inlineAction}
+          >
+            <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>Ver catálogo</Text>
+            <Icon name="forward" size={12} color={colors.primary} />
+          </TouchableOpacity>
+        }
+      >
+        Herramientas
+      </SectionHeader>
 
       {result.tools.map((tool: Tool, i: number) => (
         <ToolRow
@@ -211,12 +228,21 @@ export default function DIYMaterialsScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: colors.bg },
   content:        { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  header:         { flexDirection: 'row', alignItems: 'flex-start', marginBottom: spacing.md },
-  costBadge:      { alignItems: 'flex-end', backgroundColor: colors.primaryMuted, borderRadius: radius.md, padding: spacing.md },
-  costLabel:      { ...typography.h2, color: colors.primary },
+  costBadge:      {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.primary + '22',
+  },
+  costLabel:      { ...typography.h2, color: colors.primary, marginTop: 2 },
+  inlineAction:   { flexDirection: 'row', alignItems: 'center', gap: 2 },
   progressBar:    { flexDirection: 'row', height: 4, backgroundColor: colors.border, borderRadius: 2, marginBottom: spacing.sm, overflow: 'hidden' },
   progressFill:   { backgroundColor: colors.success },
-  sectionHeader:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
   row:            { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.border },
   rowChecked:     { opacity: 0.5, borderColor: colors.success + '44' },
   rowName:        { ...typography.body },

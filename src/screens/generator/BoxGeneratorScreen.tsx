@@ -23,6 +23,9 @@ import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -78,16 +81,12 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <IconLabel icon="cube" label="Caja" color={colors.accent} size={28} textStyle={typography.h1} left />
-      <Text
-        style={[
-          typography.bodySmall,
-          { marginBottom: spacing.lg, color: colors.textSecondary },
-        ]}
-      >
-        Caja rectangular simple. Útil para almacenaje, bandejas, cajas de
-        regalo, boxes apilables.
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="Generador"
+        title="Caja"
+        subtitle="Caja rectangular simple. Útil para almacenaje, bandejas, cajas de regalo, boxes apilables."
+      />
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
@@ -157,9 +156,12 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
       {/* Warnings */}
       {output.warnings.length > 0 && (
         <View style={[styles.warningCard, shadows.sm]}>
-          <Text style={[typography.label, { color: colors.warning }]}>
-            ⚠️ Atención
-          </Text>
+          <View style={styles.warningHeader}>
+            <Icon name="info" size={16} color={colors.warning} />
+            <Text style={[typography.label, { color: colors.warning }]}>
+              Atención
+            </Text>
+          </View>
           {output.warnings.map((w, i) => (
             <Text
               key={i}
@@ -175,14 +177,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
       )}
 
       {/* Despiece */}
-      <Text
-        style={[
-          typography.label,
-          { marginTop: spacing.xl, marginBottom: spacing.md },
-        ]}
-      >
-        PLAN DE CORTES
-      </Text>
+      <SectionHeader>Plan de cortes</SectionHeader>
       <View style={[styles.card, shadows.sm]}>
         <Text
           style={[
@@ -320,6 +315,7 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginTop: spacing.sm,
   },
+  warningHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xs },
   warningCard: {
     backgroundColor: colors.warning + '15',
     borderRadius: radius.lg,

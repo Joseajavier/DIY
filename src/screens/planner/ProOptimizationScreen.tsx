@@ -11,6 +11,9 @@ import { createMaterials } from '../../storage/materialRepository';
 import { getLastProjectId } from '../../storage/settingsStorage';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { MetricCard, BoardDiagram } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ProOptimization'>;
@@ -36,15 +39,12 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.accent }]}>
-        {t('pro.optimization')}
-      </Text>
-      <Text style={[typography.bodySmall, { marginBottom: spacing.sm }]}>
-        {projectName}
-      </Text>
-      <Text style={[typography.bodySmall, { color: colors.textMuted, marginBottom: spacing.xl }]}>
-        {t('pro.kerfApplied', { value: kerf.toFixed(2) })}
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow={t('pro.optimization')}
+        title={projectName}
+        subtitle={t('pro.kerfApplied', { value: kerf.toFixed(2) })}
+      />
 
       {/* Métricas resumen */}
       <View style={styles.metricsRow}>
@@ -66,9 +66,7 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
       </View>
 
       {/* Diagramas de tablero */}
-      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>
-        {t('pro.boardDistribution')}
-      </Text>
+      <SectionHeader>{t('pro.boardDistribution')}</SectionHeader>
 
       {optimization.boards.map((board) => (
         <View key={board.boardIndex} style={[styles.boardCard, shadows.sm]}>
@@ -106,6 +104,7 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
           });
         }}
       >
+        <Icon name="optimize" size={18} color={colors.textOnAccent} />
         <Text style={[typography.button, { color: colors.textOnAccent }]}>
           {t('pro.viewResults')}
         </Text>
@@ -125,10 +124,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.accent,
     paddingVertical: 18,
     borderRadius: radius.lg,
-    alignItems: 'center',
     marginTop: spacing.xl,
   },
 });

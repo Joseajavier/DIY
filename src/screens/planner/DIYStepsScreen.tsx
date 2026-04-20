@@ -26,6 +26,9 @@ import {
   toggleStep as toggleStepDb,
 } from '../../storage/stepRepository';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DIYSteps'>;
@@ -39,9 +42,9 @@ const diffColors: Record<Difficulty, string> = {
   hard: colors.danger,
 };
 const diffLabels: Record<Difficulty, string> = {
-  easy: '🟢 Facil',
-  medium: '🟡 Media',
-  hard: '🔴 Dificil',
+  easy: 'Fácil',
+  medium: 'Media',
+  hard: 'Difícil',
 };
 
 export default function DIYStepsScreen({ navigation, route }: Props) {
@@ -122,21 +125,22 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.primary }]}>{result.projectName}</Text>
-      {result.summary && (
-        <Text
-          style={[typography.bodySmall, { marginTop: spacing.sm, marginBottom: spacing.lg }]}
-        >
-          {result.summary}
-        </Text>
-      )}
+      <HeroBanner
+        eyebrow={t('diy.steps')}
+        title={result.projectName}
+        subtitle={result.summary || undefined}
+      />
 
       <View style={styles.metaRow}>
         <View style={[styles.chip, { backgroundColor: diffColor + '22' }]}>
-          <Text style={[typography.caption, { color: diffColor }]}>{diffLabel}</Text>
+          <View style={[styles.diffDot, { backgroundColor: diffColor }]} />
+          <Text style={[typography.caption, { color: diffColor, fontWeight: '600' }]}>
+            {diffLabel}
+          </Text>
         </View>
         <View style={styles.chip}>
-          <Text style={typography.caption}>⏱ {result.estimatedTime}</Text>
+          <Icon name="time" size={14} color={colors.textSecondary} />
+          <Text style={typography.caption}>{result.estimatedTime}</Text>
         </View>
       </View>
 
@@ -164,14 +168,15 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
             />
           </View>
           {progressPct === 100 && (
-            <Text style={styles.completedLabel}>🎉 ¡Proyecto terminado!</Text>
+            <View style={styles.completedRow}>
+              <Icon name="trophy" size={16} color={colors.success} />
+              <Text style={styles.completedLabel}>¡Proyecto terminado!</Text>
+            </View>
           )}
         </View>
       )}
 
-      <Text style={[typography.label, { marginBottom: spacing.lg }]}>
-        {t('diy.steps')}
-      </Text>
+      <SectionHeader first>{t('diy.steps')}</SectionHeader>
 
       {loading && (
         <View style={{ paddingVertical: spacing.xl, alignItems: 'center' }}>
@@ -191,7 +196,7 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
           >
             <View style={[styles.stepNum, isCompleted && styles.stepNumDone]}>
               {isCompleted ? (
-                <Text style={styles.stepNumText}>✓</Text>
+                <Icon name="check" size={18} color={colors.textOnPrimary} />
               ) : (
                 <Text style={styles.stepNumText}>{step.number}</Text>
               )}
@@ -218,18 +223,24 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
                 {step.description}
               </Text>
               {isInteractive && (
-                <Text
-                  style={[
-                    typography.caption,
-                    {
-                      marginTop: spacing.xs,
-                      color: isCompleted ? colors.success : colors.textMuted,
-                      fontSize: 11,
-                    },
-                  ]}
-                >
-                  {isCompleted ? '✓ Completado · Toca para deshacer' : 'Toca para marcar como hecho'}
-                </Text>
+                <View style={styles.stepHintRow}>
+                  {isCompleted && (
+                    <Icon name="check" size={11} color={colors.success} />
+                  )}
+                  <Text
+                    style={[
+                      typography.caption,
+                      {
+                        color: isCompleted ? colors.success : colors.textMuted,
+                        fontSize: 11,
+                      },
+                    ]}
+                  >
+                    {isCompleted
+                      ? 'Completado · Toca para deshacer'
+                      : 'Toca para marcar como hecho'}
+                  </Text>
+                </View>
               )}
             </View>
           </TouchableOpacity>
@@ -240,6 +251,7 @@ export default function DIYStepsScreen({ navigation, route }: Props) {
         style={[styles.button, shadows.md]}
         onPress={() => navigation.navigate('DIYMaterials', { result })}
       >
+        <Icon name="materials" size={18} color={colors.textOnPrimary} />
         <Text style={[typography.button, { color: colors.textOnPrimary }]}>
           {t('diy.viewMaterials')}
         </Text>
@@ -257,10 +269,18 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
     backgroundColor: colors.surface,
-    borderRadius: radius.sm,
+    borderRadius: radius.full,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+  },
+  diffDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
   progressWrap: {
     backgroundColor: colors.surface,
@@ -286,12 +306,17 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
   },
+  completedRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+  },
   completedLabel: {
     ...typography.caption,
     color: colors.success,
     fontWeight: '700',
-    textAlign: 'center',
-    marginTop: spacing.sm,
   },
   stepCard: {
     flexDirection: 'row',
@@ -323,11 +348,20 @@ const styles = StyleSheet.create({
     color: colors.textOnPrimary,
     fontSize: 14,
   },
+  stepHintRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.xs,
+  },
   button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.primary,
     paddingVertical: 18,
     borderRadius: radius.lg,
-    alignItems: 'center',
     marginTop: spacing.xl,
   },
 });

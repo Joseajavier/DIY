@@ -28,7 +28,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import Icon from '../../components/Icon';
-import { IconLabel } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
 import { Deal } from '../../models/deal';
 import { getDeals } from '../../services/dealsService';
 import { SUPPORTED_COUNTRIES } from '../../data/retailers';
@@ -159,10 +159,11 @@ export default function DealsScreen({ navigation: _navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <IconLabel icon="fire" label="Chollos" color={colors.text} size={28} textStyle={styles.heroTitle} left />
-        <Text style={styles.heroSubtitle}>
-          Ofertas reales de la comunidad · actualizado cada hora
-        </Text>
+        <HeroBanner
+          eyebrow="Chollos"
+          title="Ofertas del día"
+          subtitle="Ofertas reales de la comunidad · actualizado cada hora"
+        />
       </View>
 
       {/* País detectado por GPS — no editable */}
@@ -192,25 +193,40 @@ export default function DealsScreen({ navigation: _navigation }: Props) {
         <Text style={styles.statusText}>
           {deals.length} {deals.length === 1 ? 'chollo' : 'chollos'}
         </Text>
-        <Text
-          style={[
-            styles.statusText,
-            {
-              color:
-                source === 'network'
-                  ? colors.success
-                  : source === 'cache'
-                  ? colors.warning
-                  : colors.textMuted,
-            },
-          ]}
-        >
-          {source === 'network'
-            ? '🟢 en vivo'
-            : source === 'cache'
-            ? `📦 caché${fetchedAt ? ' · ' + timeAgo(new Date(fetchedAt).toISOString()) : ''}`
-            : '⚪ sin datos'}
-        </Text>
+        <View style={styles.statusSource}>
+          <View
+            style={[
+              styles.statusDot,
+              {
+                backgroundColor:
+                  source === 'network'
+                    ? colors.success
+                    : source === 'cache'
+                    ? colors.warning
+                    : colors.textMuted,
+              },
+            ]}
+          />
+          <Text
+            style={[
+              styles.statusText,
+              {
+                color:
+                  source === 'network'
+                    ? colors.success
+                    : source === 'cache'
+                    ? colors.warning
+                    : colors.textMuted,
+              },
+            ]}
+          >
+            {source === 'network'
+              ? 'en vivo'
+              : source === 'cache'
+              ? `caché${fetchedAt ? ' · ' + timeAgo(new Date(fetchedAt).toISOString()) : ''}`
+              : 'sin datos'}
+          </Text>
+        </View>
       </View>
 
       {(loading || detectingCountry) && deals.length === 0 ? (
@@ -272,12 +288,6 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
   },
-  heroTitle: { ...typography.hero, color: colors.text },
-  heroSubtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginTop: 4,
-  },
   countryPillWrap: {
     paddingHorizontal: spacing.xl,
     marginTop: spacing.md,
@@ -306,10 +316,21 @@ const styles = StyleSheet.create({
   statusRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.sm,
   },
   statusText: { ...typography.caption, color: colors.textMuted },
+  statusSource: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
   list: {
     paddingHorizontal: spacing.xl,
     paddingBottom: spacing.xxxl,

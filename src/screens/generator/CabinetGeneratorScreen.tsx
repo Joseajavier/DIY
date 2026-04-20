@@ -26,6 +26,9 @@ import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -86,16 +89,12 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[typography.h1, { color: colors.accent }]}>🚪 Armario</Text>
-      <Text
-        style={[
-          typography.bodySmall,
-          { marginBottom: spacing.lg, color: colors.textSecondary },
-        ]}
-      >
-        Armario con puertas batientes, baldas interiores y barra de colgar
-        opcional. Genera tableros (cortes 2D) y listón redondo aparte.
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="Generador"
+        title="Armario"
+        subtitle="Armario con puertas batientes, baldas interiores y barra de colgar opcional. Genera tableros (cortes 2D) y listón redondo aparte."
+      />
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
@@ -196,9 +195,12 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
       {/* Warnings */}
       {output.warnings.length > 0 && (
         <View style={[styles.warningCard, shadows.sm]}>
-          <Text style={[typography.label, { color: colors.warning }]}>
-            ⚠️ Atención
-          </Text>
+          <View style={styles.warningHeader}>
+            <Icon name="info" size={16} color={colors.warning} />
+            <Text style={[typography.label, { color: colors.warning }]}>
+              Atención
+            </Text>
+          </View>
           {output.warnings.map((w, i) => (
             <Text
               key={i}
@@ -216,9 +218,7 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
       {/* Despiece tableros */}
       {output.pieces.length > 0 && (
         <>
-          <Text style={[typography.label, styles.sectionHeading]}>
-            🪵 TABLEROS (cortes 2D)
-          </Text>
+          <SectionHeader>Tableros (cortes 2D)</SectionHeader>
           <View style={[styles.card, shadows.sm]}>
             <Text
               style={[
@@ -246,9 +246,7 @@ export default function CabinetGeneratorScreen({ navigation }: Props) {
       {/* Lumber */}
       {output.lumberPieces && output.lumberPieces.length > 0 && (
         <>
-          <Text style={[typography.label, styles.sectionHeading]}>
-            🪵 LISTONES MACIZOS (compra lineal)
-          </Text>
+          <SectionHeader>Listones macizos (compra lineal)</SectionHeader>
           <View style={[styles.card, shadows.sm]}>
             {output.lumberPieces.map((p, i) => (
               <View key={i} style={styles.pieceRow}>
@@ -394,7 +392,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
     marginBottom: spacing.md,
   },
-  sectionHeading: { marginTop: spacing.lg, marginBottom: spacing.md },
+  warningHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xs },
 
   formRow: {
     flexDirection: 'row',

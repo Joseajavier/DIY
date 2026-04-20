@@ -25,6 +25,8 @@ import {
   TextInput,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 // ── Paleta de madera (roble/nogal) para la estantería ─────────
 const wood = {
@@ -100,11 +102,14 @@ export default function ShelfCalcScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Calculadora de baldas</Text>
-        <Text style={styles.subtitle}>
-          Reparte N baldas con huecos idénticos en un hueco vertical
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Calculadora"
+          title="Baldas"
+          subtitle="Reparte N baldas con huecos idénticos en un hueco vertical."
+        />
 
+        <SectionHeader first>Medidas</SectionHeader>
         <View style={styles.card}>
           <View style={styles.field}>
             <Text style={styles.label}>Altura total del hueco (cm)</Text>
@@ -269,12 +274,6 @@ export default function ShelfCalcScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,

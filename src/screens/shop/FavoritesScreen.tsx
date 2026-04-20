@@ -29,6 +29,7 @@ import FavoriteButton from '../../components/FavoriteButton';
 import Icon from '../../components/Icon';
 import CatalogImage from '../../components/CatalogImage';
 import RetailerSheet from '../../components/RetailerSheet';
+import HeroBanner from '../../components/HeroBanner';
 import { getToolImageUrl } from '../../utils/catalogImages';
 import { categoryIcon, categoryColor } from '../../utils/categoryIcons';
 
@@ -105,11 +106,11 @@ export default function FavoritesScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[typography.h1]}>❤️ Favoritos</Text>
-        <Text style={[typography.bodySmall, { marginTop: 2 }]}>
-          {count} herramienta{count !== 1 ? 's' : ''} guardada
-          {count !== 1 ? 's' : ''}
-        </Text>
+        <HeroBanner
+          eyebrow="Favoritos"
+          title="Mis herramientas guardadas"
+          subtitle={`${count} herramienta${count !== 1 ? 's' : ''} guardada${count !== 1 ? 's' : ''}`}
+        />
       </View>
 
       {count === 0 ? (
@@ -149,9 +150,11 @@ export default function FavoritesScreen({ navigation }: Props) {
             onPress={() => navigation.navigate('Deals')}
             activeOpacity={0.7}
           >
+            <Icon name="fire" size={14} color={colors.primary} />
             <Text style={styles.emptyCtaSecondaryText}>
-              O mira los chollos del día →
+              O mira los chollos del día
             </Text>
+            <Icon name="forward" size={12} color={colors.primary} />
           </TouchableOpacity>
         </View>
       ) : (
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.xl,
-    paddingBottom: spacing.md,
+    paddingBottom: 0,
   },
   listContent: {
     padding: spacing.xl,
@@ -241,6 +244,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   emptyCtaSecondary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
     marginTop: spacing.md,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,

@@ -20,6 +20,9 @@ import { TableIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -73,11 +76,12 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[typography.h1, { color: colors.accent }]}>🖥️ Escritorio</Text>
-      <Text style={[typography.bodySmall, { marginBottom: spacing.lg, color: colors.textSecondary }]}>
-        Tablero sobre patas macizas con faldones de rigidez. Cajón lateral
-        y balda inferior opcionales.
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="Generador"
+        title="Escritorio"
+        subtitle="Tablero sobre patas macizas con faldones de rigidez. Cajón lateral y balda inferior opcionales."
+      />
 
       {/* Preview 3D */}
       <View style={[styles.previewCard, shadows.sm]}>
@@ -146,7 +150,10 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
       {/* Warnings */}
       {output.warnings.length > 0 && (
         <View style={[styles.warningCard, shadows.sm]}>
-          <Text style={[typography.label, { color: colors.warning }]}>⚠️ Atención</Text>
+          <View style={styles.warningHeader}>
+            <Icon name="info" size={16} color={colors.warning} />
+            <Text style={[typography.label, { color: colors.warning }]}>Atención</Text>
+          </View>
           {output.warnings.map((w, i) => (
             <Text key={i} style={[typography.bodySmall, { color: colors.warning, marginTop: 4 }]}>
               • {w}
@@ -158,7 +165,7 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
       {/* Tableros */}
       {output.pieces.length > 0 && (
         <>
-          <Text style={[typography.label, styles.sectionHeading]}>🪵 TABLEROS (cortes 2D)</Text>
+          <SectionHeader>Tableros (cortes 2D)</SectionHeader>
           <View style={[styles.card, shadows.sm]}>
             <Text style={[typography.bodySmall, { color: colors.textMuted, marginBottom: spacing.md }]}>
               {output.summary}
@@ -179,7 +186,7 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
       {/* Listones */}
       {output.lumberPieces && output.lumberPieces.length > 0 && (
         <>
-          <Text style={[typography.label, styles.sectionHeading]}>🪵 PATAS MACIZAS (compra lineal)</Text>
+          <SectionHeader>Patas macizas (compra lineal)</SectionHeader>
           <View style={[styles.card, shadows.sm]}>
             {output.lumberPieces.map((p, i) => (
               <View key={i} style={styles.pieceRow}>
@@ -315,7 +322,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface, borderRadius: radius.md,
     padding: spacing.md, marginTop: spacing.sm, marginBottom: spacing.md,
   },
-  sectionHeading: { marginTop: spacing.lg, marginBottom: spacing.md },
+  warningHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xs },
   formRow: {
     flexDirection: 'row', alignItems: 'center',
     justifyContent: 'space-between', marginBottom: spacing.md,

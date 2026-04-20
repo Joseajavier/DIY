@@ -20,6 +20,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 
 const CM3_PER_BOARD_FOOT = 2359.74;
 
@@ -68,10 +71,14 @@ export default function BoardFootCalcScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>Volumen de madera</Text>
-        <Text style={styles.subtitle}>
-          Calcula cuánta madera necesitas en dm³ y pies tablero (board feet).
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Calculadora"
+          title="Volumen de madera"
+          subtitle="Calcula cuánta madera necesitas en dm³ y pies tablero (board feet)."
+        />
+
+        <SectionHeader first>Piezas</SectionHeader>
 
         {/* Piezas */}
         {pieces.map((piece, i) => {
@@ -81,8 +88,9 @@ export default function BoardFootCalcScreen() {
               <View style={styles.pieceHeader}>
                 <Text style={styles.pieceTitle}>Pieza {i + 1}</Text>
                 {pieces.length > 1 && (
-                  <TouchableOpacity onPress={() => removePiece(i)}>
-                    <Text style={styles.removeText}>✕ Eliminar</Text>
+                  <TouchableOpacity onPress={() => removePiece(i)} style={styles.removeBtn}>
+                    <Icon name="close" size={14} color={colors.danger} />
+                    <Text style={styles.removeText}>Eliminar</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -212,13 +220,7 @@ const styles = StyleSheet.create({
   safe:    { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
 
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-    lineHeight: 22,
-  },
+  removeBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
 
   // ── Tarjeta de pieza ──────────────────────────────────────
   pieceCard: {

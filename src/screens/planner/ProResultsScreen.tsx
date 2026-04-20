@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { EfficiencyGauge, BoardDiagram, Icon } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ProResults'>;
@@ -23,12 +25,12 @@ export default function ProResultsScreen({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.accent }]}>
-        {t('pro.results')}
-      </Text>
-      <Text style={[typography.bodySmall, { marginBottom: spacing.xl }]}>
-        {projectName}
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow={t('pro.results')}
+        title={projectName}
+        subtitle={t('pro.optimizationSummary')}
+      />
 
       {/* Resumen de eficiencia */}
       <View style={[styles.summaryCard, shadows.sm]}>
@@ -55,19 +57,18 @@ export default function ProResultsScreen({ navigation, route }: Props) {
 
       {/* Coste estimado */}
       <View style={[styles.costCard, shadows.sm]}>
-        <Text style={typography.bodySmall}>Coste estimado tableros</Text>
+        <Icon name="calculator" size={20} color={colors.accent} />
+        <Text style={[typography.bodySmall, { marginTop: spacing.xs }]}>Coste estimado tableros</Text>
         <Text style={styles.costValue}>
           {(optimization.totalBoards * 25).toFixed(2)} €
         </Text>
-        <Text style={typography.caption}>~25€/tablero melamina 244×122cm</Text>
+        <Text style={[typography.caption, { color: colors.textMuted }]}>~25€/tablero melamina 244×122cm</Text>
       </View>
 
       {/* Planos de corte */}
-      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.md }]}>
-        🪚 Planos de corte
-      </Text>
+      <SectionHeader>Planos de corte</SectionHeader>
       <Text style={[typography.caption, { color: colors.textMuted, marginBottom: spacing.lg }]}>
-        Cada rectángulo representa una pieza a su posición exacta en el tablero.
+        Cada rectángulo representa una pieza en su posición exacta sobre el tablero.
       </Text>
 
       {optimization.boards.map((board) => (
@@ -84,9 +85,7 @@ export default function ProResultsScreen({ navigation, route }: Props) {
       ))}
 
       {/* Lista de materiales */}
-      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>
-        {t('pro.estimatedMaterials')}
-      </Text>
+      <SectionHeader>{t('pro.estimatedMaterials')}</SectionHeader>
       {materials.map((mat, i) => (
         <View key={i} style={styles.row}>
           <Text style={typography.body}>{mat.name}</Text>
@@ -100,6 +99,7 @@ export default function ProResultsScreen({ navigation, route }: Props) {
         style={[styles.button, shadows.md]}
         onPress={() => navigation.navigate('Shop', { materials, mode: 'pro' })}
       >
+        <Icon name="shop" size={18} color={colors.textOnAccent} />
         <Text style={[typography.button, { color: colors.textOnAccent }]}>
           {t('shop.whereToBuy')}
         </Text>
@@ -161,10 +161,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.accent,
     paddingVertical: 18,
     borderRadius: radius.lg,
-    alignItems: 'center',
     marginTop: spacing.xxl,
   },
   homeLink: {

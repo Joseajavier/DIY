@@ -28,6 +28,8 @@ import {
   Switch,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
 
 // ── Paleta de madera ──────────────────────────────────────────
 const wood = {
@@ -123,12 +125,14 @@ export default function WainscotCalcScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Calculadora wainscot</Text>
-        <Text style={styles.subtitle}>
-          Reparte paneles iguales en una pared con zócalo y chair rail
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Calculadora"
+          title="Wainscot"
+          subtitle="Reparte paneles iguales en una pared con zócalo y chair rail."
+        />
 
-        {/* Inputs */}
+        <SectionHeader first>Medidas</SectionHeader>
         <View style={styles.card}>
           <View style={styles.field}>
             <Text style={styles.label}>Ancho de la pared (cm)</Text>
@@ -386,12 +390,6 @@ export default function WainscotCalcScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,

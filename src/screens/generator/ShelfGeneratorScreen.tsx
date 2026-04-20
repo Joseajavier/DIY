@@ -24,6 +24,8 @@ import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
+import HeroBanner from '../../components/HeroBanner';
+import Icon from '../../components/Icon';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -80,15 +82,12 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <IconLabel icon="shelf" label="Estantería" color={colors.accent} size={28} textStyle={typography.h1} left />
-      <Text
-        style={[
-          typography.bodySmall,
-          { marginBottom: spacing.lg, color: colors.textSecondary },
-        ]}
-      >
-        Ajusta las medidas y obtén despiece + plan de cortes optimizado.
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="Generador"
+        title="Estantería"
+        subtitle="Ajusta las medidas y obtén despiece + plan de cortes optimizado."
+      />
 
       {/* Preview 3D isométrico */}
       <View style={[styles.previewCard, shadows.sm]}>
@@ -149,9 +148,12 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
       {/* Warnings */}
       {output.warnings.length > 0 && (
         <View style={[styles.warningCard, shadows.sm]}>
-          <Text style={[typography.label, { color: colors.warning }]}>
-            ⚠️ Atención
-          </Text>
+          <View style={styles.warningHeader}>
+            <Icon name="info" size={16} color={colors.warning} />
+            <Text style={[typography.label, { color: colors.warning }]}>
+              Atención
+            </Text>
+          </View>
           {output.warnings.map((w, i) => (
             <Text
               key={i}
@@ -312,6 +314,7 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginTop: spacing.sm,
   },
+  warningHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xs },
   warningCard: {
     backgroundColor: colors.warning + '15',
     borderRadius: radius.lg,
