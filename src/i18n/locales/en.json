@@ -265,7 +265,12 @@
     "varnishGuideSub": "18 types · 10 common mistakes · 14 brands",
     "woodGuides": "Wood guides",
     "woodGuideSub": "20 species · Janka hardness · origin · uses",
-    "nominalSub": "A 2×4 is not 2\" × 4\""
+    "nominalSub": "A 2×4 is not 2\" × 4\"",
+    "toolsHeroTitle": "All tools",
+    "woodHeroTitle": "Wood & boards",
+    "byCategory": "By category",
+    "selectors": "Selectors",
+    "guides": "Guides"
   },
   "tools": {
     "categories": {

@@ -1,13 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
 // TOOL CATEGORIES SCREEN — grid de subcategorías de herramientas.
 // ───────────────────────────────────────────────────────────────
-// Refactorizado a CategoryCard + SectionHeader (fase 13).
-// Quitado el contador redundante de "tipos" (ruido informativo).
+// Reorganizado (Fase H):
+//   1. HeroBanner con conteo dinámico (era un subtitle suelto).
+//   2. Grid principal de categorías.
+//   3. Botón "Ver todas las herramientas" (misma posición que Wood).
+//   4. Sección "Selectores" — herramientas interactivas (ScrewSelector).
+//   5. Sección "Guías" — referencias de lectura (ScrewGuide, VarnishGuide).
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useEffect, useState } from 'react';
 import {
-  View,
   Text,
   StyleSheet,
   ScrollView,
@@ -20,7 +23,13 @@ import { RootStackParamList } from '../../../navigation/AppNavigator';
 import { colors, spacing, radius, typography } from '../../../theme';
 import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../../../data/toolData';
 import { fetchToolCatalog } from '../../../services/catalogApiClient';
-import { CategoryCard, CategoryGrid, SectionHeader, Icon } from '../../../components';
+import {
+  CategoryCard,
+  CategoryGrid,
+  SectionHeader,
+  Icon,
+  HeroBanner,
+} from '../../../components';
 import { categoryIcon, categoryColor } from '../../../utils/categoryIcons';
 
 type Props = {
@@ -120,10 +129,15 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.subtitle}>
-          {t('catalog.totalCount', { total, cats: counts.length })}
-        </Text>
+        <HeroBanner
+          eyebrow={t('nav.tools')}
+          title={t('catalog.toolsHeroTitle', { defaultValue: 'Todas las herramientas' })}
+          subtitle={t('catalog.totalCount', { total, cats: counts.length })}
+        />
 
+        <SectionHeader first>
+          {t('catalog.byCategory', { defaultValue: 'Por categoría' })}
+        </SectionHeader>
         <CategoryGrid>
           {counts.map((c) => (
             <CategoryCard
@@ -138,7 +152,21 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           ))}
         </CategoryGrid>
 
-        <SectionHeader>{t('catalog.screwsAndFixings')}</SectionHeader>
+        <Pressable
+          style={({ pressed }) => [
+            styles.allBtn,
+            pressed && { opacity: 0.85 },
+          ]}
+          onPress={() => navigation.navigate('ToolSearch', { categoryId: undefined })}
+        >
+          <Icon name="search" size={18} color={colors.primary} />
+          <Text style={styles.allBtnText}>{t('catalog.allTools')}</Text>
+          <Icon name="forward" size={18} color={colors.primary} />
+        </Pressable>
+
+        <SectionHeader>
+          {t('catalog.selectors', { defaultValue: 'Selectores' })}
+        </SectionHeader>
         <CategoryGrid>
           <CategoryCard
             compact
@@ -148,6 +176,12 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
             accent={colors.category.utilities}
             onPress={() => navigation.navigate('ScrewSelector')}
           />
+        </CategoryGrid>
+
+        <SectionHeader>
+          {t('catalog.guides', { defaultValue: 'Guías' })}
+        </SectionHeader>
+        <CategoryGrid>
           <CategoryCard
             compact
             icon="screw"
@@ -165,18 +199,6 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
             onPress={() => navigation.navigate('VarnishGuide')}
           />
         </CategoryGrid>
-
-        <Pressable
-          style={({ pressed }) => [
-            styles.allBtn,
-            pressed && { opacity: 0.85 },
-          ]}
-          onPress={() => navigation.navigate('ToolSearch', { categoryId: undefined })}
-        >
-          <Icon name="search" size={18} color={colors.primary} />
-          <Text style={styles.allBtnText}>{t('catalog.allTools')}</Text>
-          <Icon name="forward" size={18} color={colors.primary} />
-        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -190,17 +212,12 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xl,
     paddingBottom: spacing.xxxl,
   },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
   allBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
-    marginTop: spacing.xl,
+    marginTop: spacing.md,
     paddingVertical: spacing.lg,
     borderRadius: radius.full,
     backgroundColor: colors.primaryMuted,

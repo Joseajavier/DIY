@@ -1,9 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // WOOD CATEGORIES SCREEN — grid de subcategorías de madera.
 // ───────────────────────────────────────────────────────────────
-// Refactorizado a CategoryCard + SectionHeader (fase 13).
+// Reorganizado (Fase H):
+//   1. HeroBanner variant accent con conteo dinámico.
+//   2. Grid principal por categoría.
+//   3. Botón "Ver toda la madera".
+//   4. Sección "Guías" — referencias (WoodGuide, NominalActual).
 // Iconos y accents por categoría vienen de CAT_META.
-// Sección "Guías de madera" (WoodGuide + NominalActual) al final.
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useEffect, useState } from 'react';
@@ -20,7 +23,14 @@ import { RootStackParamList } from '../../../navigation/AppNavigator';
 import { colors, spacing, radius, typography } from '../../../theme';
 import { WOOD_CATEGORIES, WOOD_PRODUCTS } from '../../../data/woodData';
 import { fetchWoodCatalog } from '../../../services/catalogApiClient';
-import { CategoryCard, CategoryGrid, SectionHeader, Icon, IconName } from '../../../components';
+import {
+  CategoryCard,
+  CategoryGrid,
+  SectionHeader,
+  Icon,
+  IconName,
+  HeroBanner,
+} from '../../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCategories'>;
@@ -111,10 +121,16 @@ export default function WoodCategoriesScreen({ navigation }: Props) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.subtitle}>
-          {t('catalog.totalCount', { total, cats: counts.length })}
-        </Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow={t('nav.wood')}
+          title={t('catalog.woodHeroTitle', { defaultValue: 'Maderas y tableros' })}
+          subtitle={t('catalog.totalCount', { total, cats: counts.length })}
+        />
 
+        <SectionHeader first>
+          {t('catalog.byCategory', { defaultValue: 'Por categoría' })}
+        </SectionHeader>
         <CategoryGrid>
           {counts.map((c) => {
             const meta = metaFor(c.id);
@@ -144,7 +160,9 @@ export default function WoodCategoriesScreen({ navigation }: Props) {
           <Icon name="forward" size={18} color={colors.primary} />
         </Pressable>
 
-        <SectionHeader>{t('catalog.woodGuides')}</SectionHeader>
+        <SectionHeader>
+          {t('catalog.guides', { defaultValue: 'Guías' })}
+        </SectionHeader>
         <CategoryGrid>
           <CategoryCard
             compact
@@ -175,11 +193,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.xl,
     paddingBottom: spacing.xxxl,
-  },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
   },
   allBtn: {
     flexDirection: 'row',

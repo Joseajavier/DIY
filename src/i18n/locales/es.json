@@ -272,7 +272,12 @@
     "varnishGuideSub": "18 tipos · 10 errores comunes · 14 marcas",
     "woodGuides": "Guías de madera",
     "woodGuideSub": "20 especies · dureza Janka · origen · usos",
-    "nominalSub": "Un 2×4 no son 5×10 cm"
+    "nominalSub": "Un 2×4 no son 5×10 cm",
+    "toolsHeroTitle": "Todas las herramientas",
+    "woodHeroTitle": "Maderas y tableros",
+    "byCategory": "Por categoría",
+    "selectors": "Selectores",
+    "guides": "Guías"
   },
   "tools": {
     "categories": {
