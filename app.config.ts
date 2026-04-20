@@ -19,6 +19,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: getAppName(),
   slug: 'DIY',
+  owner: 'josejaviercapilla',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -68,5 +69,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       : IS_PREVIEW
       ? 'https://diy-backend-staging.up.railway.app'
       : 'https://diy-backend.up.railway.app',
+    eas: {
+      projectId: 'aa299165-5552-4ca4-bc3a-d308d0fb0dfd',
+    },
   },
 });
