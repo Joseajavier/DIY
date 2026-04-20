@@ -245,6 +245,11 @@ export const TOOL_BRANDS: ToolBrand[] = [
 
   // Organización
   { id: 'sortimo', name: 'Sortimo', tiers: ['pro'], level: 'pro', origin: 'DE' },
+
+  // ── Acabado superficial y abrasivos ──────────────────────────────
+  { id: 'osmo', name: 'Osmo', tiers: ['mid', 'pro'], level: 'accessories', origin: 'DE' },
+  { id: 'rubio_monocoat', name: 'Rubio Monocoat', tiers: ['pro'], level: 'accessories', origin: 'BE' },
+  { id: 'mirka', name: 'Mirka', tiers: ['mid', 'pro'], level: 'accessories', origin: 'FI' },
 ];
 
 export const TOOL_PRODUCTS: ToolProduct[] = [
@@ -1066,4 +1071,23 @@ export const TOOL_PRODUCTS: ToolProduct[] = [
   // ── GRAMIL ADICIONAL (marking_gauge) ──────────────────────────
   { id: 'stanley_47_543', typeId: 'marking_gauge', brandId: 'stanley', model: '47-543 Gramil de rueda', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 18, priceMax: 28, description: 'Gramil de rueda Stanley 150mm. Tope de latón, cuerpo de madera de haya. Ajuste preciso.', features: ['150mm', 'Rueda de corte', 'Haya + latón', 'Ajuste fino'], bestFor: 'Marcar líneas paralelas al canto de tablones y tableros' },
   { id: 'irwin_t100', typeId: 'marking_gauge', brandId: 'irwin', model: 'T100 Gramil de mortaja doble', tier: 'mid', use: ['workshop'], power: 'manual', priceMin: 25, priceMax: 40, description: 'Gramil de mortaja con doble cuchilla. Dos líneas paralelas a la vez. Mango bimaterial.', features: ['Doble cuchilla', 'Mortaja', 'Bimaterial', 'Ajuste independiente'], bestFor: 'Marcar espigas y mortajas con una sola pasada' },
+
+  // ══════════════════════════════════════════════════════════════
+  // LOTE 4 — Acabado superficial, abrasivos hoja, torno y motosierra
+  // Categorías previamente vacías: finishing_products, sandpaper,
+  // wood_lathe, chainsaw  (2026-04-17)
+  // ══════════════════════════════════════════════════════════════
+
+  // ═══ ACABADO SUPERFICIAL — barnices, aceites y ceras ═══
+  { id: 'fp01', typeId: 'finishing_products', brandId: 'osmo', model: 'Polyx-Oil 3054 Raw 0,75 L', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 30, priceMax: 48, description: 'Aceite cera duro natural para madera interior. Sin disolventes, sin biocidas. Rendimiento aprox. 25 m² en 2 manos.', features: ['0,75 L', 'Sin disolventes', '~25 m²', 'Interior', 'Efecto natural'], bestFor: 'Acabar mesas, encimeras y suelos de madera maciza con un resultado natural, transpirable y fácil de mantener' },
+  { id: 'fp02', typeId: 'finishing_products', brandId: 'rubio_monocoat', model: 'Oil Plus 2C Component A 1,3 L', tier: 'pro', use: ['workshop'], power: 'manual', priceMin: 62, priceMax: 90, description: 'Aceite monocapa 0% VOC para madera. Se mezcla con el acelerador Comp. B (no incluido). Cubre 30-40 m² en 1 mano.', features: ['0% VOC', '1 sola capa', '30-40 m²', '+170 colores', 'Certificado'], bestFor: 'Acabado profesional de muebles macizos y suelos: una sola capa, curado químico permanente sin mantenimiento anual' },
+
+  // ═══ PAPEL DE LIJA — hojas y rollos ═══
+  { id: 'sp01', typeId: 'sandpaper', brandId: 'mirka', model: 'Gold 230×280 mm Set 50 hojas P80-P240', tier: 'mid', use: ['home', 'workshop'], power: 'manual', priceMin: 12, priceMax: 22, description: '50 hojas de lija Gold 230×280 mm surtidas en granos P80, P100, P120, P180 y P240. Óxido de aluminio con agente antideslizante.', features: ['50 hojas', '230×280 mm', 'P80-P240', 'Antideslizante', 'Lijado manual y con taco'], bestFor: 'Lijar a mano y con taco: preparación de superficies, interponados de barniz y acabado fino de muebles' },
+
+  // ═══ TORNO PARA MADERA ═══
+  { id: 'wl01', typeId: 'wood_lathe', brandId: 'holzmann', model: 'DB450N 500W', tier: 'mid', use: ['workshop'], power: 'corded', priceMin: 280, priceMax: 380, description: '500 W, distancia entre puntos 450 mm, volteo sobre bancada 250 mm. 5 velocidades: 630-3000 rpm. Mesa de herramientas ajustable en altura y ángulo.', features: ['500 W', '450 mm entre puntos', '250 mm volteo', '5 velocidades 630-3000rpm', 'Mesa ajustable'], bestFor: 'Iniciarse en el torneado de piezas medianas: patas de mesa, cuencos, mangos y piezas decorativas' },
+
+  // ═══ MOTOSIERRA ═══
+  { id: 'csaw01', typeId: 'chainsaw', brandId: 'makita', model: 'DUC353Z 36V (2×18V LXT) 35 cm', tier: 'pro', use: ['workshop', 'construction'], power: 'battery', priceMin: 180, priceMax: 250, description: 'Motosierra a batería 36V brushless (2×18V LXT, sin baterías). Espada 35 cm, freno de cadena, autolubricación. Peso 4,1 kg sin baterías.', features: ['36V Brushless', '35 cm espada', '2×18V LXT', 'Freno cadena', 'Autolubricado', '4,1 kg'], bestFor: 'Talar árboles pequeños, trocear leña y limpiar jardín sin humos ni cable, usando baterías del ecosistema Makita LXT' },
 ];
