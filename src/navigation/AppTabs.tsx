@@ -2,16 +2,20 @@
 // AppTabs — bottom tab navigator raíz de la UX.
 // ───────────────────────────────────────────────────────────────
 // 4 tabs de navegación principal:
-//   HomeTab     → HomeScreen (inicio + crear + explorar rápido)
-//   CreateTab   → CreateHubScreen (DIY / PRO / Diseñador)
-//   LibraryTab  → LibraryHubScreen (proyectos + catálogos + utilidades)
-//   DealsTab    → DealsScreen (chollos cercanos)
+//   HomeTab      → HomeScreen (inicio + crear + explorar rápido)
+//   ProjectsTab  → ProjectsScreen (lista de proyectos guardados)
+//   LibraryTab   → LibraryHubScreen (catálogos + utilidades + chollos)
+//   SettingsTab  → SettingsScreen (preferencias)
 //
-// Las pantallas de detalle (DIYInput, ProInput, Projects, etc.) NO
-// viven dentro de los tabs: están en el Stack raíz (AppNavigator).
-// Al navegar a ellas, React Navigation las apila por encima del
-// tab bar, ocultándolo visualmente — que es el comportamiento que
-// queremos para pasos lineales (planner, detalle de proyecto).
+// Las pantallas de detalle (DIYInput, ProInput, Projects detail,
+// Generator, etc.) NO viven dentro de los tabs: están en el Stack
+// raíz (AppNavigator). Al navegar a ellas, React Navigation las
+// apila por encima del tab bar, ocultándolo — el comportamiento
+// que queremos para pasos lineales (planner, detalle de proyecto).
+//
+// Retirados en fase B:
+//   • CreateTab   — redundante; HomeScreen ya lanza DIY/PRO/Diseñador.
+//   • DealsTab    — absorbido por Explorar (Library + Home).
 // ═══════════════════════════════════════════════════════════════
 
 import React from 'react';
@@ -21,24 +25,24 @@ import { colors } from '../theme';
 import Icon, { IconName } from '../components/Icon';
 
 import HomeScreen from '../screens/home/HomeScreen';
-import CreateHubScreen from '../screens/home/CreateHubScreen';
+import ProjectsScreen from '../screens/projects/ProjectsScreen';
 import LibraryHubScreen from '../screens/home/LibraryHubScreen';
-import DealsScreen from '../screens/shop/DealsScreen';
+import SettingsScreen from '../screens/settings/SettingsScreen';
 
 export type TabParamList = {
   HomeTab: undefined;
-  CreateTab: undefined;
+  ProjectsTab: undefined;
   LibraryTab: undefined;
-  DealsTab: undefined;
+  SettingsTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const tabIcons: Record<keyof TabParamList, IconName> = {
   HomeTab: 'home',
-  CreateTab: 'plus',
+  ProjectsTab: 'projects',
   LibraryTab: 'folder',
-  DealsTab: 'shop',
+  SettingsTab: 'settings',
 };
 
 export default function AppTabs() {
@@ -61,9 +65,9 @@ export default function AppTabs() {
       })}
     >
       <Tab.Screen name="HomeTab" component={HomeScreen} options={{ title: t('tabs.home') }} />
-      <Tab.Screen name="CreateTab" component={CreateHubScreen} options={{ title: t('tabs.create') }} />
+      <Tab.Screen name="ProjectsTab" component={ProjectsScreen} options={{ title: t('tabs.projects') }} />
       <Tab.Screen name="LibraryTab" component={LibraryHubScreen} options={{ title: t('tabs.library') }} />
-      <Tab.Screen name="DealsTab" component={DealsScreen} options={{ title: t('tabs.deals') }} />
+      <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{ title: t('tabs.settings') }} />
     </Tab.Navigator>
   );
 }

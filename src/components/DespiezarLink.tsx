@@ -52,7 +52,7 @@ export default function DespiezarLink({ pieces, boardWidth, boardHeight, disable
           },
         ]}
       >
-        🪚 {t('despiece.fromGenerator')}
+        {t('despiece.fromGenerator')}
       </Text>
     </TouchableOpacity>
   );

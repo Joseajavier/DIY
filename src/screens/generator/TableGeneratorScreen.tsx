@@ -300,7 +300,7 @@ export default function TableGeneratorScreen({ navigation }: Props) {
       >
         <IconLabel
           icon="pdf"
-          label="Exportar PDF del despiece"
+          label="Exportar PDF del plan de cortes"
           color={colors.accent}
           textStyle={[typography.body, { textAlign: 'center' }]}
           style={{ opacity: !canProceed || saving ? 0.4 : 1 }}

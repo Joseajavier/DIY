@@ -21,9 +21,9 @@
   },
   "tabs": {
     "home": "Inicio",
-    "create": "Crear",
+    "projects": "Proyectos",
     "library": "Biblioteca",
-    "deals": "Chollos"
+    "settings": "Ajustes"
   },
   "home": {
     "start": "Empezar un proyecto",
@@ -103,11 +103,11 @@
     "viewMaterials": "Ver materiales y herramientas"
   },
   "despiece": {
-    "title": "Despiece",
+    "title": "Plan de cortes",
     "subtitle": "Medidas exactas → plan de cortes optimizado. Sin proyecto, sin lista de la compra: solo el diagrama.",
     "resultTitle": "Plan de cortes",
     "fillToCompute": "Rellena tablero y al menos una pieza para ver el plan de cortes.",
-    "fromGenerator": "Despiezar con estas piezas"
+    "fromGenerator": "Calcular plan de cortes"
   },
   "pro": {
     "title": "Proyecto PRO",
@@ -209,7 +209,7 @@
     "woodGuide": "Guía de maderas",
     "screwGuide": "Guía de tornillos",
     "varnishGuide": "Guía de barnices",
-    "despiece": "Despiece",
+    "despiece": "Plan de cortes",
     "shelfGen": "Estantería",
     "tableGen": "Mesa",
     "boxGen": "Caja",
@@ -400,7 +400,7 @@
       "ref": "Referencias"
     },
     "offline": "Todas las utilidades funcionan sin conexión. Los resultados se actualizan al instante.",
-    "despiece": { "t": "Despiece",                "s": "Cortes optimizados con grosor de hoja real" },
+    "despiece": { "t": "Plan de cortes",          "s": "Cortes optimizados con grosor de hoja real" },
     "golden":   { "t": "Proporción áurea",        "s": "Divide una medida en 61.8% / 38.2%" },
     "wainscot": { "t": "Wainscot / paneles",       "s": "Reparte N marcos iguales en una pared" },
     "shelf":    { "t": "Distribución de baldas",   "s": "Huecos idénticos entre N estantes" },
@@ -410,7 +410,7 @@
     "joints":   { "t": "Uniones de carpintería",   "s": "13 tipos con diagramas" }
   },
   "designer": {
-    "intro": "Elige una plantilla, ajusta medidas y obtén el despiece + plan de cortes.",
+    "intro": "Elige una plantilla, ajusta medidas y obtén las piezas con el plan de cortes.",
     "shelf":   { "t": "Estantería", "s": "Ajusta medidas y nº de baldas" },
     "table":   { "t": "Mesa",       "s": "4 patas macizas + tablero, faldón opcional" },
     "drawer":  { "t": "Cajonera",   "s": "N cajones con guías metálicas" },

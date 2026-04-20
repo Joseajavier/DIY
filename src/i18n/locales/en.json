@@ -21,9 +21,9 @@
   },
   "tabs": {
     "home": "Home",
-    "create": "Create",
+    "projects": "Projects",
     "library": "Library",
-    "deals": "Deals"
+    "settings": "Settings"
   },
   "home": {
     "start": "Start a project",
