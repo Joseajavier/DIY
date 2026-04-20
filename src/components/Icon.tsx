@@ -78,7 +78,13 @@ export type IconName =
   | 'pdf'
   | 'fire'
   | 'time'
-  | 'sparkles';
+  | 'sparkles'
+  | 'edit'
+  | 'copy'
+  | 'share'
+  | 'trash'
+  | 'refresh'
+  | 'trophy';
 
 type IonName = React.ComponentProps<typeof Ionicons>['name'];
 type MciName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -166,6 +172,12 @@ const MAP: Record<IconName, Mapping> = {
   fire: { pack: 'mci', name: 'fire' },
   time: { pack: 'ion', name: 'time-outline' },
   sparkles: { pack: 'ion', name: 'sparkles' },
+  edit: { pack: 'ion', name: 'pencil' },
+  copy: { pack: 'ion', name: 'copy' },
+  share: { pack: 'ion', name: 'share-social' },
+  trash: { pack: 'ion', name: 'trash' },
+  refresh: { pack: 'ion', name: 'refresh' },
+  trophy: { pack: 'ion', name: 'trophy' },
 };
 
 type Props = {

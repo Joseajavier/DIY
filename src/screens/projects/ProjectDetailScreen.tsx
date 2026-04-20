@@ -12,7 +12,7 @@ import { getOptimizationByProject } from '../../storage/optimizationRepository';
 import { getShopOptionsByProject } from '../../storage/shopRepository';
 import { getStepsByProject, toggleStep as toggleStepDb } from '../../storage/stepRepository';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
-import { Card, EfficiencyGauge } from '../../components';
+import { Card, EfficiencyGauge, Icon, IconLabel } from '../../components';
 import { useProjects } from '../../hooks/useProjects';
 
 type Props = {
@@ -106,28 +106,47 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
       {editing ? (
         <View style={styles.editRow}>
           <TextInput style={styles.editInput} value={editName} onChangeText={setEditName} autoFocus onSubmitEditing={handleRename} />
-          <TouchableOpacity onPress={handleRename} style={styles.editBtn}><Text style={[typography.button, { color: colors.textOnPrimary }]}>✓</Text></TouchableOpacity>
+          <TouchableOpacity onPress={handleRename} style={styles.editBtn}>
+            <Icon name="check" size={18} color={colors.textOnPrimary} />
+          </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity onPress={() => setEditing(true)}>
-          <Text style={[typography.h1, { color: accentColor }]}>{project.name} ✏️</Text>
+        <TouchableOpacity onPress={() => setEditing(true)} style={styles.titleRow} activeOpacity={0.7}>
+          <Text style={[typography.h1, { color: accentColor, flex: 1 }]}>{project.name}</Text>
+          <Icon name="edit" size={18} color={colors.textMuted} />
         </TouchableOpacity>
       )}
 
       <View style={styles.tagRow}>
-        <View style={[styles.tag, { backgroundColor: accentColor + '22' }]}>
-          <Text style={[typography.caption, { color: accentColor }]}>{project.mode.toUpperCase()}</Text>
+        <View style={[styles.tag, { backgroundColor: accentColor + '1A' }]}>
+          <Text style={[typography.caption, { color: accentColor, fontWeight: '700' }]}>
+            {project.mode.toUpperCase()}
+          </Text>
         </View>
         {project.difficulty && (
-          <View style={[styles.tag, { backgroundColor: colors.warning + '22' }]}>
-            <Text style={[typography.caption, { color: colors.warning }]}>
-              {project.difficulty === 'easy' ? '🟢 Facil' : project.difficulty === 'medium' ? '🟡 Media' : '🔴 Dificil'}
+          <View style={[styles.tag, styles.tagRowInner, { backgroundColor: colors.warning + '1A' }]}>
+            <View
+              style={[
+                styles.diffDot,
+                {
+                  backgroundColor:
+                    project.difficulty === 'easy'
+                      ? colors.success
+                      : project.difficulty === 'medium'
+                      ? colors.warning
+                      : colors.danger,
+                },
+              ]}
+            />
+            <Text style={[typography.caption, { color: colors.warning, fontWeight: '700' }]}>
+              {project.difficulty === 'easy' ? 'Fácil' : project.difficulty === 'medium' ? 'Media' : 'Difícil'}
             </Text>
           </View>
         )}
         {project.estimatedTime && (
-          <View style={styles.tag}>
-            <Text style={typography.caption}>⏱ {project.estimatedTime}</Text>
+          <View style={[styles.tag, styles.tagRowInner]}>
+            <Icon name="time" size={12} color={colors.textSecondary} />
+            <Text style={typography.caption}>{project.estimatedTime}</Text>
           </View>
         )}
         {project.createdAt && <Text style={typography.caption}>{new Date(project.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}</Text>}
@@ -157,15 +176,24 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
             />
           </View>
           {project.status === 'completed' && (
-            <Text style={styles.completedLabel}>🎉 ¡Proyecto terminado!</Text>
+            <View style={styles.completedRow}>
+              <Icon name="trophy" size={14} color={colors.success} />
+              <Text style={styles.completedLabel}>¡Proyecto terminado!</Text>
+            </View>
           )}
         </View>
       )}
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.actionBtn} onPress={handleDuplicate}><Text style={[typography.caption, { color: colors.textSecondary }]}>📋 Duplicar</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.actionBtn} onPress={handleShare}><Text style={[typography.caption, { color: colors.textSecondary }]}>📤 Compartir</Text></TouchableOpacity>
-        <TouchableOpacity style={[styles.actionBtn, { borderColor: colors.danger + '44' }]} onPress={handleDelete}><Text style={[typography.caption, { color: colors.danger }]}>🗑 Borrar</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.actionBtn} onPress={handleDuplicate} activeOpacity={0.7}>
+          <IconLabel icon="copy" label="Duplicar" color={colors.textSecondary} size={14} textStyle={typography.caption} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionBtn} onPress={handleShare} activeOpacity={0.7}>
+          <IconLabel icon="share" label="Compartir" color={colors.textSecondary} size={14} textStyle={typography.caption} />
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.actionBtn, { borderColor: colors.danger + '44' }]} onPress={handleDelete} activeOpacity={0.7}>
+          <IconLabel icon="trash" label="Borrar" color={colors.danger} size={14} textStyle={[typography.caption, { color: colors.danger }]} />
+        </TouchableOpacity>
       </View>
 
       {steps.length > 0 && (
@@ -252,8 +280,17 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
         </>
       )}
 
-      <TouchableOpacity style={[styles.mainBtn, { backgroundColor: accentColor }, shadows.md]} onPress={() => project.mode === 'diy' ? navigation.navigate('DIYInput') : navigation.navigate('ProInput')}>
-        <Text style={[typography.button, { color: project.mode === 'diy' ? colors.textOnPrimary : colors.textOnAccent }]}>🔄 {project.mode === 'diy' ? 'Regenerar' : 'Recalcular'}</Text>
+      <TouchableOpacity
+        style={[styles.mainBtn, { backgroundColor: accentColor }, shadows.md]}
+        onPress={() => project.mode === 'diy' ? navigation.navigate('DIYInput') : navigation.navigate('ProInput')}
+        activeOpacity={0.85}
+      >
+        <IconLabel
+          icon="refresh"
+          label={project.mode === 'diy' ? 'Regenerar' : 'Recalcular'}
+          color={project.mode === 'diy' ? colors.textOnPrimary : colors.textOnAccent}
+          textStyle={[typography.button, { color: project.mode === 'diy' ? colors.textOnPrimary : colors.textOnAccent }]}
+        />
       </TouchableOpacity>
     </ScrollView>
   );
@@ -264,9 +301,12 @@ const styles = StyleSheet.create({
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
   editRow: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
   editInput: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.md, fontSize: 18, fontWeight: 'bold', color: colors.text, borderWidth: 1, borderColor: colors.primary },
-  editBtn: { marginLeft: spacing.sm, backgroundColor: colors.primary, borderRadius: radius.sm, paddingHorizontal: spacing.lg, paddingVertical: spacing.md },
-  tagRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginTop: spacing.sm, marginBottom: spacing.md },
-  tag: { borderRadius: radius.sm, paddingHorizontal: spacing.md, paddingVertical: spacing.xs },
+  editBtn: { marginLeft: spacing.sm, backgroundColor: colors.primary, borderRadius: radius.full, width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  tagRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, marginTop: spacing.sm, marginBottom: spacing.md },
+  tag: { borderRadius: radius.full, paddingHorizontal: spacing.md, paddingVertical: 4 },
+  tagRowInner: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  diffDot: { width: 8, height: 8, borderRadius: 4 },
   actions: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg },
   actionBtn: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: spacing.md, alignItems: 'center', borderWidth: 1, borderColor: colors.border },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, marginBottom: spacing.sm },
@@ -288,21 +328,26 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   progressBarBg: {
-    height: 8,
-    backgroundColor: colors.bg,
-    borderRadius: 4,
+    height: 4,
+    backgroundColor: colors.bgAlt,
+    borderRadius: radius.full,
     overflow: 'hidden',
   },
   progressBarFill: {
-    height: 8,
-    borderRadius: 4,
+    height: 4,
+    borderRadius: radius.full,
+  },
+  completedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    justifyContent: 'center',
+    marginTop: spacing.sm,
   },
   completedLabel: {
     ...typography.caption,
     color: colors.success,
     fontWeight: '700',
-    textAlign: 'center',
-    marginTop: spacing.sm,
   },
   // Steps con checkboxes
   stepRow: {
