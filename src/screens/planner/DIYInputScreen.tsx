@@ -14,6 +14,7 @@ import { createSteps } from '../../storage/stepRepository';
 import { setLastProjectId } from '../../storage/settingsStorage';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { DIYResult } from '../../models';
+import { HeroBanner, SectionHeader, IconLabel } from '../../components';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'DIYInput'> };
 
@@ -60,11 +61,6 @@ function Chip({ label, active, onPress }: { label: string; active: boolean; onPr
       <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
     </TouchableOpacity>
   );
-}
-
-// ── Título de sección ──────────────────────────────────────────────
-function SectionTitle({ children }: { children: string }) {
-  return <Text style={styles.sectionTitle}>{children}</Text>;
 }
 
 // ── Helper: construir prompt rico ──────────────────────────────────
@@ -159,13 +155,14 @@ export default function DIYInputScreen({ navigation }: Props) {
       keyboardShouldPersistTaps="handled"
     >
       {/* Cabecera */}
-      <Text style={styles.title}>🔨 Nuevo proyecto</Text>
-      <Text style={[typography.bodySmall, { color: colors.textMuted, marginBottom: spacing.xl }]}>
-        Cuéntanos qué quieres hacer y te generamos los pasos.
-      </Text>
+      <HeroBanner
+        eyebrow="DIY"
+        title="Nuevo proyecto"
+        subtitle="Cuéntanos qué quieres hacer y te generamos los pasos."
+      />
 
       {/* Tipo de proyecto */}
-      <SectionTitle>¿Qué quieres hacer?</SectionTitle>
+      <SectionHeader first>¿Qué quieres hacer?</SectionHeader>
       <View style={styles.chipGrid}>
         {PROJECT_TYPES.map(t => (
           <Chip key={t.id} label={t.label} active={projectType === t.id} onPress={() => setProjectType(t.id)} />
@@ -173,7 +170,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       </View>
 
       {/* Nombre */}
-      <SectionTitle>Nombre del proyecto *</SectionTitle>
+      <SectionHeader>Nombre del proyecto *</SectionHeader>
       <TextInput
         style={styles.input}
         placeholder={`Ej: ${PROJECT_TYPES.find(t => t.id === projectType)?.hint ?? 'Mi proyecto'}`}
@@ -183,7 +180,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       />
 
       {/* Descripción */}
-      <SectionTitle>Descripción (opcional)</SectionTitle>
+      <SectionHeader>Descripción (opcional)</SectionHeader>
       <TextInput
         style={[styles.input, styles.inputMultiline]}
         placeholder="Detalles extra: medidas, estilo, uso previsto…"
@@ -196,7 +193,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       />
 
       {/* Nivel */}
-      <SectionTitle>Tu nivel</SectionTitle>
+      <SectionHeader>Tu nivel</SectionHeader>
       <View style={styles.chipRow}>
         {LEVELS.map(l => (
           <Chip key={l.id} label={l.label} active={level === l.id} onPress={() => setLevel(l.id)} />
@@ -204,7 +201,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       </View>
 
       {/* Presupuesto */}
-      <SectionTitle>Presupuesto</SectionTitle>
+      <SectionHeader>Presupuesto</SectionHeader>
       <View style={styles.chipRow}>
         {BUDGETS.map(b => (
           <Chip key={b.id} label={b.label} active={budget === b.id} onPress={() => setBudget(b.id)} />
@@ -212,7 +209,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       </View>
 
       {/* Material */}
-      <SectionTitle>Material principal</SectionTitle>
+      <SectionHeader>Material principal</SectionHeader>
       <View style={styles.chipGrid}>
         {MATERIALS.map(m => (
           <Chip key={m.id} label={m.label} active={material === m.id} onPress={() => setMaterial(m.id)} />
@@ -220,7 +217,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       </View>
 
       {/* Dimensiones */}
-      <SectionTitle>Dimensiones aproximadas (opcional)</SectionTitle>
+      <SectionHeader>Dimensiones aproximadas (opcional)</SectionHeader>
       <TextInput
         style={styles.input}
         placeholder="Ej: 120 × 60 × 75 cm"
@@ -232,8 +229,15 @@ export default function DIYInputScreen({ navigation }: Props) {
       {/* Toggle IA */}
       <View style={styles.aiRow}>
         <View style={{ flex: 1 }}>
-          <Text style={[typography.body, { color: colors.text }]}>🤖 Usar IA (backend)</Text>
-          <Text style={[typography.caption, { color: colors.textMuted }]}>
+          <IconLabel
+            icon="sparkles"
+            label="Usar IA (backend)"
+            color={colors.accent}
+            size={16}
+            textStyle={[typography.body, { color: colors.text }]}
+            left
+          />
+          <Text style={[typography.caption, { color: colors.textMuted, marginTop: 2 }]}>
             Genera pasos personalizados con inteligencia artificial
           </Text>
         </View>
@@ -252,12 +256,16 @@ export default function DIYInputScreen({ navigation }: Props) {
         disabled={loading}
         activeOpacity={0.85}
       >
-        {loading
-          ? <ActivityIndicator color={colors.textOnPrimary} />
-          : <Text style={[typography.button, { color: colors.textOnPrimary }]}>
-              {useAI ? '🤖 Generar con IA' : '🔨 Generar proyecto'}
-            </Text>
-        }
+        {loading ? (
+          <ActivityIndicator color={colors.textOnPrimary} />
+        ) : (
+          <IconLabel
+            icon={useAI ? 'sparkles' : 'hammer'}
+            label={useAI ? 'Generar con IA' : 'Generar proyecto'}
+            color={colors.textOnPrimary}
+            textStyle={[typography.button, { color: colors.textOnPrimary }]}
+          />
+        )}
       </TouchableOpacity>
 
       <View style={{ height: spacing.xl * 2 }} />
@@ -269,13 +277,6 @@ export default function DIYInputScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container:   { flex: 1, backgroundColor: colors.bg },
   content:     { padding: spacing.xl },
-  title:       { ...typography.h1, color: colors.primary, marginBottom: spacing.sm },
-  sectionTitle: {
-    ...typography.label,
-    color: colors.text,
-    marginTop: spacing.xl,
-    marginBottom: spacing.sm,
-  },
   chipGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',

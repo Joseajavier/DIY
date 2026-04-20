@@ -77,7 +77,8 @@ export type IconName =
   | 'save'
   | 'pdf'
   | 'fire'
-  | 'time';
+  | 'time'
+  | 'sparkles';
 
 type IonName = React.ComponentProps<typeof Ionicons>['name'];
 type MciName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -164,6 +165,7 @@ const MAP: Record<IconName, Mapping> = {
   pdf: { pack: 'ion', name: 'document-text' },
   fire: { pack: 'mci', name: 'fire' },
   time: { pack: 'ion', name: 'time-outline' },
+  sparkles: { pack: 'ion', name: 'sparkles' },
 };
 
 type Props = {

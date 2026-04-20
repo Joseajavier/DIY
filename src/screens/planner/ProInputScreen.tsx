@@ -11,6 +11,7 @@ import { optimizeCuts } from '../../services/cuttingOptimizer';
 import { generateMaterials } from '../../services/materialsGenerator';
 import { generateProPlanWithAI } from '../../services/apiClient';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { HeroBanner, SectionHeader, IconLabel, Icon } from '../../components';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'ProInput'> };
 
@@ -82,11 +83,16 @@ export default function ProInputScreen({ navigation }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.accent, marginBottom: spacing.xl }]}>{t('pro.title')}</Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow="PRO"
+        title={t('pro.title')}
+        subtitle="Medidas exactas, cortes optimizados."
+      />
 
       {/* ── Grosor de hoja (selector) ──────────────────────────── */}
-      <Text style={typography.label}>{t('pro.kerfTitle')}</Text>
-      <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: 4, marginBottom: spacing.md }]}>
+      <SectionHeader first>{t('pro.kerfTitle')}</SectionHeader>
+      <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: -spacing.sm, marginBottom: spacing.md }]}>
         {t('pro.kerfHelp')}
       </Text>
       <TouchableOpacity
@@ -102,7 +108,7 @@ export default function ProInputScreen({ navigation }: Props) {
             {t(selectedKerf.subtitleKey)}
           </Text>
         </View>
-        <Text style={styles.selectorChevron}>▾</Text>
+        <Icon name="forward" size={16} color={colors.textMuted} />
       </TouchableOpacity>
 
       {/* Picker modal */}
@@ -146,21 +152,28 @@ export default function ProInputScreen({ navigation }: Props) {
       </Modal>
 
       <View style={styles.toggle}>
-        <Text style={[typography.body, { color: colors.text }]}>🤖 Usar IA</Text>
+        <IconLabel
+          icon="sparkles"
+          label="Usar IA"
+          color={colors.accent}
+          size={16}
+          textStyle={[typography.body, { color: colors.text }]}
+          left
+        />
         <Switch value={useAI} onValueChange={setUseAI} trackColor={{ false: colors.border, true: colors.accent }} thumbColor={useAI ? colors.accentLight : colors.textMuted} />
       </View>
 
-      <Text style={typography.label}>{t('pro.projectName')}</Text>
+      <SectionHeader>{t('pro.projectName')}</SectionHeader>
       <TextInput style={styles.input} placeholder={t('pro.projectNamePlaceholder')} placeholderTextColor={colors.textMuted} value={projectName} onChangeText={setProjectName} />
 
-      <Text style={typography.label}>{t('pro.boardSize')}</Text>
+      <SectionHeader>{t('pro.boardSize')}</SectionHeader>
       <View style={styles.row}>
         <TextInput style={[styles.input, { flex: 1 }]} placeholder={t('pro.width')} placeholderTextColor={colors.textMuted} value={boardWidth} onChangeText={setBoardWidth} keyboardType="numeric" />
         <Text style={styles.x}>×</Text>
         <TextInput style={[styles.input, { flex: 1 }]} placeholder={t('pro.height')} placeholderTextColor={colors.textMuted} value={boardHeight} onChangeText={setBoardHeight} keyboardType="numeric" />
       </View>
 
-      <Text style={[typography.label, { marginTop: spacing.lg }]}>{t('pro.piecesToCut')}</Text>
+      <SectionHeader>{t('pro.piecesToCut')}</SectionHeader>
       {pieces.map((p, i) => (
         <View key={i} style={styles.row}>
           <TextInput style={[styles.input, { flex: 2 }]} placeholder={t('pro.width')} placeholderTextColor={colors.textMuted} value={p.width ? String(p.width) : ''} onChangeText={v => updatePiece(i, 'width', v)} keyboardType="numeric" />
@@ -172,10 +185,27 @@ export default function ProInputScreen({ navigation }: Props) {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.addBtn} onPress={addPiece}><Text style={[typography.buttonSmall, { color: colors.accent }]}>{t('pro.addPiece')}</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.addBtn} onPress={addPiece} activeOpacity={0.7}>
+        <IconLabel
+          icon="plus"
+          label={t('pro.addPiece')}
+          color={colors.accent}
+          size={14}
+          textStyle={[typography.buttonSmall, { color: colors.accent }]}
+        />
+      </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, loading && { opacity: 0.6 }, shadows.md]} onPress={handleOptimize} disabled={loading}>
-        {loading ? <ActivityIndicator color={colors.textOnAccent} /> : <Text style={[typography.button, { color: colors.textOnAccent }]}>{useAI ? '🤖 ' : ''}{t('pro.optimize')}</Text>}
+      <TouchableOpacity style={[styles.button, loading && { opacity: 0.6 }, shadows.md]} onPress={handleOptimize} disabled={loading} activeOpacity={0.85}>
+        {loading ? (
+          <ActivityIndicator color={colors.textOnAccent} />
+        ) : (
+          <IconLabel
+            icon={useAI ? 'sparkles' : 'optimize'}
+            label={t('pro.optimize')}
+            color={colors.textOnAccent}
+            textStyle={[typography.button, { color: colors.textOnAccent }]}
+          />
+        )}
       </TouchableOpacity>
     </ScrollView>
   );
