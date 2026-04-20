@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SectionList, Linking, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useScrollMemory } from '../../../hooks/useScrollMemory';
 import { getBrandLogo } from '../../../assets/brands';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -55,6 +56,7 @@ const tierColors: Record<ToolTier, string> = { basic: colors.success, mid: color
 const tierLabels: Record<ToolTier, string> = { basic: 'Básica', mid: 'Media', pro: 'Profesional' };
 
 export default function ToolSearchScreen({ navigation, route }: Props) {
+  const { i18n } = useTranslation();
   const initialCategoryId = route.params?.categoryId ?? '';
   const initialQuery = route.params?.query ?? '';
   const [query, setQuery] = useState(initialQuery);
@@ -179,7 +181,9 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         isBrandGroup: false,
       };
     });
-  }, [results, showBrands, categoryId]);
+  // i18n.language dep: re-renderiza títulos de tipo al cambiar idioma
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results, showBrands, categoryId, i18n.language]);
 
   return (
     <View style={styles.container}>

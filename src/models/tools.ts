@@ -5,6 +5,8 @@ export type ToolPower = 'battery' | 'corded' | 'manual';
 export interface ToolCategory {
   id: string;
   name: string;
+  /** Clave i18n opcional; si existe, prevalece sobre `name` al mostrar */
+  nameKey?: string;
   icon: string;
 }
 
@@ -12,6 +14,8 @@ export interface ToolType {
   id: string;
   categoryId: string;
   name: string;
+  /** Clave i18n opcional; si existe, prevalece sobre `name` al mostrar */
+  nameKey?: string;
   icon: string;
 }
 

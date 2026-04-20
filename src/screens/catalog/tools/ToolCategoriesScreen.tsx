@@ -30,6 +30,7 @@ type Props = {
 type CategoryCount = {
   id: string;
   name: string;
+  nameKey?: string;
   productCount: number;
 };
 
@@ -57,7 +58,7 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           (acc, tid) => acc + (productsByType[tid] || 0),
           0,
         );
-        return { id: c.id, name: c.name, productCount };
+        return { id: c.id, name: c.name, nameKey: c.nameKey, productCount };
       });
     };
 
@@ -80,6 +81,7 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           const remoteCats = (res.categories || TOOL_CATEGORIES) as Array<{
             id: string;
             name: string;
+            nameKey?: string;
           }>;
           setCounts(
             remoteCats.map((c) => {
@@ -88,7 +90,7 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
                 (acc, tid) => acc + (productsByType[tid] || 0),
                 0,
               );
-              return { id: c.id, name: c.name, productCount };
+              return { id: c.id, name: c.name, nameKey: c.nameKey, productCount };
             }),
           );
           setTotal(res.products.length);
@@ -126,7 +128,7 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           <CategoryCard
             key={c.id}
             icon={categoryIcon(c.id)}
-            title={c.name}
+            title={c.nameKey ? t(c.nameKey, { defaultValue: c.name }) : c.name}
             subtitle={pluralProduct(c.productCount)}
             accent={categoryColor(c.id)}
             onPress={() => navigation.navigate('ToolSearch', { categoryId: c.id })}

@@ -1,5 +1,6 @@
 import { ToolProduct, ToolFilter } from '../models/tools';
-import { TOOL_PRODUCTS, TOOL_TYPES, TOOL_BRANDS } from '../data/toolData';
+import { TOOL_PRODUCTS, TOOL_TYPES, TOOL_BRANDS, TOOL_CATEGORIES } from '../data/toolData';
+import i18n from '../i18n';
 
 export function searchTools(filter: ToolFilter, products?: ToolProduct[]): ToolProduct[] {
   let results = [...(products ?? TOOL_PRODUCTS)];
@@ -33,5 +34,15 @@ export function getToolBrandName(brandId: string): string {
 }
 
 export function getToolTypeName(typeId: string): string {
-  return TOOL_TYPES.find(t => t.id === typeId)?.name ?? typeId;
+  const tt = TOOL_TYPES.find(t => t.id === typeId);
+  if (!tt) return typeId;
+  if (tt.nameKey) return i18n.t(tt.nameKey, { defaultValue: tt.name });
+  return tt.name;
+}
+
+export function getToolCategoryName(categoryId: string): string {
+  const c = TOOL_CATEGORIES.find(x => x.id === categoryId);
+  if (!c) return categoryId;
+  if (c.nameKey) return i18n.t(c.nameKey, { defaultValue: c.name });
+  return c.name;
 }
