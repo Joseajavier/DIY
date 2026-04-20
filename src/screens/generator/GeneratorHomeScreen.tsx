@@ -5,12 +5,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React from 'react';
-import { StyleSheet, ScrollView, Text } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { colors, spacing, typography } from '../../theme';
-import { CategoryCard, CategoryGrid, IconName } from '../../components';
+import { colors, spacing } from '../../theme';
+import { CategoryCard, CategoryGrid, HeroBanner, IconName } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ParametricHome'>;
@@ -39,7 +39,11 @@ export default function GeneratorHomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.intro}>{t('designer.intro')}</Text>
+      <HeroBanner
+        eyebrow={t('nav.designer')}
+        title="Muebles a medida"
+        subtitle={t('designer.intro')}
+      />
 
       <CategoryGrid>
         {TEMPLATES.map((tpl) => (
@@ -61,10 +65,4 @@ export default function GeneratorHomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  intro: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.lg,
-    lineHeight: 20,
-  },
 });

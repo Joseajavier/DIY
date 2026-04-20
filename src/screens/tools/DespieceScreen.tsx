@@ -29,7 +29,14 @@ import { RootStackParamList } from '../../navigation/AppNavigator';
 import { Piece } from '../../models';
 import { optimizeCuts } from '../../services/cuttingOptimizer';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
-import { BoardDiagram, MetricCard } from '../../components';
+import {
+  BoardDiagram,
+  MetricCard,
+  HeroBanner,
+  SectionHeader,
+  Icon,
+  IconLabel,
+} from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Despiece'>;
@@ -108,16 +115,16 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.accent, marginBottom: spacing.sm }]}>
-        {t('despiece.title')}
-      </Text>
-      <Text style={[typography.bodySmall, { color: colors.textMuted, marginBottom: spacing.xl }]}>
-        {t('despiece.subtitle')}
-      </Text>
+      <HeroBanner
+        variant="accent"
+        eyebrow={t('despiece.title')}
+        title={t('despiece.title')}
+        subtitle={t('despiece.subtitle')}
+      />
 
       {/* ── Grosor de hoja ──────────────────────────────────── */}
-      <Text style={typography.label}>{t('pro.kerfTitle')}</Text>
-      <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: 4, marginBottom: spacing.md }]}>
+      <SectionHeader first>{t('pro.kerfTitle')}</SectionHeader>
+      <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: -spacing.xs, marginBottom: spacing.md }]}>
         {t('pro.kerfHelp')}
       </Text>
       <TouchableOpacity
@@ -133,7 +140,7 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
             {t(selectedKerf.subtitleKey)}
           </Text>
         </View>
-        <Text style={styles.selectorChevron}>▾</Text>
+        <Icon name="forward" size={18} color={colors.textMuted} />
       </TouchableOpacity>
 
       {/* Picker modal */}
@@ -165,7 +172,7 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
                       {t(opt.subtitleKey)}
                     </Text>
                   </View>
-                  {active && <Text style={styles.check}>✓</Text>}
+                  {active && <Icon name="check" size={20} color={colors.accent} />}
                 </TouchableOpacity>
               );
             })}
@@ -177,7 +184,7 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
       </Modal>
 
       {/* ── Tablero ──────────────────────────────────────────── */}
-      <Text style={[typography.label, { marginTop: spacing.lg }]}>{t('pro.boardSize')}</Text>
+      <SectionHeader>{t('pro.boardSize')}</SectionHeader>
       <View style={styles.row}>
         <TextInput
           style={[styles.input, { flex: 1 }]}
@@ -199,7 +206,7 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
       </View>
 
       {/* ── Piezas ───────────────────────────────────────────── */}
-      <Text style={[typography.label, { marginTop: spacing.lg }]}>{t('pro.piecesToCut')}</Text>
+      <SectionHeader>{t('pro.piecesToCut')}</SectionHeader>
       {pieces.map((p, i) => (
         <View key={i} style={styles.row}>
           <TextInput
@@ -231,23 +238,28 @@ export default function DespieceScreen({ navigation: _nav, route }: Props) {
           {pieces.length > 1 && (
             <TouchableOpacity
               onPress={() => removePiece(i)}
-              style={{ marginLeft: spacing.sm, padding: spacing.sm }}
+              style={styles.removeBtn}
+              hitSlop={8}
             >
-              <Text style={{ color: colors.danger, fontSize: 16, fontWeight: 'bold' }}>✕</Text>
+              <Icon name="close" size={18} color={colors.danger} />
             </TouchableOpacity>
           )}
         </View>
       ))}
-      <TouchableOpacity style={styles.addBtn} onPress={addPiece}>
-        <Text style={[typography.buttonSmall, { color: colors.accent }]}>{t('pro.addPiece')}</Text>
+      <TouchableOpacity style={styles.addBtn} onPress={addPiece} activeOpacity={0.75}>
+        <IconLabel
+          icon="plus"
+          label={t('pro.addPiece')}
+          color={colors.accent}
+          size={16}
+          textStyle={[typography.buttonSmall, { color: colors.accent }]}
+        />
       </TouchableOpacity>
 
       {/* ── Resultado en vivo ────────────────────────────────── */}
       {optimization ? (
         <View style={{ marginTop: spacing.xl }}>
-          <Text style={[typography.h2, { color: colors.text, marginBottom: spacing.md }]}>
-            {t('despiece.resultTitle')}
-          </Text>
+          <SectionHeader>{t('despiece.resultTitle')}</SectionHeader>
 
           <View style={styles.metricsRow}>
             <MetricCard
@@ -309,6 +321,14 @@ const styles = StyleSheet.create({
   },
   row: { flexDirection: 'row', alignItems: 'center' },
   x: { color: colors.textMuted, fontSize: 18, marginHorizontal: spacing.sm },
+  removeBtn: {
+    marginLeft: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   addBtn: {
     borderWidth: 1,
     borderColor: colors.accent,
@@ -336,7 +356,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     marginBottom: spacing.md,
   },
-  selectorChevron: { color: colors.textMuted, fontSize: 18, marginLeft: spacing.md },
   // Modal
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
   modalSheet: {
@@ -355,7 +374,6 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
   optionRowActive: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.accent },
-  check: { color: colors.accent, fontSize: 20, fontWeight: '700', marginLeft: spacing.md },
   modalCloseBtn: {
     alignSelf: 'center',
     marginTop: spacing.md,
