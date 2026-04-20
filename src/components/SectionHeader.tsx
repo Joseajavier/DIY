@@ -5,7 +5,9 @@
 // pantallas (Home, Utilities, Catalog…) con estilos distintos.
 //
 // Variantes:
-//   default  — label gris uppercase tracking amplio (secciones de home)
+//   default  — label uppercase tracking amplio + filete acento izq
+//              (secciones de home / hubs). Tiene "peso": se nota
+//              dónde empieza una sección.
 //   plain    — h3 normal, para pantallas internas (formularios)
 // ═══════════════════════════════════════════════════════════════
 
@@ -34,8 +36,9 @@ export default function SectionHeader({
         { marginTop: first ? 0 : isLabel ? spacing.xl : spacing.lg },
       ]}
     >
+      {isLabel && <View style={styles.bar} />}
       <Text style={isLabel ? styles.label : styles.plain}>{children}</Text>
-      {action && <View>{action}</View>}
+      {action && <View style={styles.action}>{action}</View>}
     </View>
   );
 }
@@ -44,17 +47,29 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: spacing.md,
+    gap: spacing.sm,
+  },
+  bar: {
+    width: 3,
+    height: 16,
+    borderRadius: 2,
+    backgroundColor: colors.primary,
   },
   label: {
     ...typography.label,
-    color: colors.textSecondary,
+    color: colors.text,
     textTransform: 'uppercase',
-    letterSpacing: 0.8,
+    letterSpacing: 1,
+    fontWeight: '700',
+    flex: 1,
   },
   plain: {
     ...typography.h3,
     color: colors.text,
+    flex: 1,
+  },
+  action: {
+    marginLeft: 'auto',
   },
 });

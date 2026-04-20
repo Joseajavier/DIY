@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { sendFeedback } from '../../services/feedback/feedbackService';
 import { trackEvent } from '../../services/analytics/events';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { Icon } from '../../components';
 
 const TYPES = [
   { key: 'bug' as const, label: '🐛 Bug' },
@@ -31,7 +32,9 @@ export default function FeedbackScreen() {
   if (sent) {
     return (
       <View style={styles.centered}>
-        <Text style={{ fontSize: 56, marginBottom: spacing.xl }}>✅</Text>
+        <View style={{ marginBottom: spacing.xl }}>
+          <Icon name="check" size={72} color={colors.success} />
+        </View>
         <Text style={[typography.h2, { textAlign: 'center' }]}>Gracias por tu feedback!</Text>
         <Text style={[typography.bodySmall, { textAlign: 'center', marginTop: spacing.sm }]}>Lo revisaremos pronto.</Text>
       </View>

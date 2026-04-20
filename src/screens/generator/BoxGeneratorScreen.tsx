@@ -19,7 +19,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateBox, BOX_DEFAULTS } from '../../services/parametric';
-import { ShelfIsometric } from '../../components';
+import { ShelfIsometric, IconLabel } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -78,7 +78,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[typography.h1, { color: colors.accent }]}>📦 Caja</Text>
+      <IconLabel icon="cube" label="Caja" color={colors.accent} size={28} textStyle={typography.h1} left />
       <Text
         style={[
           typography.bodySmall,
@@ -230,9 +230,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
           disabled={!canProceed || saving}
           activeOpacity={0.85}
         >
-          <Text style={[typography.button, { color: colors.accent }]}>
-            💾 Guardar
-          </Text>
+          <IconLabel icon="save" label="Guardar" color={colors.accent} textStyle={typography.button} />
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -245,9 +243,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
           disabled={!canProceed || saving}
           activeOpacity={0.85}
         >
-          <Text style={[typography.button, { color: colors.textOnAccent }]}>
-            🪚 Optimizar cortes
-          </Text>
+          <IconLabel icon="saw" label="Optimizar cortes" color={colors.textOnAccent} textStyle={typography.button} />
         </TouchableOpacity>
       </View>
 
@@ -257,18 +253,13 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
         disabled={!canProceed || saving}
         activeOpacity={0.7}
       >
-        <Text
-          style={[
-            typography.body,
-            {
-              color: colors.accent,
-              textAlign: 'center',
-              opacity: !canProceed || saving ? 0.4 : 1,
-            },
-          ]}
-        >
-          📄 Exportar PDF del despiece
-        </Text>
+        <IconLabel
+          icon="pdf"
+          label="Exportar PDF del despiece"
+          color={colors.accent}
+          textStyle={[typography.body, { textAlign: 'center' }]}
+          style={{ opacity: !canProceed || saving ? 0.4 : 1 }}
+        />
       </TouchableOpacity>
 
       <DespiezarLink pieces={output.pieces} disabled={!canProceed || saving} />

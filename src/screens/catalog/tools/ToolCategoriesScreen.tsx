@@ -20,7 +20,7 @@ import { RootStackParamList } from '../../../navigation/AppNavigator';
 import { colors, spacing, radius, typography } from '../../../theme';
 import { TOOL_CATEGORIES, TOOL_TYPES, TOOL_PRODUCTS } from '../../../data/toolData';
 import { fetchToolCatalog } from '../../../services/catalogApiClient';
-import { CategoryCard, SectionHeader, Icon } from '../../../components';
+import { CategoryCard, CategoryGrid, SectionHeader, Icon } from '../../../components';
 import { categoryIcon, categoryColor } from '../../../utils/categoryIcons';
 
 type Props = {
@@ -124,39 +124,47 @@ export default function ToolCategoriesScreen({ navigation }: Props) {
           {t('catalog.totalCount', { total, cats: counts.length })}
         </Text>
 
-        {counts.map((c) => (
-          <CategoryCard
-            key={c.id}
-            icon={categoryIcon(c.id)}
-            title={c.nameKey ? t(c.nameKey, { defaultValue: c.name }) : c.name}
-            subtitle={pluralProduct(c.productCount)}
-            accent={categoryColor(c.id)}
-            onPress={() => navigation.navigate('ToolSearch', { categoryId: c.id })}
-          />
-        ))}
+        <CategoryGrid>
+          {counts.map((c) => (
+            <CategoryCard
+              key={c.id}
+              compact
+              icon={categoryIcon(c.id)}
+              title={c.nameKey ? t(c.nameKey, { defaultValue: c.name }) : c.name}
+              subtitle={pluralProduct(c.productCount)}
+              accent={categoryColor(c.id)}
+              onPress={() => navigation.navigate('ToolSearch', { categoryId: c.id })}
+            />
+          ))}
+        </CategoryGrid>
 
         <SectionHeader>{t('catalog.screwsAndFixings')}</SectionHeader>
-        <CategoryCard
-          icon="screw"
-          title={t('nav.screwSelector')}
-          subtitle={t('catalog.screwSelectorSub')}
-          accent={colors.category.utilities}
-          onPress={() => navigation.navigate('ScrewSelector')}
-        />
-        <CategoryCard
-          icon="screw"
-          title={t('nav.screwGuide')}
-          subtitle={t('catalog.screwGuideSub')}
-          accent={colors.category.guide}
-          onPress={() => navigation.navigate('ScrewGuide')}
-        />
-        <CategoryCard
-          icon="paint"
-          title={t('nav.varnishGuide')}
-          subtitle={t('catalog.varnishGuideSub')}
-          accent={colors.category.guide}
-          onPress={() => navigation.navigate('VarnishGuide')}
-        />
+        <CategoryGrid>
+          <CategoryCard
+            compact
+            icon="screw"
+            title={t('nav.screwSelector')}
+            subtitle={t('catalog.screwSelectorSub')}
+            accent={colors.category.utilities}
+            onPress={() => navigation.navigate('ScrewSelector')}
+          />
+          <CategoryCard
+            compact
+            icon="screw"
+            title={t('nav.screwGuide')}
+            subtitle={t('catalog.screwGuideSub')}
+            accent={colors.category.guide}
+            onPress={() => navigation.navigate('ScrewGuide')}
+          />
+          <CategoryCard
+            compact
+            icon="paint"
+            title={t('nav.varnishGuide')}
+            subtitle={t('catalog.varnishGuideSub')}
+            accent={colors.category.guide}
+            onPress={() => navigation.navigate('VarnishGuide')}
+          />
+        </CategoryGrid>
 
         <Pressable
           style={({ pressed }) => [

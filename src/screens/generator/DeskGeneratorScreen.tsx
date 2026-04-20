@@ -16,7 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateDesk, DESK_DEFAULTS } from '../../services/parametric';
-import { TableIsometric } from '../../components';
+import { TableIsometric, IconLabel } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -218,7 +218,7 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
           disabled={!canProceed || saving}
           activeOpacity={0.85}
         >
-          <Text style={[typography.button, { color: colors.accent }]}>💾 Guardar</Text>
+          <IconLabel icon="save" label="Guardar" color={colors.accent} textStyle={typography.button} />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, shadows.md, (!canProceed || saving) && styles.buttonDisabled, { flex: 1, marginTop: 0 }]}
@@ -226,7 +226,7 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
           disabled={!canProceed || saving}
           activeOpacity={0.85}
         >
-          <Text style={[typography.button, { color: colors.textOnAccent }]}>🪚 Optimizar cortes</Text>
+          <IconLabel icon="saw" label="Optimizar cortes" color={colors.textOnAccent} textStyle={typography.button} />
         </TouchableOpacity>
       </View>
 
@@ -235,9 +235,13 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
         onPress={handleExportPdf}
         disabled={!canProceed || saving}
       >
-        <Text style={[typography.body, { color: colors.accent, textAlign: 'center', opacity: !canProceed || saving ? 0.4 : 1 }]}>
-          📄 Exportar PDF del despiece
-        </Text>
+        <IconLabel
+          icon="pdf"
+          label="Exportar PDF del despiece"
+          color={colors.accent}
+          textStyle={[typography.body, { textAlign: 'center' }]}
+          style={{ opacity: !canProceed || saving ? 0.4 : 1 }}
+        />
       </TouchableOpacity>
 
       <DespiezarLink pieces={output.pieces} disabled={!canProceed || saving} />

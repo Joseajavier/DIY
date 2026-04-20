@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors, spacing, radius, typography, shadows } from '../theme';
 import { Project } from '../models';
+import Icon, { IconName } from './Icon';
 
 type Props = {
   project: Project;
@@ -9,10 +10,10 @@ type Props = {
   onDelete?: () => void;
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: '⏳ Sin empezar',
-  in_progress: '🔨 En curso',
-  completed: '✅ Terminado',
+const STATUS_META: Record<string, { icon: IconName; label: string }> = {
+  pending: { icon: 'time', label: 'Sin empezar' },
+  in_progress: { icon: 'hammer', label: 'En curso' },
+  completed: { icon: 'check', label: 'Terminado' },
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -48,9 +49,10 @@ export default function ProjectCard({ project, onPress, onDelete }: Props) {
                 </Text>
               </View>
               {total > 0 && (
-                <View style={[styles.tag, { backgroundColor: statusColor + '1A' }]}>
+                <View style={[styles.tag, styles.tagRow, { backgroundColor: statusColor + '1A' }]}>
+                  <Icon name={STATUS_META[status].icon} size={11} color={statusColor} />
                   <Text style={[typography.caption, { color: statusColor }]}>
-                    {STATUS_LABELS[status]}
+                    {STATUS_META[status].label}
                   </Text>
                 </View>
               )}
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
+  },
+  tagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   deleteBtn: { padding: spacing.sm },
   deleteTxt: { color: colors.danger, fontSize: 14, fontWeight: 'bold' },

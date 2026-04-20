@@ -10,7 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, typography } from '../../theme';
-import { CategoryCard, IconName } from '../../components';
+import { CategoryCard, CategoryGrid, IconName } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'ParametricHome'>;
@@ -41,16 +41,19 @@ export default function GeneratorHomeScreen({ navigation }: Props) {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.intro}>{t('designer.intro')}</Text>
 
-      {TEMPLATES.map((tpl) => (
-        <CategoryCard
-          key={tpl.id}
-          icon={tpl.icon}
-          title={t(tpl.titleKey)}
-          subtitle={t(tpl.subtitleKey)}
-          accent={colors.category.designer}
-          onPress={() => navigation.navigate(tpl.route as never)}
-        />
-      ))}
+      <CategoryGrid>
+        {TEMPLATES.map((tpl) => (
+          <CategoryCard
+            key={tpl.id}
+            compact
+            icon={tpl.icon}
+            title={t(tpl.titleKey)}
+            subtitle={t(tpl.subtitleKey)}
+            accent={colors.category.designer}
+            onPress={() => navigation.navigate(tpl.route as never)}
+          />
+        ))}
+      </CategoryGrid>
     </ScrollView>
   );
 }

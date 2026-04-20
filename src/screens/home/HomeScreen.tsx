@@ -36,6 +36,7 @@ import {
   ProjectCard,
   Icon,
   CategoryCard,
+  CategoryGrid,
   SectionHeader,
 } from '../../components';
 import { Project } from '../../models';
@@ -158,36 +159,43 @@ export default function HomeScreen({ navigation }: Props) {
 
         {/* ─── 3. EXPLORAR ─── */}
         <SectionHeader>{t('homeSections.explore')}</SectionHeader>
-        <CategoryCard
-          icon="tools"
-          title={t('nav.tools')}
-          accent={colors.category.tools}
-          onPress={() => navigation.navigate('ToolCategories')}
-        />
-        <CategoryCard
-          icon="wood"
-          title={t('nav.wood')}
-          accent={colors.category.wood}
-          onPress={() => navigation.navigate('WoodCategories')}
-        />
-        <CategoryCard
-          icon="calculator"
-          title={t('nav.utilities')}
-          accent={colors.category.utilities}
-          onPress={() => navigation.navigate('Calculators')}
-        />
-        <CategoryCard
-          icon="shop"
-          title={t('nav.deals')}
-          accent={colors.category.deals}
-          onPress={() => navigation.navigate('Deals')}
-        />
-        <CategoryCard
-          icon="heart"
-          title={t('nav.favorites')}
-          accent={colors.category.guide}
-          onPress={() => navigation.navigate('Favorites')}
-        />
+        <CategoryGrid>
+          <CategoryCard
+            compact
+            icon="tools"
+            title={t('nav.tools')}
+            accent={colors.category.tools}
+            onPress={() => navigation.navigate('ToolCategories')}
+          />
+          <CategoryCard
+            compact
+            icon="wood"
+            title={t('nav.wood')}
+            accent={colors.category.wood}
+            onPress={() => navigation.navigate('WoodCategories')}
+          />
+          <CategoryCard
+            compact
+            icon="calculator"
+            title={t('nav.utilities')}
+            accent={colors.category.utilities}
+            onPress={() => navigation.navigate('Calculators')}
+          />
+          <CategoryCard
+            compact
+            icon="shop"
+            title={t('nav.deals')}
+            accent={colors.category.deals}
+            onPress={() => navigation.navigate('Deals')}
+          />
+          <CategoryCard
+            compact
+            icon="heart"
+            title={t('nav.favorites')}
+            accent={colors.category.guide}
+            onPress={() => navigation.navigate('Favorites')}
+          />
+        </CategoryGrid>
 
         {/* Footer */}
         <View style={styles.footer}>

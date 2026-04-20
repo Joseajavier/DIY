@@ -15,7 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography } from '../../theme';
-import { CategoryCard, SectionHeader, Icon, IconName } from '../../components';
+import { CategoryCard, CategoryGrid, SectionHeader, Icon, IconName } from '../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Calculators'>;
@@ -49,6 +49,7 @@ export default function UtilitiesScreen({ navigation }: Props) {
   const renderItem = (item: UtilItem) => (
     <CategoryCard
       key={item.id}
+      compact
       icon={item.icon}
       title={t(item.titleKey)}
       subtitle={t(item.subtitleKey)}
@@ -61,10 +62,10 @@ export default function UtilitiesScreen({ navigation }: Props) {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
         <SectionHeader first>{t('util.section.calc')}</SectionHeader>
-        {CALCULATORS.map(renderItem)}
+        <CategoryGrid>{CALCULATORS.map(renderItem)}</CategoryGrid>
 
         <SectionHeader>{t('util.section.ref')}</SectionHeader>
-        {REFERENCES.map(renderItem)}
+        <CategoryGrid>{REFERENCES.map(renderItem)}</CategoryGrid>
 
         <View style={styles.infoBox}>
           <Icon name="info" size={18} color={colors.textSecondary} />

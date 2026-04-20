@@ -28,6 +28,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import Icon from '../../components/Icon';
+import { IconLabel } from '../../components';
 import { Deal } from '../../models/deal';
 import { getDeals } from '../../services/dealsService';
 import { SUPPORTED_COUNTRIES } from '../../data/retailers';
@@ -158,7 +159,7 @@ export default function DealsScreen({ navigation: _navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.heroTitle}>🔥 Chollos</Text>
+        <IconLabel icon="fire" label="Chollos" color={colors.text} size={28} textStyle={styles.heroTitle} left />
         <Text style={styles.heroSubtitle}>
           Ofertas reales de la comunidad · actualizado cada hora
         </Text>

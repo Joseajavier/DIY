@@ -19,7 +19,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, typography } from '../../theme';
-import { CategoryCard, SectionHeader } from '../../components';
+import { CategoryCard, CategoryGrid, SectionHeader } from '../../components';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -35,38 +35,47 @@ export default function LibraryHubScreen() {
         </View>
 
         <SectionHeader first>{t('library_hub.my_projects')}</SectionHeader>
-        <CategoryCard
-          icon="projects"
-          title={t('library_hub.my_projects')}
-          accent={colors.category.projects}
-          onPress={() => navigation.navigate('Projects')}
-        />
-        <CategoryCard
-          icon="heart"
-          title={t('nav.favorites')}
-          accent={colors.category.guide}
-          onPress={() => navigation.navigate('Favorites')}
-        />
+        <CategoryGrid>
+          <CategoryCard
+            compact
+            icon="projects"
+            title={t('library_hub.my_projects')}
+            accent={colors.category.projects}
+            onPress={() => navigation.navigate('Projects')}
+          />
+          <CategoryCard
+            compact
+            icon="heart"
+            title={t('nav.favorites')}
+            accent={colors.category.guide}
+            onPress={() => navigation.navigate('Favorites')}
+          />
+        </CategoryGrid>
 
         <SectionHeader>{t('homeSections.explore')}</SectionHeader>
-        <CategoryCard
-          icon="tools"
-          title={t('library_hub.tools_catalog')}
-          accent={colors.category.tools}
-          onPress={() => navigation.navigate('ToolCategories')}
-        />
-        <CategoryCard
-          icon="wood"
-          title={t('library_hub.wood_catalog')}
-          accent={colors.category.wood}
-          onPress={() => navigation.navigate('WoodCategories')}
-        />
-        <CategoryCard
-          icon="calculator"
-          title={t('library_hub.calculators')}
-          accent={colors.category.utilities}
-          onPress={() => navigation.navigate('Calculators')}
-        />
+        <CategoryGrid>
+          <CategoryCard
+            compact
+            icon="tools"
+            title={t('library_hub.tools_catalog')}
+            accent={colors.category.tools}
+            onPress={() => navigation.navigate('ToolCategories')}
+          />
+          <CategoryCard
+            compact
+            icon="wood"
+            title={t('library_hub.wood_catalog')}
+            accent={colors.category.wood}
+            onPress={() => navigation.navigate('WoodCategories')}
+          />
+          <CategoryCard
+            compact
+            icon="calculator"
+            title={t('library_hub.calculators')}
+            accent={colors.category.utilities}
+            onPress={() => navigation.navigate('Calculators')}
+          />
+        </CategoryGrid>
       </ScrollView>
     </SafeAreaView>
   );

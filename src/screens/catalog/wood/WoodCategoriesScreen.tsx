@@ -20,7 +20,7 @@ import { RootStackParamList } from '../../../navigation/AppNavigator';
 import { colors, spacing, radius, typography } from '../../../theme';
 import { WOOD_CATEGORIES, WOOD_PRODUCTS } from '../../../data/woodData';
 import { fetchWoodCatalog } from '../../../services/catalogApiClient';
-import { CategoryCard, SectionHeader, Icon, IconName } from '../../../components';
+import { CategoryCard, CategoryGrid, SectionHeader, Icon, IconName } from '../../../components';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'WoodCategories'>;
@@ -115,19 +115,22 @@ export default function WoodCategoriesScreen({ navigation }: Props) {
           {t('catalog.totalCount', { total, cats: counts.length })}
         </Text>
 
-        {counts.map((c) => {
-          const meta = metaFor(c.id);
-          return (
-            <CategoryCard
-              key={c.id}
-              icon={meta.icon}
-              title={c.name}
-              subtitle={pluralProduct(c.productCount)}
-              accent={meta.color}
-              onPress={() => navigation.navigate('WoodCatalog', { categoryId: c.id })}
-            />
-          );
-        })}
+        <CategoryGrid>
+          {counts.map((c) => {
+            const meta = metaFor(c.id);
+            return (
+              <CategoryCard
+                key={c.id}
+                compact
+                icon={meta.icon}
+                title={c.name}
+                subtitle={pluralProduct(c.productCount)}
+                accent={meta.color}
+                onPress={() => navigation.navigate('WoodCatalog', { categoryId: c.id })}
+              />
+            );
+          })}
+        </CategoryGrid>
 
         <Pressable
           style={({ pressed }) => [
@@ -142,20 +145,24 @@ export default function WoodCategoriesScreen({ navigation }: Props) {
         </Pressable>
 
         <SectionHeader>{t('catalog.woodGuides')}</SectionHeader>
-        <CategoryCard
-          icon="tree"
-          title={t('nav.woodGuide')}
-          subtitle={t('catalog.woodGuideSub')}
-          accent={colors.category.wood}
-          onPress={() => navigation.navigate('WoodGuide')}
-        />
-        <CategoryCard
-          icon="ruler"
-          title={t('nav.nominalActual')}
-          subtitle={t('catalog.nominalSub')}
-          accent={colors.category.guide}
-          onPress={() => navigation.navigate('NominalActual')}
-        />
+        <CategoryGrid>
+          <CategoryCard
+            compact
+            icon="tree"
+            title={t('nav.woodGuide')}
+            subtitle={t('catalog.woodGuideSub')}
+            accent={colors.category.wood}
+            onPress={() => navigation.navigate('WoodGuide')}
+          />
+          <CategoryCard
+            compact
+            icon="ruler"
+            title={t('nav.nominalActual')}
+            subtitle={t('catalog.nominalSub')}
+            accent={colors.category.guide}
+            onPress={() => navigation.navigate('NominalActual')}
+          />
+        </CategoryGrid>
       </ScrollView>
     </SafeAreaView>
   );
