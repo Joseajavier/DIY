@@ -21,7 +21,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateTable, TABLE_DEFAULTS } from '../../services/parametric';
-import { TableIsometric, IconLabel } from '../../components';
+import { TableIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -115,11 +115,15 @@ export default function TableGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs medidas */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Inputs — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas de la mesa">
         <FormRow label="Largo" value={length} onChange={setLength} unit="cm" />
         <FormRow label="Ancho (fondo)" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Alto total" value={height} onChange={setHeight} unit="cm" />
+      </InputGroup>
+
+      {/* Inputs — Estructura */}
+      <InputGroup title="Estructura" subtitle="Patas, tablero y refuerzos">
         <FormRow
           label="Sección de pata"
           value={legSection}
@@ -133,7 +137,6 @@ export default function TableGeneratorScreen({ navigation }: Props) {
           unit="mm"
         />
 
-        {/* Toggle faldón */}
         <TouchableOpacity
           style={styles.toggleRow}
           onPress={() => setHasApron(!hasApron)}
@@ -159,7 +162,6 @@ export default function TableGeneratorScreen({ navigation }: Props) {
           />
         )}
 
-        {/* Toggle balda inferior */}
         <TouchableOpacity
           style={styles.toggleRow}
           onPress={() => setHasLowerShelf(!hasLowerShelf)}
@@ -175,7 +177,7 @@ export default function TableGeneratorScreen({ navigation }: Props) {
             <View style={[styles.toggleBall, hasLowerShelf && styles.toggleBallOn]} />
           </View>
         </TouchableOpacity>
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (

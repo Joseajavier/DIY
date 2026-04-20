@@ -23,7 +23,7 @@ import {
   generateDrawerCabinet,
   DRAWER_CABINET_DEFAULTS,
 } from '../../services/parametric';
-import { ShelfIsometric, IconLabel } from '../../components';
+import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -122,13 +122,15 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Inputs — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas exteriores del cajonera">
         <FormRow label="Ancho" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Alto" value={height} onChange={setHeight} unit="cm" />
         <FormRow label="Fondo" value={depth} onChange={setDepth} unit="cm" />
+      </InputGroup>
 
-        {/* Stepper de cajones */}
+      {/* Inputs — Estructura */}
+      <InputGroup title="Estructura" subtitle="Cajones y grosores">
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Nº de cajones</Text>
           <View style={styles.stepper}>
@@ -166,7 +168,7 @@ export default function DrawerCabinetGeneratorScreen({ navigation }: Props) {
           onChange={setDrawerBottomThickness}
           unit="mm"
         />
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (

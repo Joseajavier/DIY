@@ -16,7 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateDesk, DESK_DEFAULTS } from '../../services/parametric';
-import { TableIsometric, IconLabel } from '../../components';
+import { TableIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -99,15 +99,18 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
         </Text>
       </View>
 
-      {/* Parámetros */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Parámetros — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas del escritorio">
         <FormRow label="Largo tablero" value={length} onChange={setLength} unit="cm" />
         <FormRow label="Fondo tablero" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Altura" value={height} onChange={setHeight} unit="cm" />
+      </InputGroup>
+
+      {/* Parámetros — Estructura */}
+      <InputGroup title="Estructura" subtitle="Patas, tablero y extras">
         <FormRow label="Sección pata" value={legSection} onChange={setLegSection} unit="cm" />
         <FormRow label="Grosor tablero" value={topThickness} onChange={setTopThickness} unit="mm" />
 
-        {/* Nº de patas */}
         <View style={styles.segmentedRow}>
           <Text style={styles.formLabel}>Nº de patas</Text>
           <View style={styles.segmented}>
@@ -125,7 +128,6 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
           </View>
         </View>
 
-        {/* Toggle cajón */}
         <Toggle
           label="Cajón lateral"
           description="Cajón deslizante bajo el tablero"
@@ -133,14 +135,13 @@ export default function DeskGeneratorScreen({ navigation: _navigation }: Props) 
           onChange={setHasDrawer}
         />
 
-        {/* Toggle balda */}
         <Toggle
           label="Balda inferior"
           description="Repisa entre las patas"
           value={hasShelf}
           onChange={setHasShelf}
         />
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (

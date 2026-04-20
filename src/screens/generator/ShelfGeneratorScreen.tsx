@@ -20,7 +20,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
-import { ShelfIsometric, IconLabel } from '../../components';
+import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -107,11 +107,15 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Inputs — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas exteriores del mueble">
         <FormRow label="Ancho exterior" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Alto exterior" value={height} onChange={setHeight} unit="cm" />
         <FormRow label="Fondo" value={depth} onChange={setDepth} unit="cm" />
+      </InputGroup>
+
+      {/* Inputs — Estructura */}
+      <InputGroup title="Estructura" subtitle="Baldas, grosor y trasero">
         <FormRow
           label="Número de baldas"
           value={numShelves}
@@ -140,7 +144,7 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
             <View style={[styles.toggleBall, hasBack && styles.toggleBallOn]} />
           </View>
         </TouchableOpacity>
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (

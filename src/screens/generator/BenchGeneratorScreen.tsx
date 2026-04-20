@@ -22,7 +22,7 @@ import {
   generateBench,
   BENCH_DEFAULTS,
 } from '../../services/parametric';
-import { TableIsometric, IconLabel } from '../../components';
+import { TableIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -114,11 +114,15 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Inputs — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas del banco">
         <FormRow label="Largo" value={length} onChange={setLength} unit="cm" />
         <FormRow label="Ancho asiento" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Altura asiento" value={height} onChange={setHeight} unit="cm" />
+      </InputGroup>
+
+      {/* Inputs — Estructura */}
+      <InputGroup title="Estructura" subtitle="Patas, grosor y respaldo">
         <FormRow
           label="Sección pata"
           value={legSection}
@@ -132,7 +136,6 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
           unit="mm"
         />
 
-        {/* Toggle respaldo */}
         <TouchableOpacity
           style={styles.toggleRow}
           onPress={() => setHasBackrest(!hasBackrest)}
@@ -157,7 +160,7 @@ export default function BenchGeneratorScreen({ navigation }: Props) {
             unit="cm"
           />
         )}
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (

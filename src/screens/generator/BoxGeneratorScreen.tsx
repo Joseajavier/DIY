@@ -19,7 +19,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { generateBox, BOX_DEFAULTS } from '../../services/parametric';
-import { ShelfIsometric, IconLabel } from '../../components';
+import { ShelfIsometric, IconLabel, InputGroup } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
 import { DespiezarLink } from '../../components';
@@ -106,8 +106,8 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Inputs */}
-      <View style={[styles.card, shadows.sm]}>
+      {/* Inputs — Dimensiones */}
+      <InputGroup title="Dimensiones" subtitle="Medidas exteriores de la caja">
         <FormRow label="Largo" value={length} onChange={setLength} unit="cm" />
         <FormRow label="Ancho (fondo)" value={width} onChange={setWidth} unit="cm" />
         <FormRow label="Alto" value={height} onChange={setHeight} unit="cm" />
@@ -117,7 +117,10 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
           onChange={setThickness}
           unit="mm"
         />
+      </InputGroup>
 
+      {/* Inputs — Opciones */}
+      <InputGroup title="Opciones" subtitle="Fondo y tapa">
         <TouchableOpacity
           style={styles.toggleRow}
           onPress={() => setHasBottom(!hasBottom)}
@@ -149,7 +152,7 @@ export default function BoxGeneratorScreen({ navigation }: Props) {
             <View style={[styles.toggleBall, hasLid && styles.toggleBallOn]} />
           </View>
         </TouchableOpacity>
-      </View>
+      </InputGroup>
 
       {/* Warnings */}
       {output.warnings.length > 0 && (
