@@ -214,13 +214,62 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         })}
       </ScrollView>
 
+      {/* Filtros tier / uso / alimentación — antes eran estado fantasma */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterScroll}
+        contentContainerStyle={styles.chipScrollContent}
+      >
+        {TIERS.map((ti) => {
+          const active = tier === ti.key;
+          return (
+            <TouchableOpacity
+              key={ti.key || 'all-tier'}
+              style={[styles.filterChip, active && styles.filterChipActive]}
+              onPress={() => setTier(active ? '' : (ti.key as ToolTier))}
+            >
+              {ti.dot && <View style={[styles.tierDot, { backgroundColor: ti.dot, marginRight: 6 }]} />}
+              <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted, fontWeight: active ? '700' : '500' }]}>{ti.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
+        <View style={styles.filterDivider} />
+        {USES.map((u) => {
+          const active = use === u.key;
+          return (
+            <TouchableOpacity
+              key={u.key || 'all-use'}
+              style={[styles.filterChip, active && styles.filterChipActive]}
+              onPress={() => setUse(active ? '' : (u.key as ToolUse))}
+            >
+              <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted, fontWeight: active ? '700' : '500' }]}>{u.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
+        <View style={styles.filterDivider} />
+        {POWERS.map((p) => {
+          const active = power === p.key;
+          return (
+            <TouchableOpacity
+              key={p.key || 'all-power'}
+              style={[styles.filterChip, active && styles.filterChipActive]}
+              onPress={() => setPower(active ? '' : (p.key as ToolPower))}
+            >
+              {p.icon && <Icon name={p.icon} size={14} color={active ? colors.primary : colors.textMuted} />}
+              <Text style={[typography.caption, { color: active ? colors.primary : colors.textMuted, fontWeight: active ? '700' : '500', marginLeft: p.icon ? 4 : 0 }]}>{p.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+
       <View style={styles.resultBar}>
         <Text style={[typography.caption, { flex: 1 }]}>
           {results.length} herramienta{results.length !== 1 ? 's' : ''}{' '}
           · {sections.length} {showBrands ? 'marca' : 'tipo'}{sections.length !== 1 ? 's' : ''}
         </Text>
-        {source === 'online' && <Text style={styles.sourceBadge}>🌐</Text>}
-        {source === 'offline' && <Text style={[styles.sourceBadge, { color: colors.textMuted }]}>📦</Text>}
+        {source === 'online' && <Icon name="check" size={14} color={colors.success} />}
+        {source === 'offline' && <Icon name="folder" size={14} color={colors.textMuted} />}
         <View style={styles.groupToggle}>
           <TouchableOpacity
             style={[styles.groupBtn, !showBrands && styles.groupBtnActive]}
@@ -317,7 +366,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                         if (m) Linking.openURL(m.deal.link);
                       }}
                     >
-                      <Text style={styles.dealBadgeText}>🔥 Chollo</Text>
+                      <Icon name="fire" size={12} color={colors.danger} />
+                      <Text style={[styles.dealBadgeText, { marginLeft: 4 }]}>Chollo</Text>
                     </TouchableOpacity>
                   )}
                   <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
@@ -425,8 +475,21 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '700',
   },
+  filterScroll: { paddingHorizontal: spacing.xl, marginBottom: spacing.sm },
+  filterChip: {
+    height: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.md,
+    marginRight: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  filterChipActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
+  filterDivider: { width: 1, height: 20, backgroundColor: colors.border, marginHorizontal: spacing.sm, alignSelf: 'center' },
   resultBar: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginHorizontal: spacing.xl, marginBottom: spacing.sm },
-  sourceBadge: { ...typography.caption, color: colors.primary },
   groupToggle: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.full, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   groupBtn: { paddingHorizontal: spacing.md, paddingVertical: 4 },
   groupBtnActive: { backgroundColor: colors.primaryMuted },
@@ -440,6 +503,8 @@ const styles = StyleSheet.create({
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   tierBadge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2 },
   dealBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: radius.full,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
@@ -447,7 +512,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.danger + '22',
     borderWidth: 1,
     borderColor: colors.danger + '55',
-    justifyContent: 'center',
   },
   dealBadgeText: {
     ...typography.caption,
