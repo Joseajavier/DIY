@@ -7,19 +7,25 @@
 //   • Catálogo de maderas
 //   • Calculadoras / utilidades
 //   • Favoritos
+//   • Chollos (acceso a DealsScreen desde aquí)
 //
 // Navega a rutas del stack raíz para que el detalle se apile por
 // encima del tab bar.
 // ═══════════════════════════════════════════════════════════════
 
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { colors, spacing, typography } from '../../theme';
-import { CategoryCard, CategoryGrid, SectionHeader } from '../../components';
+import { colors, spacing } from '../../theme';
+import {
+  CategoryCard,
+  CategoryGrid,
+  SectionHeader,
+  HeroBanner,
+} from '../../components';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -30,9 +36,12 @@ export default function LibraryHubScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <Text style={typography.hero}>{t('library_hub.title')}</Text>
-        </View>
+        <HeroBanner
+          variant="accent"
+          eyebrow={t('library_hub.title')}
+          title="Todo tu material, a un toque"
+          subtitle="Proyectos, catálogos, calculadoras y chollos."
+        />
 
         <SectionHeader first>{t('library_hub.my_projects')}</SectionHeader>
         <CategoryGrid>
@@ -75,6 +84,13 @@ export default function LibraryHubScreen() {
             accent={colors.category.utilities}
             onPress={() => navigation.navigate('Calculators')}
           />
+          <CategoryCard
+            compact
+            icon="shop"
+            title={t('nav.deals')}
+            accent={colors.category.deals}
+            onPress={() => navigation.navigate('Deals')}
+          />
         </CategoryGrid>
       </ScrollView>
     </SafeAreaView>
@@ -88,5 +104,4 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xl,
     paddingBottom: spacing.xxxl,
   },
-  header: { marginBottom: spacing.lg },
 });

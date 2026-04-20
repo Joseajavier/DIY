@@ -29,6 +29,7 @@ import {
   EmptyState,
   LoadingState,
   Icon,
+  HeroBanner,
 } from '../../components';
 
 type Props = {
@@ -114,18 +115,39 @@ export default function ProjectsScreen({ navigation }: Props) {
   // búsqueda no encuentra nada. Mantenemos el input accesible.
   const filteredEmpty = filtered.length === 0 && projects.length > 0;
 
+  const stats = {
+    total: projects.length,
+    inProgress: projects.filter((p) => (p.status ?? 'pending') === 'in_progress').length,
+    done: projects.filter((p) => p.status === 'completed').length,
+  };
+
   return (
     <FlatList
       style={styles.container}
       contentContainerStyle={styles.content}
       ListHeaderComponent={
-        <TextInput
-          style={styles.search}
-          placeholder="Buscar proyecto..."
-          placeholderTextColor={colors.textMuted}
-          value={search}
-          onChangeText={setSearch}
-        />
+        <>
+          <HeroBanner
+            variant="accent"
+            eyebrow={t('projects.title')}
+            title={`${stats.total} ${stats.total === 1 ? 'proyecto' : 'proyectos'}`}
+            subtitle={
+              stats.inProgress > 0
+                ? `${stats.inProgress} en curso · ${stats.done} terminados`
+                : 'Lo que guardes aquí se queda contigo.'
+            }
+          />
+          <View style={styles.searchRow}>
+            <Icon name="search" size={16} color={colors.textMuted} />
+            <TextInput
+              style={styles.search}
+              placeholder="Buscar proyecto..."
+              placeholderTextColor={colors.textMuted}
+              value={search}
+              onChangeText={setSearch}
+            />
+          </View>
+        </>
       }
       data={filtered}
       keyExtractor={(item: Project) => item.id}
@@ -155,15 +177,22 @@ export default function ProjectsScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  search: {
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    padding: spacing.lg,
-    fontSize: 15,
-    color: colors.text,
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.lg,
     borderWidth: 1,
     borderColor: colors.border,
     marginBottom: spacing.xl,
+  },
+  search: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    fontSize: 15,
+    color: colors.text,
   },
   emptyWrap: {
     flex: 1,
