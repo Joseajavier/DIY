@@ -24,12 +24,16 @@ interface Shelf {
 
 /**
  * Tries to pack all rawPieces onto a single board.
+ * `kerf` (mm) is the saw blade thickness — material lost on each cut.
+ * We reserve kerf space after every piece along both axes so the pieces
+ * can actually be separated by a real saw without coming up short.
  * Returns placed pieces (with x,y) and unplaced remainder.
  */
 function packBoard(
   pieces: RawPiece[],
   boardWidth: number,
-  boardHeight: number
+  boardHeight: number,
+  kerf: number
 ): { placed: PlacedPiece[]; unplaced: RawPiece[]; usedArea: number } {
   const placed: PlacedPiece[] = [];
   const unplaced: RawPiece[] = [];
@@ -52,10 +56,13 @@ function packBoard(
     let wasPlaced = false;
 
     // ① Try fitting in an existing shelf (any orientation)
+    // We need room for the piece + kerf gap on both axes.
     for (const shelf of shelves) {
       if (wasPlaced) break;
       for (const { w, h, rot } of orientations) {
-        if (shelf.usedX + w <= boardWidth && h <= shelf.height) {
+        const ew = w + kerf;
+        const eh = h + kerf;
+        if (shelf.usedX + ew <= boardWidth && eh <= shelf.height) {
           placed.push({
             x: shelf.usedX,
             y: shelf.y,
@@ -65,7 +72,7 @@ function packBoard(
             rotated: rot,
             colorIndex: piece.globalIndex,
           });
-          shelf.usedX += w;
+          shelf.usedX += ew;
           wasPlaced = true;
           break;
         }
@@ -74,10 +81,12 @@ function packBoard(
 
     if (wasPlaced) continue;
 
-    // ② Open a new shelf
+    // ② Open a new shelf — reserve kerf below each shelf too
     const { w, h, rot } = orientations[0];
-    if (nextShelfY + h <= boardHeight) {
-      shelves.push({ y: nextShelfY, height: h, usedX: w });
+    const ew = w + kerf;
+    const eh = h + kerf;
+    if (nextShelfY + eh <= boardHeight) {
+      shelves.push({ y: nextShelfY, height: eh, usedX: ew });
       placed.push({
         x: 0,
         y: nextShelfY,
@@ -87,7 +96,7 @@ function packBoard(
         rotated: rot,
         colorIndex: piece.globalIndex,
       });
-      nextShelfY += h;
+      nextShelfY += eh;
     } else {
       // Board is full — defer to next board
       unplaced.push(piece);
@@ -104,11 +113,17 @@ function packBoard(
  * Optimizes the cutting layout using a Next Fit Shelf algorithm.
  * Each piece in the result has real x,y coordinates so a diagram
  * can be rendered directly.
+ *
+ * @param kerf Saw blade thickness in mm (material lost per cut).
+ *             Defaults to 0 for backward compatibility with legacy callers
+ *             — new flows should always pass a realistic value (typ. 2–4mm
+ *             for circular/mitre saws).
  */
 export function optimizeCuts(
   pieces: Piece[],
   boardWidth: number,
-  boardHeight: number
+  boardHeight: number,
+  kerf: number = 0
 ): OptimizationResult {
   // Expand by quantity and flatten to raw pieces
   const allPieces: RawPiece[] = [];
@@ -141,7 +156,8 @@ export function optimizeCuts(
     const { placed, unplaced, usedArea } = packBoard(
       remaining,
       boardWidth,
-      boardHeight
+      boardHeight,
+      kerf
     );
 
     if (placed.length === 0) {
@@ -186,5 +202,6 @@ export function optimizeCuts(
     efficiency: 100 - totalWaste,
     boardWidth,
     boardHeight,
+    kerf,
   };
 }

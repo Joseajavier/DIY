@@ -47,6 +47,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-sqlite',
     'expo-localization',
     [
+      'expo-location',
+      {
+        locationWhenInUsePermission:
+          'DIY usa tu ubicación para mostrarte chollos y tiendas de bricolaje cercanas.',
+      },
+    ],
+    [
       '@sentry/react-native/expo',
       {
         organization: 'diy-app',

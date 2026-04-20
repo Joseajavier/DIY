@@ -103,14 +103,6 @@ export default function HomeScreen({ navigation }: Props) {
           variant="diy"
           onPress={() => navigation.navigate('DIYInput')}
         />
-        <ModeCard
-          icon="ruler"
-          title={t('modes.pro')}
-          description={t('modes.proLong')}
-          tags={[t('modes.proTag'), t('modes.proTag2')]}
-          variant="pro"
-          onPress={() => navigation.navigate('ProInput')}
-        />
         <CategoryCard
           icon="cube"
           title={t('nav.designer')}

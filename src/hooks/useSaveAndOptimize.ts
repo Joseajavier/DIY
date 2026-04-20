@@ -78,6 +78,10 @@ export function useSaveAndOptimize() {
         pieces: output.pieces,
         boardWidth,
         boardHeight,
+        // Generadores paramétricos: kerf=0 por defecto (el usuario no ha
+        // elegido sierra concreta). En el ProOptimizationScreen se puede
+        // añadir un control futuro para ajustarlo en este flujo.
+        kerf: 0,
       });
     },
     [navigation]

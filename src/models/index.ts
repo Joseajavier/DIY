@@ -81,6 +81,8 @@ export interface OptimizationResult {
   efficiency: number;
   boardWidth?: number;
   boardHeight?: number;
+  /** Saw blade thickness (mm) used in the optimization — material lost per cut. */
+  kerf?: number;
   createdAt?: string;
 }
 

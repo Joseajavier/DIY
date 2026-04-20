@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Switch, ActivityIndicator } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Switch, ActivityIndicator, Modal, Pressable } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -14,14 +14,39 @@ import { colors, spacing, radius, typography, shadows } from '../../theme';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'ProInput'> };
 
+// ── Presets de grosor de hoja (kerf) ──────────────────────────────
+// Valor en cm (coherente con el resto de inputs del formulario).
+// Cubren las sierras típicas de carpintería doméstica + opción "sin sierra".
+type KerfOption = {
+  value: number;       // cm
+  labelKey: string;    // clave i18n
+  subtitleKey: string; // clave i18n (descripción corta)
+};
+
+const KERF_OPTIONS: KerfOption[] = [
+  { value: 0,   labelKey: 'pro.kerfOptNoneLabel',     subtitleKey: 'pro.kerfOptNoneSub' },
+  { value: 0.1, labelKey: 'pro.kerfOptHandLabel',     subtitleKey: 'pro.kerfOptHandSub' },
+  { value: 0.2, labelKey: 'pro.kerfOptMultiLabel',    subtitleKey: 'pro.kerfOptMultiSub' },
+  { value: 0.3, labelKey: 'pro.kerfOptCircularLabel', subtitleKey: 'pro.kerfOptCircularSub' },
+  { value: 0.4, labelKey: 'pro.kerfOptJigsawLabel',   subtitleKey: 'pro.kerfOptJigsawSub' },
+  { value: 0.5, labelKey: 'pro.kerfOptTableLabel',    subtitleKey: 'pro.kerfOptTableSub' },
+];
+
 export default function ProInputScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
   const [projectName, setProjectName] = useState('');
+  const [kerfValue, setKerfValue] = useState<number>(0.3); // default circular ~3mm
+  const [kerfPickerOpen, setKerfPickerOpen] = useState(false);
   const [boardWidth, setBoardWidth] = useState('244');
   const [boardHeight, setBoardHeight] = useState('122');
   const [pieces, setPieces] = useState<Piece[]>([{ width: 60, height: 40, quantity: 2 }]);
   const [useAI, setUseAI] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const selectedKerf = useMemo(
+    () => KERF_OPTIONS.find((o) => o.value === kerfValue) ?? KERF_OPTIONS[3],
+    [kerfValue]
+  );
 
   const addPiece = () => setPieces([...pieces, { width: 0, height: 0, quantity: 1 }]);
   const updatePiece = (i: number, field: keyof Piece, value: string) => {
@@ -35,6 +60,7 @@ export default function ProInputScreen({ navigation }: Props) {
     if (!valid.length) { Alert.alert(t('errors.error'), t('errors.noPieces')); return; }
     const bw = Number(boardWidth) || 244;
     const bh = Number(boardHeight) || 122;
+    const kerfVal = Math.max(0, kerfValue);
     setLoading(true);
     const id = await createProject(projectName.trim(), 'pro');
     await createPieces(id, valid);
@@ -43,7 +69,7 @@ export default function ProInputScreen({ navigation }: Props) {
     if (useAI) {
       try {
         const ai = await generateProPlanWithAI({ pieces: valid, boardWidth: bw, boardHeight: bh, projectContext: projectName.trim(), language: i18n.language });
-        const opt = ai.toolResults.optimizeCuts ? { ...ai.toolResults.optimizeCuts, boards: ai.toolResults.optimizeCuts.boards || [] } : optimizeCuts(valid, bw, bh);
+        const opt = ai.toolResults.optimizeCuts ? { ...ai.toolResults.optimizeCuts, boards: ai.toolResults.optimizeCuts.boards || [] } : optimizeCuts(valid, bw, bh, kerfVal);
         const mats = ai.toolResults.estimateMaterials || generateMaterials(valid, opt.totalBoards);
         setLoading(false);
         navigation.navigate('ProResults', { projectName: projectName.trim(), optimization: opt, materials: mats });
@@ -51,12 +77,73 @@ export default function ProInputScreen({ navigation }: Props) {
       } catch { Alert.alert('IA no disponible', 'Usando calculo local.'); }
     }
     setLoading(false);
-    navigation.navigate('ProOptimization', { projectName: projectName.trim(), pieces: valid, boardWidth: bw, boardHeight: bh });
+    navigation.navigate('ProOptimization', { projectName: projectName.trim(), pieces: valid, boardWidth: bw, boardHeight: bh, kerf: kerfVal });
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={[typography.h1, { color: colors.accent, marginBottom: spacing.xl }]}>{t('pro.title')}</Text>
+
+      {/* ── Grosor de hoja (selector) ──────────────────────────── */}
+      <Text style={typography.label}>{t('pro.kerfTitle')}</Text>
+      <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: 4, marginBottom: spacing.md }]}>
+        {t('pro.kerfHelp')}
+      </Text>
+      <TouchableOpacity
+        style={styles.selector}
+        onPress={() => setKerfPickerOpen(true)}
+        activeOpacity={0.7}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+            {t(selectedKerf.labelKey)}
+          </Text>
+          <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: 2 }]}>
+            {t(selectedKerf.subtitleKey)}
+          </Text>
+        </View>
+        <Text style={styles.selectorChevron}>▾</Text>
+      </TouchableOpacity>
+
+      {/* Picker modal */}
+      <Modal
+        visible={kerfPickerOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setKerfPickerOpen(false)}
+      >
+        <Pressable style={styles.modalBackdrop} onPress={() => setKerfPickerOpen(false)}>
+          <Pressable style={styles.modalSheet} onPress={(e) => e.stopPropagation()}>
+            <Text style={[typography.h2, { color: colors.text, marginBottom: spacing.md }]}>
+              {t('pro.kerfTitle')}
+            </Text>
+            {KERF_OPTIONS.map((opt) => {
+              const active = opt.value === kerfValue;
+              return (
+                <TouchableOpacity
+                  key={opt.value}
+                  style={[styles.optionRow, active && styles.optionRowActive]}
+                  onPress={() => { setKerfValue(opt.value); setKerfPickerOpen(false); }}
+                  activeOpacity={0.7}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={[typography.body, { color: colors.text, fontWeight: active ? '700' : '500' }]}>
+                      {t(opt.labelKey)}
+                    </Text>
+                    <Text style={[typography.bodySmall, { color: colors.textMuted, marginTop: 2 }]}>
+                      {t(opt.subtitleKey)}
+                    </Text>
+                  </View>
+                  {active && <Text style={styles.check}>✓</Text>}
+                </TouchableOpacity>
+              );
+            })}
+            <TouchableOpacity style={styles.modalCloseBtn} onPress={() => setKerfPickerOpen(false)}>
+              <Text style={[typography.button, { color: colors.accent }]}>{t('common.close')}</Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       <View style={styles.toggle}>
         <Text style={[typography.body, { color: colors.text }]}>🤖 Usar IA</Text>
@@ -103,4 +190,14 @@ const styles = StyleSheet.create({
   x: { color: colors.textMuted, fontSize: 18, marginHorizontal: spacing.sm },
   addBtn: { borderWidth: 1, borderColor: colors.accent, borderStyle: 'dashed', borderRadius: radius.md, padding: spacing.lg, alignItems: 'center', marginBottom: spacing.xl },
   button: { backgroundColor: colors.accent, paddingVertical: 18, borderRadius: radius.lg, alignItems: 'center' },
+  // Selector "dropdown"
+  selector: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, padding: spacing.lg, marginBottom: spacing.xl },
+  selectorChevron: { color: colors.textMuted, fontSize: 18, marginLeft: spacing.md },
+  // Modal
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
+  modalSheet: { backgroundColor: colors.bg, borderTopLeftRadius: radius.xl, borderTopRightRadius: radius.xl, padding: spacing.xl, paddingBottom: spacing.xxl },
+  optionRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.lg, paddingHorizontal: spacing.md, borderRadius: radius.md, marginVertical: 2 },
+  optionRowActive: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.accent },
+  check: { color: colors.accent, fontSize: 20, fontWeight: '700', marginLeft: spacing.md },
+  modalCloseBtn: { alignSelf: 'center', marginTop: spacing.md, paddingVertical: spacing.md, paddingHorizontal: spacing.xl },
 });

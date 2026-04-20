@@ -30,6 +30,7 @@ type UtilItem = {
 };
 
 const CALCULATORS: UtilItem[] = [
+  { id: 'despiece',  icon: 'saw',      titleKey: 'util.despiece.t', subtitleKey: 'util.despiece.s', route: 'Despiece' },
   { id: 'golden',    icon: 'golden',   titleKey: 'util.golden.t',   subtitleKey: 'util.golden.s',   route: 'GoldenRatio' },
   { id: 'wainscot',  icon: 'wall',     titleKey: 'util.wainscot.t', subtitleKey: 'util.wainscot.s', route: 'WainscotCalc' },
   { id: 'shelf',     icon: 'shelf',    titleKey: 'util.shelf.t',    subtitleKey: 'util.shelf.s',    route: 'ShelfCalc' },

@@ -23,6 +23,7 @@ import { generateShelf, SHELF_DEFAULTS } from '../../services/parametric';
 import { ShelfIsometric } from '../../components';
 import HardwareCard from '../../components/HardwareCard';
 import IsometricWrapper from '../../components/IsometricWrapper';
+import { DespiezarLink } from '../../components';
 import { useSaveAndOptimize } from '../../hooks/useSaveAndOptimize';
 
 type Props = {
@@ -262,6 +263,8 @@ export default function ShelfGeneratorScreen({ navigation }: Props) {
           📄 Exportar PDF del despiece
         </Text>
       </TouchableOpacity>
+
+      <DespiezarLink pieces={output.pieces} disabled={!canProceed || saving} />
     </ScrollView>
   );
 }

@@ -20,11 +20,11 @@ type Props = {
 export default function ProOptimizationScreen({ navigation, route }: Props) {
   const { t } = useTranslation();
   const { width: screenWidth } = useWindowDimensions();
-  const { projectName, pieces, boardWidth, boardHeight } = route.params;
+  const { projectName, pieces, boardWidth, boardHeight, kerf } = route.params;
 
   const optimization = useMemo(
-    () => optimizeCuts(pieces, boardWidth, boardHeight),
-    [pieces, boardWidth, boardHeight]
+    () => optimizeCuts(pieces, boardWidth, boardHeight, kerf),
+    [pieces, boardWidth, boardHeight, kerf]
   );
   const materials = useMemo(
     () => generateMaterials(pieces, optimization.totalBoards),
@@ -39,8 +39,11 @@ export default function ProOptimizationScreen({ navigation, route }: Props) {
       <Text style={[typography.h1, { color: colors.accent }]}>
         {t('pro.optimization')}
       </Text>
-      <Text style={[typography.bodySmall, { marginBottom: spacing.xl }]}>
+      <Text style={[typography.bodySmall, { marginBottom: spacing.sm }]}>
         {projectName}
+      </Text>
+      <Text style={[typography.bodySmall, { color: colors.textMuted, marginBottom: spacing.xl }]}>
+        {t('pro.kerfApplied', { value: kerf.toFixed(2) })}
       </Text>
 
       {/* Métricas resumen */}

@@ -1,13 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // CREATE HUB — tab "Crear" del bottom navigator.
 // ───────────────────────────────────────────────────────────────
-// Pantalla intermedia que agrupa los 3 puntos de partida:
-//   • DIY    — planner guiado paso a paso
-//   • PRO    — medidas exactas + optimizador de cortes
-//   • Diseñador — plantillas paramétricas
+// Pantalla intermedia que agrupa los puntos de partida de creación:
+//   • DIY       — planner guiado paso a paso (con IA)
+//   • Diseñador — plantillas paramétricas (muebles)
 //
-// Navega al stack raíz (DIYInput, ProInput, ParametricHome), así
-// que los detalles se apilan por encima del tab bar.
+// El despiece de tableros NO vive aquí — es una utilidad de cálculo,
+// accesible desde Biblioteca → Calculadoras → Despiece.
 // ═══════════════════════════════════════════════════════════════
 
 import React from 'react';
@@ -41,13 +40,6 @@ export default function CreateHubScreen() {
           subtitle={t('create_hub.diy_description')}
           accent={colors.category.projects}
           onPress={() => navigation.navigate('DIYInput')}
-        />
-        <CategoryCard
-          icon="ruler"
-          title={t('create_hub.pro_title')}
-          subtitle={t('create_hub.pro_description')}
-          accent={colors.category.utilities}
-          onPress={() => navigation.navigate('ProInput')}
         />
         <CategoryCard
           icon="cube"

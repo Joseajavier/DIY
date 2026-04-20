@@ -39,6 +39,7 @@ import WoodGuideScreen from '../screens/tools/WoodGuideScreen';
 import ScrewGuideScreen from '../screens/tools/ScrewGuideScreen';
 import ScrewSelectorScreen from '../screens/tools/ScrewSelectorScreen';
 import VarnishGuideScreen from '../screens/tools/VarnishGuideScreen';
+import DespieceScreen from '../screens/tools/DespieceScreen';
 
 // ── Diseñador paramétrico ──────────────────────────────────────
 import GeneratorHomeScreen from '../screens/generator/GeneratorHomeScreen';
@@ -86,6 +87,7 @@ export type RootStackParamList = {
   WoodGuide: undefined;
   ScrewGuide: undefined;
   VarnishGuide: undefined;
+  Despiece: { initialPieces?: Piece[]; initialBoardWidth?: number; initialBoardHeight?: number } | undefined;
   ParametricHome: undefined;
   ShelfGenerator: undefined;
   TableGenerator: undefined;
@@ -98,7 +100,7 @@ export type RootStackParamList = {
   DIYSteps: { result: DIYResult; projectId?: string };
   DIYMaterials: { result: DIYResult };
   ProInput: undefined;
-  ProOptimization: { projectName: string; pieces: Piece[]; boardWidth: number; boardHeight: number };
+  ProOptimization: { projectName: string; pieces: Piece[]; boardWidth: number; boardHeight: number; kerf: number };
   ProResults: { projectName: string; optimization: OptimizationResult; materials: Material[] };
   Shop: { materials: Material[]; mode: 'diy' | 'pro' };
 };
@@ -160,6 +162,7 @@ export default function AppNavigator() {
       <Stack.Screen name="WoodGuide" component={WoodGuideScreen} options={{ title: t('nav.woodGuide') }} />
       <Stack.Screen name="ScrewGuide" component={ScrewGuideScreen} options={{ title: t('nav.screwGuide') }} />
       <Stack.Screen name="VarnishGuide" component={VarnishGuideScreen} options={{ title: t('nav.varnishGuide') }} />
+      <Stack.Screen name="Despiece" component={DespieceScreen} options={{ title: t('nav.despiece') }} />
 
       {/* Diseñador */}
       <Stack.Screen name="ParametricHome" component={GeneratorHomeScreen} options={{ title: t('nav.designer') }} />

@@ -17,3 +17,4 @@ export { default as CategoryCard } from './CategoryCard';
 export { default as SectionHeader } from './SectionHeader';
 export { default as ShelfIsometric } from './ShelfIsometric';
 export { default as TableIsometric } from './TableIsometric';
+export { default as DespiezarLink } from './DespiezarLink';
