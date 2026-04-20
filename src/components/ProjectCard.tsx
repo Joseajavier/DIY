@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
     flexDirection: 'row',
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   modeLine: {
     width: 4,
@@ -125,9 +127,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   tag: {
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: 3,
   },
   tagRow: {
     flexDirection: 'row',
@@ -140,19 +142,20 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   progressBarBg: {
-    height: 6,
-    backgroundColor: colors.bg,
-    borderRadius: 3,
+    height: 4,
+    backgroundColor: colors.bgAlt,
+    borderRadius: radius.full,
     overflow: 'hidden',
   },
   progressBarFill: {
-    height: 6,
-    borderRadius: 3,
+    height: 4,
+    borderRadius: radius.full,
   },
   progressLabel: {
     ...typography.caption,
     color: colors.textMuted,
-    marginTop: 4,
+    marginTop: 6,
     fontSize: 11,
+    fontVariant: ['tabular-nums'],
   },
 });

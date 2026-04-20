@@ -57,11 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   label: {
-    ...typography.label,
+    ...typography.overline,
     color: colors.text,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontWeight: '700',
     flex: 1,
   },
   plain: {

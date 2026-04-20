@@ -44,37 +44,45 @@ export default function ModeCard({
 
   return (
     <TouchableOpacity
-      style={[styles.card, shadows.md, { borderLeftColor: accentColor }]}
+      style={[styles.card, shadows.md]}
       onPress={onPress}
-      activeOpacity={0.8}
+      activeOpacity={0.85}
     >
-      <View style={styles.header}>
-        <View
-          style={[
-            styles.iconBox,
-            { backgroundColor: accentColor + '1A' },
-          ]}
-        >
-          <Icon name={iconName} size={28} color={accentColor} />
-        </View>
-        <View style={styles.info}>
-          <Text style={[typography.h2, { color: accentColor }]}>{title}</Text>
-          <Text style={[typography.bodySmall, { marginTop: 4 }]}>
-            {description}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.tagRow}>
-        {tags.map((tag, i) => (
+      {/* Barra superior de acento — señaliza el modo */}
+      <View style={[styles.topBar, { backgroundColor: accentColor }]} />
+
+      <View style={styles.body}>
+        <View style={styles.header}>
           <View
-            key={i}
-            style={[styles.tag, { backgroundColor: accentColor + '1A' }]}
+            style={[
+              styles.iconBox,
+              { backgroundColor: accentColor + '1A', borderColor: accentColor + '33' },
+            ]}
           >
-            <Text style={[typography.caption, { color: accentColor }]}>
-              {tag}
+            <Icon name={iconName} size={32} color={accentColor} />
+          </View>
+          <View style={styles.info}>
+            <Text style={[typography.h1, { color: accentColor, fontSize: 22 }]}>
+              {title}
+            </Text>
+            <Text style={[typography.bodySmall, { marginTop: 4 }]}>
+              {description}
             </Text>
           </View>
-        ))}
+          <Icon name="forward" size={18} color={colors.textMuted} />
+        </View>
+        <View style={styles.tagRow}>
+          {tags.map((tag, i) => (
+            <View
+              key={i}
+              style={[styles.tag, { backgroundColor: accentColor + '14' }]}
+            >
+              <Text style={[typography.caption, { color: accentColor, fontWeight: '700' }]}>
+                {tag}
+              </Text>
+            </View>
+          ))}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -102,24 +110,41 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
-    padding: spacing.xl,
     marginBottom: spacing.lg,
-    borderLeftWidth: 4,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  header: { flexDirection: 'row', alignItems: 'center' },
+  topBar: {
+    height: 4,
+    width: '100%',
+  },
+  body: {
+    padding: spacing.xl,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.lg,
+  },
   iconBox: {
-    width: 56,
-    height: 56,
+    width: 64,
+    height: 64,
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: spacing.lg,
+    borderWidth: 1,
   },
   info: { flex: 1 },
-  tagRow: { flexDirection: 'row', marginTop: spacing.md, gap: spacing.sm },
+  tagRow: {
+    flexDirection: 'row',
+    marginTop: spacing.lg,
+    gap: spacing.sm,
+    flexWrap: 'wrap',
+  },
   tag: {
-    borderRadius: radius.sm,
+    borderRadius: radius.full,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.xs + 1,
   },
 });

@@ -18,6 +18,7 @@ export { default as BoardDiagram } from './BoardDiagram';
 export { default as CategoryCard } from './CategoryCard';
 export { default as CategoryGrid } from './CategoryGrid';
 export { default as SectionHeader } from './SectionHeader';
+export { default as HeroBanner } from './HeroBanner';
 export { default as ShelfIsometric } from './ShelfIsometric';
 export { default as TableIsometric } from './TableIsometric';
 export { default as DespiezarLink } from './DespiezarLink';

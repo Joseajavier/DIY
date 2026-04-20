@@ -30,7 +30,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { colors, spacing, radius, typography, shadows } from '../../theme';
+import { colors, spacing, radius, typography } from '../../theme';
 import {
   ModeCard,
   ProjectCard,
@@ -38,6 +38,7 @@ import {
   CategoryCard,
   CategoryGrid,
   SectionHeader,
+  HeroBanner,
 } from '../../components';
 import { Project } from '../../models';
 import { getProjects } from '../../storage/projectRepository';
@@ -69,30 +70,28 @@ export default function HomeScreen({ navigation }: Props) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Top bar */}
+        {/* Top bar minimalista */}
         <View style={styles.topBar}>
-          <TouchableOpacity style={styles.chipBtn} onPress={toggleLang}>
-            <Icon name="language" size={14} color={colors.text} />
-            <Text style={styles.chipText}>
+          <TouchableOpacity style={styles.iconBtn} onPress={toggleLang}>
+            <Text style={styles.langText}>
               {i18n.language === 'es' ? 'EN' : 'ES'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.chipBtn}
+            style={styles.iconBtn}
             onPress={() => navigation.navigate('Settings')}
           >
-            <Icon name="settings" size={14} color={colors.text} />
+            <Icon name="settings" size={18} color={colors.text} />
           </TouchableOpacity>
         </View>
 
-        {/* Hero compacto */}
-        <View style={styles.hero}>
-          <View style={styles.logoBox}>
-            <Icon name="hammer" size={32} color={colors.primary} />
-          </View>
-          <Text style={typography.hero}>{t('app.name')}</Text>
-          <Text style={styles.heroSubtitle}>{t('app.subtitle')}</Text>
-        </View>
+        {/* Hero banner — card cobre con patrón de veta */}
+        <HeroBanner
+          eyebrow={t('app.name')}
+          title={t('app.tagline')}
+          subtitle={t('app.subtitle')}
+        />
+
 
         {/* ─── 1. CREAR PROYECTO ─── */}
         <SectionHeader first>{t('homeSections.newProject')}</SectionHeader>
@@ -231,37 +230,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
-  chipBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
+  iconBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: radius.full,
     backgroundColor: colors.surface,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
-  },
-  chipText: { ...typography.caption, color: colors.text },
-  hero: {
-    alignItems: 'center',
-    marginTop: spacing.lg,
-    marginBottom: spacing.xl,
-  },
-  logoBox: {
-    width: 64,
-    height: 64,
-    borderRadius: radius.lg,
-    backgroundColor: colors.primaryMuted,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.md,
   },
-  heroSubtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginTop: spacing.xs,
+  langText: {
+    ...typography.caption,
+    color: colors.text,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   continueBtn: {
     flexDirection: 'row',

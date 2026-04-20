@@ -55,7 +55,7 @@ export default function CategoryCard({
         style={[
           styles.cardCompact,
           shadows.sm,
-          { borderColor: accent + '40' },
+          { borderColor: accent + '33' },
           disabled && styles.cardDisabled,
         ]}
         onPress={onPress}
@@ -65,10 +65,12 @@ export default function CategoryCard({
         <View
           style={[
             styles.iconBlockCompact,
-            { backgroundColor: accent + '22' },
+            { backgroundColor: accent + '14' },
           ]}
         >
-          <Icon name={icon} size={36} color={accent} />
+          <View style={[styles.iconPillCompact, { backgroundColor: accent + '22' }]}>
+            <Icon name={icon} size={30} color={accent} />
+          </View>
           {badge && (
             <View style={[styles.badgeFloat, { backgroundColor: accent }]}>
               <Text style={styles.badgeFloatText}>{badge}</Text>
@@ -189,21 +191,28 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: 1,
     overflow: 'hidden',
-    minHeight: 148,
+    minHeight: 156,
   },
   iconBlockCompact: {
-    height: 72,
+    height: 88,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
+  iconPillCompact: {
+    width: 56,
+    height: 56,
+    borderRadius: radius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   badgeFloat: {
     position: 'absolute',
-    top: spacing.xs,
-    right: spacing.xs,
+    top: spacing.sm,
+    right: spacing.sm,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
-    borderRadius: radius.sm,
+    borderRadius: radius.full,
   },
   badgeFloatText: {
     fontSize: 9,

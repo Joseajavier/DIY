@@ -2,6 +2,14 @@ import { TextStyle } from 'react-native';
 import { colors } from './colors';
 
 export const typography: Record<string, TextStyle> = {
+  // Titular grande de pantalla (hero banners). Máximo peso visual.
+  display: {
+    fontSize: 34,
+    fontWeight: '800',
+    color: colors.text,
+    letterSpacing: -0.6,
+    lineHeight: 40,
+  },
   hero: {
     fontSize: 36,
     fontWeight: '800',
@@ -9,14 +17,17 @@ export const typography: Record<string, TextStyle> = {
     letterSpacing: -0.5,
   },
   h1: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: '700',
     color: colors.text,
+    letterSpacing: -0.3,
+    lineHeight: 34,
   },
   h2: {
     fontSize: 20,
     fontWeight: '600',
     color: colors.text,
+    letterSpacing: -0.2,
   },
   h3: {
     fontSize: 17,
@@ -47,6 +58,14 @@ export const typography: Record<string, TextStyle> = {
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
+  // Micro-label tracking amplio, para eyebrow de sección.
+  overline: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
   button: {
     fontSize: 16,
     fontWeight: '700',
@@ -54,5 +73,12 @@ export const typography: Record<string, TextStyle> = {
   buttonSmall: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  // Tabular: dimensiones y cantidades en generators / detalles.
+  numeric: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.text,
+    fontVariant: ['tabular-nums'],
   },
 };
