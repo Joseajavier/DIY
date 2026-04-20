@@ -18,6 +18,9 @@
       "env": {
         "APP_VARIANT": "preview"
       },
+      "android": {
+        "buildType": "apk"
+      },
       "ios": {
         "resourceClass": "m-medium"
       }
