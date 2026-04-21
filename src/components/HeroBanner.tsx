@@ -76,6 +76,8 @@ export default function HeroBanner({
             style={styles.cta}
             onPress={onCtaPress}
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={ctaLabel}
           >
             {ctaIcon && (
               <Icon name={ctaIcon} size={16} color={bg} />

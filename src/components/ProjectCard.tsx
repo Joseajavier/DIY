@@ -36,7 +36,7 @@ export default function ProjectCard({ project, onPress, onDelete }: Props) {
   const statusColor = STATUS_COLORS[status] ?? colors.textMuted;
 
   return (
-    <TouchableOpacity style={[styles.card, shadows.sm]} onPress={onPress} activeOpacity={0.8}>
+    <TouchableOpacity style={[styles.card, shadows.sm]} onPress={onPress} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={`Proyecto ${project.name}`}>
       <View style={[styles.modeLine, { backgroundColor: accentColor }]} />
       <View style={styles.content}>
         <View style={styles.header}>
@@ -62,7 +62,7 @@ export default function ProjectCard({ project, onPress, onDelete }: Props) {
             </View>
           </View>
           {onDelete && (
-            <TouchableOpacity onPress={onDelete} style={styles.deleteBtn} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <TouchableOpacity onPress={onDelete} style={styles.deleteBtn} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} accessibilityRole="button" accessibilityLabel="Eliminar proyecto">
               <Text style={styles.deleteTxt}>✕</Text>
             </TouchableOpacity>
           )}

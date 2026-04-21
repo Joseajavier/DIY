@@ -40,6 +40,9 @@ export default function Button({
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityState={{ disabled }}
     >
       <Text style={[styles.text, { color: v.text }]}>{title}</Text>
     </TouchableOpacity>

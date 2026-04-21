@@ -47,6 +47,8 @@ export default function ModeCard({
       style={[styles.card, shadows.md]}
       onPress={onPress}
       activeOpacity={0.85}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}. ${description}`}
     >
       {/* Barra superior de acento — señaliza el modo */}
       <View style={[styles.topBar, { backgroundColor: accentColor }]} />

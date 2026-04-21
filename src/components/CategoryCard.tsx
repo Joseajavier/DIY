@@ -61,6 +61,9 @@ export default function CategoryCard({
         onPress={onPress}
         disabled={disabled || !onPress}
         activeOpacity={0.85}
+        accessibilityRole="button"
+        accessibilityLabel={subtitle ? `${title}. ${subtitle}` : title}
+        accessibilityState={{ disabled: disabled || !onPress }}
       >
         <View
           style={[
@@ -102,6 +105,9 @@ export default function CategoryCard({
       onPress={onPress}
       disabled={disabled || !onPress}
       activeOpacity={0.85}
+      accessibilityRole="button"
+      accessibilityLabel={subtitle ? `${title}. ${subtitle}` : title}
+      accessibilityState={{ disabled: disabled || !onPress }}
     >
       <View
         style={[
