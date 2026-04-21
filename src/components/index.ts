@@ -22,3 +22,4 @@ export { default as HeroBanner } from './HeroBanner';
 export { default as ShelfIsometric } from './ShelfIsometric';
 export { default as TableIsometric } from './TableIsometric';
 export { default as DespiezarLink } from './DespiezarLink';
+export { default as ErrorBoundary } from './ErrorBoundary';
