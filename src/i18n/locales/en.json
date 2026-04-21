@@ -424,6 +424,26 @@
     "bench":   { "t": "Bench",    "s": "4 legs + seat with optional backrest" },
     "desk":    { "t": "Desk",     "s": "Top + legs + stiffening aprons" }
   },
+  "alerts": {
+    "requiredFieldTitle": "Required field",
+    "requiredProjectName": "Give the project a name.",
+    "aiUnavailableTitle": "AI unavailable",
+    "aiUnavailableDIY": "Falling back to local generation.",
+    "aiUnavailablePro": "Falling back to local calculation.",
+    "privacyTitle": "Privacy policy",
+    "termsTitle": "Terms",
+    "comingSoon": "Coming soon.",
+    "projectDuplicated": "Project duplicated",
+    "projectSavedTitle": "✅ Project saved",
+    "projectSavedBody": "You'll find it in \"My projects\".",
+    "stayHere": "Stay here",
+    "viewProject": "View project",
+    "saveFailed": "Couldn't save the project",
+    "pdfFailed": "Couldn't generate the PDF",
+    "pdfExpoGoTitle": "📄 PDF not available in Expo Go",
+    "pdfExpoGoBody": "PDF export requires a Development Build of the app.\n\nRun: npx expo run:ios (or run:android)",
+    "understood": "Got it"
+  },
   "feedback": {
     "eyebrow": "Contact",
     "title": "Send feedback",

@@ -14,6 +14,7 @@ import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { ParametricOutput } from '../models';
 import {
   saveParametricProject,
@@ -31,6 +32,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 export function useSaveAndOptimize() {
   const navigation = useNavigation<Nav>();
+  const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
 
   const saveOnly = useCallback(
@@ -40,12 +42,12 @@ export function useSaveAndOptimize() {
         const projectId = await saveParametricProject(name, output);
         setSaving(false);
         Alert.alert(
-          '✅ Proyecto guardado',
-          'Lo encontrarás en "Mis proyectos".',
+          t('alerts.projectSavedTitle'),
+          t('alerts.projectSavedBody'),
           [
-            { text: 'Seguir aquí', style: 'cancel' },
+            { text: t('alerts.stayHere'), style: 'cancel' },
             {
-              text: 'Ver proyecto',
+              text: t('alerts.viewProject'),
               onPress: () =>
                 navigation.navigate('ProjectDetail', { projectId }),
             },
@@ -53,10 +55,10 @@ export function useSaveAndOptimize() {
         );
       } catch {
         setSaving(false);
-        Alert.alert('Error', 'No se pudo guardar el proyecto');
+        Alert.alert(t('errors.error'), t('alerts.saveFailed'));
       }
     },
-    [navigation]
+    [navigation, t]
   );
 
   const saveAndOptimize = useCallback(
@@ -93,10 +95,10 @@ export function useSaveAndOptimize() {
       const uri = await exportParametricPdf(name, dims, output);
       setSaving(false);
       if (!uri) {
-        Alert.alert('Error', 'No se pudo generar el PDF');
+        Alert.alert(t('errors.error'), t('alerts.pdfFailed'));
       }
     },
-    []
+    [t]
   );
 
   return { saveOnly, saveAndOptimize, exportPdf, saving };

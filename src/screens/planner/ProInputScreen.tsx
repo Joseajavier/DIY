@@ -75,7 +75,7 @@ export default function ProInputScreen({ navigation }: Props) {
         setLoading(false);
         navigation.navigate('ProResults', { projectName: projectName.trim(), optimization: opt, materials: mats });
         return;
-      } catch { Alert.alert('IA no disponible', 'Usando calculo local.'); }
+      } catch { Alert.alert(t('alerts.aiUnavailableTitle'), t('alerts.aiUnavailablePro')); }
     }
     setLoading(false);
     navigation.navigate('ProOptimization', { projectName: projectName.trim(), pieces: valid, boardWidth: bw, boardHeight: bh, kerf: kerfVal });

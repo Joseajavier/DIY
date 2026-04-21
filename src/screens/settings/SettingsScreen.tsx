@@ -152,11 +152,11 @@ export default function SettingsScreen() {
         <LinkRow
           first
           label="Política de privacidad"
-          onPress={() => Alert.alert('Política de privacidad', 'Por venir.')}
+          onPress={() => Alert.alert(t('alerts.privacyTitle'), t('alerts.comingSoon'))}
         />
         <LinkRow
           label="Términos de uso"
-          onPress={() => Alert.alert('Términos', 'Por venir.')}
+          onPress={() => Alert.alert(t('alerts.termsTitle'), t('alerts.comingSoon'))}
         />
         <LinkRow
           label="Aviso de afiliados Amazon"

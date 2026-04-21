@@ -14,6 +14,7 @@
 // para evitar el crash "Cannot find native module 'ExpoPrint'" en Expo Go.
 // En Expo Go el PDF no está disponible; en un dev-build/release sí funciona.
 import { Alert } from 'react-native';
+import i18n from '../../i18n';
 import { ParametricOutput } from '../../models';
 
 interface Dims {
@@ -340,9 +341,9 @@ export async function exportParametricPdf(
     const msg = String(e);
     if (msg.includes('native module') || msg.includes('ExpoPrint')) {
       Alert.alert(
-        '📄 PDF no disponible en Expo Go',
-        'El export de PDF requiere un Development Build de la app.\n\nEjecuta: npx expo run:ios (o run:android)',
-        [{ text: 'Entendido' }]
+        i18n.t('alerts.pdfExpoGoTitle'),
+        i18n.t('alerts.pdfExpoGoBody'),
+        [{ text: i18n.t('alerts.understood') }]
       );
     }
     return null;

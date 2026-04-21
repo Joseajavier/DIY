@@ -424,6 +424,26 @@
     "bench":   { "t": "Banco",      "s": "4 patas + asiento con respaldo opcional" },
     "desk":    { "t": "Escritorio", "s": "Tablero + patas + faldones de rigidez" }
   },
+  "alerts": {
+    "requiredFieldTitle": "Campo obligatorio",
+    "requiredProjectName": "Pon un nombre al proyecto.",
+    "aiUnavailableTitle": "IA no disponible",
+    "aiUnavailableDIY": "Usando generación local.",
+    "aiUnavailablePro": "Usando cálculo local.",
+    "privacyTitle": "Política de privacidad",
+    "termsTitle": "Términos",
+    "comingSoon": "Por venir.",
+    "projectDuplicated": "Proyecto duplicado",
+    "projectSavedTitle": "✅ Proyecto guardado",
+    "projectSavedBody": "Lo encontrarás en \"Mis proyectos\".",
+    "stayHere": "Seguir aquí",
+    "viewProject": "Ver proyecto",
+    "saveFailed": "No se pudo guardar el proyecto",
+    "pdfFailed": "No se pudo generar el PDF",
+    "pdfExpoGoTitle": "📄 PDF no disponible en Expo Go",
+    "pdfExpoGoBody": "El export de PDF requiere un Development Build de la app.\n\nEjecuta: npx expo run:ios (o run:android)",
+    "understood": "Entendido"
+  },
   "feedback": {
     "eyebrow": "Contacto",
     "title": "Enviar feedback",

@@ -93,7 +93,7 @@ function buildRichPrompt(
 
 // ── Pantalla principal ────────────────────────────────────────────
 export default function DIYInputScreen({ navigation }: Props) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [projectName, setProjectName]     = useState('');
   const [description, setDescription]     = useState('');
@@ -107,7 +107,7 @@ export default function DIYInputScreen({ navigation }: Props) {
 
   const handleGenerate = async () => {
     if (!projectName.trim()) {
-      Alert.alert('Campo obligatorio', 'Pon un nombre al proyecto.'); return;
+      Alert.alert(t('alerts.requiredFieldTitle'), t('alerts.requiredProjectName')); return;
     }
     setLoading(true);
     let result: DIYResult;
@@ -133,7 +133,7 @@ export default function DIYInputScreen({ navigation }: Props) {
       }
     } catch {
       result = generateDIYProject(projectName.trim(), description.trim() || richPrompt);
-      if (useAI) Alert.alert('IA no disponible', 'Usando generación local.');
+      if (useAI) Alert.alert(t('alerts.aiUnavailableTitle'), t('alerts.aiUnavailableDIY'));
     }
 
     const pid = await createProject(projectName.trim(), 'diy', description.trim(), {

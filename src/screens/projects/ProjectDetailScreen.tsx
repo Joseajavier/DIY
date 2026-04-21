@@ -75,7 +75,7 @@ export default function ProjectDetailScreen({ navigation, route }: Props) {
 
   const handleDuplicate = async () => {
     const newId = await duplicate(projectId);
-    if (newId) { Alert.alert('Proyecto duplicado'); navigation.replace('ProjectDetail', { projectId: newId }); }
+    if (newId) { Alert.alert(t('alerts.projectDuplicated')); navigation.replace('ProjectDetail', { projectId: newId }); }
   };
 
   const handleDelete = () => {
