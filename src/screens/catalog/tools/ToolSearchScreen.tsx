@@ -384,8 +384,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                         if (m) Linking.openURL(m.deal.link);
                       }}
                     >
-                      <Icon name="fire" size={12} color={colors.danger} />
-                      <Text style={[styles.dealBadgeText, { marginLeft: 4 }]}>Chollo</Text>
+                      <Icon name="fire" size={12} color="#FFFFFF" />
+                      <Text style={[styles.dealBadgeText, { marginLeft: 4 }]}>Oferta</Text>
                     </TouchableOpacity>
                   )}
                   <View style={[styles.tierBadge, { backgroundColor: tierColors[item.tier] + '22' }]}>
@@ -532,18 +532,19 @@ const styles = StyleSheet.create({
   dealBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: radius.full,
+    borderRadius: radius.sm,
     paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
+    paddingVertical: 3,
     marginRight: spacing.xs,
-    backgroundColor: colors.danger + '22',
-    borderWidth: 1,
-    borderColor: colors.danger + '55',
+    backgroundColor: colors.danger,
   },
   dealBadgeText: {
     ...typography.caption,
-    color: colors.danger,
-    fontWeight: '700',
+    color: '#FFFFFF',
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+    fontSize: 10,
   },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: spacing.sm, gap: 6 },
   priceValue: { fontSize: 22, fontWeight: '800', color: colors.primary, letterSpacing: -0.5 },
