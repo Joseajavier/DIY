@@ -358,6 +358,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
         renderItem={({ item }: { item: ToolProduct }) => (
           <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.8}
             onPress={() => setSheetProduct(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`${getToolBrandName(item.brandId)} ${item.model}, ${item.priceMin === item.priceMax ? `${item.priceMin} euros` : `entre ${item.priceMin} y ${item.priceMax} euros`}`}
           >
             <View style={styles.cardRow}>
               {(() => {
@@ -383,6 +385,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                         const m = dealMatchByProduct.get(item.id);
                         if (m) Linking.openURL(m.deal.link);
                       }}
+                      accessibilityRole="link"
+                      accessibilityLabel="Ver oferta"
                     >
                       <Icon name="fire" size={12} color="#FFFFFF" />
                       <Text style={[styles.dealBadgeText, { marginLeft: 4 }]}>Oferta</Text>
@@ -431,6 +435,8 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
               style={styles.amazonBtn}
               onPress={() => setSheetProduct(item)}
               activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel="Ver tiendas"
             >
               <Icon name="shop" size={16} color={colors.textOnPrimary} />
               <Text style={styles.amazonBtnText}>Ver tiendas</Text>

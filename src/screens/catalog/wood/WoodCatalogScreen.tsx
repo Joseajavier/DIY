@@ -264,6 +264,8 @@ export default function WoodCatalogScreen({ navigation: _nav, route }: Props) {
               style={[styles.card, shadows.sm]}
               activeOpacity={0.8}
               onPress={() => Linking.openURL(`https://www.amazon.es/s?k=${encodeURIComponent(item.name + ' madera')}`)}
+              accessibilityRole="link"
+              accessibilityLabel={`${item.name}, ${item.priceRange}. Abre Amazon para ver opciones.`}
             >
               <View style={styles.cardTopRow}>
                 <CatalogImage

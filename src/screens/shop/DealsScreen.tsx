@@ -110,6 +110,8 @@ export default function DealsScreen({ navigation: _navigation }: Props) {
       style={[styles.card, shadows.sm]}
       onPress={() => handleOpen(item)}
       activeOpacity={0.85}
+      accessibilityRole="link"
+      accessibilityLabel={`Oferta: ${item.title}${item.price !== undefined ? `, ${formatPrice(item.price, item.currency)}` : ''}${item.discountPct !== undefined ? `, ${item.discountPct}% de descuento` : ''}`}
     >
       {item.image ? (
         <Image source={{ uri: item.image }} style={styles.image} />
@@ -257,6 +259,8 @@ export default function DealsScreen({ navigation: _navigation }: Props) {
             style={styles.retryBtn}
             onPress={() => load(true)}
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel="Reintentar"
           >
             <Icon name="forward" size={14} color={colors.primary} />
             <Text style={styles.retryText}>Reintentar</Text>

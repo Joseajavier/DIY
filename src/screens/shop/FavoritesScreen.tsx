@@ -74,7 +74,7 @@ export default function FavoritesScreen({ navigation }: Props) {
     const catId = TOOL_TYPES.find((t) => t.id === item.typeId)?.categoryId ?? '';
     const cColor = categoryColor(catId);
     return (
-      <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.85} onPress={() => setSheetProduct(item)}>
+      <TouchableOpacity style={[styles.card, shadows.sm]} activeOpacity={0.85} onPress={() => setSheetProduct(item)} accessibilityRole="button" accessibilityLabel={`${getToolBrandName(item.brandId)} ${item.model}, ${item.priceMin === item.priceMax ? `${item.priceMin} euros` : `entre ${item.priceMin} y ${item.priceMax} euros`}`}>
         <View style={styles.cardRow}>
           <CatalogImage uri={getToolImageUrl(item)} accentColor={cColor} icon={categoryIcon(catId)} badgeText={getToolBrandName(item.brandId)} />
           <View style={{ flex: 1 }}>
@@ -139,6 +139,8 @@ export default function FavoritesScreen({ navigation }: Props) {
             style={styles.emptyCta}
             onPress={() => navigation.navigate('ToolCategories')}
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel="Ve al catálogo"
           >
             <Icon name="tools" size={18} color={colors.textOnPrimary} />
             <Text
@@ -154,6 +156,8 @@ export default function FavoritesScreen({ navigation }: Props) {
             style={styles.emptyCtaSecondary}
             onPress={() => navigation.navigate('Deals')}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="Ver chollos del día"
           >
             <Icon name="fire" size={14} color={colors.primary} />
             <Text style={styles.emptyCtaSecondaryText}>
