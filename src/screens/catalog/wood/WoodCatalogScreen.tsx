@@ -321,11 +321,9 @@ export default function WoodCatalogScreen({ navigation: _nav, route }: Props) {
 
               <Text style={[typography.bodySmall, { marginTop: spacing.sm, fontStyle: 'italic' }]}>Ideal para: {item.bestFor}</Text>
               <View style={styles.searchOnAmazon}>
-                <Icon name="shop" size={14} color={colors.primary} />
-                <Text style={[typography.caption, { color: colors.primary, fontWeight: '700', marginLeft: 4 }]}>
-                  Buscar en Amazon
-                </Text>
-                <Icon name="forward" size={14} color={colors.primary} />
+                <Icon name="shop" size={16} color={colors.textOnPrimary} />
+                <Text style={styles.searchOnAmazonText}>Buscar en Amazon</Text>
+                <Icon name="forward" size={14} color={colors.textOnPrimary} />
               </View>
             </TouchableOpacity>
           );
@@ -384,5 +382,6 @@ const styles = StyleSheet.create({
   prosLine: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 2 },
   resultRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: spacing.xl, marginBottom: spacing.sm },
   sourceBadge: { flexDirection: 'row', alignItems: 'center' },
-  searchOnAmazon: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: spacing.sm },
+  searchOnAmazon: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: spacing.md, marginTop: spacing.md },
+  searchOnAmazonText: { ...typography.button, color: colors.textOnPrimary, fontWeight: '700' },
 });

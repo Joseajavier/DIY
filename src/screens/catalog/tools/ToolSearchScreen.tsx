@@ -430,16 +430,11 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
             <TouchableOpacity
               style={styles.amazonBtn}
               onPress={() => setSheetProduct(item)}
+              activeOpacity={0.85}
             >
-              <Icon name="shop" size={16} color={colors.primary} />
-              <Text
-                style={[
-                  typography.buttonSmall,
-                  { color: colors.primary, marginLeft: spacing.sm },
-                ]}
-              >
-                Comprar en…
-              </Text>
+              <Icon name="shop" size={16} color={colors.textOnPrimary} />
+              <Text style={styles.amazonBtnText}>Ver tiendas</Text>
+              <Icon name="forward" size={14} color={colors.textOnPrimary} />
             </TouchableOpacity>
           </TouchableOpacity>
         )}
@@ -551,5 +546,6 @@ const styles = StyleSheet.create({
   priceSuffix: { ...typography.caption, color: colors.textMuted, fontSize: 11 },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.md },
   tags: { flexDirection: 'row', gap: spacing.sm },
-  amazonBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primaryMuted, borderRadius: radius.md, paddingVertical: spacing.sm, marginTop: spacing.md, borderWidth: 1, borderColor: colors.primary + '33' },
+  amazonBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: spacing.md, marginTop: spacing.md },
+  amazonBtnText: { ...typography.button, color: colors.textOnPrimary, fontWeight: '700' },
 });
