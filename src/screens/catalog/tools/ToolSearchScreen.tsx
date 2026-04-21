@@ -395,6 +395,14 @@ export default function ToolSearchScreen({ navigation, route }: Props) {
                 <Text style={[typography.bodySmall, { fontWeight: '600' }]}>{item.model}</Text>
                 <Text style={[typography.caption, { marginTop: 2 }]}>{getToolTypeName(item.typeId)}</Text>
                 <Text style={[typography.bodySmall, { marginTop: spacing.xs }]} numberOfLines={2}>{item.description}</Text>
+                <View style={styles.priceRow}>
+                  <Text style={styles.priceValue}>
+                    {item.priceMin === item.priceMax
+                      ? `${item.priceMin} €`
+                      : `${item.priceMin}–${item.priceMax} €`}
+                  </Text>
+                  <Text style={styles.priceSuffix}>aprox.</Text>
+                </View>
                 <View style={styles.cardFooter}>
                   <View style={styles.tags}>
                     {item.power === 'battery' && (
@@ -537,6 +545,9 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontWeight: '700',
   },
+  priceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: spacing.sm, gap: 6 },
+  priceValue: { fontSize: 22, fontWeight: '800', color: colors.primary, letterSpacing: -0.5 },
+  priceSuffix: { ...typography.caption, color: colors.textMuted, fontSize: 11 },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.md },
   tags: { flexDirection: 'row', gap: spacing.sm },
   amazonBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primaryMuted, borderRadius: radius.md, paddingVertical: spacing.sm, marginTop: spacing.md, borderWidth: 1, borderColor: colors.primary + '33' },

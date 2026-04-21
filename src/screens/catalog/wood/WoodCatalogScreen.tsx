@@ -284,8 +284,10 @@ export default function WoodCatalogScreen({ navigation: _nav, route }: Props) {
 
                   <Text style={[typography.bodySmall, { marginTop: spacing.sm }]}>{item.description}</Text>
 
+                  <View style={styles.priceRow}>
+                    <Text style={styles.priceValue}>{item.priceRange}</Text>
+                  </View>
                   <View style={styles.metaRow}>
-                    <Text style={[typography.caption, { color: colors.primary, fontWeight: '600' }]}>{item.priceRange}</Text>
                     <View style={styles.useInline}>
                       <Icon name={uMeta.icon} size={12} color={colors.textMuted} />
                       <Text style={[typography.caption, { marginLeft: 4 }]}>{uMeta.label}</Text>
@@ -374,7 +376,9 @@ const styles = StyleSheet.create({
   cardTopRow: { flexDirection: 'row', gap: spacing.md },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   badge: { borderRadius: radius.full, paddingHorizontal: spacing.sm, paddingVertical: 2 },
-  metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.md },
+  priceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: spacing.sm },
+  priceValue: { fontSize: 20, fontWeight: '800', color: colors.primary, letterSpacing: -0.3 },
+  metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.xs },
   useInline: { flexDirection: 'row', alignItems: 'center' },
   prosConsRow: { flexDirection: 'row', marginTop: spacing.sm, gap: spacing.md },
   prosLine: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 2 },
