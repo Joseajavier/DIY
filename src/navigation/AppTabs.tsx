@@ -23,11 +23,27 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
 import { colors } from '../theme';
 import Icon, { IconName } from '../components/Icon';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import HomeScreen from '../screens/home/HomeScreen';
 import ProjectsScreen from '../screens/projects/ProjectsScreen';
 import LibraryHubScreen from '../screens/home/LibraryHubScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
+
+// Cada tab se renderiza como children de Tab.Screen envuelto en su
+// propio ErrorBoundary: un crash en una tab no saca al usuario de
+// las demás, y el botón "Reintentar" sólo resetea la tab afectada.
+// Usamos render-prop para conservar el tipado de props de React
+// Navigation (navigation, route) sin HOC.
+function renderWithBoundary<C extends React.ComponentType<any>>(
+  Component: C,
+) {
+  return (props: React.ComponentProps<C>) => (
+    <ErrorBoundary>
+      <Component {...(props as any)} />
+    </ErrorBoundary>
+  );
+}
 
 export type TabParamList = {
   HomeTab: undefined;
@@ -64,10 +80,18 @@ export default function AppTabs() {
         },
       })}
     >
-      <Tab.Screen name="HomeTab" component={HomeScreen} options={{ title: t('tabs.home') }} />
-      <Tab.Screen name="ProjectsTab" component={ProjectsScreen} options={{ title: t('tabs.projects') }} />
-      <Tab.Screen name="LibraryTab" component={LibraryHubScreen} options={{ title: t('tabs.library') }} />
-      <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{ title: t('tabs.settings') }} />
+      <Tab.Screen name="HomeTab" options={{ title: t('tabs.home') }}>
+        {renderWithBoundary(HomeScreen)}
+      </Tab.Screen>
+      <Tab.Screen name="ProjectsTab" options={{ title: t('tabs.projects') }}>
+        {renderWithBoundary(ProjectsScreen)}
+      </Tab.Screen>
+      <Tab.Screen name="LibraryTab" options={{ title: t('tabs.library') }}>
+        {renderWithBoundary(LibraryHubScreen)}
+      </Tab.Screen>
+      <Tab.Screen name="SettingsTab" options={{ title: t('tabs.settings') }}>
+        {renderWithBoundary(SettingsScreen)}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
