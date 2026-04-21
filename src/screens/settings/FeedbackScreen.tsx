@@ -5,11 +5,13 @@ import { sendFeedback } from '../../services/feedback/feedbackService';
 import { trackEvent } from '../../services/analytics/events';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
 import { Icon } from '../../components';
+import type { IconName } from '../../components/Icon';
+import HeroBanner from '../../components/HeroBanner';
 
-const TYPES = [
-  { key: 'bug' as const, label: '🐛 Bug' },
-  { key: 'suggestion' as const, label: '💡 Sugerencia' },
-  { key: 'other' as const, label: '💬 Otro' },
+const TYPES: Array<{ key: 'bug' | 'suggestion' | 'other'; label: string; icon: IconName }> = [
+  { key: 'bug', label: 'Bug', icon: 'warning' },
+  { key: 'suggestion', label: 'Sugerencia', icon: 'info' },
+  { key: 'other', label: 'Otro', icon: 'chat' },
 ];
 
 export default function FeedbackScreen() {
@@ -43,11 +45,18 @@ export default function FeedbackScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={[typography.h1, { color: colors.primary, marginBottom: spacing.xl }]}>Enviar feedback</Text>
+      <View style={{ marginBottom: spacing.xl }}>
+        <HeroBanner
+          eyebrow="Contacto"
+          title="Enviar feedback"
+          subtitle="Cuéntanos qué falla o qué te gustaría ver. Leemos todo."
+        />
+      </View>
       <View style={styles.typesRow}>
         {TYPES.map(t => (
           <TouchableOpacity key={t.key} style={[styles.typeBtn, type === t.key && styles.typeBtnActive]} onPress={() => setType(t.key)}>
-            <Text style={[typography.buttonSmall, { color: type === t.key ? colors.primary : colors.textSecondary }]}>{t.label}</Text>
+            <Icon name={t.icon} size={16} color={type === t.key ? colors.primary : colors.textSecondary} />
+            <Text style={[typography.buttonSmall, { color: type === t.key ? colors.primary : colors.textSecondary, marginLeft: 6 }]}>{t.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -64,7 +73,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg, padding: spacing.xl },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center', padding: spacing.xxxl },
   typesRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.xl },
-  typeBtn: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: spacing.md, alignItems: 'center', borderWidth: 1, borderColor: colors.border },
+  typeBtn: { flex: 1, flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: spacing.md, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.border },
   typeBtnActive: { borderColor: colors.primary, backgroundColor: colors.primaryMuted },
   input: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, fontSize: 15, color: colors.text, borderWidth: 1, borderColor: colors.border, marginBottom: spacing.lg },
   button: { backgroundColor: colors.primary, paddingVertical: 18, borderRadius: radius.lg, alignItems: 'center' },

@@ -69,6 +69,8 @@ export type IconName =
   | 'fraction'
   | 'screw'
   | 'info'
+  | 'warning'
+  | 'chat'
   | 'table'
   | 'cube'
   | 'joint'
@@ -161,6 +163,8 @@ const MAP: Record<IconName, Mapping> = {
   fraction: { pack: 'mci', name: 'fraction-one-half' },
   screw: { pack: 'mci', name: 'screw-flat-top' },
   info: { pack: 'ion', name: 'information-circle' },
+  warning: { pack: 'ion', name: 'warning' },
+  chat: { pack: 'ion', name: 'chatbubble-ellipses' },
   table: { pack: 'mci', name: 'table' },
   cube: { pack: 'mci', name: 'cube-outline' },
   joint: { pack: 'mci', name: 'vector-intersection' },

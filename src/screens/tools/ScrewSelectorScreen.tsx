@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
 
 // ── Tipos ────────────────────────────────────────────────────────
 
@@ -293,8 +294,12 @@ export default function ScrewSelectorScreen() {
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
 
         {/* Cabecera */}
-        <Text style={styles.hero}>🔩 Selector de tornillos</Text>
-        <Text style={styles.heroSub}>Elige los materiales que vas a unir y te digo qué tornillo usar.</Text>
+        <HeroBanner
+          variant="accent"
+          eyebrow="Guía"
+          title="Selector de tornillos"
+          subtitle="Elige los materiales que vas a unir y te digo qué tornillo usar."
+        />
 
         {/* Toggle interior / exterior */}
         <View style={styles.ctxRow}>
@@ -470,8 +475,6 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
 
-  hero: { ...typography.h1, color: colors.primary, marginBottom: spacing.xs },
-  heroSub: { ...typography.bodySmall, color: colors.textSecondary, marginBottom: spacing.xl },
 
   // Context toggle
   ctxRow: {
