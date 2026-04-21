@@ -16,6 +16,7 @@ import {
   Linking,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import { HeroBanner } from '../../components';
 
 type HardnessLevel = 'blanda' | 'media' | 'dura' | 'muy dura';
 
@@ -270,10 +271,11 @@ export default function WoodGuideScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Guía de maderas</Text>
-        <Text style={styles.subtitle}>
-          {WOODS.length} especies — dureza Janka, origen, usos y veta.
-        </Text>
+        <HeroBanner
+          eyebrow="Herramientas"
+          title="Guía de maderas"
+          subtitle={`${WOODS.length} especies — dureza Janka, origen, usos y veta.`}
+        />
 
         {/* Filtro dureza */}
         <View style={styles.filterRow}>
@@ -371,13 +373,6 @@ export default function WoodGuideScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.lg,
-  },
 
   // ── Filtros ───────────────────────────────────────────────
   filterRow: {

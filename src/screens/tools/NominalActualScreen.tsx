@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import { HeroBanner } from '../../components';
 
 type Row = {
   nominal: string;
@@ -56,10 +57,11 @@ export default function NominalActualScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Nominal → Real</Text>
-        <Text style={styles.subtitle}>
-          La madera se vende por tamaño nominal, pero sus medidas reales son menores.
-        </Text>
+        <HeroBanner
+          eyebrow="Herramientas"
+          title="Nominal → Real"
+          subtitle="La madera se vende por tamaño nominal, pero sus medidas reales son menores."
+        />
 
         {/* Toggle unidades */}
         <View style={styles.toggle}>
@@ -128,14 +130,6 @@ export default function NominalActualScreen() {
 const styles = StyleSheet.create({
   safe:    { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-    lineHeight: 22,
-  },
 
   // ── Toggle ────────────────────────────────────────────────
   toggle: {

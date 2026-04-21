@@ -16,6 +16,7 @@ import {
   Linking,
 } from 'react-native';
 import { colors, spacing, radius, typography } from '../../theme';
+import { HeroBanner } from '../../components';
 
 type Difficulty = 'Fácil' | 'Media' | 'Difícil';
 type Strength   = 1 | 2 | 3;
@@ -276,10 +277,11 @@ export default function JointTypesScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Uniones de carpintería</Text>
-        <Text style={styles.subtitle}>
-          {JOINTS.length} tipos de unión — toca para ver detalles, vídeos y diagramas.
-        </Text>
+        <HeroBanner
+          eyebrow="Herramientas"
+          title="Uniones de carpintería"
+          subtitle={`${JOINTS.length} tipos de unión — toca para ver detalles, vídeos y diagramas.`}
+        />
 
         {/* Filtro dificultad */}
         <View style={styles.filterRow}>
@@ -378,13 +380,6 @@ export default function JointTypesScreen() {
 const styles = StyleSheet.create({
   safe:    { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-
-  title: { ...typography.hero, color: colors.text, marginBottom: spacing.xs },
-  subtitle: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.lg,
-  },
 
   // ── Filtros ───────────────────────────────────────────────
   filterRow: {
