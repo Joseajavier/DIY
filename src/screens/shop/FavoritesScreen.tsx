@@ -86,6 +86,11 @@ export default function FavoritesScreen({ navigation }: Props) {
             </View>
             <Text style={[typography.bodySmall, { fontWeight: '600' }]}>{item.model}</Text>
             <Text style={[typography.caption, { marginTop: 2 }]}>{getToolTypeName(item.typeId)}</Text>
+            <Text style={styles.priceValue}>
+              {item.priceMin === item.priceMax
+                ? `${item.priceMin} €`
+                : `${item.priceMin}–${item.priceMax} €`}
+            </Text>
             <View style={styles.cardFooter}>
               <View style={styles.tags}>
                 {item.power === 'battery' && <Icon name="battery" size={14} color={colors.textMuted} />}
@@ -208,11 +213,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
   },
+  priceValue: { fontSize: 20, fontWeight: '800', color: colors.primary, letterSpacing: -0.3, marginTop: spacing.sm },
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: spacing.md,
+    marginTop: spacing.sm,
   },
   tags: { flexDirection: 'row', gap: spacing.sm },
   favBtn: {

@@ -370,9 +370,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   price: {
-    ...typography.h3,
-    color: colors.primary,
+    fontSize: 22,
     fontWeight: '800',
+    color: colors.primary,
+    letterSpacing: -0.5,
   },
   priceOld: {
     ...typography.caption,
@@ -380,16 +381,17 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   discountBadge: {
-    backgroundColor: colors.danger + '22',
+    backgroundColor: colors.danger,
     borderRadius: radius.sm,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
   },
   discountText: {
     ...typography.caption,
-    color: colors.danger,
+    color: '#FFFFFF',
     fontWeight: '800',
     fontSize: 11,
+    letterSpacing: 0.5,
   },
   merchantChip: {
     flexDirection: 'row',
