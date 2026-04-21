@@ -423,5 +423,21 @@
     "cabinet": { "t": "Armario",    "s": "Puertas batientes + baldas + barra opcional" },
     "bench":   { "t": "Banco",      "s": "4 patas + asiento con respaldo opcional" },
     "desk":    { "t": "Escritorio", "s": "Tablero + patas + faldones de rigidez" }
+  },
+  "feedback": {
+    "eyebrow": "Contacto",
+    "title": "Enviar feedback",
+    "subtitle": "Cuéntanos qué falla o qué te gustaría ver. Leemos todo.",
+    "typeBug": "Bug",
+    "typeSuggestion": "Sugerencia",
+    "typeOther": "Otro",
+    "messagePlaceholder": "Describe el problema o sugerencia...",
+    "emailPlaceholder": "Email (opcional)",
+    "send": "Enviar",
+    "sending": "Enviando...",
+    "errorEmpty": "Escribe un mensaje",
+    "errorSend": "No se pudo enviar. Inténtalo de nuevo.",
+    "thanksTitle": "¡Gracias por tu feedback!",
+    "thanksBody": "Lo revisaremos pronto."
   }
 }

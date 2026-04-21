@@ -423,5 +423,21 @@
     "cabinet": { "t": "Cabinet",  "s": "Swing doors + shelves + optional rod" },
     "bench":   { "t": "Bench",    "s": "4 legs + seat with optional backrest" },
     "desk":    { "t": "Desk",     "s": "Top + legs + stiffening aprons" }
+  },
+  "feedback": {
+    "eyebrow": "Contact",
+    "title": "Send feedback",
+    "subtitle": "Tell us what's broken or what you'd like to see. We read everything.",
+    "typeBug": "Bug",
+    "typeSuggestion": "Suggestion",
+    "typeOther": "Other",
+    "messagePlaceholder": "Describe the problem or suggestion...",
+    "emailPlaceholder": "Email (optional)",
+    "send": "Send",
+    "sending": "Sending...",
+    "errorEmpty": "Write a message",
+    "errorSend": "Couldn't send. Please try again.",
+    "thanksTitle": "Thanks for your feedback!",
+    "thanksBody": "We'll review it soon."
   }
 }

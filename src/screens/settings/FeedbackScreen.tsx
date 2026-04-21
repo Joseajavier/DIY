@@ -8,14 +8,14 @@ import { Icon } from '../../components';
 import type { IconName } from '../../components/Icon';
 import HeroBanner from '../../components/HeroBanner';
 
-const TYPES: Array<{ key: 'bug' | 'suggestion' | 'other'; label: string; icon: IconName }> = [
-  { key: 'bug', label: 'Bug', icon: 'warning' },
-  { key: 'suggestion', label: 'Sugerencia', icon: 'info' },
-  { key: 'other', label: 'Otro', icon: 'chat' },
+const TYPES: Array<{ key: 'bug' | 'suggestion' | 'other'; labelKey: string; icon: IconName }> = [
+  { key: 'bug', labelKey: 'feedback.typeBug', icon: 'warning' },
+  { key: 'suggestion', labelKey: 'feedback.typeSuggestion', icon: 'info' },
+  { key: 'other', labelKey: 'feedback.typeOther', icon: 'chat' },
 ];
 
 export default function FeedbackScreen() {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [type, setType] = useState<'bug' | 'suggestion' | 'other'>('suggestion');
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
@@ -23,12 +23,12 @@ export default function FeedbackScreen() {
   const [sent, setSent] = useState(false);
 
   const handleSend = async () => {
-    if (!message.trim()) { Alert.alert('Error', 'Escribe un mensaje'); return; }
+    if (!message.trim()) { Alert.alert(t('errors.error'), t('feedback.errorEmpty')); return; }
     setSending(true);
     const ok = await sendFeedback({ message: message.trim(), type, contactEmail: email.trim() || undefined, appVersion: '1.0.0', platform: Platform.OS });
     setSending(false);
     if (ok) { trackEvent('feedback_sent', { type }); setSent(true); }
-    else Alert.alert('Error', 'No se pudo enviar. Intentalo de nuevo.');
+    else Alert.alert(t('errors.error'), t('feedback.errorSend'));
   };
 
   if (sent) {
@@ -37,8 +37,8 @@ export default function FeedbackScreen() {
         <View style={{ marginBottom: spacing.xl }}>
           <Icon name="check" size={72} color={colors.success} />
         </View>
-        <Text style={[typography.h2, { textAlign: 'center' }]}>Gracias por tu feedback!</Text>
-        <Text style={[typography.bodySmall, { textAlign: 'center', marginTop: spacing.sm }]}>Lo revisaremos pronto.</Text>
+        <Text style={[typography.h2, { textAlign: 'center' }]}>{t('feedback.thanksTitle')}</Text>
+        <Text style={[typography.bodySmall, { textAlign: 'center', marginTop: spacing.sm }]}>{t('feedback.thanksBody')}</Text>
       </View>
     );
   }
@@ -47,23 +47,23 @@ export default function FeedbackScreen() {
     <View style={styles.container}>
       <View style={{ marginBottom: spacing.xl }}>
         <HeroBanner
-          eyebrow="Contacto"
-          title="Enviar feedback"
-          subtitle="Cuéntanos qué falla o qué te gustaría ver. Leemos todo."
+          eyebrow={t('feedback.eyebrow')}
+          title={t('feedback.title')}
+          subtitle={t('feedback.subtitle')}
         />
       </View>
       <View style={styles.typesRow}>
-        {TYPES.map(t => (
-          <TouchableOpacity key={t.key} style={[styles.typeBtn, type === t.key && styles.typeBtnActive]} onPress={() => setType(t.key)}>
-            <Icon name={t.icon} size={16} color={type === t.key ? colors.primary : colors.textSecondary} />
-            <Text style={[typography.buttonSmall, { color: type === t.key ? colors.primary : colors.textSecondary, marginLeft: 6 }]}>{t.label}</Text>
+        {TYPES.map(item => (
+          <TouchableOpacity key={item.key} style={[styles.typeBtn, type === item.key && styles.typeBtnActive]} onPress={() => setType(item.key)}>
+            <Icon name={item.icon} size={16} color={type === item.key ? colors.primary : colors.textSecondary} />
+            <Text style={[typography.buttonSmall, { color: type === item.key ? colors.primary : colors.textSecondary, marginLeft: 6 }]}>{t(item.labelKey)}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      <TextInput style={[styles.input, { minHeight: 120 }]} placeholder="Describe el problema o sugerencia..." placeholderTextColor={colors.textMuted} value={message} onChangeText={setMessage} multiline numberOfLines={6} textAlignVertical="top" />
-      <TextInput style={styles.input} placeholder="Email (opcional)" placeholderTextColor={colors.textMuted} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+      <TextInput style={[styles.input, { minHeight: 120 }]} placeholder={t('feedback.messagePlaceholder')} placeholderTextColor={colors.textMuted} value={message} onChangeText={setMessage} multiline numberOfLines={6} textAlignVertical="top" />
+      <TextInput style={styles.input} placeholder={t('feedback.emailPlaceholder')} placeholderTextColor={colors.textMuted} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
       <TouchableOpacity style={[styles.button, sending && { opacity: 0.6 }, shadows.md]} onPress={handleSend} disabled={sending}>
-        <Text style={[typography.button, { color: colors.textOnPrimary }]}>{sending ? 'Enviando...' : 'Enviar'}</Text>
+        <Text style={[typography.button, { color: colors.textOnPrimary }]}>{sending ? t('feedback.sending') : t('feedback.send')}</Text>
       </TouchableOpacity>
     </View>
   );
