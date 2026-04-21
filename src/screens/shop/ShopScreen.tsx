@@ -9,6 +9,9 @@ import { comparePrices } from '../../services/priceComparator';
 import { saveShopOptions } from '../../storage/shopRepository';
 import { getLastProjectId } from '../../storage/settingsStorage';
 import { colors, spacing, radius, typography, shadows } from '../../theme';
+import HeroBanner from '../../components/HeroBanner';
+import SectionHeader from '../../components/SectionHeader';
+import Icon from '../../components/Icon';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Shop'>;
@@ -28,14 +31,18 @@ export default function ShopScreen({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={[typography.h1, { color: colors.primary }]}>{t('shop.title')}</Text>
-      <Text style={[typography.bodySmall, { marginBottom: spacing.xl }]}>
-        {mode === 'diy' ? t('shop.diyRecommendations') : t('shop.proComparison')}
-      </Text>
+      <HeroBanner
+        eyebrow={t('shop.title')}
+        title={comparison.best?.name ?? t('shop.title')}
+        subtitle={mode === 'diy' ? t('shop.diyRecommendations') : t('shop.proComparison')}
+      />
 
       {comparison.best && (
         <View style={[styles.bestCard, shadows.md]}>
-          <Text style={[typography.caption, { color: colors.primary }]}>⭐ {t('shop.bestOption')}</Text>
+          <View style={styles.bestBadgeRow}>
+            <Icon name="trophy" size={14} color={colors.primary} />
+            <Text style={styles.bestBadgeText}>{t('shop.bestOption')}</Text>
+          </View>
           <Text style={[typography.h2, { marginTop: spacing.sm }]}>{comparison.best.name}</Text>
           <Text style={styles.bestPrice}>{comparison.best.price.toFixed(2)} €</Text>
           <Text style={typography.caption}>{t('shop.delivery')}: {comparison.best.time}</Text>
@@ -44,11 +51,14 @@ export default function ShopScreen({ navigation, route }: Props) {
 
       {comparison.recommendation && (
         <View style={styles.recoCard}>
-          <Text style={[typography.bodySmall, { lineHeight: 20 }]}>💡 {comparison.recommendation}</Text>
+          <View style={styles.recoRow}>
+            <Icon name="info" size={16} color={colors.primary} />
+            <Text style={[typography.bodySmall, { lineHeight: 20, flex: 1 }]}>{comparison.recommendation}</Text>
+          </View>
         </View>
       )}
 
-      <Text style={[typography.label, { marginTop: spacing.xl, marginBottom: spacing.lg }]}>{t('shop.allOptions')}</Text>
+      <SectionHeader>{t('shop.allOptions')}</SectionHeader>
       {comparison.ranked.map((store, i) => (
         <View key={i} style={[styles.storeCard, shadows.sm]}>
           <View style={styles.storeHeader}>
@@ -76,9 +86,12 @@ export default function ShopScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.xl, paddingBottom: spacing.xxxl },
-  bestCard: { backgroundColor: colors.surface, borderRadius: radius.xl, padding: spacing.xl, alignItems: 'center', borderWidth: 2, borderColor: colors.primary, marginBottom: spacing.xl },
+  bestCard: { backgroundColor: colors.surface, borderRadius: radius.xl, padding: spacing.xl, alignItems: 'center', borderWidth: 2, borderColor: colors.primary, marginTop: spacing.xl, marginBottom: spacing.xl },
+  bestBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  bestBadgeText: { ...typography.caption, color: colors.primary, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   bestPrice: { fontSize: 30, fontWeight: '800', color: colors.success, marginVertical: spacing.sm },
   recoCard: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, borderLeftWidth: 3, borderLeftColor: colors.primary, marginBottom: spacing.lg },
+  recoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
   storeCard: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, marginBottom: spacing.md },
   storeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md },
   badge: { borderRadius: radius.sm, paddingHorizontal: spacing.sm, paddingVertical: 3 },
